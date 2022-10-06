@@ -9,7 +9,7 @@ namespace Website.Api.Controllers
     {
         public ActionResult SetResponse(Result result)
         {
-            if (result.Succeeded)
+            if (result.Success)
             {
                 if (result.ObjContent != null)
                 {

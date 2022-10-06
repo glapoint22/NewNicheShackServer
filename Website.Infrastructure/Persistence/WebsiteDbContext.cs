@@ -1,11 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using Website.Application.Common.Interfaces;
 using Website.Domain.Entities;
 
@@ -15,12 +10,22 @@ namespace Website.Infrastructure.Persistence
     {
         public WebsiteDbContext(DbContextOptions<WebsiteDbContext> options) : base(options) { }
 
+        public DbSet<Collaborator> Collaborators => Set<Collaborator>();
+        public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
+        public DbSet<List> Lists => Set<List>();
 
+        
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        }
+
+
+        public async Task<int> SaveChangesAsync()
+        {
+            return await base.SaveChangesAsync();
         }
     }
 }

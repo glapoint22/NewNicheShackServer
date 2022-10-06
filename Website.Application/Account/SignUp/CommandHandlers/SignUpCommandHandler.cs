@@ -2,24 +2,33 @@
 using Website.Application.Account.SignUp.Commands;
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
+using Website.Domain.Entities;
+using Website.Domain.Events;
 
 namespace Website.Application.Account.SignUp.CommandHandlers
 {
     public class SignUpCommandHandler : IRequestHandler<SignUpCommand, Result>
     {
-        private readonly IUserService _userService;
+        private readonly IIdentityService _identityService;
+        private readonly IPublisher _publisher;
 
-        public SignUpCommandHandler(IUserService userService)
+        public SignUpCommandHandler(IIdentityService identityService, IPublisher publisher)
         {
-            _userService = userService;
+            _identityService = identityService;
+            _publisher = publisher;
         }
 
         public async Task<Result> Handle(SignUpCommand request, CancellationToken cancellationToken)
         {
-            await _userService.CreateUserAsync(request.FirstName, request.LastName, request.Email, request.Password);
+            User user = await _identityService.CreateUserAsync(request.FirstName, request.LastName, request.Email, request.Password);
 
+            // If we were unable to create a new user
+            if (user == null) return Result.Failed();
 
-            return Result.Success();
+            
+            await _publisher.Publish(new NewAccountEvent(user), cancellationToken);
+
+            return Result.Succeeded();
         }
     }
 }

@@ -32,7 +32,7 @@ namespace Website.Application.Common.Behaviors
 
                 if (failures.Any())
                 {
-                    return (TResponse)Result.Failure(failures);
+                    return (TResponse)Result.Failed(failures);
                 }
 
             }

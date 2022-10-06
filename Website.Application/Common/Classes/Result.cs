@@ -4,7 +4,7 @@ namespace Website.Application.Common.Classes
 {
     public class Result
     {
-        public bool Succeeded { get; }
+        public bool Success { get; }
         public object? ObjContent { get; }
         public double? DblContent { get; }
         public string? StrContent { get; }
@@ -12,27 +12,27 @@ namespace Website.Application.Common.Classes
         public List<ValidationFailure> Failures { get; } = new List<ValidationFailure>();
 
 
-        private Result()
+        private Result(bool success)
         {
-            Succeeded = true;
+            Success = success;
         }
 
         private Result(object content)
         {
-            Succeeded = true;
+            Success = true;
             ObjContent = content;
         }
 
         private Result(int content)
         {
-            Succeeded = true;
+            Success = true;
             IntContent = content;
         }
 
 
         private Result(string content)
         {
-            Succeeded = true;
+            Success = true;
             StrContent = content;
         }
 
@@ -40,7 +40,7 @@ namespace Website.Application.Common.Classes
 
         private Result(double content)
         {
-            Succeeded = true;
+            Success = true;
             DblContent = content;
         }
         
@@ -49,20 +49,38 @@ namespace Website.Application.Common.Classes
         private Result(List<ValidationFailure> failures)
         {
             Failures = failures;
-            Succeeded = false;
+            Success = false;
         }
 
 
-        public static Result Success() => new();
+        public static Result Succeeded() => new(true);
 
-        public static Result Success(int content) => new(content);
+        public static Result Succeeded(int content) => new(content);
 
-        public static Result Success(string content) => new(content);
+        public static Result Succeeded(string content) => new(content);
 
-        public static Result Success(double content) => new(content);
+        public static Result Succeeded(double content) => new(content);
 
-        public static Result Success(object content) => new(content);
+        public static Result Succeeded(object content) => new(content);
 
-        public static Result Failure(List<ValidationFailure> failures) => new(failures);
+        public static Result Failed() => new(false);
+
+        public static Result Failed(List<ValidationFailure> failures) => new(failures);
+
+        public static Result Failed(List<KeyValuePair<string, string>> failures)
+        {
+            var validationFailures = new List<ValidationFailure>();
+
+            foreach(var failure in failures)
+            {
+                validationFailures.Add(new ValidationFailure
+                {
+                    PropertyName = failure.Key,
+                    ErrorMessage = failure.Value
+                });
+            }
+
+            return new(validationFailures);
+        }
     }
 }

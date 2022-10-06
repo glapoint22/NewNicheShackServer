@@ -7,6 +7,6 @@
         public DateTime DateAdded { get; set; }
 
         public Product Product { get; set; } = null!;
-        public ListCollaborator Collaborator { get; set; } = null!;
+        public Collaborator Collaborator { get; set; } = null!;
     }
 }

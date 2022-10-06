@@ -1,6 +1,6 @@
 ﻿namespace Website.Domain.Entities
 {
-    public class ListCollaborator
+    public class Collaborator
     {
         public int Id { get; set; }
         public string UserId { get; set; } = string.Empty;
