@@ -4,11 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Website.Application.Common.Interfaces;
 using Website.Domain.Entities;
-using Website.Infrastructure.Identity;
 using Website.Infrastructure.Persistence;
+using Website.Infrastructure.Persistence.Interceptors;
+using Website.Infrastructure.Services;
 
 namespace Website.Infrastructure
 {
@@ -16,9 +18,13 @@ namespace Website.Infrastructure
     {
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<WebsiteDbContext>(options =>
+            services.AddSingleton<Interceptor>();
+
+            services.AddDbContext<WebsiteDbContext>((sp, options) =>
             {
-                options.UseSqlServer(configuration.GetConnectionString("WebsiteDBConnection"));
+                Interceptor? interceptor = sp.GetService<Interceptor>();
+                options.UseSqlServer(configuration.GetConnectionString("WebsiteDBConnection"))
+                    .AddInterceptors(interceptor!);
             });
 
             services.AddIdentity<User, IdentityRole>(options =>
@@ -56,11 +62,18 @@ namespace Website.Infrastructure
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("Account", policy => policy.RequireClaim("AccountAccess", "user", "admin"));
+                options.AddPolicy("Account", policy =>
+                {
+                    policy.RequireClaim("AccountAccess", "user", "admin");
+                    policy.RequireClaim(JwtRegisteredClaimNames.Iss, configuration["TokenValidation:Site"]);
+                    policy.RequireClaim(JwtRegisteredClaimNames.Aud, configuration["TokenValidation:Site"]);
+                });
             });
 
 
-            services.AddTransient<IIdentityService, IdentityService>();
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<ICookieService, CookieService>();
+            services.AddTransient<IAuthService, AuthService>();
             services.AddScoped<IWebsiteDbContext>(provider => provider.GetRequiredService<WebsiteDbContext>());
             services.AddHttpContextAccessor();
 

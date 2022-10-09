@@ -19,8 +19,7 @@ namespace Website.Infrastructure.Persistence.Configurations
                 .IsRequired();
 
             builder.Property(x => x.Image)
-                .HasMaxLength(50).
-                IsRequired(false);
+                .HasMaxLength(50);
         }
     }
 }

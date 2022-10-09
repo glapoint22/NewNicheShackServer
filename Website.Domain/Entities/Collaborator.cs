@@ -16,5 +16,19 @@
 
         public User User { get; set; } = null!;
         public List List { get; set; } = null!;
+
+        public Collaborator(string listId, string userId, bool isOwner)
+        {
+            UserId = userId;
+            ListId = listId;
+            IsOwner = isOwner;
+            AddToList = isOwner;
+            ShareList = true;
+            EditList = isOwner;
+            InviteCollaborators = isOwner;
+            DeleteList = isOwner;
+            MoveItem = isOwner;
+            RemoveItem = isOwner;
+        }
     }
 }

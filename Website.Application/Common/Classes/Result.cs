@@ -17,20 +17,20 @@ namespace Website.Application.Common.Classes
             Success = success;
         }
 
-        private Result(object content)
+        private Result(object? content)
         {
             Success = true;
             ObjContent = content;
         }
 
-        private Result(int content)
+        private Result(int? content)
         {
             Success = true;
             IntContent = content;
         }
 
 
-        private Result(string content)
+        private Result(string? content)
         {
             Success = true;
             StrContent = content;
@@ -38,7 +38,7 @@ namespace Website.Application.Common.Classes
 
 
 
-        private Result(double content)
+        private Result(double? content)
         {
             Success = true;
             DblContent = content;
@@ -55,13 +55,13 @@ namespace Website.Application.Common.Classes
 
         public static Result Succeeded() => new(true);
 
-        public static Result Succeeded(int content) => new(content);
+        public static Result Succeeded(int? content) => new(content);
 
-        public static Result Succeeded(string content) => new(content);
+        public static Result Succeeded(string? content) => new(content);
 
-        public static Result Succeeded(double content) => new(content);
+        public static Result Succeeded(double? content) => new(content);
 
-        public static Result Succeeded(object content) => new(content);
+        public static Result Succeeded(object? content) => new(content);
 
         public static Result Failed() => new(false);
 
