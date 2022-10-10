@@ -19,13 +19,7 @@ namespace Website.Domain.Entities
 
 
 
-        public User()
-        {
-            AddDomainEvent(new UserCreatedEvent(this));
-        }
-
-
-
+        
 
         public void AddDomainEvent(INotification domainEvent)
         {

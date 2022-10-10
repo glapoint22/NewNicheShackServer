@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Website.Application.Common.Interfaces;
 using Website.Domain.Entities;
 using Website.Domain.Events;
@@ -18,21 +19,32 @@ namespace Website.Application.Account.Common.EventHandlers
 
         public async Task Handle(UserCreatedEvent notification, CancellationToken cancellationToken)
         {
-            string token = await _userService.GenerateEmailConfirmationTokenAsync(notification.User);
+            if (!notification.User.EmailConfirmed)
+            {
+                string token = await _userService.GenerateEmailConfirmationTokenAsync(notification.User);
+                // TODO: Send email
+            }
+
 
             // Create the user's first list
-            List list = new()
+            if (await _dbContext.Collaborators.AnyAsync(x => x.UserId == notification.User.Id && x.IsOwner) == false)
             {
-                Id = Guid.NewGuid().ToString("N").Substring(0, 10).ToUpper(),
-                Name = notification.User.FirstName + "'s List",
-                Description = string.Empty,
-                CollaborateId = Guid.NewGuid().ToString("N").Substring(0, 10).ToUpper()
-            };
+                List list = new()
+                {
+                    Id = Guid.NewGuid().ToString("N").Substring(0, 10).ToUpper(),
+                    Name = notification.User.FirstName + "'s List",
+                    Description = string.Empty,
+                    CollaborateId = Guid.NewGuid().ToString("N").Substring(0, 10).ToUpper()
+                };
 
-            Collaborator collaborator = new(list.Id, notification.User.Id, true);
+                Collaborator collaborator = new(list.Id, notification.User.Id, true);
 
-            _dbContext.Lists.Add(list);
-            _dbContext.Collaborators.Add(collaborator);
+                _dbContext.Lists.Add(list);
+                _dbContext.Collaborators.Add(collaborator);
+
+                await _dbContext.SaveChangesAsync();
+            }
+
         }
     }
 }

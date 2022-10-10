@@ -9,7 +9,6 @@ using System.Text;
 using Website.Application.Common.Interfaces;
 using Website.Domain.Entities;
 using Website.Infrastructure.Persistence;
-using Website.Infrastructure.Persistence.Interceptors;
 using Website.Infrastructure.Services;
 
 namespace Website.Infrastructure
@@ -18,13 +17,9 @@ namespace Website.Infrastructure
     {
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddSingleton<Interceptor>();
-
-            services.AddDbContext<WebsiteDbContext>((sp, options) =>
+            services.AddDbContext<WebsiteDbContext>((options) =>
             {
-                Interceptor? interceptor = sp.GetService<Interceptor>();
-                options.UseSqlServer(configuration.GetConnectionString("WebsiteDBConnection"))
-                    .AddInterceptors(interceptor!);
+                options.UseSqlServer(configuration.GetConnectionString("WebsiteDBConnection"));
             });
 
             services.AddIdentity<User, IdentityRole>(options =>

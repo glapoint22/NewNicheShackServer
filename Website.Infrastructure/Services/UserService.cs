@@ -1,24 +1,29 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Configuration;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Website.Application.Common.Interfaces;
 using Website.Domain.Entities;
+using Website.Domain.Events;
 
 namespace Website.Infrastructure.Services
 {
     public class UserService : IUserService
     {
         private readonly UserManager<User> _userManager;
-        private readonly IConfiguration _configuration;
         private readonly ClaimsPrincipal _user;
 
-        public UserService(UserManager<User> userManager, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+        public UserService(UserManager<User> userManager, IHttpContextAccessor httpContextAccessor)
         {
             _userManager = userManager;
-            _configuration = configuration;
             _user = httpContextAccessor!.HttpContext!.User;
+        }
+
+
+
+        // -------------------------------------------------------------------- Add Password Async ----------------------------------------------------------------------
+        public async Task<IdentityResult> AddPasswordAsync(User user, string password)
+        {
+            return await _userManager.AddPasswordAsync(user, password);
         }
 
 
@@ -68,8 +73,21 @@ namespace Website.Infrastructure.Services
 
             if (!result.Succeeded) return null!;
 
+            user.AddDomainEvent(new UserCreatedEvent(user));
+
             return user;
         }
+
+
+
+        // ------------------------------------------------------------ Generate Delete Account Token Async ------------------------------------------------------------
+        public async Task<string> GenerateDeleteAccountTokenAsync(User user)
+        {
+            return await _userManager.GenerateUserTokenAsync(user, TokenOptions.DefaultPhoneProvider, "Delete Account");
+        }
+
+
+
 
 
 
@@ -82,7 +100,21 @@ namespace Website.Infrastructure.Services
 
 
 
-        
+
+
+        // --------------------------------------------------------- Get External Log In Prodvider From Claims -----------------------------------------------------------
+        public string GetExternalLogInProviderFromClaims()
+        {
+            return _user.FindFirstValue("externalLoginProvider");
+        }
+
+
+
+
+
+
+
+
         // ----------------------------------------------------------------- Get User By Email Async ---------------------------------------------------------------------
         public async Task<User> GetUserByEmailAsync(string email)
         {
@@ -125,12 +157,10 @@ namespace Website.Infrastructure.Services
 
 
 
-
-
-        // ------------------------------------------------------------------------ Get User Id --------------------------------------------------------------------------
-        public string? GetUserId()
+        // ----------------------------------------------------------------- Get User From Claims Async ------------------------------------------------------------------
+        public async Task<User> GetUserFromClaimsAsync()
         {
-            return _user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            return await _userManager.GetUserAsync(_user);
         }
 
 
@@ -138,10 +168,33 @@ namespace Website.Infrastructure.Services
 
 
 
-        // --------------------------------------------------------------------- Has Password Async ----------------------------------------------------------------------
+        // ------------------------------------------------------------------ Get User Id From Claims --------------------------------------------------------------------
+        public string GetUserIdFromClaims()
+        {
+            return _user.FindFirst(ClaimTypes.NameIdentifier)?.Value!;
+        }
+
+
+
+
+
+
+        // -------------------------------------------------------------------- Has Password Async ------------------------------------------------------------------------
         public async Task<bool> HasPasswordAsync(User user)
         {
             return await _userManager.HasPasswordAsync(user);
+        }
+
+
+
+
+
+
+        
+        // ------------------------------------------------------------ Verify Delete Account Token Async -----------------------------------------------------------------
+        public async Task<bool> VerifyDeleteAccountTokenAsync(User user, string token)
+        {
+            return await _userManager.VerifyUserTokenAsync(user, TokenOptions.DefaultPhoneProvider, "Delete Account", token);
         }
     }
 }

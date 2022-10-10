@@ -25,10 +25,14 @@ namespace Website.Application.Account.ActivateAccount.Commands
         public async Task<Result> Handle(ActivateAccountCommand request, CancellationToken cancellationToken)
         {
             User user = await _userService.GetUserByEmailAsync(request.Email);
-            IdentityResult identityResult = await _userService.ConfirmEmailAsync(user, request.Token);
 
-            if (!identityResult.Succeeded) return Result.Failed();
+            if (!user.EmailConfirmed)
+            {
+                IdentityResult identityResult = await _userService.ConfirmEmailAsync(user, request.Token);
+                if (!identityResult.Succeeded) return Result.Failed();
 
+                // TODO: Send welcome email
+            }
 
             // Log in the user
             List<Claim> claims = _authService.GetClaims(user, true);
@@ -40,8 +44,6 @@ namespace Website.Application.Account.ActivateAccount.Commands
             _cookieService.SetCookie("access", accessToken, true);
             _cookieService.SetCookie("refresh", refreshToken, true);
             _cookieService.SetCookie("user", userData, true);
-
-            // TODO: Add domain event for welcome email
 
             return Result.Succeeded();
         }

@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Website.Application.Account.ActivateAccount.Commands;
+using Website.Application.Account.AddPassword.Commands;
 using Website.Application.Account.CreateDeleteAccountOTP.Commands;
+using Website.Application.Account.DeleteAccount.Commands;
 using Website.Application.Account.DeleteRefreshToken.Commands;
 using Website.Application.Account.ExternalLogIn.Commands;
 using Website.Application.Account.LogIn.Commands;
@@ -35,13 +37,36 @@ namespace Website.Api.Controllers
 
 
 
-        // --------------------------------------------------------------- Create Delete Account OTP ------------------------------------------------------------------
+        // ----------------------------------------------------------------------- Add Password -----------------------------------------------------------------------
+        [HttpGet]
+        [Route("AddPassword")]
+        [Authorize(Policy = "Account")]
+        public async Task<ActionResult> AddPassword(string password)
+        {
+            return SetResponse(await _mediator.Send(new AddPasswordCommand(password)));
+        }
+
+
+
+
+        // ---------------------------------------------------------------- Create Delete Account OTP -----------------------------------------------------------------
         [HttpGet]
         [Route("CreateDeleteAccountOTP")]
         [Authorize(Policy = "Account")]
         public async Task<ActionResult> CreateDeleteAccountOTP()
         {
             return SetResponse(await _mediator.Send(new CreateDeleteAccountOTPCommand()));
+        }
+
+
+
+        // --------------------------------------------------------------------- Delete Account -----------------------------------------------------------------------
+        [HttpDelete]
+        [Route("DeleteAccount")]
+        [Authorize(Policy = "Account")]
+        public async Task<ActionResult> DeleteAccount(string token, string password)
+        {
+            return SetResponse(await _mediator.Send(new DeleteAccountCommand(token, password)));
         }
 
 
