@@ -11,12 +11,14 @@ namespace Website.Application.Account.LogIn.Commands
         private readonly IUserService _userService;
         private readonly IAuthService _authService;
         private readonly ICookieService _cookieService;
+        private readonly IWebsiteDbContext _dbContext;
 
-        public LogInCommandHandler(IUserService userService, IAuthService authService, ICookieService cookieService)
+        public LogInCommandHandler(IUserService userService, IAuthService authService, ICookieService cookieService, IWebsiteDbContext dbContext)
         {
             _userService = userService;
             _authService = authService;
             _cookieService = cookieService;
+            _dbContext = dbContext;
         }
 
         public async Task<Result> Handle(LogInCommand request, CancellationToken cancellationToken)
@@ -35,15 +37,18 @@ namespace Website.Application.Account.LogIn.Commands
 
 
             // Log in the user
-            List<Claim> claims = _authService.GetClaims(user, true);
+            List<Claim> claims = _authService.GetClaims(user, request.IsPersistent);
             string accessToken = _authService.GenerateAccessToken(claims);
-            string refreshToken = await _authService.GenerateRefreshTokenAsync(user.Id);
+            string refreshToken = _authService.GenerateRefreshToken(user.Id);
             string userData = _userService.GetUserData(user);
+            DateTimeOffset expiration = _userService.GetExpirationFromClaims(claims);
 
             // Set the cookies
-            _cookieService.SetCookie("access", accessToken, true);
-            _cookieService.SetCookie("refresh", refreshToken, true);
-            _cookieService.SetCookie("user", userData, true);
+            _cookieService.SetCookie("access", accessToken, expiration);
+            _cookieService.SetCookie("refresh", refreshToken, expiration);
+            _cookieService.SetCookie("user", userData, expiration);
+
+            await _dbContext.SaveChangesAsync();
 
             return Result.Succeeded();
         }

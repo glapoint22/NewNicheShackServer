@@ -3,13 +3,20 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Website.Application.Account.ActivateAccount.Commands;
 using Website.Application.Account.AddPassword.Commands;
+using Website.Application.Account.ChangeEmail.Commands;
+using Website.Application.Account.ChangeName.Commands;
+using Website.Application.Account.ChangePassword.Commands;
+using Website.Application.Account.ChangeProfileImage.Commands;
+using Website.Application.Account.CreateChangeEmailOTP.Commands;
 using Website.Application.Account.CreateDeleteAccountOTP.Commands;
 using Website.Application.Account.DeleteAccount.Commands;
 using Website.Application.Account.DeleteRefreshToken.Commands;
 using Website.Application.Account.ExternalLogIn.Commands;
+using Website.Application.Account.ForgotPassword.Commands;
 using Website.Application.Account.LogIn.Commands;
 using Website.Application.Account.LogOut.Commands;
 using Website.Application.Account.Refresh.Commands;
+using Website.Application.Account.ResetPassword.Commands;
 using Website.Application.Account.SignUp.Commands;
 
 namespace Website.Api.Controllers
@@ -45,6 +52,73 @@ namespace Website.Api.Controllers
         {
             return SetResponse(await _mediator.Send(new AddPasswordCommand(password)));
         }
+
+
+
+
+        // ------------------------------------------------------------------------ Change Email ------------------------------------------------------------------------
+        [HttpPut]
+        [Route("ChangeEmail")]
+        [Authorize(Policy = "Account")]
+        public async Task<ActionResult> ChangeEmail(ChangeEmailCommand changeEmail)
+        {
+            return SetResponse(await _mediator.Send(changeEmail));
+        }
+
+
+
+
+
+        // ------------------------------------------------------------------------ Change Name -------------------------------------------------------------------------
+        [HttpPut]
+        [Route("ChangeName")]
+        [Authorize(Policy = "Account")]
+        public async Task<ActionResult> ChangeName(ChangeNameCommand changeName)
+        {
+            return SetResponse(await _mediator.Send(changeName));
+        }
+
+
+
+
+
+
+        // ---------------------------------------------------------------------- Change Password -----------------------------------------------------------------------
+        [HttpPut]
+        [Route("ChangePassword")]
+        [Authorize(Policy = "Account")]
+        public async Task<ActionResult> ChangePassword(ChangePasswordCommand changePassword)
+        {
+            return SetResponse(await _mediator.Send(changePassword));
+        }
+
+
+
+
+
+        // ------------------------------------------------------------------- Change Profile Image ---------------------------------------------------------------------
+        [HttpPost]
+        [Route("ChangeProfileImage")]
+        [Authorize(Policy = "Account")]
+        public async Task<ActionResult> ChangeProfileImage()
+        {
+            return SetResponse(await _mediator.Send(new ChangeProfileImageCommand()));
+        }
+
+
+
+
+
+        // ----------------------------------------------------------------- Create Change Email OTP ------------------------------------------------------------------
+        [HttpGet]
+        [Route("CreateChangeEmailOTP")]
+        [Authorize(Policy = "Account")]
+        public async Task<ActionResult> CreateChangeEmailOTP(string email)
+        {
+            return SetResponse(await _mediator.Send(new CreateChangeEmailOTPCommand(email)));
+        }
+
+
 
 
 
@@ -95,6 +169,17 @@ namespace Website.Api.Controllers
 
 
 
+        // ---------------------------------------------------------------------- Forgot Password -----------------------------------------------------------------------
+        [HttpGet]
+        [Route("ForgotPassword")]
+        public async Task<ActionResult> ForgotPassword(string email)
+        {
+            return SetResponse(await _mediator.Send(new ForgotPasswordCommand(email)));
+        }
+
+
+
+
 
 
         // ------------------------------------------------------------------------- Log In ---------------------------------------------------------------------------
@@ -137,6 +222,21 @@ namespace Website.Api.Controllers
         {
             return SetResponse(await _mediator.Send(new ResendAccountActivationEmailCommand(email)));
         }
+
+
+
+
+
+        // ---------------------------------------------------------------------- Reset Password ----------------------------------------------------------------------
+        [HttpPost]
+        [Route("ResetPassword")]
+        public async Task<ActionResult> ResetPassword(ResetPasswordCommand resetPassword)
+        {
+            return SetResponse(await _mediator.Send(resetPassword));
+        }
+
+
+
 
 
 

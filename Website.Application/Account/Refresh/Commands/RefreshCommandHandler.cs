@@ -57,7 +57,7 @@ namespace Website.Application.Account.Refresh.Commands
                                     if (user != null)
                                     {
                                         accessToken = _authService.GenerateAccessToken(claims);
-                                        newRefreshToken = await _authService.GenerateRefreshTokenAsync(userId);
+                                        newRefreshToken = _authService.GenerateRefreshToken(userId);
 
                                         string userData;
 
@@ -73,12 +73,14 @@ namespace Website.Application.Account.Refresh.Commands
                                             userData = _userService.GetUserData(user);
                                         }
 
-                                        bool isPersistent = bool.Parse(principal.FindFirstValue(ClaimTypes.IsPersistent));
-                                        
+                                        Claim? expirationClaim = principal.FindFirst(ClaimTypes.Expiration);
+                                        DateTimeOffset? expiration = expirationClaim != null ? DateTimeOffset.Parse(expirationClaim.Value) : null;
 
-                                        _cookieService.SetCookie("access", accessToken, isPersistent);
-                                        _cookieService.SetCookie("refresh", newRefreshToken, isPersistent);
-                                        _cookieService.SetCookie("user", userData, isPersistent);
+                                        _cookieService.SetCookie("access", accessToken, expiration);
+                                        _cookieService.SetCookie("refresh", newRefreshToken, expiration);
+                                        _cookieService.SetCookie("user", userData, expiration);
+
+                                        await _dbContext.SaveChangesAsync();
                                     }
                                 }
                             }

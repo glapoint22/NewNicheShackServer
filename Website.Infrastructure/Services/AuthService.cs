@@ -42,7 +42,7 @@ namespace Website.Infrastructure.Services
 
 
         // -------------------------------------------------------------------- Generate Refresh Token -----------------------------------------------------------------
-        public async Task<string> GenerateRefreshTokenAsync(string userId)
+        public string GenerateRefreshToken(string userId)
         {
             var randomNumber = new byte[32];
             var rng = RandomNumberGenerator.Create();
@@ -57,7 +57,6 @@ namespace Website.Infrastructure.Services
             };
 
             _dbContext.RefreshTokens.Add(refreshToken);
-            await _dbContext.SaveChangesAsync();
 
             return refreshToken.Id;
         }
@@ -88,8 +87,14 @@ namespace Website.Infrastructure.Services
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
                 new Claim(JwtRegisteredClaimNames.Iss, _configuration["TokenValidation:Site"]),
                 new Claim(JwtRegisteredClaimNames.Aud, _configuration["TokenValidation:Site"]),
-                new Claim(ClaimTypes.IsPersistent, isPersistent.ToString())
             };
+
+
+            if (isPersistent)
+            {
+                string expiration = DateTimeOffset.UtcNow.AddDays(Convert.ToInt32(_configuration["TokenValidation:RefreshExpiresInDays"])).ToString();
+                claims.Add(new Claim(ClaimTypes.Expiration, expiration));
+            }
 
             return claims;
         }

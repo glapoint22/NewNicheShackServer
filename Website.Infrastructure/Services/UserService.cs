@@ -29,6 +29,26 @@ namespace Website.Infrastructure.Services
 
 
 
+
+        // -------------------------------------------------------------------- Change Email Async ----------------------------------------------------------------------
+        public Task<IdentityResult> ChangeEmailAsync(User user, string email, string token)
+        {
+            return _userManager.ChangeEmailAsync(user, email, token);
+        }
+
+
+
+
+
+        // ------------------------------------------------------------------- Change Password Async --------------------------------------------------------------------
+        public Task<IdentityResult> ChangePasswordAsync(User user, string currentPassword, string newPassword)
+        {
+            return _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+        }
+
+
+
+
         // ------------------------------------------------------------------- Check Password Async ---------------------------------------------------------------------
         public async Task<bool> CheckPasswordAsync(User user, string password)
         {
@@ -52,13 +72,7 @@ namespace Website.Infrastructure.Services
         {
             IdentityResult result;
 
-            var user = new User
-            {
-                FirstName = firstName,
-                LastName = lastName,
-                Email = email,
-                UserName = email
-            };
+            User user = User.CreateUser(firstName, lastName, email);
 
             if (password != null)
             {
@@ -70,13 +84,28 @@ namespace Website.Infrastructure.Services
                 result = await _userManager.CreateAsync(user);
             }
 
-
             if (!result.Succeeded) return null!;
-
-            user.AddDomainEvent(new UserCreatedEvent(user));
 
             return user;
         }
+
+
+
+
+
+
+
+        // ------------------------------------------------------------- Generate Change Email Token Async ------------------------------------------------------------
+        public async Task<string> GenerateChangeEmailTokenAsync(User user, string newEmail)
+        {
+            return await _userManager.GenerateChangeEmailTokenAsync(user, newEmail);
+        }
+
+
+
+
+
+
 
 
 
@@ -101,12 +130,52 @@ namespace Website.Infrastructure.Services
 
 
 
+        // ------------------------------------------------------------ Generate Password Reset Token Async --------------------------------------------------------------
+        public Task<string> GeneratePasswordResetTokenAsync(User user)
+        {
+            return _userManager.GeneratePasswordResetTokenAsync(user);
+        }
+
+
+
+
+
+
+        // ---------------------------------------------------------------- Get Expiration From Claims --------------------------------------------------------------
+        public DateTimeOffset? GetExpirationFromClaims()
+        {
+            Claim? expiration = _user.FindFirst(ClaimTypes.Expiration);
+
+            if (expiration != null)
+            {
+                return DateTimeOffset.Parse(expiration.Value);
+            }
+
+            return null;
+        }
+
+
+
+
+
+        // ---------------------------------------------------------------- Get Expiration From Claims --------------------------------------------------------------
+        public DateTimeOffset GetExpirationFromClaims(List<Claim> claims)
+        {
+            Claim expirationClaim = claims.FirstOrDefault(x => x.Type == ClaimTypes.Expiration)!;
+            return DateTimeOffset.Parse(expirationClaim.Value);
+        }
+
+
+
+
 
         // --------------------------------------------------------- Get External Log In Prodvider From Claims -----------------------------------------------------------
         public string GetExternalLogInProviderFromClaims()
         {
             return _user.FindFirstValue("externalLoginProvider");
         }
+
+
 
 
 
@@ -187,10 +256,29 @@ namespace Website.Infrastructure.Services
 
 
 
+        // ------------------------------------------------------------------- Reset Password Async ------------------------------------------------------------------------
+        public async Task<IdentityResult> ResetPasswordAsync(User user, string token, string newPassword)
+        {
+            return await _userManager.ResetPasswordAsync(user, token, newPassword);
+        }
 
 
 
-        
+
+
+
+        // ----------------------------------------------------------------------- Update Async -----------------------------------------------------------------------------
+        public async Task<IdentityResult> UpdateAsync(User user)
+        {
+            return await _userManager.UpdateAsync(user);
+        }
+
+
+
+
+
+
+
         // ------------------------------------------------------------ Verify Delete Account Token Async -----------------------------------------------------------------
         public async Task<bool> VerifyDeleteAccountTokenAsync(User user, string token)
         {

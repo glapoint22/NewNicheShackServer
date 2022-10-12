@@ -9,6 +9,90 @@ namespace Website.Infrastructure.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AddColumn<bool>(
+                name: "EmailOnAddedListItem",
+                table: "Users",
+                type: "bit",
+                nullable: true,
+                defaultValue: true);
+
+            migrationBuilder.AddColumn<bool>(
+                name: "EmailOnDeletedList",
+                table: "Users",
+                type: "bit",
+                nullable: true,
+                defaultValue: true);
+
+            migrationBuilder.AddColumn<bool>(
+                name: "EmailOnEmailChange",
+                table: "Users",
+                type: "bit",
+                nullable: true,
+                defaultValue: true);
+
+            migrationBuilder.AddColumn<bool>(
+                name: "EmailOnListNameChange",
+                table: "Users",
+                type: "bit",
+                nullable: true,
+                defaultValue: true);
+
+            migrationBuilder.AddColumn<bool>(
+                name: "EmailOnMovedListItem",
+                table: "Users",
+                type: "bit",
+                nullable: true,
+                defaultValue: true);
+
+            migrationBuilder.AddColumn<bool>(
+                name: "EmailOnNameChange",
+                table: "Users",
+                type: "bit",
+                nullable: true,
+                defaultValue: true);
+
+            migrationBuilder.AddColumn<bool>(
+                name: "EmailOnNewCollaborator",
+                table: "Users",
+                type: "bit",
+                nullable: true,
+                defaultValue: true);
+
+            migrationBuilder.AddColumn<bool>(
+                name: "EmailOnPasswordChange",
+                table: "Users",
+                type: "bit",
+                nullable: true,
+                defaultValue: true);
+
+            migrationBuilder.AddColumn<bool>(
+                name: "EmailOnProfileImageChange",
+                table: "Users",
+                type: "bit",
+                nullable: true,
+                defaultValue: true);
+
+            migrationBuilder.AddColumn<bool>(
+                name: "EmailOnRemovedCollaborator",
+                table: "Users",
+                type: "bit",
+                nullable: true,
+                defaultValue: true);
+
+            migrationBuilder.AddColumn<bool>(
+                name: "EmailOnRemovedListItem",
+                table: "Users",
+                type: "bit",
+                nullable: true,
+                defaultValue: true);
+
+            migrationBuilder.AddColumn<bool>(
+                name: "EmailOnReview",
+                table: "Users",
+                type: "bit",
+                nullable: true,
+                defaultValue: true);
+
             migrationBuilder.AddColumn<string>(
                 name: "Image",
                 table: "Users",
@@ -109,6 +193,54 @@ namespace Website.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Lists");
+
+            migrationBuilder.DropColumn(
+                name: "EmailOnAddedListItem",
+                table: "Users");
+
+            migrationBuilder.DropColumn(
+                name: "EmailOnDeletedList",
+                table: "Users");
+
+            migrationBuilder.DropColumn(
+                name: "EmailOnEmailChange",
+                table: "Users");
+
+            migrationBuilder.DropColumn(
+                name: "EmailOnListNameChange",
+                table: "Users");
+
+            migrationBuilder.DropColumn(
+                name: "EmailOnMovedListItem",
+                table: "Users");
+
+            migrationBuilder.DropColumn(
+                name: "EmailOnNameChange",
+                table: "Users");
+
+            migrationBuilder.DropColumn(
+                name: "EmailOnNewCollaborator",
+                table: "Users");
+
+            migrationBuilder.DropColumn(
+                name: "EmailOnPasswordChange",
+                table: "Users");
+
+            migrationBuilder.DropColumn(
+                name: "EmailOnProfileImageChange",
+                table: "Users");
+
+            migrationBuilder.DropColumn(
+                name: "EmailOnRemovedCollaborator",
+                table: "Users");
+
+            migrationBuilder.DropColumn(
+                name: "EmailOnRemovedListItem",
+                table: "Users");
+
+            migrationBuilder.DropColumn(
+                name: "EmailOnReview",
+                table: "Users");
 
             migrationBuilder.DropColumn(
                 name: "Image",

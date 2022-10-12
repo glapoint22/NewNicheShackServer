@@ -20,6 +20,42 @@ namespace Website.Infrastructure.Persistence.Configurations
 
             builder.Property(x => x.Image)
                 .HasMaxLength(50);
+
+            builder.Property(x => x.EmailOnNameChange)
+                .HasDefaultValue(true);
+
+            builder.Property(x => x.EmailOnEmailChange)
+                .HasDefaultValue(true);
+
+            builder.Property(x => x.EmailOnPasswordChange)
+                .HasDefaultValue(true);
+
+            builder.Property(x => x.EmailOnProfileImageChange)
+                .HasDefaultValue(true);
+
+            builder.Property(x => x.EmailOnNewCollaborator)
+                .HasDefaultValue(true);
+
+            builder.Property(x => x.EmailOnRemovedCollaborator)
+                .HasDefaultValue(true);
+
+            builder.Property(x => x.EmailOnRemovedListItem)
+                .HasDefaultValue(true);
+
+            builder.Property(x => x.EmailOnMovedListItem)
+                .HasDefaultValue(true);
+
+            builder.Property(x => x.EmailOnAddedListItem)
+                .HasDefaultValue(true);
+
+            builder.Property(x => x.EmailOnListNameChange)
+                .HasDefaultValue(true);
+
+            builder.Property(x => x.EmailOnDeletedList)
+                .HasDefaultValue(true);
+
+            builder.Property(x => x.EmailOnReview)
+                .HasDefaultValue(true);
         }
     }
 }

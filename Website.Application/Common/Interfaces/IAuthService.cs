@@ -7,7 +7,7 @@ namespace Website.Application.Common.Interfaces
     {
         string GenerateAccessToken(List<Claim> claims);
 
-        Task<string> GenerateRefreshTokenAsync(string userId);
+        string GenerateRefreshToken(string userId);
 
         string? GetAccessTokenFromHeader();
 

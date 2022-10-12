@@ -31,21 +31,21 @@ namespace Website.Infrastructure.Services
             return _httpContext.Request.Cookies[cookie];
         }
 
-
+        
 
 
 
 
         // ------------------------------------------------------------------------- Set Cookie ------------------------------------------------------------------------
-        public void SetCookie(string cookie, string value, bool isPersistent)
+        public void SetCookie(string cookie, string value, DateTimeOffset? expiration)
         {
             CookieOptions cookieOptions = new();
 
-            if (isPersistent)
+            if (expiration != null)
             {
-                cookieOptions = new CookieOptions
+                cookieOptions = new()
                 {
-                    Expires = DateTimeOffset.UtcNow.AddDays(Convert.ToInt32(_configuration["TokenValidation:RefreshExpiresInDays"]))
+                    Expires = expiration
                 };
             }
 

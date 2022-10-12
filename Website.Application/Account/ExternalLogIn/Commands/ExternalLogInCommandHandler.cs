@@ -36,13 +36,16 @@ namespace Website.Application.Account.ExternalLogIn.Commands
                 bool userHasPassword = await _userService.HasPasswordAsync(user);
                 List<Claim> claims = _authService.GetClaims(user, request.Provider, userHasPassword);
                 string accessToken = _authService.GenerateAccessToken(claims);
-                string refreshToken = await _authService.GenerateRefreshTokenAsync(user.Id);
+                string refreshToken = _authService.GenerateRefreshToken(user.Id);
                 string userData = _userService.GetUserData(user, request.Provider, userHasPassword);
+                DateTimeOffset expiration = _userService.GetExpirationFromClaims(claims);
 
                 // Set the cookies
-                _cookieService.SetCookie("access", accessToken, true);
-                _cookieService.SetCookie("refresh", refreshToken, true);
-                _cookieService.SetCookie("user", userData, true);
+                _cookieService.SetCookie("access", accessToken, expiration);
+                _cookieService.SetCookie("refresh", refreshToken, expiration);
+                _cookieService.SetCookie("user", userData, expiration);
+
+                await _dbContext.SaveChangesAsync();
             }
 
 

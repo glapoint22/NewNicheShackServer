@@ -31,6 +31,8 @@ namespace Website.Infrastructure
                 options.Password.RequireLowercase = false;
                 options.User.RequireUniqueEmail = true;
                 options.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultEmailProvider;
+                options.Tokens.PasswordResetTokenProvider = TokenOptions.DefaultEmailProvider;
+                options.Tokens.ChangeEmailTokenProvider = TokenOptions.DefaultEmailProvider;
             }).AddEntityFrameworkStores<WebsiteDbContext>()
             .AddDefaultTokenProviders();
 

@@ -6,6 +6,6 @@
 
         string? GetCookie(string cookie);
 
-        void SetCookie(string cookie, string value, bool isPersistent);
+        void SetCookie(string cookie, string value, DateTimeOffset? expiration);
     }
 }
