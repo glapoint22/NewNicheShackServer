@@ -71,6 +71,7 @@ namespace Website.Infrastructure
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ICookieService, CookieService>();
             services.AddTransient<IAuthService, AuthService>();
+            services.AddSingleton<ITaskService, TaskService>();
             services.AddScoped<IWebsiteDbContext>(provider => provider.GetRequiredService<WebsiteDbContext>());
             services.AddHttpContextAccessor();
 

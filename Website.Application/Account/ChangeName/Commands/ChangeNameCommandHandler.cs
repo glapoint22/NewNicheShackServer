@@ -8,13 +8,13 @@ namespace Website.Application.Account.ChangeName.Commands
 {
     public class ChangeNameCommandHandler : IRequestHandler<ChangeNameCommand, Result>
     {
-        private IUserService _userService;
-        private ICookieService _cookieService;
+        private readonly IUserService _userService;
+        private readonly IWebsiteDbContext _dbContext;
 
-        public ChangeNameCommandHandler(IUserService userService, ICookieService cookieService)
+        public ChangeNameCommandHandler(IUserService userService, IWebsiteDbContext dbContext)
         {
             _userService = userService;
-            _cookieService = cookieService;
+            _dbContext = dbContext;
         }
 
         public async Task<Result> Handle(ChangeNameCommand request, CancellationToken cancellationToken)
@@ -23,39 +23,18 @@ namespace Website.Application.Account.ChangeName.Commands
 
             if (user != null)
             {
-                user.FirstName = request.FirstName;
-                user.LastName = request.LastName;
+                user.ChangeName(request.FirstName, request.LastName);
 
                 IdentityResult result = await _userService.UpdateAsync(user);
 
                 if (result.Succeeded)
                 {
-                    if (user.EmailOnNameChange != null && user.EmailOnNameChange == true)
-                    {
-                        // TODO: Send email
-                    }
-
-                    string userData;
-                    DateTimeOffset? expiration = _userService.GetExpirationFromClaims();
-                    string externalLogInProvider = _userService.GetExternalLogInProviderFromClaims();
-
-                    if (externalLogInProvider != null)
-                    {
-                        bool hasPassword = await _userService.HasPasswordAsync(user);
-                        userData = _userService.GetUserData(user, externalLogInProvider, hasPassword);
-                    }
-                    else
-                    {
-                        userData = _userService.GetUserData(user);
-                    }
-
-                    _cookieService.SetCookie("user", userData, expiration);
-
+                    await _dbContext.SaveChangesAsync();
                     return Result.Succeeded();
                 }
             }
 
-            return Result.Failed();
+            throw new Exception("Error while trying to get user from claims.");
         }
     }
 }

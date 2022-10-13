@@ -27,7 +27,7 @@ namespace Website.Application.Account.CreateChangeEmailOTP.Commands
                 return Result.Succeeded();
             }
 
-            return Result.Failed();
+            throw new Exception("Error while trying to get user from claims.");
         }
     }
 }

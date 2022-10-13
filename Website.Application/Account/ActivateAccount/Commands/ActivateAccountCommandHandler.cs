@@ -26,29 +26,34 @@ namespace Website.Application.Account.ActivateAccount.Commands
         {
             User user = await _userService.GetUserByEmailAsync(request.Email);
 
-            if (!user.EmailConfirmed)
+            if (user != null)
             {
-                IdentityResult identityResult = await _userService.ConfirmEmailAsync(user, request.Token);
-                if (!identityResult.Succeeded) return Result.Failed();
+                if (!user.EmailConfirmed)
+                {
+                    IdentityResult identityResult = await _userService.ConfirmEmailAsync(user, request.Token);
+                    if (!identityResult.Succeeded) return Result.Failed();
 
-                // TODO: Send welcome email
+                    // TODO: Send welcome email
+                }
+
+                // Log in the user
+                List<Claim> claims = _authService.GetClaims(user, true);
+                string accessToken = _authService.GenerateAccessToken(claims);
+                string refreshToken = _authService.GenerateRefreshToken(user.Id);
+                string userData = _userService.GetUserData(user);
+                DateTimeOffset expiration = _userService.GetExpirationFromClaims(claims);
+
+                // Set the cookies
+                _cookieService.SetCookie("access", accessToken, expiration);
+                _cookieService.SetCookie("refresh", refreshToken, expiration);
+                _cookieService.SetCookie("user", userData, expiration);
+
+                await _dbContext.SaveChangesAsync();
+
+                return Result.Succeeded();
             }
 
-            // Log in the user
-            List<Claim> claims = _authService.GetClaims(user, true);
-            string accessToken = _authService.GenerateAccessToken(claims);
-            string refreshToken = _authService.GenerateRefreshToken(user.Id);
-            string userData = _userService.GetUserData(user);
-            DateTimeOffset expiration = _userService.GetExpirationFromClaims(claims);
-
-            // Set the cookies
-            _cookieService.SetCookie("access", accessToken, expiration);
-            _cookieService.SetCookie("refresh", refreshToken, expiration);
-            _cookieService.SetCookie("user", userData, expiration);
-
-            await _dbContext.SaveChangesAsync();
-
-            return Result.Succeeded();
+            return Result.Failed();
         }
     }
 }

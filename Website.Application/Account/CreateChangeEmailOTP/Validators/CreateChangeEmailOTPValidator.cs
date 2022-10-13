@@ -11,11 +11,7 @@ namespace Website.Application.Account.CreateChangeEmailOTP.Validators
         {
             RuleFor(x => x.Email)
                 .NotEmpty()
-                .EmailAddress()
-                .MustAsync(async (email, cancellation) =>
-                {
-                    return await dbContext.Users.AnyAsync(x => x.Email == email, cancellationToken: cancellation) == false;
-                }).WithMessage("Duplicate email");
+                .EmailAddress();
         }
     }
 }

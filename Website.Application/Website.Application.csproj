@@ -17,8 +17,4 @@
     <ProjectReference Include="..\Website.Domain\Website.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Account\ActivateAccount\EventHandlers\" />
-  </ItemGroup>
-
 </Project>

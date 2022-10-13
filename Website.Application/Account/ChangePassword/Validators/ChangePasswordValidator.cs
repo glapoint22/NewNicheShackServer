@@ -12,6 +12,7 @@ namespace Website.Application.Account.ChangePassword.Validators
 
             RuleFor(x => x.NewPassword)
                 .MinimumLength(6)
+                .NotEqual(x => x.CurrentPassword)
                 .NotEmpty();
         }
     }

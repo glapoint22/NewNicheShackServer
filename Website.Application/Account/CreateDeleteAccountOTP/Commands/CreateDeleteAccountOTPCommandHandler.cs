@@ -18,9 +18,13 @@ namespace Website.Application.Account.CreateDeleteAccountOTP.Commands
         {
             User user = await _userService.GetUserFromClaimsAsync();
 
-            string token = await _userService.GenerateDeleteAccountTokenAsync(user);
+            if (user != null)
+            {
+                string token = await _userService.GenerateDeleteAccountTokenAsync(user);
 
-            // TODO: Send email
+                // TODO: Send email
+            }
+
 
             return Result.Succeeded();
         }

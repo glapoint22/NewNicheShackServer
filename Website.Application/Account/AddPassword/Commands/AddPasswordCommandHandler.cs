@@ -26,30 +26,40 @@ namespace Website.Application.Account.AddPassword.Commands
         {
             User user = await _userService.GetUserFromClaimsAsync();
 
-            IdentityResult result = await _userService.AddPasswordAsync(user, request.Password);
-
-            if (result.Succeeded)
+            if (user != null)
             {
-                string externalLogInProvider = _userService.GetExternalLogInProviderFromClaims();
+                IdentityResult result = new();
+                bool hasPassword = await _userService.HasPasswordAsync(user);
 
-                // Log in the user
-                List<Claim> claims = _authService.GetClaims(user, externalLogInProvider, true);
-                string accessToken = _authService.GenerateAccessToken(claims);
-                string refreshToken = _authService.GenerateRefreshToken(user.Id);
-                string userData = _userService.GetUserData(user, externalLogInProvider, true);
-                DateTimeOffset expiration = _userService.GetExpirationFromClaims(claims);
+                if (!hasPassword)
+                {
+                    result = await _userService.AddPasswordAsync(user, request.Password);
+                }
 
-                // Set the cookies
-                _cookieService.SetCookie("access", accessToken, expiration);
-                _cookieService.SetCookie("refresh", refreshToken, expiration);
-                _cookieService.SetCookie("user", userData, expiration);
 
-                await _dbContext.SaveChangesAsync();
+                if (hasPassword || result.Succeeded)
+                {
+                    string externalLogInProvider = _userService.GetExternalLogInProviderFromClaims();
 
-                return Result.Succeeded();
+                    // Log in the user
+                    List<Claim> claims = _authService.GetClaims(user, externalLogInProvider, true);
+                    string accessToken = _authService.GenerateAccessToken(claims);
+                    string refreshToken = _authService.GenerateRefreshToken(user.Id);
+                    string userData = _userService.GetUserData(user, externalLogInProvider, true);
+                    DateTimeOffset expiration = _userService.GetExpirationFromClaims(claims);
+
+                    // Set the cookies
+                    _cookieService.SetCookie("access", accessToken, expiration);
+                    _cookieService.SetCookie("refresh", refreshToken, expiration);
+                    _cookieService.SetCookie("user", userData, expiration);
+
+                    await _dbContext.SaveChangesAsync();
+
+                    return Result.Succeeded();
+                }
             }
 
-            return Result.Failed();
+            throw new Exception("Error while trying to get user from claims.");
         }
     }
 }

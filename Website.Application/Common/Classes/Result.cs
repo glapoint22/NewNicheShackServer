@@ -43,7 +43,7 @@ namespace Website.Application.Common.Classes
             Success = true;
             DblContent = content;
         }
-        
+
 
 
         private Result(List<ValidationFailure> failures)
@@ -67,18 +67,13 @@ namespace Website.Application.Common.Classes
 
         public static Result Failed(List<ValidationFailure> failures) => new(failures);
 
-        public static Result Failed(List<KeyValuePair<string, string>> failures)
+        public static Result Failed(ValidationFailure failure)
         {
-            var validationFailures = new List<ValidationFailure>();
-
-            foreach(var failure in failures)
+            List<ValidationFailure> validationFailures = new()
             {
-                validationFailures.Add(new ValidationFailure
-                {
-                    PropertyName = failure.Key,
-                    ErrorMessage = failure.Value
-                });
-            }
+                failure
+            };
+
 
             return new(validationFailures);
         }

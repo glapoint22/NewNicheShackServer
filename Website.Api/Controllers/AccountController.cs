@@ -13,9 +13,11 @@ using Website.Application.Account.DeleteAccount.Commands;
 using Website.Application.Account.DeleteRefreshToken.Commands;
 using Website.Application.Account.ExternalLogIn.Commands;
 using Website.Application.Account.ForgotPassword.Commands;
+using Website.Application.Account.IsDuplicateEmail.Queries;
 using Website.Application.Account.LogIn.Commands;
 using Website.Application.Account.LogOut.Commands;
 using Website.Application.Account.Refresh.Commands;
+using Website.Application.Account.ResendAccountActivationEmail.Commands;
 using Website.Application.Account.ResetPassword.Commands;
 using Website.Application.Account.SignUp.Commands;
 
@@ -104,6 +106,7 @@ namespace Website.Api.Controllers
         {
             return SetResponse(await _mediator.Send(new ChangeProfileImageCommand()));
         }
+        
 
 
 
@@ -176,6 +179,18 @@ namespace Website.Api.Controllers
         {
             return SetResponse(await _mediator.Send(new ForgotPasswordCommand(email)));
         }
+
+
+
+
+        // -------------------------------------------------------------------- Is Duplicate Email ----------------------------------------------------------------------
+        [HttpGet]
+        [Route("IsDuplicateEmail")]
+        public async Task<ActionResult> IsDuplicateEmail(string email)
+        {
+            return Ok(await _mediator.Send(new IsDuplicateEmailQuery(email)));
+        }
+
 
 
 

@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using Website.Application.Account.ActivateAccount.Commands;
+using Website.Application.Account.ResendAccountActivationEmail.Commands;
 using Website.Application.Common.Interfaces;
 
-namespace Website.Application.Account.ActivateAccount.Validators
+namespace Website.Application.Account.ResendAccountActivationEmail.Validators
 {
     public class ResendAccountActivationEmailValidator : AbstractValidator<ResendAccountActivationEmailCommand>
     {

@@ -8,7 +8,7 @@ namespace Website.Application.Common.Interfaces
     {
         Task<IdentityResult> AddPasswordAsync(User user, string password);
 
-        Task<IdentityResult> ChangeEmailAsync(User user, string email, string token);
+        Task<IdentityResult> ChangeEmailAsync(User user, string newEmail, string token);
 
         Task<IdentityResult> ChangePasswordAsync(User user, string currentPassword, string newPassword);
 

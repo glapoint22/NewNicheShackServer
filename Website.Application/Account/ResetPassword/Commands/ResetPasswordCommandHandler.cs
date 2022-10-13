@@ -24,9 +24,11 @@ namespace Website.Application.Account.ResetPassword.Commands
                 IdentityResult result = await _userService.ResetPasswordAsync(user, request.Token, request.NewPassword);
 
                 if (result.Succeeded) return Result.Succeeded();
+
+                return Result.Failed();
             }
 
-            return Result.Failed();
+            throw new Exception("Error while trying to get user from email.");
         }
     }
 }

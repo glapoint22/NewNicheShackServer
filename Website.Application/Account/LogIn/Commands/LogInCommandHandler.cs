@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation.Results;
+using MediatR;
 using System.Security.Claims;
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
@@ -27,10 +28,7 @@ namespace Website.Application.Account.LogIn.Commands
 
             if (user == null || await _userService.CheckPasswordAsync(user, request.Password) == false)
             {
-                return Result.Failed(new List<KeyValuePair<string, string>>
-                {
-                    new KeyValuePair<string, string>("No Match", "Your password and email do not match. Please try again.")
-                });
+                return Result.Failed(new ValidationFailure("No Match", "Your password and email do not match. Please try again."));
             }
 
             if (!user.EmailConfirmed) return Result.Failed();

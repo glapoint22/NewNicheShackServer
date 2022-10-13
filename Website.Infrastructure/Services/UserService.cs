@@ -31,9 +31,10 @@ namespace Website.Infrastructure.Services
 
 
         // -------------------------------------------------------------------- Change Email Async ----------------------------------------------------------------------
-        public Task<IdentityResult> ChangeEmailAsync(User user, string email, string token)
+        public Task<IdentityResult> ChangeEmailAsync(User user, string newEmail, string token)
         {
-            return _userManager.ChangeEmailAsync(user, email, token);
+            user.AddDomainEvent(new UserChangedEmailEvent(user));
+            return _userManager.ChangeEmailAsync(user, newEmail, token);
         }
 
 
@@ -71,15 +72,25 @@ namespace Website.Infrastructure.Services
         public async Task<User> CreateUserAsync(string firstName, string lastName, string email, string? password = null)
         {
             IdentityResult result;
-
-            User user = User.CreateUser(firstName, lastName, email);
+            User user;
 
             if (password != null)
             {
+                user = await _userManager.FindByEmailAsync(email);
+
+                if (user != null)
+                {
+                    user.AddDomainEvent(new UserCreatedEvent(user));
+                    return user;
+                }
+
+                user = User.CreateUser(firstName, lastName, email);
+
                 result = await _userManager.CreateAsync(user, password);
             }
             else
             {
+                user = User.CreateUser(firstName, lastName, email);
                 user.EmailConfirmed = true;
                 result = await _userManager.CreateAsync(user);
             }

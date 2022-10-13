@@ -24,6 +24,7 @@ namespace Website.Application.Account.DeleteAccount.EventHandlers
 
             _dbContext.Lists.RemoveRange(lists);
 
+
             // TODO: Send account deleted email
         }
     }

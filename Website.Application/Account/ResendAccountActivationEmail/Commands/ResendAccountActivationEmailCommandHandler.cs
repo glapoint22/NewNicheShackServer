@@ -3,7 +3,7 @@ using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
 using Website.Domain.Entities;
 
-namespace Website.Application.Account.ActivateAccount.Commands
+namespace Website.Application.Account.ResendAccountActivationEmail.Commands
 {
     internal class ResendAccountActivationEmailCommandHandler : IRequestHandler<ResendAccountActivationEmailCommand, Result>
     {

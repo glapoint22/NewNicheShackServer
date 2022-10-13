@@ -3,18 +3,21 @@ using Microsoft.AspNetCore.Identity;
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
 using Website.Domain.Entities;
+using Website.Domain.Events;
 
 namespace Website.Application.Account.ChangeEmail.Commands
 {
     public class ChangeEmailCommandHandler : IRequestHandler<ChangeEmailCommand, Result>
     {
         private readonly IUserService _userService;
-        private readonly ICookieService _cookieService;
+        private readonly IWebsiteDbContext _dbContext;
+        private readonly ITaskService _taskService;
 
-        public ChangeEmailCommandHandler(IUserService userService, ICookieService cookieService)
+        public ChangeEmailCommandHandler(IUserService userService, IWebsiteDbContext dbContext, ITaskService taskService)
         {
             _userService = userService;
-            _cookieService = cookieService;
+            _dbContext = dbContext;
+            _taskService = taskService;
         }
 
         public async Task<Result> Handle(ChangeEmailCommand request, CancellationToken cancellationToken)
@@ -23,34 +26,37 @@ namespace Website.Application.Account.ChangeEmail.Commands
 
             if (user != null)
             {
+                string key = "ChangeEmailCommandHandler-" + user.Id;
+
                 if (await _userService.CheckPasswordAsync(user, request.Password))
                 {
-                    IdentityResult result = await _userService.ChangeEmailAsync(user, request.NewEmail, request.OneTimePassword);
-
-                    if (result.Succeeded)
+                    if (!_taskService.CompletedTasks.Contains(key))
                     {
-                        string userData;
-                        DateTimeOffset? expiration = _userService.GetExpirationFromClaims();
-                        string externalLogInProvider = _userService.GetExternalLogInProviderFromClaims();
+                        IdentityResult result = await _userService.ChangeEmailAsync(user, request.NewEmail, request.OneTimePassword);
 
-                        if (externalLogInProvider != null)
+                        if (result.Succeeded)
                         {
-                            bool hasPassword = await _userService.HasPasswordAsync(user);
-                            userData = _userService.GetUserData(user, externalLogInProvider, hasPassword);
+                            _taskService.CompletedTasks.Add(key);
                         }
                         else
                         {
-                            userData = _userService.GetUserData(user);
+                            return Result.Failed();
                         }
-
-                        _cookieService.SetCookie("user", userData, expiration);
-
-                        return Result.Succeeded();
                     }
+                    else
+                    {
+                        user.AddDomainEvent(new UserChangedEmailEvent(user));
+                    }
+
+                    await _dbContext.SaveChangesAsync();
+
+                    _taskService.CompletedTasks.Remove(key);
+
+                    return Result.Succeeded();
                 }
             }
 
-            return Result.Failed();
+            throw new Exception("Error while trying to get user from claims.");
         }
     }
 }

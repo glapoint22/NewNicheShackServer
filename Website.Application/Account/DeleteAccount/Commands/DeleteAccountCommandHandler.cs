@@ -21,18 +21,23 @@ namespace Website.Application.Account.DeleteAccount.Commands
         {
             User user = await _userService.GetUserFromClaimsAsync();
 
-            if (await _userService.VerifyDeleteAccountTokenAsync(user, request.Token) && await _userService.CheckPasswordAsync(user, request.Password))
+            if (user != null)
             {
-                _dbContext.Users.Remove(user);
+                if (await _userService.VerifyDeleteAccountTokenAsync(user, request.Token) && await _userService.CheckPasswordAsync(user, request.Password))
+                {
+                    _dbContext.Users.Remove(user);
+                    user.AddDomainEvent(new UserDeletedEvent(user));
 
-                user.AddDomainEvent(new UserDeletedEvent(user));
+                    await _dbContext.SaveChangesAsync();
 
-                await _dbContext.SaveChangesAsync();
+                    return Result.Succeeded();
+                }
 
-                return Result.Succeeded();
+                return Result.Failed();
             }
 
-            return Result.Failed();
+
+            throw new Exception("Error while trying to get user from claims.");
         }
     }
 }

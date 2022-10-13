@@ -43,6 +43,30 @@ namespace Website.Domain.Entities
 
 
 
+        // ------------------------------------------------------------------------- Change Image -------------------------------------------------------------------------
+        public void ChangeImage(string image)
+        {
+            Image = image;
+
+            AddDomainEvent(new UserChangedImageEvent(this));
+        }
+
+
+
+
+
+
+        // ------------------------------------------------------------------------- Change Name -------------------------------------------------------------------------
+        public void ChangeName(string firstName, string lastName)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+
+            AddDomainEvent(new UserChangedNameEvent(this));
+        }
+
+
+
 
 
         // --------------------------------------------------------------------- Clear Domain Events ---------------------------------------------------------------------
@@ -54,7 +78,7 @@ namespace Website.Domain.Entities
 
 
 
-        // ------------------------------------------------------------------------ Create User --------------------------------------------------------------------------
+        // ------------------------------------------------------------------------- Create User -------------------------------------------------------------------------
         public static User CreateUser(string firstName, string lastName, string email)
         {
             User user = new()
