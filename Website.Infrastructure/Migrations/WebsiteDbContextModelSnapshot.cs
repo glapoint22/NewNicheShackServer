@@ -229,6 +229,163 @@ namespace Website.Infrastructure.Migrations
                     b.ToTable("Lists");
                 });
 
+            modelBuilder.Entity("Website.Domain.Entities.Media", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ImageLg")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("ImageMd")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("ImageSm")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<int>("MediaType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("Thumbnail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("VideoId")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<int>("VideoType")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Media");
+                });
+
+            modelBuilder.Entity("Website.Domain.Entities.Niche", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("UrlName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Niches");
+                });
+
+            modelBuilder.Entity("Website.Domain.Entities.Product", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("FiveStars")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FourStars")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Hoplink")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<int>("ImageId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<int>("OneStar")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Rating")
+                        .HasColumnType("float");
+
+                    b.Property<int>("ShippingType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SubnicheId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ThreeStars")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TotalReviews")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TwoStars")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UrlName")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ImageId");
+
+                    b.HasIndex("SubnicheId");
+
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("Website.Domain.Entities.ProductPrice", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductPrices");
+                });
+
             modelBuilder.Entity("Website.Domain.Entities.RefreshToken", b =>
                 {
                     b.Property<string>("Id")
@@ -247,6 +404,34 @@ namespace Website.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("RefreshTokens");
+                });
+
+            modelBuilder.Entity("Website.Domain.Entities.Subniche", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("NicheId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UrlName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NicheId");
+
+                    b.ToTable("Subniches");
                 });
 
             modelBuilder.Entity("Website.Domain.Entities.User", b =>
@@ -458,6 +643,72 @@ namespace Website.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Website.Domain.Entities.Product", b =>
+                {
+                    b.HasOne("Website.Domain.Entities.Media", "Media")
+                        .WithMany("Products")
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Website.Domain.Entities.Subniche", "Subniche")
+                        .WithMany()
+                        .HasForeignKey("SubnicheId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsOne("Website.Domain.ValueObjects.RecurringPayment", "RecurringPayment", b1 =>
+                        {
+                            b1.Property<int>("ProductId")
+                                .HasColumnType("int");
+
+                            b1.Property<int>("RebillFrequency")
+                                .HasColumnType("int")
+                                .HasColumnName("RebillFrequency");
+
+                            b1.Property<double>("RecurringPrice")
+                                .HasColumnType("float")
+                                .HasColumnName("RecurringPrice");
+
+                            b1.Property<int>("SubscriptionDuration")
+                                .HasColumnType("int")
+                                .HasColumnName("SubscriptionDuration");
+
+                            b1.Property<int>("TimeFrameBetweenRebill")
+                                .HasColumnType("int")
+                                .HasColumnName("TimeFrameBetweenRebill");
+
+                            b1.Property<int>("TrialPeriod")
+                                .HasColumnType("int")
+                                .HasColumnName("TrialPeriod");
+
+                            b1.HasKey("ProductId");
+
+                            b1.ToTable("Products");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ProductId");
+                        });
+
+                    b.Navigation("Media");
+
+                    b.Navigation("RecurringPayment")
+                        .IsRequired();
+
+                    b.Navigation("Subniche");
+                });
+
+            modelBuilder.Entity("Website.Domain.Entities.ProductPrice", b =>
+                {
+                    b.HasOne("Website.Domain.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Website.Domain.Entities.RefreshToken", b =>
                 {
                     b.HasOne("Website.Domain.Entities.User", "User")
@@ -467,6 +718,22 @@ namespace Website.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Website.Domain.Entities.Subniche", b =>
+                {
+                    b.HasOne("Website.Domain.Entities.Niche", "Niche")
+                        .WithMany()
+                        .HasForeignKey("NicheId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Niche");
+                });
+
+            modelBuilder.Entity("Website.Domain.Entities.Media", b =>
+                {
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

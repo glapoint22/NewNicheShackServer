@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
-using System.Threading;
 using Website.Application.Common.Interfaces;
 using Website.Domain.Common;
 using Website.Domain.Entities;
@@ -17,8 +16,14 @@ namespace Website.Infrastructure.Persistence
         }
 
         public DbSet<Collaborator> Collaborators => Set<Collaborator>();
-        public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
         public DbSet<List> Lists => Set<List>();
+        public DbSet<Media> Media => Set<Media>();
+        public DbSet<Niche> Niches => Set<Niche>();
+        public DbSet<ProductPrice> ProductPrices => Set<ProductPrice>();
+        public DbSet<Product> Products => Set<Product>();
+        public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
+        public DbSet<Subniche> Subniches => Set<Subniche>();
+
 
         private readonly IPublisher _publisher;
 
