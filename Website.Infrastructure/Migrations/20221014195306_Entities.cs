@@ -267,6 +267,31 @@ namespace Website.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CollaboratorProducts",
+                columns: table => new
+                {
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    CollaboratorId = table.Column<int>(type: "int", nullable: false),
+                    DateAdded = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CollaboratorProducts", x => new { x.ProductId, x.CollaboratorId });
+                    table.ForeignKey(
+                        name: "FK_CollaboratorProducts_Collaborators_CollaboratorId",
+                        column: x => x.CollaboratorId,
+                        principalTable: "Collaborators",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CollaboratorProducts_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ProductPrices",
                 columns: table => new
                 {
@@ -285,6 +310,11 @@ namespace Website.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CollaboratorProducts_CollaboratorId",
+                table: "CollaboratorProducts",
+                column: "CollaboratorId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Collaborators_ListId",
@@ -325,7 +355,7 @@ namespace Website.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Collaborators");
+                name: "CollaboratorProducts");
 
             migrationBuilder.DropTable(
                 name: "ProductPrices");
@@ -334,10 +364,13 @@ namespace Website.Infrastructure.Migrations
                 name: "RefreshTokens");
 
             migrationBuilder.DropTable(
-                name: "Lists");
+                name: "Collaborators");
 
             migrationBuilder.DropTable(
                 name: "Products");
+
+            migrationBuilder.DropTable(
+                name: "Lists");
 
             migrationBuilder.DropTable(
                 name: "Media");

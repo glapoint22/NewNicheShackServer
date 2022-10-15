@@ -4,6 +4,7 @@ using System.Security.Claims;
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
 using Website.Domain.Entities;
+using Website.Domain.Events;
 
 namespace Website.Application.Account.ActivateAccount.Commands
 {
@@ -30,10 +31,9 @@ namespace Website.Application.Account.ActivateAccount.Commands
             {
                 if (!user.EmailConfirmed)
                 {
+                    user.AddDomainEvent(new UserActivatedAccountEvent(user.Id));
                     IdentityResult identityResult = await _userService.ConfirmEmailAsync(user, request.Token);
                     if (!identityResult.Succeeded) return Result.Failed();
-
-                    // TODO: Send welcome email
                 }
 
                 // Log in the user

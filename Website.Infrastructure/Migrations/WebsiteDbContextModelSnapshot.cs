@@ -204,6 +204,24 @@ namespace Website.Infrastructure.Migrations
                     b.ToTable("Collaborators");
                 });
 
+            modelBuilder.Entity("Website.Domain.Entities.CollaboratorProduct", b =>
+                {
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CollaboratorId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateAdded")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ProductId", "CollaboratorId");
+
+                    b.HasIndex("CollaboratorId");
+
+                    b.ToTable("CollaboratorProducts");
+                });
+
             modelBuilder.Entity("Website.Domain.Entities.List", b =>
                 {
                     b.Property<string>("Id")
@@ -627,13 +645,13 @@ namespace Website.Infrastructure.Migrations
             modelBuilder.Entity("Website.Domain.Entities.Collaborator", b =>
                 {
                     b.HasOne("Website.Domain.Entities.List", "List")
-                        .WithMany()
+                        .WithMany("Collaborators")
                         .HasForeignKey("ListId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Website.Domain.Entities.User", "User")
-                        .WithMany()
+                        .WithMany("Collaborators")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -641,6 +659,25 @@ namespace Website.Infrastructure.Migrations
                     b.Navigation("List");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Website.Domain.Entities.CollaboratorProduct", b =>
+                {
+                    b.HasOne("Website.Domain.Entities.Collaborator", "Collaborator")
+                        .WithMany("CollaboratorProducts")
+                        .HasForeignKey("CollaboratorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Website.Domain.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Collaborator");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Website.Domain.Entities.Product", b =>
@@ -731,9 +768,24 @@ namespace Website.Infrastructure.Migrations
                     b.Navigation("Niche");
                 });
 
+            modelBuilder.Entity("Website.Domain.Entities.Collaborator", b =>
+                {
+                    b.Navigation("CollaboratorProducts");
+                });
+
+            modelBuilder.Entity("Website.Domain.Entities.List", b =>
+                {
+                    b.Navigation("Collaborators");
+                });
+
             modelBuilder.Entity("Website.Domain.Entities.Media", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("Website.Domain.Entities.User", b =>
+                {
+                    b.Navigation("Collaborators");
                 });
 #pragma warning restore 612, 618
         }

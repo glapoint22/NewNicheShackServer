@@ -3,48 +3,32 @@ using Microsoft.AspNetCore.Identity;
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
 using Website.Domain.Entities;
+using Website.Domain.Events;
 
 namespace Website.Application.Account.ChangePassword.Commands
 {
     public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand, Result>
     {
         private readonly IUserService _userService;
-        private readonly ITaskService _taskService;
 
-        public ChangePasswordCommandHandler(IUserService userService, ITaskService taskService)
+        public ChangePasswordCommandHandler(IUserService userService)
         {
             _userService = userService;
-            _taskService = taskService;
         }
 
         public async Task<Result> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
         {
             User user = await _userService.GetUserFromClaimsAsync();
-            string key = "ChangePasswordCommandHandler" + user.Id;
 
-            if (user != null)
-            {
-                if (!_taskService.CompletedTasks.Contains(key))
-                {
-                    IdentityResult result = await _userService.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
+            if (user == null) throw new Exception("Error while trying to get user from claims.");
 
-                    if (result.Succeeded)
-                    {
-                        _taskService.CompletedTasks.Add(key);
-                    }
-                    else
-                    {
-                        return Result.Failed();
-                    }
-                }
+            user.AddDomainEvent(new UserChangedPasswordEvent(user.Id));
 
-                // TODO: Send email
-                _taskService.CompletedTasks.Remove(key);
-                return Result.Succeeded();
+            IdentityResult result = await _userService.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
 
-            }
+            if (!result.Succeeded) return Result.Failed();
 
-            throw new Exception("Error while trying to get user from claims.");
+            return Result.Succeeded();
         }
     }
 }

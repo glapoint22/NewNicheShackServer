@@ -1,23 +1,13 @@
-﻿using Website.Application.Account.Common.EventHandlers;
-using Website.Application.Common.Interfaces;
+﻿using MediatR;
 using Website.Domain.Events;
 
 namespace Website.Application.Account.ChangeEmail.EventHandlers
 {
-    public class UserChangedEmailEventHandler : UserUpdatedEventHandler<UserChangedEmailEvent>
+    internal class UserChangedEmailEventHandler : INotificationHandler<UserChangedEmailEvent>
     {
-        public UserChangedEmailEventHandler(IUserService userService, ICookieService cookieService) : base(userService, cookieService)
+        public Task Handle(UserChangedEmailEvent notification, CancellationToken cancellationToken)
         {
-        }
-
-        public override async Task Handle(UserChangedEmailEvent notification, CancellationToken cancellationToken)
-        {
-            await base.Handle(notification, cancellationToken);
-
-            if (notification.User.EmailOnEmailChange == true)
-            {
-                // TODO: Send email
-            }
+            throw new NotImplementedException();
         }
     }
 }

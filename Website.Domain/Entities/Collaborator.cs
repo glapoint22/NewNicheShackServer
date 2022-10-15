@@ -16,6 +16,7 @@
 
         public User User { get; set; } = null!;
         public List List { get; set; } = null!;
+        public ICollection<CollaboratorProduct> CollaboratorProducts { get; private set; } = new HashSet<CollaboratorProduct>();
 
         public Collaborator(string listId, string userId, bool isOwner)
         {

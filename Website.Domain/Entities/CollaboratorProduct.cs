@@ -1,6 +1,6 @@
 ﻿namespace Website.Domain.Entities
 {
-    public class ListProduct
+    public class CollaboratorProduct
     {
         public int ProductId { get; set; }
         public int CollaboratorId { get; set; }

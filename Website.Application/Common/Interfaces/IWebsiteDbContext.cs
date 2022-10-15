@@ -5,6 +5,7 @@ namespace Website.Application.Common.Interfaces
 {
     public interface IWebsiteDbContext
     {
+        DbSet<CollaboratorProduct> CollaboratorProducts { get; }
         DbSet<Collaborator> Collaborators { get; }
         DbSet<List> Lists { get; }
         DbSet<Media> Media { get; }

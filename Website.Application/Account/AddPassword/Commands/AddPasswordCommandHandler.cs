@@ -39,7 +39,9 @@ namespace Website.Application.Account.AddPassword.Commands
 
                 if (hasPassword || result.Succeeded)
                 {
-                    string externalLogInProvider = _userService.GetExternalLogInProviderFromClaims();
+                    string? externalLogInProvider = _userService.GetExternalLogInProviderFromClaims();
+
+                    if (externalLogInProvider == null) throw new Exception("Error while trying to get external log in provider from claims.");
 
                     // Log in the user
                     List<Claim> claims = _authService.GetClaims(user, externalLogInProvider, true);

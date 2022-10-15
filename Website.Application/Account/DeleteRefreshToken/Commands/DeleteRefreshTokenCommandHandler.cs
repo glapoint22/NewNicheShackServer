@@ -20,9 +20,10 @@ namespace Website.Application.Account.DeleteRefreshToken.Commands
 
         public async Task<Result> Handle(DeleteRefreshTokenCommand request, CancellationToken cancellationToken)
         {
-            string userId = _userService.GetUserIdFromClaims();
+            string? userId = _userService.GetUserIdFromClaims();
 
             // Get all refresh tokens from this user except the new refresh token
+            if (userId == null) throw new Exception("Error while trying to get user id fro claims.");
             List<RefreshToken> tokens = await _dbContext.RefreshTokens
                 .AsNoTracking()
                 .Where(x => x.UserId == userId && x.Id != HttpUtility.UrlDecode(request.NewRefreshToken))

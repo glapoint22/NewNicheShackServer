@@ -10,12 +10,17 @@ namespace Website.Infrastructure.Services
     public class UserService : IUserService
     {
         private readonly UserManager<User> _userManager;
-        private readonly ClaimsPrincipal _user;
+        private readonly ClaimsPrincipal? _user;
 
         public UserService(UserManager<User> userManager, IHttpContextAccessor httpContextAccessor)
         {
             _userManager = userManager;
-            _user = httpContextAccessor!.HttpContext!.User;
+            HttpContext? httpContext = httpContextAccessor.HttpContext;
+
+            if(httpContext != null)
+            {
+                _user = httpContext.User;
+            }
         }
 
 
@@ -33,7 +38,6 @@ namespace Website.Infrastructure.Services
         // -------------------------------------------------------------------- Change Email Async ----------------------------------------------------------------------
         public Task<IdentityResult> ChangeEmailAsync(User user, string newEmail, string token)
         {
-            user.AddDomainEvent(new UserChangedEmailEvent(user));
             return _userManager.ChangeEmailAsync(user, newEmail, token);
         }
 
@@ -71,31 +75,23 @@ namespace Website.Infrastructure.Services
         // --------------------------------------------------------------------- Create User Async ---------------------------------------------------------------------
         public async Task<User> CreateUserAsync(string firstName, string lastName, string email, string? password = null)
         {
-            IdentityResult result;
             User user;
+
+            user = await _userManager.FindByEmailAsync(email);
+
+            if (user != null) return user;
+
+            user = User.CreateUser(firstName, lastName, email);
 
             if (password != null)
             {
-                user = await _userManager.FindByEmailAsync(email);
-
-                if (user != null)
-                {
-                    user.AddDomainEvent(new UserCreatedEvent(user));
-                    return user;
-                }
-
-                user = User.CreateUser(firstName, lastName, email);
-
-                result = await _userManager.CreateAsync(user, password);
+                user.AddDomainEvent(new UserCreatedEvent(user.Id));
+                await _userManager.CreateAsync(user, password);
             }
             else
             {
-                user = User.CreateUser(firstName, lastName, email);
-                user.EmailConfirmed = true;
-                result = await _userManager.CreateAsync(user);
+                await _userManager.CreateAsync(user);
             }
-
-            if (!result.Succeeded) return null!;
 
             return user;
         }
@@ -155,7 +151,7 @@ namespace Website.Infrastructure.Services
         // ---------------------------------------------------------------- Get Expiration From Claims --------------------------------------------------------------
         public DateTimeOffset? GetExpirationFromClaims()
         {
-            Claim? expiration = _user.FindFirst(ClaimTypes.Expiration);
+            Claim? expiration = _user?.FindFirst(ClaimTypes.Expiration);
 
             if (expiration != null)
             {
@@ -181,9 +177,9 @@ namespace Website.Infrastructure.Services
 
 
         // --------------------------------------------------------- Get External Log In Prodvider From Claims -----------------------------------------------------------
-        public string GetExternalLogInProviderFromClaims()
+        public string? GetExternalLogInProviderFromClaims()
         {
-            return _user.FindFirstValue("externalLoginProvider");
+            return _user?.FindFirstValue("externalLoginProvider");
         }
 
 
@@ -249,9 +245,9 @@ namespace Website.Infrastructure.Services
 
 
         // ------------------------------------------------------------------ Get User Id From Claims --------------------------------------------------------------------
-        public string GetUserIdFromClaims()
+        public string? GetUserIdFromClaims()
         {
-            return _user.FindFirst(ClaimTypes.NameIdentifier)?.Value!;
+            return _user?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
         }
 
 

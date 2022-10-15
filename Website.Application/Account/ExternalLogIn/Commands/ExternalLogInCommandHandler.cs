@@ -23,31 +23,22 @@ namespace Website.Application.Account.ExternalLogIn.Commands
 
         public async Task<Result> Handle(ExternalLogInCommand request, CancellationToken cancellationToken)
         {
-            User user = await _userService.GetUserByEmailAsync(request.Email);
+            User user = await _userService.CreateUserAsync(request.FirstName, request.LastName, request.Email);
 
-            if (user == null)
-            {
-                user = await _userService.CreateUserAsync(request.FirstName, request.LastName, request.Email);
-            }
+            // Log in the user
+            bool userHasPassword = await _userService.HasPasswordAsync(user);
+            List<Claim> claims = _authService.GetClaims(user, request.Provider, userHasPassword);
+            string accessToken = _authService.GenerateAccessToken(claims);
+            string refreshToken = _authService.GenerateRefreshToken(user.Id);
+            string userData = _userService.GetUserData(user, request.Provider, userHasPassword);
+            DateTimeOffset expiration = _userService.GetExpirationFromClaims(claims);
 
-            if (user != null)
-            {
-                // Log in the user
-                bool userHasPassword = await _userService.HasPasswordAsync(user);
-                List<Claim> claims = _authService.GetClaims(user, request.Provider, userHasPassword);
-                string accessToken = _authService.GenerateAccessToken(claims);
-                string refreshToken = _authService.GenerateRefreshToken(user.Id);
-                string userData = _userService.GetUserData(user, request.Provider, userHasPassword);
-                DateTimeOffset expiration = _userService.GetExpirationFromClaims(claims);
+            // Set the cookies
+            _cookieService.SetCookie("access", accessToken, expiration);
+            _cookieService.SetCookie("refresh", refreshToken, expiration);
+            _cookieService.SetCookie("user", userData, expiration);
 
-                // Set the cookies
-                _cookieService.SetCookie("access", accessToken, expiration);
-                _cookieService.SetCookie("refresh", refreshToken, expiration);
-                _cookieService.SetCookie("user", userData, expiration);
-
-                await _dbContext.SaveChangesAsync();
-            }
-
+            await _dbContext.SaveChangesAsync();
 
             return Result.Succeeded();
         }

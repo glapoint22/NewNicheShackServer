@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
 using Website.Domain.Entities;
@@ -21,23 +22,26 @@ namespace Website.Application.Account.DeleteAccount.Commands
         {
             User user = await _userService.GetUserFromClaimsAsync();
 
-            if (user != null)
+            if (user == null) throw new Exception("Error while trying to get user from claims.");
+
+
+            if (await _userService.VerifyDeleteAccountTokenAsync(user, request.Token) && await _userService.CheckPasswordAsync(user, request.Password))
             {
-                if (await _userService.VerifyDeleteAccountTokenAsync(user, request.Token) && await _userService.CheckPasswordAsync(user, request.Password))
-                {
-                    _dbContext.Users.Remove(user);
-                    user.AddDomainEvent(new UserDeletedEvent(user));
+                List<List> lists = await _dbContext.Collaborators
+                .Where(x => x.UserId == user.Id && x.IsOwner)
+                .Select(x => x.List)
+                .ToListAsync();
 
-                    await _dbContext.SaveChangesAsync();
+                _dbContext.Lists.RemoveRange(lists);
+                _dbContext.Users.Remove(user);
 
-                    return Result.Succeeded();
-                }
+                user.AddDomainEvent(new UserDeletedEvent(user.Id));
+                await _dbContext.SaveChangesAsync();
 
-                return Result.Failed();
+                return Result.Succeeded();
             }
 
-
-            throw new Exception("Error while trying to get user from claims.");
+            return Result.Failed();
         }
     }
 }

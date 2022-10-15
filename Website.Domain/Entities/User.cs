@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
 using Website.Domain.Common;
-using Website.Domain.Events;
 
 namespace Website.Domain.Entities
 {
@@ -24,12 +23,18 @@ namespace Website.Domain.Entities
         public bool? EmailOnDeletedList { get; set; }
         public bool? EmailOnReview { get; set; }
 
+        public ICollection<Collaborator> Collaborators { get; private set; } = new HashSet<Collaborator>();
+
+
 
 
         private readonly List<INotification> _domainEvents = new();
 
         [NotMapped]
         public IReadOnlyCollection<INotification> DomainEvents => _domainEvents.AsReadOnly();
+
+
+
 
 
 
@@ -43,29 +48,6 @@ namespace Website.Domain.Entities
 
 
 
-        // ------------------------------------------------------------------------- Change Image -------------------------------------------------------------------------
-        public void ChangeImage(string image)
-        {
-            Image = image;
-
-            AddDomainEvent(new UserChangedImageEvent(this));
-        }
-
-
-
-
-
-
-        // ------------------------------------------------------------------------- Change Name -------------------------------------------------------------------------
-        public void ChangeName(string firstName, string lastName)
-        {
-            FirstName = firstName;
-            LastName = lastName;
-
-            AddDomainEvent(new UserChangedNameEvent(this));
-        }
-
-
 
 
 
@@ -74,6 +56,8 @@ namespace Website.Domain.Entities
         {
             _domainEvents.Clear();
         }
+
+
 
 
 
@@ -89,7 +73,21 @@ namespace Website.Domain.Entities
                 UserName = email
             };
 
-            user.AddDomainEvent(new UserCreatedEvent(user));
+            // Create the user's first list
+            List list = new()
+            {
+                Id = Guid.NewGuid().ToString("N").Substring(0, 10).ToUpper(),
+                Name = firstName + "'s List",
+                Description = string.Empty,
+                CollaborateId = Guid.NewGuid().ToString("N").Substring(0, 10).ToUpper()
+            };
+
+            // Add this user as a collaborator to his list
+            Collaborator collaborator = new(list.Id, user.Id, true);
+
+
+            user.Collaborators.Add(collaborator);
+            collaborator.List = list;
 
             return user;
         }

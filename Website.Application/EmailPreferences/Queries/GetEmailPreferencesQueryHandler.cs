@@ -18,7 +18,7 @@ namespace Website.Application.EmailPreferences.Queries
 
         public async Task<Preferences> Handle(GetEmailPreferencesQuery request, CancellationToken cancellationToken)
         {
-            string userId = _userService.GetUserIdFromClaims();
+            string? userId = _userService.GetUserIdFromClaims();
 
             if (userId != null)
             {

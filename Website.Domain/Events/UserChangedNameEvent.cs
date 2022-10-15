@@ -1,7 +1,6 @@
-﻿using Website.Domain.Entities;
-using Website.Domain.Interfaces;
+﻿using MediatR;
 
 namespace Website.Domain.Events
 {
-    public record UserChangedNameEvent(User User) : IUserUpdatedEvent;
+    public record UserChangedNameEvent(string UserId) : INotification;
 }

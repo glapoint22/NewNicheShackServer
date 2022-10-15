@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Website.Application.Account.Common;
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
 using Website.Domain.Entities;
@@ -7,56 +8,38 @@ using Website.Domain.Events;
 
 namespace Website.Application.Account.ChangeEmail.Commands
 {
-    public class ChangeEmailCommandHandler : IRequestHandler<ChangeEmailCommand, Result>
+    public class ChangeEmailCommandHandler : UpdateUserCommandHandler, IRequestHandler<ChangeEmailCommand, Result>
     {
         private readonly IUserService _userService;
-        private readonly IWebsiteDbContext _dbContext;
-        private readonly ITaskService _taskService;
 
-        public ChangeEmailCommandHandler(IUserService userService, IWebsiteDbContext dbContext, ITaskService taskService)
+        public ChangeEmailCommandHandler(IUserService userService, ICookieService cookieService) : base(userService, cookieService)
         {
             _userService = userService;
-            _dbContext = dbContext;
-            _taskService = taskService;
         }
 
         public async Task<Result> Handle(ChangeEmailCommand request, CancellationToken cancellationToken)
         {
             User user = await _userService.GetUserFromClaimsAsync();
 
-            if (user != null)
-            {
-                string key = "ChangeEmailCommandHandler-" + user.Id;
+            if (user == null) throw new Exception("Error while trying to get user from claims.");
 
-                if (await _userService.CheckPasswordAsync(user, request.Password))
-                {
-                    if (!_taskService.CompletedTasks.Contains(key))
-                    {
-                        IdentityResult result = await _userService.ChangeEmailAsync(user, request.NewEmail, request.OneTimePassword);
+            user.AddDomainEvent(new UserChangedEmailEvent(user.Id));
 
-                        if (result.Succeeded)
-                        {
-                            _taskService.CompletedTasks.Add(key);
-                        }
-                        else
-                        {
-                            return Result.Failed();
-                        }
-                    }
-                    else
-                    {
-                        user.AddDomainEvent(new UserChangedEmailEvent(user));
-                    }
+            IdentityResult result = await _userService.ChangeEmailAsync(user, request.NewEmail, request.OneTimePassword);
 
-                    await _dbContext.SaveChangesAsync();
+            if (!await _userService.CheckPasswordAsync(user, request.Password) || !result.Succeeded) return Result.Failed();
 
-                    _taskService.CompletedTasks.Remove(key);
+            //// Send the confirmation email
+            //if (user.EmailOnEmailChange == true)
+            //{
+            //    // TODO: Send email
+            //}
 
-                    return Result.Succeeded();
-                }
-            }
+            // Update the user cookie
+            await UpdateUserCookie(user);
 
-            throw new Exception("Error while trying to get user from claims.");
+
+            return Result.Succeeded();
         }
     }
 }

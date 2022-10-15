@@ -1,40 +1,48 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Website.Application.Account.Common;
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
 using Website.Domain.Entities;
+using Website.Domain.Events;
 
 namespace Website.Application.Account.ChangeName.Commands
 {
-    public class ChangeNameCommandHandler : IRequestHandler<ChangeNameCommand, Result>
+    public class ChangeNameCommandHandler : UpdateUserCommandHandler, IRequestHandler<ChangeNameCommand, Result>
     {
         private readonly IUserService _userService;
-        private readonly IWebsiteDbContext _dbContext;
 
-        public ChangeNameCommandHandler(IUserService userService, IWebsiteDbContext dbContext)
+        public ChangeNameCommandHandler(IUserService userService, ICookieService cookieService) : base(userService, cookieService)
         {
             _userService = userService;
-            _dbContext = dbContext;
         }
 
         public async Task<Result> Handle(ChangeNameCommand request, CancellationToken cancellationToken)
         {
             User user = await _userService.GetUserFromClaimsAsync();
 
-            if (user != null)
-            {
-                user.ChangeName(request.FirstName, request.LastName);
+            if (user == null) throw new Exception("Error while trying to get user from claims.");
 
-                IdentityResult result = await _userService.UpdateAsync(user);
+            user.FirstName = request.FirstName;
+            user.LastName = request.LastName;
 
-                if (result.Succeeded)
-                {
-                    await _dbContext.SaveChangesAsync();
-                    return Result.Succeeded();
-                }
-            }
+            user.AddDomainEvent(new UserChangedNameEvent(user.Id));
 
-            throw new Exception("Error while trying to get user from claims.");
+            IdentityResult result = await _userService.UpdateAsync(user);
+
+            if (!result.Succeeded) return Result.Failed();
+
+
+            //// Send the confirmation email
+            //if (user.EmailOnNameChange == true)
+            //{
+            //    // TODO: Send email
+            //}
+
+            // Update the user cookie
+            await UpdateUserCookie(user);
+
+            return Result.Succeeded();
         }
     }
 }
