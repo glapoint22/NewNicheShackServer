@@ -17,7 +17,7 @@ namespace Website.Infrastructure.Services
             _userManager = userManager;
             HttpContext? httpContext = httpContextAccessor.HttpContext;
 
-            if(httpContext != null)
+            if (httpContext != null)
             {
                 _user = httpContext.User;
             }
@@ -166,9 +166,11 @@ namespace Website.Infrastructure.Services
 
 
         // ---------------------------------------------------------------- Get Expiration From Claims --------------------------------------------------------------
-        public DateTimeOffset GetExpirationFromClaims(List<Claim> claims)
+        public DateTimeOffset? GetExpirationFromClaims(List<Claim> claims)
         {
-            Claim expirationClaim = claims.FirstOrDefault(x => x.Type == ClaimTypes.Expiration)!;
+            Claim? expirationClaim = claims.FirstOrDefault(x => x.Type == ClaimTypes.Expiration);
+
+            if (expirationClaim == null) return null;
             return DateTimeOffset.Parse(expirationClaim.Value);
         }
 

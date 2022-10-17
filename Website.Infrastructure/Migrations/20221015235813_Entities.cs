@@ -229,7 +229,7 @@ namespace Website.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SubnicheId = table.Column<int>(type: "int", nullable: false),
-                    ImageId = table.Column<int>(type: "int", nullable: false),
+                    ImageId = table.Column<int>(type: "int", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     UrlName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -247,7 +247,8 @@ namespace Website.Infrastructure.Migrations
                     RebillFrequency = table.Column<int>(type: "int", nullable: false),
                     TimeFrameBetweenRebill = table.Column<int>(type: "int", nullable: false),
                     SubscriptionDuration = table.Column<int>(type: "int", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Disabled = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -256,8 +257,7 @@ namespace Website.Infrastructure.Migrations
                         name: "FK_Products_Media_ImageId",
                         column: x => x.ImageId,
                         principalTable: "Media",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Products_Subniches_SubnicheId",
                         column: x => x.SubnicheId,

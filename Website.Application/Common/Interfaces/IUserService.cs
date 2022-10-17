@@ -28,7 +28,7 @@ namespace Website.Application.Common.Interfaces
 
         DateTimeOffset? GetExpirationFromClaims();
 
-        DateTimeOffset GetExpirationFromClaims(List<Claim> claims);
+        DateTimeOffset? GetExpirationFromClaims(List<Claim> claims);
 
         string? GetExternalLogInProviderFromClaims();
 

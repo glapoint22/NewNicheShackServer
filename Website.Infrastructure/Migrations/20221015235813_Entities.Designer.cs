@@ -12,7 +12,7 @@ using Website.Infrastructure.Persistence;
 namespace Website.Infrastructure.Migrations
 {
     [DbContext(typeof(WebsiteDbContext))]
-    [Migration("20221014195306_Entities")]
+    [Migration("20221015235813_Entities")]
     partial class Entities
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -331,6 +331,9 @@ namespace Website.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("Disabled")
+                        .HasColumnType("bit");
+
                     b.Property<int>("FiveStars")
                         .HasColumnType("int");
 
@@ -342,7 +345,7 @@ namespace Website.Infrastructure.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<int>("ImageId")
+                    b.Property<int?>("ImageId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -686,9 +689,7 @@ namespace Website.Infrastructure.Migrations
                 {
                     b.HasOne("Website.Domain.Entities.Media", "Media")
                         .WithMany("Products")
-                        .HasForeignKey("ImageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ImageId");
 
                     b.HasOne("Website.Domain.Entities.Subniche", "Subniche")
                         .WithMany()

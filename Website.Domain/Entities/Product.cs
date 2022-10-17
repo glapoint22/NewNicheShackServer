@@ -6,7 +6,7 @@ namespace Website.Domain.Entities
     {
         public int Id { get; set; }
         public int SubnicheId { get; set; }
-        public int ImageId { get; set; }
+        public int? ImageId { get; set; }
         public string Name { get; set; } = string.Empty;
         public string UrlName { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
@@ -21,8 +21,11 @@ namespace Website.Domain.Entities
         public int ShippingType { get; set; }
         public RecurringPayment RecurringPayment { get; set; } = null!;
         public DateTime Date { get; set; }
+        public bool Disabled { get; set; }
+
 
         public Subniche Subniche { get; set; } = null!;
         public Media Media { get; set; } = null!;
+        public ICollection<ProductPrice> ProductPrices { get; private set; } = new HashSet<ProductPrice>();
     }
 }

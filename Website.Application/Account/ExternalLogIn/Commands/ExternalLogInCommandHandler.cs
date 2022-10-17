@@ -31,7 +31,7 @@ namespace Website.Application.Account.ExternalLogIn.Commands
             string accessToken = _authService.GenerateAccessToken(claims);
             string refreshToken = _authService.GenerateRefreshToken(user.Id);
             string userData = _userService.GetUserData(user, request.Provider, userHasPassword);
-            DateTimeOffset expiration = _userService.GetExpirationFromClaims(claims);
+            DateTimeOffset? expiration = _userService.GetExpirationFromClaims(claims);
 
             // Set the cookies
             _cookieService.SetCookie("access", accessToken, expiration);
