@@ -17,7 +17,7 @@ namespace Website.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.9")
+                .HasAnnotation("ProductVersion", "6.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -163,16 +163,28 @@ namespace Website.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<bool>("AddToList")
+                    b.Property<bool>("CanAddToList")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("DeleteList")
+                    b.Property<bool>("CanDeleteList")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("EditList")
+                    b.Property<bool>("CanEditList")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("InviteCollaborators")
+                    b.Property<bool>("CanInviteCollaborators")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("CanManageCollaborators")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("CanMoveItem")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("CanRemoveItem")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("CanShareList")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsOwner")
@@ -181,15 +193,6 @@ namespace Website.Infrastructure.Migrations
                     b.Property<string>("ListId")
                         .IsRequired()
                         .HasColumnType("nvarchar(10)");
-
-                    b.Property<bool>("MoveItem")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("RemoveItem")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("ShareList")
-                        .HasColumnType("bit");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -234,7 +237,6 @@ namespace Website.Infrastructure.Migrations
                         .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -343,7 +345,7 @@ namespace Website.Infrastructure.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<int?>("ImageId")
+                    b.Property<int>("ImageId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -484,12 +486,12 @@ namespace Website.Infrastructure.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
 
-                    b.Property<bool?>("EmailOnEmailChange")
+                    b.Property<bool?>("EmailOnEditedList")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
 
-                    b.Property<bool?>("EmailOnListNameChange")
+                    b.Property<bool?>("EmailOnEmailChange")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
@@ -687,7 +689,9 @@ namespace Website.Infrastructure.Migrations
                 {
                     b.HasOne("Website.Domain.Entities.Media", "Media")
                         .WithMany("Products")
-                        .HasForeignKey("ImageId");
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Website.Domain.Entities.Subniche", "Subniche")
                         .WithMany()
@@ -739,7 +743,7 @@ namespace Website.Infrastructure.Migrations
             modelBuilder.Entity("Website.Domain.Entities.ProductPrice", b =>
                 {
                     b.HasOne("Website.Domain.Entities.Product", "Product")
-                        .WithMany()
+                        .WithMany("ProductPrices")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -782,6 +786,11 @@ namespace Website.Infrastructure.Migrations
             modelBuilder.Entity("Website.Domain.Entities.Media", b =>
                 {
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("Website.Domain.Entities.Product", b =>
+                {
+                    b.Navigation("ProductPrices");
                 });
 
             modelBuilder.Entity("Website.Domain.Entities.User", b =>

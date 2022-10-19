@@ -81,7 +81,7 @@ namespace Website.Infrastructure.Services
 
             if (user != null) return user;
 
-            user = User.CreateUser(firstName, lastName, email);
+            user = new(firstName, lastName, email);
 
             if (password != null)
             {
@@ -247,9 +247,9 @@ namespace Website.Infrastructure.Services
 
 
         // ------------------------------------------------------------------ Get User Id From Claims --------------------------------------------------------------------
-        public string? GetUserIdFromClaims()
+        public string GetUserIdFromClaims()
         {
-            return _user?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            return _user?.FindFirst(ClaimTypes.NameIdentifier)?.Value!;
         }
 
 

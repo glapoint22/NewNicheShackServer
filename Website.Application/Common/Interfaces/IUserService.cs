@@ -42,7 +42,7 @@ namespace Website.Application.Common.Interfaces
 
         string GetUserData(User user, string provider, bool hasPassword);
 
-        string? GetUserIdFromClaims();
+        string GetUserIdFromClaims();
 
         Task<bool> HasPasswordAsync(User user);
 

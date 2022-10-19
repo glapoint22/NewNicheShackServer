@@ -6,7 +6,7 @@ namespace Website.Domain.Entities
     {
         public int Id { get; set; }
         public int SubnicheId { get; set; }
-        public int? ImageId { get; set; }
+        public int ImageId { get; set; }
         public string Name { get; set; } = string.Empty;
         public string UrlName { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;

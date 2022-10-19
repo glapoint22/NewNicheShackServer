@@ -31,7 +31,7 @@ namespace Website.Application.EmailPreferences.Commands
                 user.EmailOnRemovedListItem = emailPreferences.RemovedListItem;
                 user.EmailOnMovedListItem = emailPreferences.MovedListItem;
                 user.EmailOnAddedListItem = emailPreferences.AddedListItem;
-                user.EmailOnListNameChange = emailPreferences.ListNameChange;
+                user.EmailOnEditedList = emailPreferences.EditedList;
                 user.EmailOnDeletedList = emailPreferences.DeletedList;
                 user.EmailOnReview = emailPreferences.Review;
 

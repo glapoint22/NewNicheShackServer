@@ -18,12 +18,12 @@ namespace Website.Application.Lists.ListCollection.Queries
 
         public async Task<Result> Handle(GetListCollectionQuery request, CancellationToken cancellationToken)
         {
-            string? userId = _userService.GetUserIdFromClaims();
-
-            if (userId == null) throw new Exception("Error while trying to get user id from claims");
+            string userId = _userService.GetUserIdFromClaims();
 
             var lists = await _dbContext.Lists
-                .Where(x => x.Collaborators.Where(y => y.UserId == userId).Any())
+                .Where(x => x.Collaborators
+                    .Where(y => y.UserId == userId)
+                    .Any())
                 .Select(x => new
                 {
                     x.Id,
@@ -33,18 +33,20 @@ namespace Website.Application.Lists.ListCollection.Queries
                         .SelectMany(z => z.CollaboratorProducts)
                         .Count(),
                     x.CollaborateId,
-                    CollaboratorCount = x.Collaborators.Count(),
+                    CollaboratorCount = x.Collaborators
+                        .Count(z => !z.IsOwner && z.UserId != userId),
                     ListPermissions = x.Collaborators
                         .Where(z => z.UserId == userId)
                         .Select(z => new
                         {
-                            z.AddToList,
-                            z.ShareList,
-                            z.EditList,
-                            z.InviteCollaborators,
-                            z.DeleteList,
-                            z.MoveItem,
-                            z.RemoveItem
+                            z.CanAddToList,
+                            z.CanShareList,
+                            z.CanEditList,
+                            z.CanInviteCollaborators,
+                            z.CanDeleteList,
+                            z.CanMoveItem,
+                            z.CanRemoveItem,
+                            z.CanManageCollaborators
                         })
                         .Single(),
                     Owner = x.Collaborators
@@ -63,13 +65,13 @@ namespace Website.Application.Lists.ListCollection.Queries
                     x.ListPermissions,
                     OwnerName = x.Owner.FirstName,
                     IsOwner = x.Owner.Id == userId,
-                    OwnerProfileImage = new ImageDto
+                    OwnerProfileImage = new
                     {
                         Name = x.Owner.FirstName,
-                        Src = x.Owner.Image!
+                        Src = x.Owner.Image
                     }
                 })
-                .ToListAsync();
+                .ToListAsync(cancellationToken: cancellationToken);
 
             return Result.Succeeded(lists);
         }

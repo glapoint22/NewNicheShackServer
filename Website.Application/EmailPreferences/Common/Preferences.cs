@@ -11,7 +11,7 @@
         public bool? RemovedListItem { get; init; }
         public bool? MovedListItem { get; init; }
         public bool? AddedListItem { get; init; }
-        public bool? ListNameChange { get; init; }
+        public bool? EditedList { get; init; }
         public bool? DeletedList { get; init; }
         public bool? Review { get; init; }
     }

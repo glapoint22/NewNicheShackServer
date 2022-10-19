@@ -18,33 +18,28 @@ namespace Website.Application.EmailPreferences.Queries
 
         public async Task<Preferences> Handle(GetEmailPreferencesQuery request, CancellationToken cancellationToken)
         {
-            string? userId = _userService.GetUserIdFromClaims();
+            string userId = _userService.GetUserIdFromClaims();
 
-            if (userId != null)
-            {
-                var preferences = await _dbContext.Users
-                    .Where(x => x.Id == userId)
-                    .Select(x => new Preferences
-                    {
-                        NameChange = x.EmailOnNameChange,
-                        EmailChange = x.EmailOnEmailChange,
-                        PasswordChange = x.EmailOnPasswordChange,
-                        ProfileImageChange = x.EmailOnProfileImageChange,
-                        NewCollaborator = x.EmailOnNewCollaborator,
-                        RemovedCollaborator = x.EmailOnRemovedCollaborator,
-                        RemovedListItem = x.EmailOnRemovedListItem,
-                        MovedListItem = x.EmailOnMovedListItem,
-                        AddedListItem = x.EmailOnAddedListItem,
-                        ListNameChange = x.EmailOnListNameChange,
-                        DeletedList = x.EmailOnDeletedList,
-                        Review = x.EmailOnReview
-                    })
-                    .SingleAsync();
+            var preferences = await _dbContext.Users
+                .Where(x => x.Id == userId)
+                .Select(x => new Preferences
+                {
+                    NameChange = x.EmailOnNameChange,
+                    EmailChange = x.EmailOnEmailChange,
+                    PasswordChange = x.EmailOnPasswordChange,
+                    ProfileImageChange = x.EmailOnProfileImageChange,
+                    NewCollaborator = x.EmailOnNewCollaborator,
+                    RemovedCollaborator = x.EmailOnRemovedCollaborator,
+                    RemovedListItem = x.EmailOnRemovedListItem,
+                    MovedListItem = x.EmailOnMovedListItem,
+                    AddedListItem = x.EmailOnAddedListItem,
+                    EditedList = x.EmailOnEditedList,
+                    DeletedList = x.EmailOnDeletedList,
+                    Review = x.EmailOnReview
+                })
+                .SingleAsync();
 
-                return preferences;
-            }
-
-            throw new Exception("Error while trying to get user id fro claims.");
+            return preferences;
         }
     }
 }

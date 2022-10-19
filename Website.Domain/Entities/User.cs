@@ -19,7 +19,7 @@ namespace Website.Domain.Entities
         public bool? EmailOnRemovedListItem { get; set; }
         public bool? EmailOnMovedListItem { get; set; }
         public bool? EmailOnAddedListItem { get; set; }
-        public bool? EmailOnListNameChange { get; set; }
+        public bool? EmailOnEditedList { get; set; }
         public bool? EmailOnDeletedList { get; set; }
         public bool? EmailOnReview { get; set; }
 
@@ -32,6 +32,28 @@ namespace Website.Domain.Entities
 
         [NotMapped]
         public IReadOnlyCollection<INotification> DomainEvents => _domainEvents.AsReadOnly();
+
+
+        public User() { }
+
+        public User(string firstName, string lastName, string email)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            Email = email;
+            UserName = email;
+
+            // Create the user's first list
+            string listName = firstName + (firstName.Substring(firstName.Length - 1).ToLower() == "s" ? "' List" : "'s List");
+            List list = new(listName);
+
+            // Add this user as a collaborator to the list
+            Collaborator collaborator = new(list.Id, Id, true);
+
+
+            Collaborators.Add(collaborator);
+            collaborator.List = list;
+        }
 
 
 
@@ -63,33 +85,29 @@ namespace Website.Domain.Entities
 
 
         // ------------------------------------------------------------------------- Create User -------------------------------------------------------------------------
-        public static User CreateUser(string firstName, string lastName, string email)
-        {
-            User user = new()
-            {
-                FirstName = firstName,
-                LastName = lastName,
-                Email = email,
-                UserName = email
-            };
-
-            // Create the user's first list
-            List list = new()
-            {
-                Id = Guid.NewGuid().ToString("N").Substring(0, 10).ToUpper(),
-                Name = firstName + "'s List",
-                Description = string.Empty,
-                CollaborateId = Guid.NewGuid().ToString("N").Substring(0, 10).ToUpper()
-            };
-
-            // Add this user as a collaborator to his list
-            Collaborator collaborator = new(list.Id, user.Id, true);
+        //public static User CreateUser(string firstName, string lastName, string email)
+        //{
+        //    User user = new()
+        //    {
+        //        FirstName = firstName,
+        //        LastName = lastName,
+        //        Email = email,
+        //        UserName = email
+        //    };
 
 
-            user.Collaborators.Add(collaborator);
-            collaborator.List = list;
+        //    // Create the user's first list
+        //    string listName = firstName + (firstName.Substring(firstName.Length - 1).ToLower() == "s" ? "' List" : "'s List");
+        //    List list = new(listName);
 
-            return user;
-        }
+        //    // Add this user as a collaborator to the list
+        //    Collaborator collaborator = new(list.Id, user.Id, true);
+
+
+        //    user.Collaborators.Add(collaborator);
+        //    collaborator.List = list;
+
+        //    return user;
+        //}
     }
 }

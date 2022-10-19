@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Website.Domain.Common
 {
-    public class Entity
+    public class Entity : IEntity
     {
         private readonly List<INotification> _domainEvents = new();
 

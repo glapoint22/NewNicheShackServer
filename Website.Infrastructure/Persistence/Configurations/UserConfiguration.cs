@@ -48,7 +48,7 @@ namespace Website.Infrastructure.Persistence.Configurations
             builder.Property(x => x.EmailOnAddedListItem)
                 .HasDefaultValue(true);
 
-            builder.Property(x => x.EmailOnListNameChange)
+            builder.Property(x => x.EmailOnEditedList)
                 .HasDefaultValue(true);
 
             builder.Property(x => x.EmailOnDeletedList)

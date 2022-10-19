@@ -24,14 +24,14 @@ namespace Website.Infrastructure.Migrations
                 defaultValue: true);
 
             migrationBuilder.AddColumn<bool>(
-                name: "EmailOnEmailChange",
+                name: "EmailOnEditedList",
                 table: "Users",
                 type: "bit",
                 nullable: true,
                 defaultValue: true);
 
             migrationBuilder.AddColumn<bool>(
-                name: "EmailOnListNameChange",
+                name: "EmailOnEmailChange",
                 table: "Users",
                 type: "bit",
                 nullable: true,
@@ -106,7 +106,7 @@ namespace Website.Infrastructure.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CollaborateId = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false)
                 },
                 constraints: table =>
@@ -176,13 +176,14 @@ namespace Website.Infrastructure.Migrations
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ListId = table.Column<string>(type: "nvarchar(10)", nullable: false),
                     IsOwner = table.Column<bool>(type: "bit", nullable: false),
-                    AddToList = table.Column<bool>(type: "bit", nullable: false),
-                    ShareList = table.Column<bool>(type: "bit", nullable: false),
-                    EditList = table.Column<bool>(type: "bit", nullable: false),
-                    InviteCollaborators = table.Column<bool>(type: "bit", nullable: false),
-                    DeleteList = table.Column<bool>(type: "bit", nullable: false),
-                    MoveItem = table.Column<bool>(type: "bit", nullable: false),
-                    RemoveItem = table.Column<bool>(type: "bit", nullable: false)
+                    CanAddToList = table.Column<bool>(type: "bit", nullable: false),
+                    CanShareList = table.Column<bool>(type: "bit", nullable: false),
+                    CanEditList = table.Column<bool>(type: "bit", nullable: false),
+                    CanInviteCollaborators = table.Column<bool>(type: "bit", nullable: false),
+                    CanDeleteList = table.Column<bool>(type: "bit", nullable: false),
+                    CanMoveItem = table.Column<bool>(type: "bit", nullable: false),
+                    CanRemoveItem = table.Column<bool>(type: "bit", nullable: false),
+                    CanManageCollaborators = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -229,7 +230,7 @@ namespace Website.Infrastructure.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     SubnicheId = table.Column<int>(type: "int", nullable: false),
-                    ImageId = table.Column<int>(type: "int", nullable: true),
+                    ImageId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     UrlName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -257,7 +258,8 @@ namespace Website.Infrastructure.Migrations
                         name: "FK_Products_Media_ImageId",
                         column: x => x.ImageId,
                         principalTable: "Media",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Products_Subniches_SubnicheId",
                         column: x => x.SubnicheId,
@@ -390,11 +392,11 @@ namespace Website.Infrastructure.Migrations
                 table: "Users");
 
             migrationBuilder.DropColumn(
-                name: "EmailOnEmailChange",
+                name: "EmailOnEditedList",
                 table: "Users");
 
             migrationBuilder.DropColumn(
-                name: "EmailOnListNameChange",
+                name: "EmailOnEmailChange",
                 table: "Users");
 
             migrationBuilder.DropColumn(
