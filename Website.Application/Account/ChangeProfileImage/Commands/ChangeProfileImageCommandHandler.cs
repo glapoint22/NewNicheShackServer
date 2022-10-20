@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Primitives;
-using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using Website.Application.Account.Common;
@@ -49,7 +48,7 @@ namespace Website.Application.Account.ChangeProfileImage.Commands
             double top;
             double bottom;
 
-            using (Image image = Image.FromStream(imageFile.OpenReadStream()))
+            using (System.Drawing.Image image = System.Drawing.Image.FromStream(imageFile.OpenReadStream()))
             {
                 left = Convert.ToDouble(percentLeft) * image.Width;
                 right = Convert.ToDouble(percentRight) * image.Width;
@@ -58,14 +57,14 @@ namespace Website.Application.Account.ChangeProfileImage.Commands
             }
 
             //Convert from image file to bitmap
-            Bitmap tempBitmap;
+            System.Drawing.Bitmap tempBitmap;
             using (MemoryStream memoryStream = new())
             {
                 await imageFile.CopyToAsync(memoryStream);
 
-                using (var tempImage = Image.FromStream(memoryStream))
+                using (var tempImage = System.Drawing.Image.FromStream(memoryStream))
                 {
-                    tempBitmap = new Bitmap(tempImage);
+                    tempBitmap = new System.Drawing.Bitmap(tempImage);
                 }
             }
 
@@ -73,12 +72,12 @@ namespace Website.Application.Account.ChangeProfileImage.Commands
             int size = (int)(right - left);
 
             //Crop
-            Bitmap croppedBitmap = new(size, size);
+            System.Drawing.Bitmap croppedBitmap = new(size, size);
             for (int i = 0; i < size; i++)
             {
                 for (int y = 0; y < size; y++)
                 {
-                    Color pxlclr = tempBitmap.GetPixel((int)left + i, (int)top + y);
+                    System.Drawing.Color pxlclr = tempBitmap.GetPixel((int)left + i, (int)top + y);
                     croppedBitmap.SetPixel(i, y, pxlclr);
                 }
             }
@@ -86,8 +85,8 @@ namespace Website.Application.Account.ChangeProfileImage.Commands
 
 
             //Scale
-            Bitmap scaledBitmap = new(70, 70);
-            Graphics graph = Graphics.FromImage(scaledBitmap);
+            System.Drawing.Bitmap scaledBitmap = new(70, 70);
+            System.Drawing.Graphics graph = System.Drawing.Graphics.FromImage(scaledBitmap);
             graph.InterpolationMode = InterpolationMode.High;
             graph.DrawImage(croppedBitmap, 0, 0, 70, 70);
 
@@ -120,13 +119,6 @@ namespace Website.Application.Account.ChangeProfileImage.Commands
             IdentityResult result = await _userService.UpdateAsync(user);
 
             if (!result.Succeeded) return Result.Failed();
-
-
-            // Send the confirmation email
-            //if (user.EmailOnProfileImageChange == true)
-            //{
-            //    // TODO: Send email
-            //}
 
             // Update the user cookie
             await UpdateUserCookie(user);

@@ -10,30 +10,45 @@ namespace Website.Application.Lists.AddProduct.Validators
         public AddProductValidator(IWebsiteDbContext dbContext, IUserService userService)
         {
             string userId = userService.GetUserIdFromClaims();
+            bool productExists = false;
+            bool productIsUnique = false;
 
-            RuleFor(x => x.ListId)
+            RuleFor(x => x.ProductId)
                 .NotEmpty()
-                .MustAsync(async (listId, cancellation) =>
+                .MustAsync(async (productId, cancellation) =>
                 {
-                    return await dbContext.Collaborators.AnyAsync(x => x.ListId == listId && x.UserId == userId &&
-                        (x.IsOwner || x.CanAddToList), cancellationToken: cancellation);
-                }).WithMessage("You don't have permissions to add to this list!");
+                    productExists = await dbContext.Products.AnyAsync(x => x.Id == productId);
+                    return productExists;
+                })
+                .WithMessage("Product does not exist");
 
             RuleFor(x => x)
-                .NotEmpty()
                 .MustAsync(async (command, cancellation) =>
                 {
                     var collaboratorIds = await dbContext.Collaborators
-                        .Where(x => x.ListId == command.ListId)
+                        .Where(x => x.Id == command.CollaboratorId)
+                        .SelectMany(x => x.List.Collaborators)
                         .Select(x => x.Id)
                         .ToListAsync();
 
-                    return !await dbContext.CollaboratorProducts
+                    productIsUnique =!await dbContext.CollaboratorProducts
                         .AnyAsync(x => x.ProductId == command.ProductId && collaboratorIds
-                            .Contains(x.CollaboratorId), cancellationToken: cancellation);
-                })
-                .WithMessage("List already contains this product");
+                        .Contains(x.CollaboratorId), cancellationToken: cancellation);
 
+                    return productIsUnique;
+                })
+                .WithMessage("List already contains that product")
+                .When(x => productExists, ApplyConditionTo.CurrentValidator);
+
+
+            RuleFor(x => x.CollaboratorId)
+                .NotEmpty()
+                .MustAsync(async (collaboratorId, cancellation) =>
+                {
+                    return await dbContext.Collaborators.AnyAsync(x => x.Id == collaboratorId && x.UserId == userId &&
+                        (x.IsOwner || x.CanAddToList), cancellationToken: cancellation);
+                }).WithMessage("You don't have permissions to add to this list!")
+                .When(x => productExists && productIsUnique, ApplyConditionTo.CurrentValidator);
         }
     }
 }

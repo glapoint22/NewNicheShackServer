@@ -23,7 +23,7 @@ namespace Website.Domain.Entities
 
         public Collaborator() { }
 
-        public Collaborator(string listId, string userId, bool isOwner)
+        public Collaborator(string listId, string userId, bool isOwner = false)
         {
             UserId = userId;
             ListId = listId;

@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Website.Application.Lists.AddCollaborator.Commands;
 using Website.Application.Lists.AddProduct.Commands;
 using Website.Application.Lists.CollaboratorProducts.Queries;
 using Website.Application.Lists.CreateList.Commands;
@@ -8,7 +9,10 @@ using Website.Application.Lists.DeleteList.Commands;
 using Website.Application.Lists.DropdownLists.Queries;
 using Website.Application.Lists.EditList.Commands;
 using Website.Application.Lists.GetCollaborators.Queries;
+using Website.Application.Lists.GetListInfo.Queries;
 using Website.Application.Lists.ListCollection.Queries;
+using Website.Application.Lists.MoveProduct.Commands;
+using Website.Application.Lists.RemoveProduct.Commands;
 using Website.Application.Lists.SharedList.Queries;
 using Website.Application.Lists.UpdateCollaborators.Commands;
 
@@ -24,6 +28,21 @@ namespace Website.Api.Controllers
         {
             _mediator = mediator;
         }
+
+
+
+
+
+        // --------------------------------------------------------------------- Add Collaborator ----------------------------------------------------------------------
+        [HttpPost]
+        [Route("AddCollaborator")]
+        [Authorize(Policy = "Account")]
+        public async Task<ActionResult> AddCollaborator(AddCollaboratorCommand addCollaborator)
+        {
+            return SetResponse(await _mediator.Send(addCollaborator));
+        }
+
+
 
 
 
@@ -131,6 +150,21 @@ namespace Website.Api.Controllers
 
 
 
+
+        // ---------------------------------------------------------------------- Get List Info -------------------------------------------------------------------------
+        [HttpGet]
+        [Route("ListInfo")]
+        [Authorize(Policy = "Account")]
+        public async Task<ActionResult> GetListInfo(string collaborateId)
+        {
+            return SetResponse(await _mediator.Send(new GetListInfoQuery(collaborateId)));
+        }
+
+
+
+
+
+
         // --------------------------------------------------------------------- Get Shared List ------------------------------------------------------------------------
         [HttpGet]
         [Route("SharedList")]
@@ -138,6 +172,40 @@ namespace Website.Api.Controllers
         {
             return SetResponse(await _mediator.Send(new GetSharedListQuery(listId, sort)));
         }
+
+
+
+
+
+
+
+
+        // ----------------------------------------------------------------------- Move Product -------------------------------------------------------------------------
+        [HttpPut]
+        [Route("MoveProduct")]
+        [Authorize(Policy = "Account")]
+        public async Task<ActionResult> MoveProduct(MoveProductCommand moveProduct)
+        {
+            return SetResponse(await _mediator.Send(moveProduct));
+        }
+
+
+
+
+
+
+
+
+        // ---------------------------------------------------------------------- Remove Product -----------------------------------------------------------------------
+        [HttpDelete]
+        [Route("RemoveProduct")]
+        [Authorize(Policy = "Account")]
+        public async Task<ActionResult> RemoveProduct(Guid collaboratorProductId)
+        {
+            return SetResponse(await _mediator.Send(new RemoveProductCommand(collaboratorProductId)));
+        }
+
+
 
 
 

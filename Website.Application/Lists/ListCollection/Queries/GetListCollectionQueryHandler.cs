@@ -35,6 +35,10 @@ namespace Website.Application.Lists.ListCollection.Queries
                     x.CollaborateId,
                     CollaboratorCount = x.Collaborators
                         .Count(z => !z.IsOwner && z.UserId != userId),
+                    CollaboratorId = x.Collaborators
+                        .Where(z => z.UserId == userId && z.ListId == x.Id)
+                        .Select(z => z.Id)
+                        .Single(),
                     ListPermissions = x.Collaborators
                         .Where(z => z.UserId == userId)
                         .Select(z => new
@@ -62,6 +66,7 @@ namespace Website.Application.Lists.ListCollection.Queries
                     x.TotalProducts,
                     x.CollaborateId,
                     x.CollaboratorCount,
+                    x.CollaboratorId,
                     x.ListPermissions,
                     OwnerName = x.Owner.FirstName,
                     IsOwner = x.Owner.Id == userId,

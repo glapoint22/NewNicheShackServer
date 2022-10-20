@@ -209,8 +209,9 @@ namespace Website.Infrastructure.Migrations
 
             modelBuilder.Entity("Website.Domain.Entities.CollaboratorProduct", b =>
                 {
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("CollaboratorId")
                         .HasColumnType("int");
@@ -218,9 +219,14 @@ namespace Website.Infrastructure.Migrations
                     b.Property<DateTime>("DateAdded")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("ProductId", "CollaboratorId");
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("CollaboratorId");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("CollaboratorProducts");
                 });

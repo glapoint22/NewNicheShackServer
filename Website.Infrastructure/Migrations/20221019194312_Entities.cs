@@ -272,13 +272,14 @@ namespace Website.Infrastructure.Migrations
                 name: "CollaboratorProducts",
                 columns: table => new
                 {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     CollaboratorId = table.Column<int>(type: "int", nullable: false),
                     DateAdded = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CollaboratorProducts", x => new { x.ProductId, x.CollaboratorId });
+                    table.PrimaryKey("PK_CollaboratorProducts", x => x.Id);
                     table.ForeignKey(
                         name: "FK_CollaboratorProducts_Collaborators_CollaboratorId",
                         column: x => x.CollaboratorId,
@@ -317,6 +318,11 @@ namespace Website.Infrastructure.Migrations
                 name: "IX_CollaboratorProducts_CollaboratorId",
                 table: "CollaboratorProducts",
                 column: "CollaboratorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CollaboratorProducts_ProductId",
+                table: "CollaboratorProducts",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Collaborators_ListId",

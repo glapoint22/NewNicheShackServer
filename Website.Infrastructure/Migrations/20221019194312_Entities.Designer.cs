@@ -12,7 +12,7 @@ using Website.Infrastructure.Persistence;
 namespace Website.Infrastructure.Migrations
 {
     [DbContext(typeof(WebsiteDbContext))]
-    [Migration("20221018174614_Entities")]
+    [Migration("20221019194312_Entities")]
     partial class Entities
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -211,8 +211,9 @@ namespace Website.Infrastructure.Migrations
 
             modelBuilder.Entity("Website.Domain.Entities.CollaboratorProduct", b =>
                 {
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("CollaboratorId")
                         .HasColumnType("int");
@@ -220,9 +221,14 @@ namespace Website.Infrastructure.Migrations
                     b.Property<DateTime>("DateAdded")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("ProductId", "CollaboratorId");
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("CollaboratorId");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("CollaboratorProducts");
                 });

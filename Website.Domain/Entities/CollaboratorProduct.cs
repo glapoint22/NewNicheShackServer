@@ -4,6 +4,7 @@ namespace Website.Domain.Entities
 {
     public class CollaboratorProduct : Entity
     {
+        public Guid Id { get; set; }
         public int ProductId { get; set; }
         public int CollaboratorId { get; set; }
         public DateTime DateAdded { get; set; }
@@ -15,6 +16,7 @@ namespace Website.Domain.Entities
 
         public CollaboratorProduct(int productId, int collaboratorId)
         {
+            Id = Guid.NewGuid();
             ProductId = productId;
             CollaboratorId = collaboratorId;
             DateAdded = DateTime.UtcNow;

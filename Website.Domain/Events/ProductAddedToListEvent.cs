@@ -2,5 +2,5 @@
 
 namespace Website.Domain.Events
 {
-    public record ProductAddedToListEvent(string ListId, int ProductId, string UserId) : INotification;
+    public record ProductAddedToListEvent(Guid CollaboratorProductId) : INotification;
 }
