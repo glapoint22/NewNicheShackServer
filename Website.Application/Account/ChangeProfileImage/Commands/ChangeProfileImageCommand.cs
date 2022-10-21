@@ -3,5 +3,5 @@ using Website.Application.Common.Classes;
 
 namespace Website.Application.Account.ChangeProfileImage.Commands
 {
-    public record ChangeProfileImageCommand() : IRequest<Result>;
+    public sealed record ChangeProfileImageCommand() : IRequest<Result>;
 }

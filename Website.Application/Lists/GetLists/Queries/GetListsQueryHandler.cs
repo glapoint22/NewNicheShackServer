@@ -5,7 +5,7 @@ using Website.Application.Common.Interfaces;
 
 namespace Website.Application.Lists.GetLists.Queries
 {
-    public class GetListsQueryHandler : IRequestHandler<GetListsQuery, Result>
+    public sealed class GetListsQueryHandler : IRequestHandler<GetListsQuery, Result>
     {
         private readonly IUserService _userService;
         private readonly IWebsiteDbContext _dbContext;

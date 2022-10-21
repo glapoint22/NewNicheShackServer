@@ -7,7 +7,7 @@ using Website.Domain.Events;
 
 namespace Website.Application.Lists.AddProduct.Commands
 {
-    public class AddProductCommandHandler : CollaboratorProductHandler, IRequestHandler<AddProductCommand, Result>
+    public sealed class AddProductCommandHandler : CollaboratorProductHandler, IRequestHandler<AddProductCommand, Result>
     {
         private readonly IWebsiteDbContext _dbContext;
 

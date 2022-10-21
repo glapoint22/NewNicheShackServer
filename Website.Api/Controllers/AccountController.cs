@@ -25,7 +25,7 @@ namespace Website.Api.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class AccountController : ApiControllerBase
+    public sealed class AccountController : ApiControllerBase
     {
         private readonly ISender _mediator;
 

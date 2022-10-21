@@ -8,7 +8,7 @@ using Website.Domain.Events;
 
 namespace Website.Application.Lists.MoveProduct.Commands
 {
-    public class MoveProductCommandHandler : CollaboratorProductHandler, IRequestHandler<MoveProductCommand, Result>
+    public sealed class MoveProductCommandHandler : CollaboratorProductHandler, IRequestHandler<MoveProductCommand, Result>
     {
         private readonly IWebsiteDbContext _dbContext;
         private readonly IUserService _userService;

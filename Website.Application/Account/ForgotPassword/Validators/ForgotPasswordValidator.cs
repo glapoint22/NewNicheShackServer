@@ -5,7 +5,7 @@ using Website.Application.Common.Interfaces;
 
 namespace Website.Application.Account.ForgotPassword.Validators
 {
-    public class ForgotPasswordValidator : AbstractValidator<ForgotPasswordCommand>
+    public sealed class ForgotPasswordValidator : AbstractValidator<ForgotPasswordCommand>
     {
         public ForgotPasswordValidator(IWebsiteDbContext dbContext)
         {

@@ -5,7 +5,7 @@ using Website.Application.EmailPreferences.Common;
 
 namespace Website.Application.EmailPreferences.Queries
 {
-    internal class GetEmailPreferencesQueryHandler : IRequestHandler<GetEmailPreferencesQuery, Preferences>
+    public sealed class GetEmailPreferencesQueryHandler : IRequestHandler<GetEmailPreferencesQuery, Preferences>
     {
         private readonly IUserService _userService;
         private readonly IWebsiteDbContext _dbContext;

@@ -5,7 +5,7 @@ using Website.Domain.Events;
 
 namespace Website.Application.Account.SignUp.EventHandlers
 {
-    public class UserCreatedEmailConfirmationEventHandler : INotificationHandler<UserCreatedEvent>
+    public sealed class UserCreatedEmailConfirmationEventHandler : INotificationHandler<UserCreatedEvent>
     {
         private readonly IUserService _userService;
 

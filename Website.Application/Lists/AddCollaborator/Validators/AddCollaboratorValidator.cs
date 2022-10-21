@@ -5,7 +5,7 @@ using Website.Application.Lists.AddCollaborator.Commands;
 
 namespace Website.Application.Lists.AddCollaborator.Validators
 {
-    public class AddCollaboratorValidator : AbstractValidator<AddCollaboratorCommand>
+    public sealed class AddCollaboratorValidator : AbstractValidator<AddCollaboratorCommand>
     {
         public AddCollaboratorValidator(IWebsiteDbContext dbContext, IUserService userService)
         {

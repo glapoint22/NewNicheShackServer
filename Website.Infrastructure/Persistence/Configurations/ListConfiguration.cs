@@ -4,7 +4,7 @@ using Website.Domain.Entities;
 
 namespace Website.Infrastructure.Persistence.Configurations
 {
-    public class ListConfiguration : IEntityTypeConfiguration<List>
+    public sealed class ListConfiguration : IEntityTypeConfiguration<List>
     {
         public void Configure(EntityTypeBuilder<List> builder)
         {

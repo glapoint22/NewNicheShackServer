@@ -5,7 +5,7 @@ using Website.Application.Common.Interfaces;
 
 namespace Website.Application.Account.ResetPassword.Validators
 {
-    public class ResetPasswordValidator : AbstractValidator<ResetPasswordCommand>
+    public sealed class ResetPasswordValidator : AbstractValidator<ResetPasswordCommand>
     {
         public ResetPasswordValidator(IWebsiteDbContext dbContext)
         {

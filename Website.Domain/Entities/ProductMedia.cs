@@ -1,6 +1,6 @@
 ﻿namespace Website.Domain.Entities
 {
-    public class ProductMedia
+    public sealed class ProductMedia
     {
         public int Id { get; set; }
         public int ProductId { get; set; }

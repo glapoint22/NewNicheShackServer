@@ -3,5 +3,5 @@ using Website.Application.Common.Classes;
 
 namespace Website.Application.Account.Refresh.Commands
 {
-    public record RefreshCommand : IRequest<Result>;
+    public sealed record RefreshCommand : IRequest<Result>;
 }

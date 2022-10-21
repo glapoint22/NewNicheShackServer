@@ -20,7 +20,7 @@ namespace Website.Api.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class ListsController : ApiControllerBase
+    public sealed class ListsController : ApiControllerBase
     {
         private readonly ISender _mediator;
 

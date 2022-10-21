@@ -2,5 +2,5 @@
 
 namespace Website.Domain.Events
 {
-    public record UserChangedNameEvent(string UserId) : INotification;
+    public sealed record UserChangedNameEvent(string UserId) : INotification;
 }

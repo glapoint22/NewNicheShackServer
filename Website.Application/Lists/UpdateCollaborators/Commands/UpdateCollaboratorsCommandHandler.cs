@@ -8,7 +8,7 @@ using Website.Domain.Events;
 
 namespace Website.Application.Lists.UpdateCollaborators.Commands
 {
-    public class UpdateCollaboratorsCommandHandler : IRequestHandler<UpdateCollaboratorsCommand, Result>
+    public sealed class UpdateCollaboratorsCommandHandler : IRequestHandler<UpdateCollaboratorsCommand, Result>
     {
         private readonly IWebsiteDbContext _dbContext;
 

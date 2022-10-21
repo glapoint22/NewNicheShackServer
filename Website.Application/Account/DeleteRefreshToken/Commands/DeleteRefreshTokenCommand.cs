@@ -8,5 +8,5 @@ using Website.Application.Common.Classes;
 
 namespace Website.Application.Account.DeleteRefreshToken.Commands
 {
-    public record DeleteRefreshTokenCommand(string NewRefreshToken) : IRequest<Result>;
+    public sealed record DeleteRefreshTokenCommand(string NewRefreshToken) : IRequest<Result>;
 }

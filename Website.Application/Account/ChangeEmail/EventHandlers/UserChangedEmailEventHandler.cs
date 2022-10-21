@@ -3,7 +3,7 @@ using Website.Domain.Events;
 
 namespace Website.Application.Account.ChangeEmail.EventHandlers
 {
-    internal class UserChangedEmailEventHandler : INotificationHandler<UserChangedEmailEvent>
+    public sealed class UserChangedEmailEventHandler : INotificationHandler<UserChangedEmailEvent>
     {
         public Task Handle(UserChangedEmailEvent notification, CancellationToken cancellationToken)
         {

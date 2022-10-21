@@ -5,7 +5,7 @@ using Website.Application.Common.Interfaces;
 
 namespace Website.Application.Lists.GetCollaborators.Queries
 {
-    public class GetCollaboratorsQueryHandler : IRequestHandler<GetCollaboratorsQuery, Result>
+    public sealed class GetCollaboratorsQueryHandler : IRequestHandler<GetCollaboratorsQuery, Result>
     {
         private readonly IWebsiteDbContext _dbContext;
         private readonly IUserService _userService;

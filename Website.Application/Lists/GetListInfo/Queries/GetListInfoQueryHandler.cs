@@ -6,7 +6,7 @@ using Website.Domain.Entities;
 
 namespace Website.Application.Lists.GetListInfo.Queries
 {
-    public class GetListInfoQueryHandler : IRequestHandler<GetListInfoQuery, Result>
+    public sealed class GetListInfoQueryHandler : IRequestHandler<GetListInfoQuery, Result>
     {
         private readonly IWebsiteDbContext _dbContext;
         private readonly IUserService _userService;

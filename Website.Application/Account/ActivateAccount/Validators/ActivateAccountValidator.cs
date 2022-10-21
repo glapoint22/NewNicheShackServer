@@ -5,7 +5,7 @@ using Website.Application.Common.Interfaces;
 
 namespace Website.Application.Account.ActivateAccount.Validators
 {
-    public class ActivateAccountValidator : AbstractValidator<ActivateAccountCommand>
+    public sealed class ActivateAccountValidator : AbstractValidator<ActivateAccountCommand>
     {
         public ActivateAccountValidator(IWebsiteDbContext dbContext)
         {

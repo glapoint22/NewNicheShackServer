@@ -2,7 +2,7 @@
 
 namespace Website.Domain.Entities
 {
-    public class Collaborator : Entity
+    public sealed class Collaborator : Entity
     {
         public int Id { get; set; }
         public string UserId { get; set; } = string.Empty;

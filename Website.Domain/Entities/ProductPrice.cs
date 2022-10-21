@@ -1,6 +1,6 @@
 ﻿namespace Website.Domain.Entities
 {
-    public class ProductPrice
+    public sealed class ProductPrice
     {
         public int Id { get; set; }
         public int ProductId { get; set; }

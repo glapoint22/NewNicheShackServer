@@ -5,7 +5,7 @@ using Website.Application.Common.Interfaces;
 
 namespace Website.Application.Account.ResendAccountActivationEmail.Validators
 {
-    public class ResendAccountActivationEmailValidator : AbstractValidator<ResendAccountActivationEmailCommand>
+    public sealed class ResendAccountActivationEmailValidator : AbstractValidator<ResendAccountActivationEmailCommand>
     {
         public ResendAccountActivationEmailValidator(IWebsiteDbContext dbContext)
         {

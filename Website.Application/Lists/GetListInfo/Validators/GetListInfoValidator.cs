@@ -5,7 +5,7 @@ using Website.Application.Lists.GetListInfo.Queries;
 
 namespace Website.Application.Lists.GetListInfo.Validators
 {
-    public class GetListInfoValidator : AbstractValidator<GetListInfoQuery>
+    public sealed class GetListInfoValidator : AbstractValidator<GetListInfoQuery>
     {
         public GetListInfoValidator(IWebsiteDbContext dbContext)
         {

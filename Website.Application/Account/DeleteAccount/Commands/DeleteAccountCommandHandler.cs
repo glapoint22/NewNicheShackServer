@@ -7,7 +7,7 @@ using Website.Domain.Events;
 
 namespace Website.Application.Account.DeleteAccount.Commands
 {
-    public class DeleteAccountCommandHandler : IRequestHandler<DeleteAccountCommand, Result>
+    public sealed class DeleteAccountCommandHandler : IRequestHandler<DeleteAccountCommand, Result>
     {
         private readonly IUserService _userService;
         private readonly IWebsiteDbContext _dbContext;

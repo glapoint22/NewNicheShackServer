@@ -5,7 +5,7 @@ using Website.Application.Lists.EditList.Commands;
 
 namespace Website.Application.Lists.EditList.Validators
 {
-    public class EditListValidator : AbstractValidator<EditListCommand>
+    public sealed class EditListValidator : AbstractValidator<EditListCommand>
     {
         public EditListValidator(IWebsiteDbContext dbContext, IUserService userService)
         {

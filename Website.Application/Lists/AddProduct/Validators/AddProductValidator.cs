@@ -5,7 +5,7 @@ using Website.Application.Lists.AddProduct.Commands;
 
 namespace Website.Application.Lists.AddProduct.Validators
 {
-    public class AddProductValidator : AbstractValidator<AddProductCommand>
+    public sealed class AddProductValidator : AbstractValidator<AddProductCommand>
     {
         public AddProductValidator(IWebsiteDbContext dbContext, IUserService userService)
         {

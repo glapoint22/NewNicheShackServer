@@ -5,7 +5,7 @@ using Website.Domain.Common;
 
 namespace Website.Domain.Entities
 {
-    public class User : IdentityUser, IEntity
+    public sealed class User : IdentityUser, IEntity
     {
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;

@@ -3,7 +3,7 @@ using Website.Application.Account.ChangeEmail.Commands;
 
 namespace Website.Application.Account.ChangeEmail.Validators
 {
-    public class ChangeEmailValidator : AbstractValidator<ChangeEmailCommand>
+    public sealed class ChangeEmailValidator : AbstractValidator<ChangeEmailCommand>
     {
         public ChangeEmailValidator()
         {

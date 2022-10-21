@@ -3,7 +3,7 @@ using Website.Application.Common.Classes;
 
 namespace Website.Application.Account.SignUp.Commands
 {
-    public record SignUpCommand : IRequest<Result>
+    public sealed record SignUpCommand : IRequest<Result>
     {
         public string FirstName { get; init; } = string.Empty;
         public string LastName { get; init; } = string.Empty;

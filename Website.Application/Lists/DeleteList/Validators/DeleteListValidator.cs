@@ -5,7 +5,7 @@ using Website.Application.Lists.DeleteList.Commands;
 
 namespace Website.Application.Lists.DeleteList.Validators
 {
-    public class DeleteListValidator : AbstractValidator<DeleteListCommand>
+    public sealed class DeleteListValidator : AbstractValidator<DeleteListCommand>
     {
         public DeleteListValidator(IWebsiteDbContext dbContext, IUserService userService)
         {

@@ -7,7 +7,7 @@ using Website.Domain.Events;
 
 namespace Website.Application.Account.ChangePassword.Commands
 {
-    public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand, Result>
+    public sealed class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand, Result>
     {
         private readonly IUserService _userService;
 

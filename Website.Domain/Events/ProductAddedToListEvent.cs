@@ -2,5 +2,5 @@
 
 namespace Website.Domain.Events
 {
-    public record ProductAddedToListEvent(Guid CollaboratorProductId) : INotification;
+    public sealed record ProductAddedToListEvent(Guid CollaboratorProductId) : INotification;
 }

@@ -1,6 +1,6 @@
 ﻿namespace Website.Domain.Entities
 {
-    public class Media
+    public sealed class Media
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;

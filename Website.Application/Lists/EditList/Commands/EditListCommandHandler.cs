@@ -7,7 +7,7 @@ using Website.Domain.Events;
 
 namespace Website.Application.Lists.EditList.Commands
 {
-    public class EditListCommandHandler : IRequestHandler<EditListCommand, Result>
+    public sealed class EditListCommandHandler : IRequestHandler<EditListCommand, Result>
     {
         private readonly IUserService _userService;
         private readonly IWebsiteDbContext _dbContext;

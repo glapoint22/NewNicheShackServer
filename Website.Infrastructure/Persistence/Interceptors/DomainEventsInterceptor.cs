@@ -5,7 +5,7 @@ using Website.Domain.Common;
 
 namespace Website.Infrastructure.Persistence.Interceptors
 {
-    public class DomainEventsInterceptor : SaveChangesInterceptor
+    public sealed class DomainEventsInterceptor : SaveChangesInterceptor
     {
         private static readonly List<INotification> _domainEvents = new();
 

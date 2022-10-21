@@ -5,7 +5,7 @@ using Website.Application.Lists.RemoveProduct.Commands;
 
 namespace Website.Application.Lists.RemoveProduct.Validators
 {
-    public class RemoveProductValidator : AbstractValidator<RemoveProductCommand>
+    public sealed class RemoveProductValidator : AbstractValidator<RemoveProductCommand>
     {
         public RemoveProductValidator(IWebsiteDbContext dbContext, IUserService userService)
         {

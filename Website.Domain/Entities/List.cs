@@ -2,7 +2,7 @@
 
 namespace Website.Domain.Entities
 {
-    public class List : Entity
+    public sealed class List : Entity
     {
         public string Id { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;

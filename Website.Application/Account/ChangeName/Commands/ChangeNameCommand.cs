@@ -3,5 +3,5 @@ using Website.Application.Common.Classes;
 
 namespace Website.Application.Account.ChangeName.Commands
 {
-    public record ChangeNameCommand(string FirstName, string LastName) : IRequest<Result>;
+    public sealed record ChangeNameCommand(string FirstName, string LastName) : IRequest<Result>;
 }

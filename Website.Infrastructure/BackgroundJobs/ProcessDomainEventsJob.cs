@@ -5,7 +5,7 @@ using Website.Infrastructure.Persistence.Interceptors;
 namespace Website.Infrastructure.BackgroundJobs
 {
     [DisallowConcurrentExecution]
-    public class ProcessDomainEventsJob : IJob
+    public sealed class ProcessDomainEventsJob : IJob
     {
         private readonly IPublisher _publisher;
 

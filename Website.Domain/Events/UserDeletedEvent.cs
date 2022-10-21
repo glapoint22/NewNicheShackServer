@@ -2,5 +2,5 @@
 
 namespace Website.Domain.Events
 {
-    public record UserDeletedEvent(string UserId) : INotification;
+    public sealed record UserDeletedEvent(string UserId) : INotification;
 }

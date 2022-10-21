@@ -5,7 +5,7 @@ using Website.Domain.Entities;
 
 namespace Website.Application.Account.ResendAccountActivationEmail.Commands
 {
-    internal class ResendAccountActivationEmailCommandHandler : IRequestHandler<ResendAccountActivationEmailCommand, Result>
+    public sealed class ResendAccountActivationEmailCommandHandler : IRequestHandler<ResendAccountActivationEmailCommand, Result>
     {
         private readonly IUserService _userService;
 

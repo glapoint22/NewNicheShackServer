@@ -3,5 +3,5 @@ using Website.Application.Common.Classes;
 
 namespace Website.Application.Account.AddPassword.Commands
 {
-    public record AddPasswordCommand(string Password) : IRequest<Result>;
+    public sealed record AddPasswordCommand(string Password) : IRequest<Result>;
 }

@@ -3,5 +3,5 @@ using Website.Application.Common.Classes;
 
 namespace Website.Application.Lists.GetDropdownLists.Queries
 {
-    public record GetDropdownListsQuery() : IRequest<Result>;
+    public sealed record GetDropdownListsQuery() : IRequest<Result>;
 }

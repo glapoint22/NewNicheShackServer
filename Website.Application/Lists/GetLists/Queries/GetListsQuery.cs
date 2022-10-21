@@ -3,5 +3,5 @@ using Website.Application.Common.Classes;
 
 namespace Website.Application.Lists.GetLists.Queries
 {
-    public record GetListsQuery() : IRequest<Result>;
+    public sealed record GetListsQuery() : IRequest<Result>;
 }

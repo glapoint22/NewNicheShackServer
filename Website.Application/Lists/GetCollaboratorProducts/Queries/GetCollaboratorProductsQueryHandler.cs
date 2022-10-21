@@ -5,7 +5,7 @@ using Website.Application.Lists.Common;
 
 namespace Website.Application.Lists.GetCollaboratorProducts.Queries
 {
-    public class GetCollaboratorProductsQueryHandler : CollaboratorProductHandler, IRequestHandler<GetCollaboratorProductsQuery, Result>
+    public sealed class GetCollaboratorProductsQueryHandler : CollaboratorProductHandler, IRequestHandler<GetCollaboratorProductsQuery, Result>
     {
 
         public GetCollaboratorProductsQueryHandler(IWebsiteDbContext dbContext) : base(dbContext) { }

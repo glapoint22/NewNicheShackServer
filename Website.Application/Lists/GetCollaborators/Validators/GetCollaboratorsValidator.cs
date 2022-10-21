@@ -5,7 +5,7 @@ using Website.Application.Lists.GetCollaborators.Queries;
 
 namespace Website.Application.Lists.GetCollaborators.Validators
 {
-    public class GetCollaboratorsValidator : AbstractValidator<GetCollaboratorsQuery>
+    public sealed class GetCollaboratorsValidator : AbstractValidator<GetCollaboratorsQuery>
     {
         public GetCollaboratorsValidator(IWebsiteDbContext dbContext, IUserService userService)
         {

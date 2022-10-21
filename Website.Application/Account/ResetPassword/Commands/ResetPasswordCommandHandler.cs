@@ -6,7 +6,7 @@ using Website.Domain.Entities;
 
 namespace Website.Application.Account.ResetPassword.Commands
 {
-    public class ResetPasswordCommandHandler : IRequestHandler<ResetPasswordCommand, Result>
+    public sealed class ResetPasswordCommandHandler : IRequestHandler<ResetPasswordCommand, Result>
     {
         private readonly IUserService _userService;
 

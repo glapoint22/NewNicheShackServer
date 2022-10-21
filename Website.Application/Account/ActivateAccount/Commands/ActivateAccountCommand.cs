@@ -3,5 +3,5 @@ using Website.Application.Common.Classes;
 
 namespace Website.Application.Account.ActivateAccount.Commands
 {
-    public record ActivateAccountCommand(string Email, string Token) : IRequest<Result>;
+    public sealed record ActivateAccountCommand(string Email, string Token) : IRequest<Result>;
 }

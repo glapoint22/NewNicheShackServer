@@ -1,6 +1,6 @@
 ﻿namespace Website.Application.Lists.UpdateCollaborators.Classes
 {
-    public record ListPermissions(
+    public sealed record ListPermissions(
         bool CanAddToList,
         bool CanShareList,
         bool CanEditList,

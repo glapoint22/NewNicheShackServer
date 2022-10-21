@@ -3,7 +3,7 @@ using Website.Domain.Events;
 
 namespace Website.Application.Lists.UpdateCollaborators.EventHandlers
 {
-    public class CollaboratorUpdatedEventHandler : INotificationHandler<CollaboratorUpdatedEvent>
+    public sealed class CollaboratorUpdatedEventHandler : INotificationHandler<CollaboratorUpdatedEvent>
     {
         public Task Handle(CollaboratorUpdatedEvent notification, CancellationToken cancellationToken)
         {

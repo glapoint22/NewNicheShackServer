@@ -5,7 +5,7 @@ using Website.Domain.Entities;
 
 namespace Website.Application.Account.CreateChangeEmailOTP.Commands
 {
-    internal class CreateChangeEmailOTPCommandHandler : IRequestHandler<CreateChangeEmailOTPCommand, Result>
+    public sealed class CreateChangeEmailOTPCommandHandler : IRequestHandler<CreateChangeEmailOTPCommand, Result>
     {
         private readonly IUserService _userService;
 

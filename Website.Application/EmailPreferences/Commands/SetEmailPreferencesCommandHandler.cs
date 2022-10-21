@@ -5,7 +5,7 @@ using Website.Domain.Entities;
 
 namespace Website.Application.EmailPreferences.Commands
 {
-    public class SetEmailPreferencesCommandHandler : IRequestHandler<SetEmailPreferencesCommand, Result>
+    public sealed class SetEmailPreferencesCommandHandler : IRequestHandler<SetEmailPreferencesCommand, Result>
     {
         private readonly IUserService _userService;
 

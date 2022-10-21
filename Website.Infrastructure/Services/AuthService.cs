@@ -12,7 +12,7 @@ using Website.Domain.Entities;
 
 namespace Website.Infrastructure.Services
 {
-    public class AuthService : IAuthService
+    public sealed class AuthService : IAuthService
     {
         private readonly IConfiguration _configuration;
         private readonly HttpContext _httpContext;

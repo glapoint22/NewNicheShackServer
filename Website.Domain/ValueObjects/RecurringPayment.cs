@@ -2,7 +2,7 @@
 
 namespace Website.Domain.ValueObjects
 {
-    public class RecurringPayment : ValueObject
+    public sealed class RecurringPayment : ValueObject
     {
         public int TrialPeriod { get; private set; }
         public double RecurringPrice { get; private set; }

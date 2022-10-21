@@ -1,6 +1,6 @@
 ﻿namespace Website.Domain.Entities
 {
-    public class Notification
+    public sealed class Notification
     {
         public int Id { get; set; }
         public int Type { get; set; }

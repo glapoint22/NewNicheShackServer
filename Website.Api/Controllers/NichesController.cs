@@ -5,7 +5,7 @@ namespace Website.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class NichesController : ControllerBase
+    public sealed class NichesController : ControllerBase
     {
     }
 }

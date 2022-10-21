@@ -7,7 +7,7 @@ using Website.Domain.Events;
 
 namespace Website.Application.Lists.RemoveProduct.Commands
 {
-    public class RemoveProductCommandHandler : CollaboratorProductHandler, IRequestHandler<RemoveProductCommand, Result>
+    public sealed class RemoveProductCommandHandler : CollaboratorProductHandler, IRequestHandler<RemoveProductCommand, Result>
     {
         private readonly IWebsiteDbContext _dbContext;
         private readonly IUserService _userService;

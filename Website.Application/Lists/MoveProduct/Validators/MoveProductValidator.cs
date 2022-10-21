@@ -5,7 +5,7 @@ using Website.Application.Lists.MoveProduct.Commands;
 
 namespace Website.Application.Lists.MoveProduct.Validators
 {
-    public class MoveProductValidator : AbstractValidator<MoveProductCommand>
+    public sealed class MoveProductValidator : AbstractValidator<MoveProductCommand>
     {
         public MoveProductValidator(IWebsiteDbContext dbContext, IUserService userService)
         {

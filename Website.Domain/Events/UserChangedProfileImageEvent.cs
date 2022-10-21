@@ -2,5 +2,5 @@
 
 namespace Website.Domain.Events
 {
-    public record UserChangedProfileImageEvent(string UserId) : INotification;
+    public sealed record UserChangedProfileImageEvent(string UserId) : INotification;
 }

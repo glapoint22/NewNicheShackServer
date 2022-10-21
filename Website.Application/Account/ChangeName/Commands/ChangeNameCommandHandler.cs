@@ -8,7 +8,7 @@ using Website.Domain.Events;
 
 namespace Website.Application.Account.ChangeName.Commands
 {
-    public class ChangeNameCommandHandler : UpdateUserCommandHandler, IRequestHandler<ChangeNameCommand, Result>
+    public sealed class ChangeNameCommandHandler : UpdateUserCommandHandler, IRequestHandler<ChangeNameCommand, Result>
     {
         private readonly IUserService _userService;
 

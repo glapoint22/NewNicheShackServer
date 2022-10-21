@@ -1,6 +1,6 @@
 ﻿namespace Website.Domain.Entities
 {
-    public class OrderProduct
+    public sealed class OrderProduct
     {
         public int Id { get; set; }
         public string OrderId { get; set; } = string.Empty;

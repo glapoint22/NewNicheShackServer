@@ -8,7 +8,7 @@ using Website.Domain.Events;
 
 namespace Website.Application.Account.ChangeEmail.Commands
 {
-    public class ChangeEmailCommandHandler : UpdateUserCommandHandler, IRequestHandler<ChangeEmailCommand, Result>
+    public sealed class ChangeEmailCommandHandler : UpdateUserCommandHandler, IRequestHandler<ChangeEmailCommand, Result>
     {
         private readonly IUserService _userService;
 

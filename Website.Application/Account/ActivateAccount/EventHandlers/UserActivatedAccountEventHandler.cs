@@ -3,7 +3,7 @@ using Website.Domain.Events;
 
 namespace Website.Application.Account.ActivateAccount.EventHandlers
 {
-    public class UserActivatedAccountEventHandler : INotificationHandler<UserActivatedAccountEvent>
+    public sealed class UserActivatedAccountEventHandler : INotificationHandler<UserActivatedAccountEvent>
     {
         public Task Handle(UserActivatedAccountEvent notification, CancellationToken cancellationToken)
         {

@@ -3,7 +3,7 @@ using Website.Application.Account.ChangePassword.Commands;
 
 namespace Website.Application.Account.ChangePassword.Validators
 {
-    public class ChangePasswordValidator : AbstractValidator<ChangePasswordCommand>
+    public sealed class ChangePasswordValidator : AbstractValidator<ChangePasswordCommand>
     {
         public ChangePasswordValidator()
         {

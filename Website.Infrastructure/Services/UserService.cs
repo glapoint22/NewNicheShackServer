@@ -7,7 +7,7 @@ using Website.Domain.Events;
 
 namespace Website.Infrastructure.Services
 {
-    public class UserService : IUserService
+    public sealed class UserService : IUserService
     {
         private readonly UserManager<User> _userManager;
         private readonly ClaimsPrincipal? _user;

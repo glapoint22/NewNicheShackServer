@@ -10,7 +10,7 @@ namespace Website.Api.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class EmailPreferencesController : ApiControllerBase
+    public sealed class EmailPreferencesController : ApiControllerBase
     {
         private readonly ISender _mediator;
 

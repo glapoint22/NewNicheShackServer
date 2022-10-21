@@ -5,7 +5,7 @@ using Website.Domain.Entities;
 
 namespace Website.Application.Account.LogOut.Commands
 {
-    public class LogOutCommandHandler : IRequestHandler<LogOutCommand, Result>
+    public sealed class LogOutCommandHandler : IRequestHandler<LogOutCommand, Result>
     {
         private readonly ICookieService _cookieService;
         private readonly IWebsiteDbContext _dbContext;

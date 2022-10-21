@@ -2,7 +2,7 @@
 
 namespace Website.Domain.Entities
 {
-    public class PricePoint
+    public sealed class PricePoint
     {
         public int Id { get; set; }
         public int ProductPriceId { get; set; }

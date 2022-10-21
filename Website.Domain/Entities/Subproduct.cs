@@ -1,6 +1,6 @@
 ﻿namespace Website.Domain.Entities
 {
-    public class Subproduct
+    public sealed class Subproduct
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;

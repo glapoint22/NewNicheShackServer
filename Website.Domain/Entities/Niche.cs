@@ -1,6 +1,6 @@
 ﻿namespace Website.Domain.Entities
 {
-    public class Niche
+    public sealed class Niche
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;

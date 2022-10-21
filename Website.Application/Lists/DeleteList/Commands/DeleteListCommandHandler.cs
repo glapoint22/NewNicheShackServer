@@ -7,7 +7,7 @@ using Website.Domain.Events;
 
 namespace Website.Application.Lists.DeleteList.Commands
 {
-    public class DeleteListCommandHandler : IRequestHandler<DeleteListCommand, Result>
+    public sealed class DeleteListCommandHandler : IRequestHandler<DeleteListCommand, Result>
     {
         private readonly IUserService _userService;
         private readonly IWebsiteDbContext _dbContext;

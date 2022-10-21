@@ -1,6 +1,6 @@
 ﻿namespace Website.Application.Lists.UpdateCollaborators.Classes
 {
-    public record UpdatedCollaborator(
+    public sealed record UpdatedCollaborator(
         int Id,
         ListPermissions ListPermissions,
         bool IsRemoved

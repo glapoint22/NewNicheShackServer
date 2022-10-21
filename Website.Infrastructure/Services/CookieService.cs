@@ -4,7 +4,7 @@ using Website.Application.Common.Interfaces;
 
 namespace Website.Infrastructure.Services
 {
-    public class CookieService : ICookieService
+    public sealed class CookieService : ICookieService
     {
         private readonly HttpContext _httpContext;
         private readonly IConfiguration _configuration;

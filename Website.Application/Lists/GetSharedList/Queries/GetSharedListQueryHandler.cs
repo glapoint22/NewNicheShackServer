@@ -6,7 +6,7 @@ using Website.Application.Lists.GetCollaboratorProducts.Queries;
 
 namespace Website.Application.Lists.GetSharedList.Queries
 {
-    public class GetSharedListQueryHandler : IRequestHandler<GetSharedListQuery, Result>
+    public sealed class GetSharedListQueryHandler : IRequestHandler<GetSharedListQuery, Result>
     {
         private readonly IWebsiteDbContext _dbContext;
         private readonly ISender _mediator;

@@ -3,5 +3,5 @@ using Website.Application.EmailPreferences.Common;
 
 namespace Website.Application.EmailPreferences.Queries
 {
-    public record GetEmailPreferencesQuery() : IRequest<Preferences>;
+    public sealed record GetEmailPreferencesQuery() : IRequest<Preferences>;
 }

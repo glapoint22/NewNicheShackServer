@@ -3,7 +3,7 @@ using Website.Domain.Events;
 
 namespace Website.Application.Account.DeleteAccount.EventHandlers
 {
-    public class UserDeletedEventHandler : INotificationHandler<UserDeletedEvent>
+    public sealed class UserDeletedEventHandler : INotificationHandler<UserDeletedEvent>
     {
         public Task Handle(UserDeletedEvent notification, CancellationToken cancellationToken)
         {

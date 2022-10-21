@@ -5,7 +5,7 @@ using Website.Domain.Entities;
 
 namespace Website.Application.Account.SignUp.Commands
 {
-    public class SignUpCommandHandler : IRequestHandler<SignUpCommand, Result>
+    public sealed class SignUpCommandHandler : IRequestHandler<SignUpCommand, Result>
     {
         private readonly IUserService _userService;
 

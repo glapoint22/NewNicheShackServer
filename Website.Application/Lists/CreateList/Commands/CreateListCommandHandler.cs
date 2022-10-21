@@ -5,7 +5,7 @@ using Website.Domain.Entities;
 
 namespace Website.Application.Lists.CreateList.Commands
 {
-    public class CreateListCommandHandler : IRequestHandler<CreateListCommand, Result>
+    public sealed class CreateListCommandHandler : IRequestHandler<CreateListCommand, Result>
     {
         private readonly IUserService _userService;
         private readonly IWebsiteDbContext _dbContext;

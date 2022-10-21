@@ -7,7 +7,7 @@ using Website.Domain.Entities;
 
 namespace Website.Application.Account.AddPassword.Commands
 {
-    public class AddPasswordCommandHandler : IRequestHandler<AddPasswordCommand, Result>
+    public sealed class AddPasswordCommandHandler : IRequestHandler<AddPasswordCommand, Result>
     {
         private readonly IUserService _userService;
         private readonly IAuthService _authService;

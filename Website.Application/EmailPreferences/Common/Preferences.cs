@@ -1,6 +1,6 @@
 ﻿namespace Website.Application.EmailPreferences.Common
 {
-    public record Preferences
+    public sealed record Preferences
     {
         public bool? NameChange { get; init; }
         public bool? EmailChange { get; init; }

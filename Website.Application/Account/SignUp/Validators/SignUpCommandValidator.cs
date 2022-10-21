@@ -5,7 +5,7 @@ using Website.Application.Common.Interfaces;
 
 namespace Website.Application.Account.SignUp.Validators
 {
-    public class SignUpCommandValidator : AbstractValidator<SignUpCommand>
+    public sealed class SignUpCommandValidator : AbstractValidator<SignUpCommand>
     {
         public SignUpCommandValidator(IWebsiteDbContext dbContext)
         {

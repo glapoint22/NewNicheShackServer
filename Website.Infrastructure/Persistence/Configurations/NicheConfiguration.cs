@@ -4,7 +4,7 @@ using Website.Domain.Entities;
 
 namespace Website.Infrastructure.Persistence.Configurations
 {
-    public class NicheConfiguration : IEntityTypeConfiguration<Niche>
+    public sealed class NicheConfiguration : IEntityTypeConfiguration<Niche>
     {
         public void Configure(EntityTypeBuilder<Niche> builder)
         {

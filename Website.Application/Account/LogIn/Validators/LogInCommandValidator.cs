@@ -3,7 +3,7 @@ using Website.Application.Account.LogIn.Commands;
 
 namespace Website.Application.Account.LogIn.Validators
 {
-    public class LogInCommandValidator : AbstractValidator<LogInCommand>
+    public sealed class LogInCommandValidator : AbstractValidator<LogInCommand>
     {
         public LogInCommandValidator()
         {

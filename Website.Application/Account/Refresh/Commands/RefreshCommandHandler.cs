@@ -7,7 +7,7 @@ using Website.Domain.Entities;
 
 namespace Website.Application.Account.Refresh.Commands
 {
-    public class RefreshCommandHandler : IRequestHandler<RefreshCommand, Result>
+    public sealed class RefreshCommandHandler : IRequestHandler<RefreshCommand, Result>
     {
         private readonly IUserService _userService;
         private readonly IWebsiteDbContext _dbContext;

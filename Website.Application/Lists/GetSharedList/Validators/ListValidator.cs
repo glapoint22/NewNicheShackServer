@@ -5,7 +5,7 @@ using Website.Application.Lists.GetSharedList.Queries;
 
 namespace Website.Application.Lists.GetSharedList.Validators
 {
-    public class ListValidator : AbstractValidator<GetSharedListQuery>
+    public sealed class ListValidator : AbstractValidator<GetSharedListQuery>
     {
         public ListValidator(IWebsiteDbContext dbContext)
         {

@@ -3,7 +3,7 @@ using Website.Application.Account.ExternalLogIn.Commands;
 
 namespace Website.Application.Account.ExternalLogIn.Validators
 {
-    public class ExternalLogInCommandValidator : AbstractValidator<ExternalLogInCommand>
+    public sealed class ExternalLogInCommandValidator : AbstractValidator<ExternalLogInCommand>
     {
         public ExternalLogInCommandValidator()
         {

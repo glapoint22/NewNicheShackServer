@@ -3,7 +3,7 @@ using Website.Domain.Events;
 
 namespace Website.Application.Account.ChangeName.EventHandlers
 {
-    public class UserChangedNameNotificationEventHandler : INotificationHandler<UserChangedNameEvent>
+    public sealed class UserChangedNameNotificationEventHandler : INotificationHandler<UserChangedNameEvent>
     {
         public Task Handle(UserChangedNameEvent notification, CancellationToken cancellationToken)
         {

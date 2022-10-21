@@ -2,7 +2,7 @@
 
 namespace Website.Domain.Entities
 {
-    public class CollaboratorProduct : Entity
+    public sealed class CollaboratorProduct : Entity
     {
         public Guid Id { get; set; }
         public int ProductId { get; set; }

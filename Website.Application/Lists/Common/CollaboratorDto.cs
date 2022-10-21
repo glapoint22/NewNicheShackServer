@@ -2,7 +2,7 @@
 
 namespace Website.Application.Lists.Common
 {
-    public class CollaboratorDto
+    public sealed class CollaboratorDto
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;

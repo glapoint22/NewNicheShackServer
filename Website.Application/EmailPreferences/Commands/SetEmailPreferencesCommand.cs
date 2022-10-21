@@ -4,5 +4,5 @@ using Website.Application.EmailPreferences.Common;
 
 namespace Website.Application.EmailPreferences.Commands
 {
-    public record SetEmailPreferencesCommand(Preferences Preferences) : IRequest<Result>;
+    public sealed record SetEmailPreferencesCommand(Preferences Preferences) : IRequest<Result>;
 }

@@ -8,7 +8,7 @@ using Website.Domain.Events;
 
 namespace Website.Application.Account.ActivateAccount.Commands
 {
-    public class ActivateAccountCommandHandler : IRequestHandler<ActivateAccountCommand, Result>
+    public sealed class ActivateAccountCommandHandler : IRequestHandler<ActivateAccountCommand, Result>
     {
         private readonly IUserService _userService;
         private readonly IWebsiteDbContext _dbContext;

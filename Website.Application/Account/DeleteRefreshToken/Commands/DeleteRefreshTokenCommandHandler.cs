@@ -7,7 +7,7 @@ using Website.Domain.Entities;
 
 namespace Website.Application.Account.DeleteRefreshToken.Commands
 {
-    internal class DeleteRefreshTokenCommandHandler : IRequestHandler<DeleteRefreshTokenCommand, Result>
+    public sealed class DeleteRefreshTokenCommandHandler : IRequestHandler<DeleteRefreshTokenCommand, Result>
     {
         private readonly IUserService _userService;
         private readonly IWebsiteDbContext _dbContext;

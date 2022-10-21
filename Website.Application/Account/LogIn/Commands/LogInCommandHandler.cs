@@ -7,7 +7,7 @@ using Website.Domain.Entities;
 
 namespace Website.Application.Account.LogIn.Commands
 {
-    public class LogInCommandHandler : IRequestHandler<LogInCommand, Result>
+    public sealed class LogInCommandHandler : IRequestHandler<LogInCommand, Result>
     {
         private readonly IUserService _userService;
         private readonly IAuthService _authService;

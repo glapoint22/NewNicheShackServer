@@ -3,7 +3,7 @@ using Website.Application.Account.DeleteAccount.Commands;
 
 namespace Website.Application.Account.DeleteAccount.Validators
 {
-    public class DeleteAccountValidator : AbstractValidator<DeleteAccountCommand>
+    public sealed class DeleteAccountValidator : AbstractValidator<DeleteAccountCommand>
     {
         public DeleteAccountValidator()
         {

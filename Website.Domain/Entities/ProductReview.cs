@@ -1,6 +1,6 @@
 ﻿namespace Website.Domain.Entities
 {
-    public class ProductReview
+    public sealed class ProductReview
     {
         public int Id { get; set; }
         public int ProductId { get; set; }

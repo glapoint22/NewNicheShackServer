@@ -7,7 +7,7 @@ using Website.Domain.Events;
 
 namespace Website.Application.Lists.AddCollaborator.Commands
 {
-    public class AddCollaboratorCommandHandler : IRequestHandler<AddCollaboratorCommand, Result>
+    public sealed class AddCollaboratorCommandHandler : IRequestHandler<AddCollaboratorCommand, Result>
     {
         private readonly IWebsiteDbContext _dbContext;
         private readonly IUserService _userService;

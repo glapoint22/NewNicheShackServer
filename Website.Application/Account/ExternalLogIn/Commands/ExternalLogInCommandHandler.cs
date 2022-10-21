@@ -6,7 +6,7 @@ using Website.Domain.Entities;
 
 namespace Website.Application.Account.ExternalLogIn.Commands
 {
-    public class ExternalLogInCommandHandler : IRequestHandler<ExternalLogInCommand, Result>
+    public sealed class ExternalLogInCommandHandler : IRequestHandler<ExternalLogInCommand, Result>
     {
         private readonly IUserService _userService;
         private readonly IWebsiteDbContext _dbContext;

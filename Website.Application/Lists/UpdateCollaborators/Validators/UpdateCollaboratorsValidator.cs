@@ -5,7 +5,7 @@ using Website.Application.Lists.UpdateCollaborators.Commands;
 
 namespace Website.Application.Lists.UpdateCollaborators.Validators
 {
-    public class UpdateCollaboratorsValidator : AbstractValidator<UpdateCollaboratorsCommand>
+    public sealed class UpdateCollaboratorsValidator : AbstractValidator<UpdateCollaboratorsCommand>
     {
         public UpdateCollaboratorsValidator(IWebsiteDbContext dbContext, IUserService userService)
         {

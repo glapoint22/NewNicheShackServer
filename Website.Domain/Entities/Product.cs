@@ -2,7 +2,7 @@
 
 namespace Website.Domain.Entities
 {
-    public class Product
+    public sealed class Product
     {
         public int Id { get; set; }
         public int SubnicheId { get; set; }

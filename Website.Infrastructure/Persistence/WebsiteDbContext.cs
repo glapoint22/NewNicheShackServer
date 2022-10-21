@@ -6,7 +6,7 @@ using Website.Domain.Entities;
 
 namespace Website.Infrastructure.Persistence
 {
-    public class WebsiteDbContext : IdentityDbContext<User>, IWebsiteDbContext
+    public sealed class WebsiteDbContext : IdentityDbContext<User>, IWebsiteDbContext
     {
         public WebsiteDbContext(DbContextOptions<WebsiteDbContext> options) : base(options)
         {

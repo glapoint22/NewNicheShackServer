@@ -13,7 +13,7 @@ using Website.Domain.Events;
 namespace Website.Application.Account.ChangeProfileImage.Commands
 {
     [System.Runtime.Versioning.SupportedOSPlatform("windows")]
-    public class ChangeProfileImageCommandHandler : UpdateUserCommandHandler, IRequestHandler<ChangeProfileImageCommand, Result>
+    public sealed class ChangeProfileImageCommandHandler : UpdateUserCommandHandler, IRequestHandler<ChangeProfileImageCommand, Result>
     {
         private readonly HttpContext _httpContext;
         private readonly IUserService _userService;

@@ -4,7 +4,7 @@ using Website.Application.Common.Interfaces;
 
 namespace Website.Application.Account.IsDuplicateEmail.Queries
 {
-    public class IsDuplicateEmailQueryHandler : IRequestHandler<IsDuplicateEmailQuery, bool>
+    public sealed class IsDuplicateEmailQueryHandler : IRequestHandler<IsDuplicateEmailQuery, bool>
     {
         private readonly IWebsiteDbContext _dbContext;
 

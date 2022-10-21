@@ -3,5 +3,5 @@ using Website.Application.Common.Classes;
 
 namespace Website.Application.Account.CreateDeleteAccountOTP.Commands
 {
-    public record CreateDeleteAccountOTPCommand() : IRequest<Result>;
+    public sealed record CreateDeleteAccountOTPCommand() : IRequest<Result>;
 }

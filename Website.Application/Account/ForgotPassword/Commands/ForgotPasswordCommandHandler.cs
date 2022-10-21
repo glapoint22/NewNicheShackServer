@@ -5,7 +5,7 @@ using Website.Domain.Entities;
 
 namespace Website.Application.Account.ForgotPassword.Commands
 {
-    public class ForgotPasswordCommandHandler : IRequestHandler<ForgotPasswordCommand, Result>
+    public sealed class ForgotPasswordCommandHandler : IRequestHandler<ForgotPasswordCommand, Result>
     {
         private readonly IUserService _userService;
 

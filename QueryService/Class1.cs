@@ -1,6 +1,6 @@
 ﻿namespace QueryService
 {
-    public class Class1
+    public sealed class Class1
     {
 
     }

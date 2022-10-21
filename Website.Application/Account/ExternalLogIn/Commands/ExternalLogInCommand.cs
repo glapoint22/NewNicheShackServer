@@ -3,7 +3,7 @@ using Website.Application.Common.Classes;
 
 namespace Website.Application.Account.ExternalLogIn.Commands
 {
-    public record ExternalLogInCommand(
+    public sealed record ExternalLogInCommand(
         string FirstName,
         string LastName,
         string Email,

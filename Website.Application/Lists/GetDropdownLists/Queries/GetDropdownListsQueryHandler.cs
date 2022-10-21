@@ -5,7 +5,7 @@ using Website.Application.Common.Interfaces;
 
 namespace Website.Application.Lists.GetDropdownLists.Queries
 {
-    public class GetDropdownListsQueryHandler : IRequestHandler<GetDropdownListsQuery, Result>
+    public sealed class GetDropdownListsQueryHandler : IRequestHandler<GetDropdownListsQuery, Result>
     {
         private readonly IUserService _userService;
         private readonly IWebsiteDbContext _dbContext;

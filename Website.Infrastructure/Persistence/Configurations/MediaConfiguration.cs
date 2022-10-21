@@ -4,7 +4,7 @@ using Website.Domain.Entities;
 
 namespace Website.Infrastructure.Persistence.Configurations
 {
-    public class MediaConfiguration : IEntityTypeConfiguration<Media>
+    public sealed class MediaConfiguration : IEntityTypeConfiguration<Media>
     {
         public void Configure(EntityTypeBuilder<Media> builder)
         {

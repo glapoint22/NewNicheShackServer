@@ -1,6 +1,6 @@
 ﻿namespace Website.Domain.Entities
 {
-    public class Subniche
+    public sealed class Subniche
     {
         public int Id { get; set; }
         public int NicheId { get; set; }

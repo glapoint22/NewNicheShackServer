@@ -3,5 +3,5 @@ using Website.Application.Common.Classes;
 
 namespace Website.Application.Lists.GetCollaborators.Queries
 {
-    public record GetCollaboratorsQuery(string ListId) : IRequest<Result>;
+    public sealed record GetCollaboratorsQuery(string ListId) : IRequest<Result>;
 }
