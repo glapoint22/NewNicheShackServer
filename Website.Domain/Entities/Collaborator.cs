@@ -13,7 +13,6 @@ namespace Website.Domain.Entities
         public bool CanEditList { get; set; }
         public bool CanInviteCollaborators { get; set; }
         public bool CanDeleteList { get; set; }
-        public bool CanMoveItem { get; set; }
         public bool CanRemoveItem { get; set; }
         public bool CanManageCollaborators { get; set; }
 
@@ -33,7 +32,6 @@ namespace Website.Domain.Entities
             CanEditList = isOwner;
             CanInviteCollaborators = isOwner;
             CanDeleteList = isOwner;
-            CanMoveItem = isOwner;
             CanRemoveItem = isOwner;
             CanManageCollaborators = isOwner;
         }

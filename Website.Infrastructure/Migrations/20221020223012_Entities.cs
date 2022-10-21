@@ -181,7 +181,6 @@ namespace Website.Infrastructure.Migrations
                     CanEditList = table.Column<bool>(type: "bit", nullable: false),
                     CanInviteCollaborators = table.Column<bool>(type: "bit", nullable: false),
                     CanDeleteList = table.Column<bool>(type: "bit", nullable: false),
-                    CanMoveItem = table.Column<bool>(type: "bit", nullable: false),
                     CanRemoveItem = table.Column<bool>(type: "bit", nullable: false),
                     CanManageCollaborators = table.Column<bool>(type: "bit", nullable: false)
                 },

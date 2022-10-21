@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Website.Application.Common.Interfaces;
-using Website.Application.Lists.SharedList.Queries;
+using Website.Application.Lists.GetSharedList.Queries;
 
-namespace Website.Application.Lists.SharedList.Validators
+namespace Website.Application.Lists.GetSharedList.Validators
 {
     public class ListValidator : AbstractValidator<GetSharedListQuery>
     {
@@ -14,7 +14,7 @@ namespace Website.Application.Lists.SharedList.Validators
                 .MustAsync(async (listId, cancellation) =>
                 {
                     return await dbContext.Lists.AnyAsync(x => x.Id == listId, cancellationToken: cancellation);
-                }).WithMessage("The list Id you provided does not exist");
+                }).WithMessage("List does not exist");
         }
     }
 }

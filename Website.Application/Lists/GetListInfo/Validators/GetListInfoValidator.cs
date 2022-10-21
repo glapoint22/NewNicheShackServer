@@ -16,7 +16,7 @@ namespace Website.Application.Lists.GetListInfo.Validators
                .MustAsync(async (collaborateId, cancellation) =>
                {
                    return await dbContext.Lists
-                    .AnyAsync(x => x.CollaborateId == collaborateId);
+                    .AnyAsync(x => x.CollaborateId == collaborateId, cancellationToken: cancellation);
                }).WithMessage("List does not exist.");
         }
     }

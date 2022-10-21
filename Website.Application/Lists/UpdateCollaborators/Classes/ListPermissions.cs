@@ -6,7 +6,6 @@
         bool CanEditList,
         bool CanInviteCollaborators,
         bool CanDeleteList,
-        bool CanMoveItem,
         bool CanRemoveItem,
         bool CanManageCollaborators
     );

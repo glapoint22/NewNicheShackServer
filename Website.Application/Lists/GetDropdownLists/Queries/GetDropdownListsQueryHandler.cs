@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
 
-namespace Website.Application.Lists.DropdownLists.Queries
+namespace Website.Application.Lists.GetDropdownLists.Queries
 {
     public class GetDropdownListsQueryHandler : IRequestHandler<GetDropdownListsQuery, Result>
     {
@@ -21,7 +21,7 @@ namespace Website.Application.Lists.DropdownLists.Queries
             string userId = _userService.GetUserIdFromClaims();
 
             var lists = await _dbContext.Collaborators
-                .Where(x => x.UserId == userId && x.CanAddToList)
+                .Where(x => x.UserId == userId && (x.IsOwner || x.CanAddToList))
                 .Select(x => new
                 {
                     Key = x.List.Name,

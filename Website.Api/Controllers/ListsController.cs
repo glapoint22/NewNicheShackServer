@@ -3,17 +3,17 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Website.Application.Lists.AddCollaborator.Commands;
 using Website.Application.Lists.AddProduct.Commands;
-using Website.Application.Lists.CollaboratorProducts.Queries;
 using Website.Application.Lists.CreateList.Commands;
 using Website.Application.Lists.DeleteList.Commands;
-using Website.Application.Lists.DropdownLists.Queries;
 using Website.Application.Lists.EditList.Commands;
+using Website.Application.Lists.GetCollaboratorProducts.Queries;
 using Website.Application.Lists.GetCollaborators.Queries;
+using Website.Application.Lists.GetDropdownLists.Queries;
 using Website.Application.Lists.GetListInfo.Queries;
-using Website.Application.Lists.ListCollection.Queries;
+using Website.Application.Lists.GetLists.Queries;
+using Website.Application.Lists.GetSharedList.Queries;
 using Website.Application.Lists.MoveProduct.Commands;
 using Website.Application.Lists.RemoveProduct.Commands;
-using Website.Application.Lists.SharedList.Queries;
 using Website.Application.Lists.UpdateCollaborators.Commands;
 
 namespace Website.Api.Controllers
@@ -62,6 +62,7 @@ namespace Website.Api.Controllers
 
         // ----------------------------------------------------------------------- Create List -------------------------------------------------------------------------
         [HttpPost]
+        [Route("CreateList")]
         [Authorize(Policy = "Account")]
         public async Task<ActionResult> CreateList(CreateListCommand createList)
         {
@@ -72,6 +73,7 @@ namespace Website.Api.Controllers
 
         // ----------------------------------------------------------------------- Delete List -------------------------------------------------------------------------
         [HttpDelete]
+        [Route("DeleteList")]
         [Authorize(Policy = "Account")]
         public async Task<ActionResult> DeleteList(string listId)
         {
@@ -84,6 +86,7 @@ namespace Website.Api.Controllers
 
         // ------------------------------------------------------------------------ Edit List --------------------------------------------------------------------------
         [HttpPut]
+        [Route("EditList")]
         [Authorize(Policy = "Account")]
         public async Task<ActionResult> EditList(EditListCommand editList)
         {
@@ -99,7 +102,7 @@ namespace Website.Api.Controllers
 
         // ---------------------------------------------------------------- Get Collaborators Products -----------------------------------------------------------------
         [HttpGet]
-        [Route("Products")]
+        [Route("GetCollaboratorProducts")]
         public async Task<ActionResult> GetCollaboratorProducts(string listId)
         {
             return SetResponse(await _mediator.Send(new GetCollaboratorProductsQuery(listId)));
@@ -111,7 +114,7 @@ namespace Website.Api.Controllers
 
         // -------------------------------------------------------------------- Get Collaborators ----------------------------------------------------------------------
         [HttpGet]
-        [Route("Collaborators")]
+        [Route("GetCollaborators")]
         [Authorize(Policy = "Account")]
         public async Task<ActionResult> GetCollaborators(string listId)
         {
@@ -125,7 +128,7 @@ namespace Website.Api.Controllers
 
         // ------------------------------------------------------------------- Get Dropdown Lists ----------------------------------------------------------------------
         [HttpGet]
-        [Route("DropdownLists")]
+        [Route("GetDropdownLists")]
         [Authorize(Policy = "Account")]
         public async Task<ActionResult> GetDropdownLists()
         {
@@ -135,14 +138,13 @@ namespace Website.Api.Controllers
 
 
 
-
-        // ------------------------------------------------------------------- Get List Collection ----------------------------------------------------------------------
+        // ----------------------------------------------------------------------- Get Lists ----------------------------------------------------------------------------
         [HttpGet]
-        [Route("ListCollection")]
+        [Route("GetLists")]
         [Authorize(Policy = "Account")]
-        public async Task<ActionResult> GetListCollection()
+        public async Task<ActionResult> GetLists()
         {
-            return SetResponse(await _mediator.Send(new GetListCollectionQuery()));
+            return SetResponse(await _mediator.Send(new GetListsQuery()));
         }
 
 

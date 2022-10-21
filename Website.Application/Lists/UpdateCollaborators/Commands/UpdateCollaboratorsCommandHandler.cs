@@ -49,7 +49,6 @@ namespace Website.Application.Lists.UpdateCollaborators.Commands
                         collaborator.CanAddToList = updatedCollaborator.ListPermissions.CanAddToList;
                         collaborator.CanInviteCollaborators = updatedCollaborator.ListPermissions.CanInviteCollaborators;
                         collaborator.CanManageCollaborators = updatedCollaborator.ListPermissions.CanManageCollaborators;
-                        collaborator.CanMoveItem = updatedCollaborator.ListPermissions.CanMoveItem;
                         collaborator.CanRemoveItem = updatedCollaborator.ListPermissions.CanRemoveItem;
 
                         // add the event

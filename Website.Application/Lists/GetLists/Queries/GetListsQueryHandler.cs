@@ -3,20 +3,20 @@ using Microsoft.EntityFrameworkCore;
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
 
-namespace Website.Application.Lists.ListCollection.Queries
+namespace Website.Application.Lists.GetLists.Queries
 {
-    public class GetListCollectionQueryHandler : IRequestHandler<GetListCollectionQuery, Result>
+    public class GetListsQueryHandler : IRequestHandler<GetListsQuery, Result>
     {
         private readonly IUserService _userService;
         private readonly IWebsiteDbContext _dbContext;
 
-        public GetListCollectionQueryHandler(IUserService userService, IWebsiteDbContext dbContext)
+        public GetListsQueryHandler(IUserService userService, IWebsiteDbContext dbContext)
         {
             _userService = userService;
             _dbContext = dbContext;
         }
 
-        public async Task<Result> Handle(GetListCollectionQuery request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(GetListsQuery request, CancellationToken cancellationToken)
         {
             string userId = _userService.GetUserIdFromClaims();
 
@@ -48,7 +48,6 @@ namespace Website.Application.Lists.ListCollection.Queries
                             z.CanEditList,
                             z.CanInviteCollaborators,
                             z.CanDeleteList,
-                            z.CanMoveItem,
                             z.CanRemoveItem,
                             z.CanManageCollaborators
                         })

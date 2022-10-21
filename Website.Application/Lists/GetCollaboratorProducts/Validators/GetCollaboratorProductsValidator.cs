@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Website.Application.Common.Interfaces;
-using Website.Application.Lists.CollaboratorProducts.Queries;
+using Website.Application.Lists.GetCollaboratorProducts.Queries;
 
-namespace Website.Application.Lists.CollaboratorProducts.Validators
+namespace Website.Application.Lists.GetCollaboratorProducts.Validators
 {
     public class GetCollaboratorProductsValidator : AbstractValidator<GetCollaboratorProductsQuery>
     {
@@ -13,7 +13,7 @@ namespace Website.Application.Lists.CollaboratorProducts.Validators
                 .NotEmpty()
                 .MustAsync(async (listId, cancellation) =>
                 {
-                    return await dbContext.Collaborators.AnyAsync(x => (x.ListId == listId), cancellationToken: cancellation);
+                    return await dbContext.Collaborators.AnyAsync(x => x.ListId == listId, cancellationToken: cancellation);
                 }).WithMessage("List does not exist");
         }
     }

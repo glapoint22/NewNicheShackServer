@@ -12,7 +12,7 @@ using Website.Infrastructure.Persistence;
 namespace Website.Infrastructure.Migrations
 {
     [DbContext(typeof(WebsiteDbContext))]
-    [Migration("20221019194312_Entities")]
+    [Migration("20221020223012_Entities")]
     partial class Entities
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -178,9 +178,6 @@ namespace Website.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<bool>("CanManageCollaborators")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("CanMoveItem")
                         .HasColumnType("bit");
 
                     b.Property<bool>("CanRemoveItem")

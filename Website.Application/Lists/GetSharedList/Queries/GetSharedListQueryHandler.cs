@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
-using Website.Application.Lists.CollaboratorProducts.Queries;
+using Website.Application.Lists.GetCollaboratorProducts.Queries;
 
-namespace Website.Application.Lists.SharedList.Queries
+namespace Website.Application.Lists.GetSharedList.Queries
 {
     public class GetSharedListQueryHandler : IRequestHandler<GetSharedListQuery, Result>
     {
@@ -28,7 +28,7 @@ namespace Website.Application.Lists.SharedList.Queries
 
             return Result.Succeeded(new
             {
-                ListId = request.ListId,
+                request.ListId,
                 ListName = listName,
                 Products = result.ObjContent
             });

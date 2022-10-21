@@ -3,7 +3,7 @@ using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
 using Website.Application.Lists.Common;
 
-namespace Website.Application.Lists.CollaboratorProducts.Queries
+namespace Website.Application.Lists.GetCollaboratorProducts.Queries
 {
     public class GetCollaboratorProductsQueryHandler : CollaboratorProductHandler, IRequestHandler<GetCollaboratorProductsQuery, Result>
     {

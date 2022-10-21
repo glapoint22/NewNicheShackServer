@@ -34,7 +34,6 @@ namespace Website.Application.Lists.GetCollaborators.Queries
                         x.CanEditList,
                         x.CanInviteCollaborators,
                         x.CanDeleteList,
-                        x.CanMoveItem,
                         x.CanRemoveItem,
                         x.CanManageCollaborators
                     }

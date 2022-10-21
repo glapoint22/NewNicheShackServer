@@ -178,9 +178,6 @@ namespace Website.Infrastructure.Migrations
                     b.Property<bool>("CanManageCollaborators")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("CanMoveItem")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("CanRemoveItem")
                         .HasColumnType("bit");
 
