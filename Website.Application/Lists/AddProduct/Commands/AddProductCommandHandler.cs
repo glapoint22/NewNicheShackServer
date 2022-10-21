@@ -11,7 +11,7 @@ namespace Website.Application.Lists.AddProduct.Commands
     {
         private readonly IWebsiteDbContext _dbContext;
 
-        public AddProductCommandHandler(IWebsiteDbContext dbContext) : base(dbContext)
+        public AddProductCommandHandler(IWebsiteDbContext dbContext, IUserService userService) : base(dbContext, userService)
         {
             _dbContext = dbContext;
         }

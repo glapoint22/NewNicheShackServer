@@ -11,6 +11,7 @@ namespace Website.Api.Controllers
         {
             if (result.Success)
             {
+                // Return the content
                 if (result.ObjContent != null)
                 {
                     return Ok(result.ObjContent);
@@ -35,6 +36,19 @@ namespace Website.Api.Controllers
                 foreach (var failure in result.Failures)
                 {
                     ModelState.AddModelError(failure.PropertyName, failure.ErrorMessage);
+                }
+
+
+                // Return the error result
+                string errorCode = result.Failures.First().ErrorCode;
+
+                if (errorCode == "401")
+                {
+                    return Unauthorized(ModelState);
+                }
+                else if (errorCode == "404")
+                {
+                    return NotFound(ModelState);
                 }
 
                 return BadRequest(ModelState);

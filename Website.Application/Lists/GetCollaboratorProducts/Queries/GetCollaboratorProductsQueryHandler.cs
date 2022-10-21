@@ -8,7 +8,7 @@ namespace Website.Application.Lists.GetCollaboratorProducts.Queries
     public sealed class GetCollaboratorProductsQueryHandler : CollaboratorProductHandler, IRequestHandler<GetCollaboratorProductsQuery, Result>
     {
 
-        public GetCollaboratorProductsQueryHandler(IWebsiteDbContext dbContext) : base(dbContext) { }
+        public GetCollaboratorProductsQueryHandler(IWebsiteDbContext dbContext, IUserService userService) : base(dbContext, userService) { }
 
         public async Task<Result> Handle(GetCollaboratorProductsQuery request, CancellationToken cancellationToken)
         {

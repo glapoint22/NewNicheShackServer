@@ -12,7 +12,7 @@ namespace Website.Application.Lists.RemoveProduct.Commands
         private readonly IWebsiteDbContext _dbContext;
         private readonly IUserService _userService;
 
-        public RemoveProductCommandHandler(IWebsiteDbContext dbContext, IUserService userService) : base(dbContext)
+        public RemoveProductCommandHandler(IWebsiteDbContext dbContext, IUserService userService) : base(dbContext, userService)
         {
             _dbContext = dbContext;
             _userService = userService;

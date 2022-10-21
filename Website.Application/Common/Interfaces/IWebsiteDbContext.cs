@@ -10,6 +10,8 @@ namespace Website.Application.Common.Interfaces
         DbSet<List> Lists { get; }
         DbSet<Media> Media { get; }
         DbSet<Niche> Niches { get; }
+        DbSet<OrderProduct> OrderProducts { get; }
+        DbSet<ProductOrder> ProductOrders { get; }
         DbSet<ProductPrice> ProductPrices { get; }
         DbSet<Product> Products { get; }
         DbSet<RefreshToken> RefreshTokens { get; }

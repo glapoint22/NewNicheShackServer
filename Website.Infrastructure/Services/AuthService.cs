@@ -115,7 +115,16 @@ namespace Website.Infrastructure.Services
 
 
 
-        // ------------------------------------------------------------------- Get Principal From Token ----------------------------------------------------------------------
+
+        // ------------------------------------------------------------------- Get Order Notification Key --------------------------------------------------------------
+        public string GetOrderNotificationKey()
+        {
+            return _configuration["OrderNotification:Key"];
+        }
+
+
+
+        // ------------------------------------------------------------------- Get Principal From Token -----------------------------------------------------------------
         public ClaimsPrincipal? GetPrincipalFromToken(string accessToken)
         {
             TokenValidationParameters tokenValidationParameters = new()

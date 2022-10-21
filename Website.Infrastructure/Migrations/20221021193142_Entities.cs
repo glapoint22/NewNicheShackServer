@@ -100,6 +100,14 @@ namespace Website.Infrastructure.Migrations
                 maxLength: 50,
                 nullable: true);
 
+            migrationBuilder.AddColumn<string>(
+                name: "TrackingCode",
+                table: "Users",
+                type: "nvarchar(10)",
+                maxLength: 10,
+                nullable: false,
+                defaultValue: "");
+
             migrationBuilder.CreateTable(
                 name: "Lists",
                 columns: table => new
@@ -248,7 +256,8 @@ namespace Website.Infrastructure.Migrations
                     TimeFrameBetweenRebill = table.Column<int>(type: "int", nullable: false),
                     SubscriptionDuration = table.Column<int>(type: "int", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Disabled = table.Column<bool>(type: "bit", nullable: false)
+                    Disabled = table.Column<bool>(type: "bit", nullable: false),
+                    TrackingCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -294,6 +303,38 @@ namespace Website.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ProductOrders",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(21)", maxLength: 21, nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PaymentMethod = table.Column<int>(type: "int", nullable: false),
+                    Subtotal = table.Column<double>(type: "float", nullable: false),
+                    ShippingHandling = table.Column<double>(type: "float", nullable: false),
+                    Discount = table.Column<double>(type: "float", nullable: false),
+                    Tax = table.Column<double>(type: "float", nullable: false),
+                    Total = table.Column<double>(type: "float", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductOrders", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProductOrders_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductOrders_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ProductPrices",
                 columns: table => new
                 {
@@ -309,6 +350,32 @@ namespace Website.Infrastructure.Migrations
                         name: "FK_ProductPrices_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OrderProducts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderId = table.Column<string>(type: "nvarchar(21)", maxLength: 21, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(21)", maxLength: 21, nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<double>(type: "float", nullable: false),
+                    LineItemType = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: false),
+                    RebillFrequency = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RebillAmount = table.Column<double>(type: "float", nullable: false),
+                    PaymentsRemaining = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderProducts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OrderProducts_ProductOrders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "ProductOrders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -331,6 +398,21 @@ namespace Website.Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Collaborators_UserId",
                 table: "Collaborators",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OrderProducts_OrderId",
+                table: "OrderProducts",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductOrders_ProductId",
+                table: "ProductOrders",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductOrders_UserId",
+                table: "ProductOrders",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -365,6 +447,9 @@ namespace Website.Infrastructure.Migrations
                 name: "CollaboratorProducts");
 
             migrationBuilder.DropTable(
+                name: "OrderProducts");
+
+            migrationBuilder.DropTable(
                 name: "ProductPrices");
 
             migrationBuilder.DropTable(
@@ -374,10 +459,13 @@ namespace Website.Infrastructure.Migrations
                 name: "Collaborators");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "ProductOrders");
 
             migrationBuilder.DropTable(
                 name: "Lists");
+
+            migrationBuilder.DropTable(
+                name: "Products");
 
             migrationBuilder.DropTable(
                 name: "Media");
@@ -438,6 +526,10 @@ namespace Website.Infrastructure.Migrations
 
             migrationBuilder.DropColumn(
                 name: "Image",
+                table: "Users");
+
+            migrationBuilder.DropColumn(
+                name: "TrackingCode",
                 table: "Users");
         }
     }

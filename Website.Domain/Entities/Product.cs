@@ -22,6 +22,7 @@ namespace Website.Domain.Entities
         public RecurringPayment RecurringPayment { get; set; } = null!;
         public DateTime Date { get; set; }
         public bool Disabled { get; set; }
+        public string TrackingCode { get; set; } = string.Empty;
 
 
         public Subniche Subniche { get; set; } = null!;

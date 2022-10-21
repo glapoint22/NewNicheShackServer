@@ -15,6 +15,8 @@ namespace Website.Application.Common.Interfaces
 
         List<Claim> GetClaims(User user, string provider, bool hasPassword);
 
+        string GetOrderNotificationKey();
+
         ClaimsPrincipal? GetPrincipalFromToken(string accessToken);
     }
 }

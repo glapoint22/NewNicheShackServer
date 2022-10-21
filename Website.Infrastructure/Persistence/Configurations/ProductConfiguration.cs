@@ -24,6 +24,9 @@ namespace Website.Infrastructure.Persistence.Configurations
                 .WithMany(x => x.Products)
                 .HasForeignKey(x => x.ImageId);
 
+            builder.Property(x => x.TrackingCode)
+                .HasMaxLength(10);
+
             builder.OwnsOne(x => x.RecurringPayment, buildAction =>
             {
                 buildAction

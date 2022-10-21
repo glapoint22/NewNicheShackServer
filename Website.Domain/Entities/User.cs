@@ -22,6 +22,7 @@ namespace Website.Domain.Entities
         public bool? EmailOnEditedList { get; set; }
         public bool? EmailOnDeletedList { get; set; }
         public bool? EmailOnReview { get; set; }
+        public string TrackingCode { get; set; } = string.Empty;
 
         public ICollection<Collaborator> Collaborators { get; private set; } = new HashSet<Collaborator>();
 
@@ -42,6 +43,7 @@ namespace Website.Domain.Entities
             LastName = lastName;
             Email = email;
             UserName = email;
+            TrackingCode = Guid.NewGuid().ToString("N").Substring(0, 10).ToUpper();
 
             // Create the user's first list
             string listName = firstName + (firstName.Substring(firstName.Length - 1).ToLower() == "s" ? "' List" : "'s List");

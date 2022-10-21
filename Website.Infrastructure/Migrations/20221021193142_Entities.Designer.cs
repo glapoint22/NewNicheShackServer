@@ -12,7 +12,7 @@ using Website.Infrastructure.Persistence;
 namespace Website.Infrastructure.Migrations
 {
     [DbContext(typeof(WebsiteDbContext))]
-    [Migration("20221020223012_Entities")]
+    [Migration("20221021193142_Entities")]
     partial class Entities
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -321,6 +321,52 @@ namespace Website.Infrastructure.Migrations
                     b.ToTable("Niches");
                 });
 
+            modelBuilder.Entity("Website.Domain.Entities.OrderProduct", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("LineItemType")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(21)
+                        .HasColumnType("nvarchar(21)");
+
+                    b.Property<string>("OrderId")
+                        .IsRequired()
+                        .HasMaxLength(21)
+                        .HasColumnType("nvarchar(21)");
+
+                    b.Property<int>("PaymentsRemaining")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<double>("RebillAmount")
+                        .HasColumnType("float");
+
+                    b.Property<string>("RebillFrequency")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderProducts");
+                });
+
             modelBuilder.Entity("Website.Domain.Entities.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -376,6 +422,11 @@ namespace Website.Infrastructure.Migrations
                     b.Property<int>("TotalReviews")
                         .HasColumnType("int");
 
+                    b.Property<string>("TrackingCode")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
                     b.Property<int>("TwoStars")
                         .HasColumnType("int");
 
@@ -391,6 +442,49 @@ namespace Website.Infrastructure.Migrations
                     b.HasIndex("SubnicheId");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("Website.Domain.Entities.ProductOrder", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(21)
+                        .HasColumnType("nvarchar(21)");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("Discount")
+                        .HasColumnType("float");
+
+                    b.Property<int>("PaymentMethod")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("ShippingHandling")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Subtotal")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Tax")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Total")
+                        .HasColumnType("float");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ProductOrders");
                 });
 
             modelBuilder.Entity("Website.Domain.Entities.ProductPrice", b =>
@@ -581,6 +675,11 @@ namespace Website.Infrastructure.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("TrackingCode")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
 
@@ -690,6 +789,17 @@ namespace Website.Infrastructure.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("Website.Domain.Entities.OrderProduct", b =>
+                {
+                    b.HasOne("Website.Domain.Entities.ProductOrder", "ProductOrder")
+                        .WithMany("OrderProducts")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProductOrder");
+                });
+
             modelBuilder.Entity("Website.Domain.Entities.Product", b =>
                 {
                     b.HasOne("Website.Domain.Entities.Media", "Media")
@@ -745,6 +855,25 @@ namespace Website.Infrastructure.Migrations
                     b.Navigation("Subniche");
                 });
 
+            modelBuilder.Entity("Website.Domain.Entities.ProductOrder", b =>
+                {
+                    b.HasOne("Website.Domain.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Website.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Website.Domain.Entities.ProductPrice", b =>
                 {
                     b.HasOne("Website.Domain.Entities.Product", "Product")
@@ -796,6 +925,11 @@ namespace Website.Infrastructure.Migrations
             modelBuilder.Entity("Website.Domain.Entities.Product", b =>
                 {
                     b.Navigation("ProductPrices");
+                });
+
+            modelBuilder.Entity("Website.Domain.Entities.ProductOrder", b =>
+                {
+                    b.Navigation("OrderProducts");
                 });
 
             modelBuilder.Entity("Website.Domain.Entities.User", b =>

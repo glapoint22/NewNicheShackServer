@@ -14,7 +14,7 @@
         public double Total { get; set; }
 
         public User User { get; set; } = null!;
-        public Product MyProperty { get; set; } = null!;
+        public Product Product { get; set; } = null!;
         public ICollection<OrderProduct> OrderProducts { get; private set; } = new HashSet<OrderProduct>();
     }
 }

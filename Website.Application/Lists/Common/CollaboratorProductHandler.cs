@@ -8,10 +8,12 @@ namespace Website.Application.Lists.Common
     public abstract class CollaboratorProductHandler
     {
         private readonly IWebsiteDbContext _dbContext;
+        private readonly IUserService _userService;
 
-        protected CollaboratorProductHandler(IWebsiteDbContext dbContext)
+        protected CollaboratorProductHandler(IWebsiteDbContext dbContext, IUserService userService)
         {
             _dbContext = dbContext;
+            _userService = userService;
         }
 
 
@@ -31,6 +33,8 @@ namespace Website.Application.Lists.Common
         // ----------------------------------------------------------------------- Get Products ------------------------------------------------------------------------
         public async Task<List<CollaboratorProductDto>> GetProducts(string listId, string? sort = null)
         {
+            User user = await _userService.GetUserFromClaimsAsync();
+
             return await _dbContext.CollaboratorProducts
                 .SortBy(sort)
                 .Where(x => x.Collaborator.ListId == listId)
@@ -53,7 +57,9 @@ namespace Website.Application.Lists.Common
                             Src = x.Collaborator.User.Image!
                         }
                     },
-                    Hoplink = x.Product.Hoplink,
+                    Hoplink = x.Product.Hoplink + 
+                        (user != null ? (x.Product.Hoplink.Contains('?') ? "&" : "?") + "tid=" + 
+                        x.Product.TrackingCode + "_" + user.TrackingCode : ""),
                     Image = new Image
                     {
                         Name = x.Product.Media.Name,

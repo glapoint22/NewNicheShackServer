@@ -17,10 +17,14 @@ namespace Website.Infrastructure.Persistence
         public DbSet<List> Lists => Set<List>();
         public DbSet<Media> Media => Set<Media>();
         public DbSet<Niche> Niches => Set<Niche>();
+        public DbSet<OrderProduct> OrderProducts => Set<OrderProduct>();
+        public DbSet<ProductOrder> ProductOrders => Set<ProductOrder>();
         public DbSet<ProductPrice> ProductPrices => Set<ProductPrice>();
         public DbSet<Product> Products => Set<Product>();
         public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
         public DbSet<Subniche> Subniches => Set<Subniche>();
+
+        
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

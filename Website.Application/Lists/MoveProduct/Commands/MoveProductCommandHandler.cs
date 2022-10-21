@@ -13,7 +13,7 @@ namespace Website.Application.Lists.MoveProduct.Commands
         private readonly IWebsiteDbContext _dbContext;
         private readonly IUserService _userService;
 
-        public MoveProductCommandHandler(IWebsiteDbContext dbContext, IUserService userService) : base(dbContext)
+        public MoveProductCommandHandler(IWebsiteDbContext dbContext, IUserService userService) : base(dbContext, userService)
         {
             _dbContext = dbContext;
             _userService = userService;

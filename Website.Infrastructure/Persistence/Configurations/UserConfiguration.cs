@@ -56,6 +56,9 @@ namespace Website.Infrastructure.Persistence.Configurations
 
             builder.Property(x => x.EmailOnReview)
                 .HasDefaultValue(true);
+
+            builder.Property(x => x.TrackingCode)
+                .HasMaxLength(10);
         }
     }
 }
