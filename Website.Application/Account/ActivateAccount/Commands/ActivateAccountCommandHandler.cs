@@ -27,33 +27,29 @@ namespace Website.Application.Account.ActivateAccount.Commands
         {
             User user = await _userService.GetUserByEmailAsync(request.Email);
 
-            if (user != null)
-            {
-                if (!user.EmailConfirmed)
-                {
-                    user.AddDomainEvent(new UserActivatedAccountEvent(user.Id));
-                    IdentityResult identityResult = await _userService.ConfirmEmailAsync(user, request.Token);
-                    if (!identityResult.Succeeded) return Result.Failed();
-                }
+            if (user.EmailConfirmed) return Result.Failed("409");
 
-                // Log in the user
-                List<Claim> claims = _authService.GetClaims(user, true);
-                string accessToken = _authService.GenerateAccessToken(claims);
-                string refreshToken = _authService.GenerateRefreshToken(user.Id);
-                string userData = _userService.GetUserData(user);
-                DateTimeOffset? expiration = _userService.GetExpirationFromClaims(claims);
+            IdentityResult identityResult = await _userService.ConfirmEmailAsync(user, request.Token);
+            if (!identityResult.Succeeded) return Result.Failed();
 
-                // Set the cookies
-                _cookieService.SetCookie("access", accessToken, expiration);
-                _cookieService.SetCookie("refresh", refreshToken, expiration);
-                _cookieService.SetCookie("user", userData, expiration);
+            // Add the domain event
+            user.AddDomainEvent(new UserActivatedAccountEvent(user.Id));
 
-                await _dbContext.SaveChangesAsync();
+            // Log in the user
+            List<Claim> claims = _authService.GetClaims(user, true);
+            string accessToken = _authService.GenerateAccessToken(claims);
+            string refreshToken = _authService.GenerateRefreshToken(user.Id);
+            string userData = _userService.GetUserData(user);
+            DateTimeOffset? expiration = _userService.GetExpirationFromClaims(claims);
 
-                return Result.Succeeded();
-            }
+            // Set the cookies
+            _cookieService.SetCookie("access", accessToken, expiration);
+            _cookieService.SetCookie("refresh", refreshToken, expiration);
+            _cookieService.SetCookie("user", userData, expiration);
 
-            return Result.Failed();
+            await _dbContext.SaveChangesAsync();
+
+            return Result.Succeeded();
         }
     }
 }

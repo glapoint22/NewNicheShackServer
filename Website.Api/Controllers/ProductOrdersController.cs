@@ -35,7 +35,7 @@ namespace Website.Api.Controllers
         [HttpGet]
         [Route("GetOrders")]
         [Authorize(Policy = "Account")]
-        public async Task<ActionResult> GetOrders(string filter = "last-30", string searchTerm = "")
+        public async Task<ActionResult> GetOrders(string filter = "last-30", string? searchTerm = null)
         {
             return SetResponse(await _mediator.Send(new GetOrdersQuery(filter, searchTerm)));
         }

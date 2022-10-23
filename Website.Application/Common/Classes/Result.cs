@@ -77,5 +77,21 @@ namespace Website.Application.Common.Classes
 
             return new(validationFailures);
         }
+
+        public static Result Failed(string errorCode)
+        {
+            List<ValidationFailure> validationFailures = new()
+            {
+                new ValidationFailure
+                {
+                    PropertyName = string.Empty,
+                    ErrorCode = errorCode,
+                    ErrorMessage = string.Empty
+                }
+            };
+
+
+            return new(validationFailures);
+        }
     }
 }

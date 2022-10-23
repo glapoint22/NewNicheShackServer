@@ -28,7 +28,12 @@ namespace Website.Application.Account.LogIn.Commands
 
             if (user == null || await _userService.CheckPasswordAsync(user, request.Password) == false)
             {
-                return Result.Failed(new ValidationFailure("No Match", "Your password and email do not match. Please try again."));
+                ValidationFailure failure = new("No Match", "Your password and email do not match. Please try again.")
+                {
+                    ErrorCode = "401"
+                };
+
+                return Result.Failed(failure);
             }
 
             if (!user.EmailConfirmed) return Result.Failed();

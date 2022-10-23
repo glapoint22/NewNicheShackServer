@@ -15,7 +15,9 @@ namespace Website.Application.Account.ActivateAccount.Validators
                 .MustAsync(async (email, cancellation) =>
                 {
                     return await dbContext.Users.AnyAsync(x => x.Email == email, cancellationToken: cancellation);
-                }).WithMessage("The email you provided does not exist");
+                })
+                .WithErrorCode("404")
+                .WithMessage("The email you provided does not exist");
 
             RuleFor(x => x.Token)
                 .NotEmpty()

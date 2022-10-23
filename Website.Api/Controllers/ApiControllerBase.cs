@@ -50,6 +50,10 @@ namespace Website.Api.Controllers
                 {
                     return NotFound(ModelState);
                 }
+                else if (errorCode == "409")
+                {
+                    return Conflict(ModelState);
+                }
 
                 return BadRequest(ModelState);
             }
