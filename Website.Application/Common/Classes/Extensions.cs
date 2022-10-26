@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using Shared.QueryBuilder.Classes;
+using System.Text.RegularExpressions;
 using Website.Domain.Entities;
 
 namespace Website.Application.Common.Classes
@@ -112,6 +113,20 @@ namespace Website.Application.Common.Classes
             }
 
             return source;
+        }
+
+
+
+
+
+
+
+        // --------------------------------------------------------------------------- Where ---------------------------------------------------------------------------------
+        public static IQueryable<T> Where<T>(this IQueryable<T> source, string searchTerm)
+        {
+            QueryBuilder queryBuilder = new QueryBuilder();
+
+            return source.Where(queryBuilder.BuildQuery<T>(searchTerm));
         }
     }
 }

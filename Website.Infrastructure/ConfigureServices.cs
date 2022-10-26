@@ -5,6 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Quartz;
+using Shared.Common.Interfaces;
+using Shared.PageBuilder.Classes;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Website.Application.Common.Interfaces;
@@ -12,6 +14,7 @@ using Website.Domain.Entities;
 using Website.Infrastructure.BackgroundJobs;
 using Website.Infrastructure.Persistence;
 using Website.Infrastructure.Persistence.Interceptors;
+using Website.Infrastructure.Persistence.Repositories;
 using Website.Infrastructure.Services;
 
 namespace Website.Infrastructure
@@ -25,7 +28,7 @@ namespace Website.Infrastructure
             services.AddDbContext<WebsiteDbContext>((sp, options) =>
             {
                 var interceptor = sp.GetService<DomainEventsInterceptor>();
-                options.UseSqlServer(configuration.GetConnectionString("WebsiteDBConnection"))
+                options.UseSqlServer(configuration.GetConnectionString("DBConnection"))
                     .AddInterceptors(interceptor!);
             });
 
@@ -94,8 +97,11 @@ namespace Website.Infrastructure
             services.AddTransient<ICookieService, CookieService>();
             services.AddTransient<IAuthService, AuthService>();
             services.AddScoped<IWebsiteDbContext>(provider => provider.GetRequiredService<WebsiteDbContext>());
+            services.AddScoped<IPageService, PageService>();
             services.AddHttpContextAccessor();
 
+            services.AddScoped<PageBuilder>();
+            services.AddScoped<IRepository, Repository>();
 
             return services;
         }

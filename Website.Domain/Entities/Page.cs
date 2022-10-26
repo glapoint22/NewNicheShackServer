@@ -2,10 +2,12 @@
 {
     public sealed class Page
     {
-        public int Id { get; set; }
+        public string Id { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
-        public string UrlName { get; set; } = string.Empty;
+        public string? UrlName { get; set; } = string.Empty;
         public string Content { get; set; } = string.Empty;
         public int PageType { get; set; }
+
+        public ICollection<PageReferenceItem> PageReferenceItems { get; private set; } = new HashSet<PageReferenceItem>();
     }
 }

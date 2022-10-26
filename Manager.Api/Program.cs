@@ -1,9 +1,6 @@
-using Shared;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddSharedServices();
 builder.Services.AddControllers();
 
 var app = builder.Build();

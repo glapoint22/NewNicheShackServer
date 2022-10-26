@@ -228,6 +228,78 @@ namespace Website.Infrastructure.Migrations
                     b.ToTable("CollaboratorProducts");
                 });
 
+            modelBuilder.Entity("Website.Domain.Entities.Keyword", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Keywords");
+                });
+
+            modelBuilder.Entity("Website.Domain.Entities.KeywordGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("KeywordGroups");
+                });
+
+            modelBuilder.Entity("Website.Domain.Entities.KeywordInKeywordGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("KeywordGroupId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("KeywordId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("KeywordGroupId");
+
+                    b.HasIndex("KeywordId");
+
+                    b.ToTable("KeywordsInKeywordGroup");
+                });
+
+            modelBuilder.Entity("Website.Domain.Entities.KeywordSearchVolume", b =>
+                {
+                    b.Property<int>("KeywordId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("KeywordId", "Date");
+
+                    b.ToTable("KeywordSearchVolumes");
+                });
+
             modelBuilder.Entity("Website.Domain.Entities.List", b =>
                 {
                     b.Property<string>("Id")
@@ -363,6 +435,62 @@ namespace Website.Infrastructure.Migrations
                     b.HasIndex("OrderId");
 
                     b.ToTable("OrderProducts");
+                });
+
+            modelBuilder.Entity("Website.Domain.Entities.Page", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<int>("PageType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UrlName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Pages");
+                });
+
+            modelBuilder.Entity("Website.Domain.Entities.PageReferenceItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("KeywordGroupId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PageId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<int?>("SubnicheId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("KeywordGroupId");
+
+                    b.HasIndex("PageId");
+
+                    b.HasIndex("SubnicheId");
+
+                    b.ToTable("PageReferenceItems");
                 });
 
             modelBuilder.Entity("Website.Domain.Entities.Product", b =>
@@ -787,6 +915,36 @@ namespace Website.Infrastructure.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("Website.Domain.Entities.KeywordInKeywordGroup", b =>
+                {
+                    b.HasOne("Website.Domain.Entities.KeywordGroup", "KeywordGroup")
+                        .WithMany("KeywordsInKeywordGroup")
+                        .HasForeignKey("KeywordGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Website.Domain.Entities.Keyword", "Keyword")
+                        .WithMany()
+                        .HasForeignKey("KeywordId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Keyword");
+
+                    b.Navigation("KeywordGroup");
+                });
+
+            modelBuilder.Entity("Website.Domain.Entities.KeywordSearchVolume", b =>
+                {
+                    b.HasOne("Website.Domain.Entities.Keyword", "Keyword")
+                        .WithMany()
+                        .HasForeignKey("KeywordId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Keyword");
+                });
+
             modelBuilder.Entity("Website.Domain.Entities.OrderProduct", b =>
                 {
                     b.HasOne("Website.Domain.Entities.ProductOrder", "ProductOrder")
@@ -796,6 +954,31 @@ namespace Website.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("ProductOrder");
+                });
+
+            modelBuilder.Entity("Website.Domain.Entities.PageReferenceItem", b =>
+                {
+                    b.HasOne("Website.Domain.Entities.KeywordGroup", "KeywordGroup")
+                        .WithMany("PageReferenceItems")
+                        .HasForeignKey("KeywordGroupId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Website.Domain.Entities.Page", "Page")
+                        .WithMany("PageReferenceItems")
+                        .HasForeignKey("PageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Website.Domain.Entities.Subniche", "Subniche")
+                        .WithMany("PageReferenceItems")
+                        .HasForeignKey("SubnicheId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("KeywordGroup");
+
+                    b.Navigation("Page");
+
+                    b.Navigation("Subniche");
                 });
 
             modelBuilder.Entity("Website.Domain.Entities.Product", b =>
@@ -910,6 +1093,13 @@ namespace Website.Infrastructure.Migrations
                     b.Navigation("CollaboratorProducts");
                 });
 
+            modelBuilder.Entity("Website.Domain.Entities.KeywordGroup", b =>
+                {
+                    b.Navigation("KeywordsInKeywordGroup");
+
+                    b.Navigation("PageReferenceItems");
+                });
+
             modelBuilder.Entity("Website.Domain.Entities.List", b =>
                 {
                     b.Navigation("Collaborators");
@@ -920,6 +1110,11 @@ namespace Website.Infrastructure.Migrations
                     b.Navigation("Products");
                 });
 
+            modelBuilder.Entity("Website.Domain.Entities.Page", b =>
+                {
+                    b.Navigation("PageReferenceItems");
+                });
+
             modelBuilder.Entity("Website.Domain.Entities.Product", b =>
                 {
                     b.Navigation("ProductPrices");
@@ -928,6 +1123,11 @@ namespace Website.Infrastructure.Migrations
             modelBuilder.Entity("Website.Domain.Entities.ProductOrder", b =>
                 {
                     b.Navigation("OrderProducts");
+                });
+
+            modelBuilder.Entity("Website.Domain.Entities.Subniche", b =>
+                {
+                    b.Navigation("PageReferenceItems");
                 });
 
             modelBuilder.Entity("Website.Domain.Entities.User", b =>

@@ -3,19 +3,16 @@ using Microsoft.EntityFrameworkCore;
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
 using Website.Application.ProductOrders.GetOrders.Classes;
-using Website.Domain.Entities;
 
 namespace Website.Application.ProductOrders.GetOrders.Queries
 {
     public sealed class GetOrdersQueryHandler : IRequestHandler<GetOrdersQuery, Result>
     {
-        private readonly IQueryService _queryService;
         private readonly IUserService _userService;
         private readonly IWebsiteDbContext _dbContext;
 
-        public GetOrdersQueryHandler(IQueryService queryService, IUserService userService, IWebsiteDbContext dbContext)
+        public GetOrdersQueryHandler(IUserService userService, IWebsiteDbContext dbContext)
         {
-            _queryService = queryService;
             _userService = userService;
             _dbContext = dbContext;
         }
@@ -99,7 +96,7 @@ namespace Website.Application.ProductOrders.GetOrders.Queries
                 .OrderByDescending(x => x.ProductOrder.Date)
                 .ThenBy(x => x.OrderId)
                 .Where(x => x.ProductOrder.UserId == userId)
-                .Where(_queryService.BuildQuery<OrderProduct>(searchTerm))
+                .Where(searchTerm)
                 .Select(x => new OrderProductDto
                 {
                     Date = x.ProductOrder.Date.ToString("MMMM dd, yyyy"),
@@ -109,8 +106,8 @@ namespace Website.Application.ProductOrders.GetOrders.Queries
                         Name = x.ProductOrder.Product.Media.Name,
                         Src = x.ProductOrder.Product.Media.ImageSm!
                     } : null!,
-                    Hoplink = x.ProductOrder.Product.Hoplink + 
-                        (x.ProductOrder.Product.Hoplink.Contains('?') ? "&" : "?") + "tid=" + 
+                    Hoplink = x.ProductOrder.Product.Hoplink +
+                        (x.ProductOrder.Product.Hoplink.Contains('?') ? "&" : "?") + "tid=" +
                         x.ProductOrder.Product.TrackingCode + "_" + x.ProductOrder.User.TrackingCode,
                     OrderNumber = x.OrderId,
                     UrlName = x.ProductOrder.Product.UrlName

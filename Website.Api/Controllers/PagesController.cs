@@ -1,11 +1,42 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Website.Application.Pages.GetSearchPage.Queries;
 
 namespace Website.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
-    public sealed class PagesController : ControllerBase
+    public sealed class PagesController : ApiControllerBase
     {
+        private readonly ISender _mediator;
+
+        public PagesController(ISender mediator)
+        {
+            _mediator = mediator;
+        }
+
+
+
+        // ------------------------------------------------------------------------- Get Page --------------------------------------------------------------------------
+        //[HttpGet]
+        //[Route("GetPage")]
+        //public async Task<ActionResult> GetPage(string? id = null, int? pageType = null)
+        //{
+        //    return SetResponse(await _mediator.Send(GetPageQuery(id, pageType)));
+        //}
+
+
+
+
+
+
+        // ---------------------------------------------------------------------- Get Search Page ----------------------------------------------------------------------
+        [HttpGet]
+        [Route("GetSearchPage")]
+        public async Task<ActionResult> GetSearchPage(string searchTerm, int? nicheId, int? subnicheId, string? filters)
+        {
+
+            return SetResponse(await _mediator.Send(new GetSearchPageQuery(searchTerm, nicheId, subnicheId, filters)));
+        }
     }
 }
