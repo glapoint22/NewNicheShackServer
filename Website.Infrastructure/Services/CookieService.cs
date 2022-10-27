@@ -31,7 +31,7 @@ namespace Website.Infrastructure.Services
             return _httpContext.Request.Cookies[cookie];
         }
 
-        
+
 
 
 

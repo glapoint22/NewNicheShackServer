@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 using Website.Application.Account.SignUp.Commands;
 using Website.Application.Common.Interfaces;
 

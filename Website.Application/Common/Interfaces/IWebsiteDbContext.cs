@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
 using Website.Domain.Entities;
 
 namespace Website.Application.Common.Interfaces
@@ -23,7 +24,7 @@ namespace Website.Application.Common.Interfaces
         DbSet<RefreshToken> RefreshTokens { get; }
         DbSet<Subniche> Subniches { get; }
         DbSet<User> Users { get; }
-        
+
 
 
         Task<int> SaveChangesAsync();

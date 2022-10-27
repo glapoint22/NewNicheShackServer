@@ -1,4 +1,5 @@
-﻿using Shared.QueryBuilder.Classes;
+﻿
+using Shared.QueryBuilder.Classes;
 using System.Text.RegularExpressions;
 using Website.Domain.Entities;
 

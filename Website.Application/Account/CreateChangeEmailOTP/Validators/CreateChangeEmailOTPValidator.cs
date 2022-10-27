@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 using Website.Application.Account.CreateChangeEmailOTP.Commands;
 using Website.Application.Common.Interfaces;
 

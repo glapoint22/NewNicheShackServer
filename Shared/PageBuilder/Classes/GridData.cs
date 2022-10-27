@@ -1,4 +1,7 @@
-﻿namespace Shared.PageBuilder.Classes
+﻿using Shared.Common.Interfaces;
+using System.Linq.Expressions;
+
+namespace Shared.PageBuilder.Classes
 {
     public sealed class GridData
     {
@@ -9,9 +12,17 @@
         public double ProductCountStart { get; set; }
         public double ProductCountEnd { get; set; }
 
-        //public async Task<GridData> GetData(SharedDbContext dbContext)
-        //{
+        private readonly IRepository _repository;
 
-        //}
+        public GridData(IRepository repository)
+        {
+            _repository = repository;
+        }
+
+
+        public async Task SetData<T>(Expression<Func<T, bool>> query)
+        {
+            var a = 0;
+        }
     }
 }

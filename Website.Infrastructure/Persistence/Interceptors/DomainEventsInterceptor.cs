@@ -48,7 +48,7 @@ namespace Website.Infrastructure.Persistence.Interceptors
             _domainEvents.Clear();
 
             return domainEvents;
-            
+
         }
     }
 }

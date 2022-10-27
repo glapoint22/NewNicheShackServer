@@ -1,4 +1,5 @@
 ﻿using Shared.Common.Enums;
+using System.Linq.Expressions;
 using System.Text.Json;
 
 namespace Shared.Common.Widgets
@@ -26,7 +27,7 @@ namespace Shared.Common.Widgets
         }
 
 
-        public virtual Task SetData()
+        public virtual Task SetData<T>(Expression<Func<T, bool>> query)
         {
             return Task.CompletedTask;
         }

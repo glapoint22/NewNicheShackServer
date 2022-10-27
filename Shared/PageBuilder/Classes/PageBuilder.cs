@@ -3,6 +3,7 @@ using Shared.Common.Enums;
 using Shared.Common.Interfaces;
 using Shared.Common.Widgets;
 using Shared.PageBuilder.Widgets;
+using System.Linq.Expressions;
 using System.Text.Json;
 
 namespace Shared.PageBuilder.Classes
@@ -36,12 +37,11 @@ namespace Shared.PageBuilder.Classes
 
 
         // ------------------------------------------------------------------------- Set Data -------------------------------------------------------------------------
-        public async Task SetData(WebPage page)
+        public async Task SetData<T>(WebPage page, Expression<Func<T, bool>> query)
         {
             // If the page background has an image
             if (page.Background != null && page.Background.Image != null)
             {
-                //await SetImageData(page.Background.Image);
                 await page.Background.Image.SetData(_repository);
             }
 
@@ -50,7 +50,7 @@ namespace Shared.PageBuilder.Classes
             // Rows
             if (page.Rows != null && page.Rows.Count > 0)
             {
-                await SetRowData(page.Rows);
+                await SetRowData(page.Rows, query);
             }
         }
 
@@ -59,22 +59,22 @@ namespace Shared.PageBuilder.Classes
 
 
 
-        
+
         // ----------------------------------------------------------------------- Set Row Data -----------------------------------------------------------------------
-        private async Task SetRowData(List<Row> rows)
+        private async Task SetRowData<T>(List<Row> rows, Expression<Func<T, bool>> query)
         {
             foreach (Row row in rows)
             {
                 if (row.Background != null && row.Background.Image != null)
                 {
-                    //await SetImageData(row.Background.Image);
+                    await row.Background.Image.SetData(_repository);
                 }
 
                 foreach (Column column in row.Columns)
                 {
                     if (column.Background != null && column.Background.Image != null)
                     {
-                        //await SetImageData(column.Background.Image);
+                        await column.Background.Image.SetData(_repository);
                     }
 
 
@@ -82,15 +82,14 @@ namespace Shared.PageBuilder.Classes
                     Widget widget = GetWidget(column.WidgetData);
 
 
-
                     // Set the widget data
-                    await widget.SetData();
+                    await widget.SetData(query);
 
                     if (column.WidgetData.WidgetType == WidgetType.Container)
                     {
                         ContainerWidget container = (ContainerWidget)column.WidgetData;
 
-                        if (container.Rows != null && container.Rows.Count > 0) await SetRowData(container.Rows);
+                        if (container.Rows != null && container.Rows.Count > 0) await SetRowData(container.Rows, query);
                     }
                 }
             }
@@ -99,7 +98,7 @@ namespace Shared.PageBuilder.Classes
 
 
 
-        
+
         // ------------------------------------------------------------------------ Get Widget ------------------------------------------------------------------------
 
         private static Widget GetWidget(Widget widgetData)

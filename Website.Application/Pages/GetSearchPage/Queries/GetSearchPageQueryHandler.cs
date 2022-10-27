@@ -36,7 +36,7 @@ namespace Website.Application.Pages.GetSearchPage.Queries
                 });
             }
 
-            
+
             // Get the search page
             WebPage page = await _pageService.GetPage(request.SearchTerm, request.NicheId, request.SubnicheId, request.Filters);
 

@@ -2,6 +2,8 @@
 using Shared.QueryBuilder.Enums;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Text.RegularExpressions;
+using System.Web;
 
 namespace Shared.QueryBuilder.Classes
 {
@@ -194,6 +196,10 @@ namespace Shared.QueryBuilder.Classes
                     expression = GetSearchExpression(queryRow.StringValue!, parameter);
                     break;
 
+                case QueryType.Filters:
+                    expression = GetFiltersExpression(queryRow.StringValue!, parameter);
+                    break;
+
                 // Default
                 default:
                     expression = Expression.Equal(Expression.Property(parameter, "Id"), Expression.Constant(0));
@@ -202,6 +208,104 @@ namespace Shared.QueryBuilder.Classes
 
             return expression;
         }
+
+
+
+
+
+
+
+
+
+        // ------------------------------------------------------------------- Get Filters Expression --------------------------------------------------------------------
+        private static Expression GetFiltersExpression(string filtersString, ParameterExpression parameter)
+        {
+            Expression expression = null!;
+            Expression rightExpression = null!;
+            bool hasPrice;
+
+
+            filtersString = HttpUtility.UrlDecode(filtersString);
+
+            Regex regex = new Regex(@".+?\|[0-9,\-]+\|");
+            MatchCollection matches = regex.Matches(filtersString);
+
+
+            foreach (Match match in matches)
+            {
+                regex = new Regex(@"(.+)?\|([0-9,\-]+)\|");
+                Match filter = regex.Match(match.Value);
+
+                string filterName = filter.Groups[1].Value;
+                string filterValues = filter.Groups[2].Value;
+
+                switch (filterName)
+                {
+                    case "Customer Rating":
+                        // Get the min value from the filter values
+                        double value = filterValues
+                            .Split('\u002C')
+                            .Select(x => Convert.ToDouble(x))
+                            .ToArray()
+                            .Min();
+
+                        MemberExpression ratingProperty = Expression.Property(parameter, "Rating");
+                        ConstantExpression ratingValue = Expression.Constant(value);
+                        rightExpression = Expression.GreaterThanOrEqual(ratingProperty, ratingValue);
+
+                        if (expression == null)
+                        {
+                            expression = rightExpression;
+                        }
+                        else
+                        {
+                            expression = Expression.AndAlso(expression, rightExpression);
+                        }
+
+                        break;
+
+                    case "Price":
+                        var prices = filterValues
+                            .Split('-')
+                            .Select(x => Convert.ToDouble(x))
+                            .ToArray();
+
+                        MemberExpression productPricesProperty = Expression.Property(parameter, "ProductPrices");
+
+
+
+                        // ProductPrice param and its properties
+                        //ParameterExpression ProductPriceParameter = Expression.Parameter(typeof(ProductPrice), "z");
+                        //MemberExpression PriceProperty = Expression.Property(ProductPriceParameter, "Price");
+
+
+                        //MethodCallExpression selectExpression = Expression.Call(
+                        //typeof(Enumerable),
+                        //"Any",
+                        //new Type[] { typeof(ProductPrice) },
+                        //productPricesProperty,
+                        //Expression.Lambda<Func<ProductPrice, bool>>(Expression.GreaterThanOrEqual(PriceProperty, Expression.Constant(10)), parameter));
+
+                        break;
+
+                    case "Price Range":
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+
+            return expression;
+        }
+
+
+
+
+
+
+
 
 
 

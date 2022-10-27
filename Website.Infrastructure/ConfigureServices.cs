@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Quartz;
+
 using Shared.Common.Interfaces;
 using Shared.PageBuilder.Classes;
 using System.IdentityModel.Tokens.Jwt;

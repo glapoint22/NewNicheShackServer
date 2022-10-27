@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
 using Website.Domain.Entities;
@@ -57,8 +58,8 @@ namespace Website.Application.Lists.Common
                             Src = x.Collaborator.User.Image!
                         }
                     },
-                    Hoplink = x.Product.Hoplink + 
-                        (user != null ? (x.Product.Hoplink.Contains('?') ? "&" : "?") + "tid=" + 
+                    Hoplink = x.Product.Hoplink +
+                        (user != null ? (x.Product.Hoplink.Contains('?') ? "&" : "?") + "tid=" +
                         x.Product.TrackingCode + "_" + user.TrackingCode : ""),
                     Image = new Image
                     {

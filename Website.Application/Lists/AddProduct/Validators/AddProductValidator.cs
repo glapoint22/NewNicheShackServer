@@ -31,7 +31,7 @@ namespace Website.Application.Lists.AddProduct.Validators
                         .Select(x => x.Id)
                         .ToListAsync();
 
-                    productIsUnique =!await dbContext.CollaboratorProducts
+                    productIsUnique = !await dbContext.CollaboratorProducts
                         .AnyAsync(x => x.ProductId == command.ProductId && collaboratorIds
                         .Contains(x.CollaboratorId), cancellationToken: cancellation);
 

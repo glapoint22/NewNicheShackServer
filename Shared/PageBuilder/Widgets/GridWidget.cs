@@ -1,21 +1,24 @@
 ﻿using Shared.Common.Interfaces;
 using Shared.Common.Widgets;
 using Shared.PageBuilder.Classes;
+using System.Linq.Expressions;
 
 namespace Shared.PageBuilder.Widgets
 {
     public sealed class GridWidget : Widget
     {
-        private readonly IRepository _repository;
+        public GridData GridData { get; set; }
+
 
         public GridWidget(IRepository repository)
         {
-            _repository = repository;
+            GridData = new GridData(repository);
         }
 
-        public GridData GridData { get; set; } = null!;
 
-
-        
+        public async override Task SetData<T>(Expression<Func<T, bool>> query)
+        {
+            await GridData.SetData(query);
+        }
     }
 }

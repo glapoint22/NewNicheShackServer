@@ -1,4 +1,5 @@
-﻿using Website.Application.Common.Interfaces;
+﻿
+using Website.Application.Common.Interfaces;
 using Website.Domain.Entities;
 
 namespace Website.Application.Account.Common

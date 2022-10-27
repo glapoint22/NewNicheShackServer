@@ -1,4 +1,5 @@
-﻿using System.Security.Claims;
+﻿
+using System.Security.Claims;
 using Website.Domain.Entities;
 
 namespace Website.Application.Common.Interfaces

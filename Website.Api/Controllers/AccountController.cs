@@ -106,7 +106,7 @@ namespace Website.Api.Controllers
         {
             return SetResponse(await _mediator.Send(new ChangeProfileImageCommand()));
         }
-        
+
 
 
 
@@ -160,7 +160,7 @@ namespace Website.Api.Controllers
 
 
 
-        
+
         // --------------------------------------------------------------------- External LogIn -----------------------------------------------------------------------
         [HttpPost]
         [Route("ExternalLogIn")]

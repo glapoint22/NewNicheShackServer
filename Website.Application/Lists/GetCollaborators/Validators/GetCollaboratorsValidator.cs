@@ -30,8 +30,8 @@ namespace Website.Application.Lists.GetCollaborators.Validators
                 // Check for permissions
                 .MustAsync(async (listId, cancellation) =>
                 {
-                    return await dbContext.Collaborators.AnyAsync(x => x.ListId == listId && 
-                        x.UserId == userId && 
+                    return await dbContext.Collaborators.AnyAsync(x => x.ListId == listId &&
+                        x.UserId == userId &&
                         (x.IsOwner || x.CanManageCollaborators), cancellationToken: cancellation);
                 }).WithMessage("You do not have permissions to access this content!")
                 .When(x => listExists, ApplyConditionTo.CurrentValidator);
