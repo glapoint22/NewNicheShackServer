@@ -1,7 +1,6 @@
 ﻿using Shared.Common.Interfaces;
 using Shared.Common.Widgets;
 using Shared.PageBuilder.Classes;
-using System.Linq.Expressions;
 
 namespace Shared.PageBuilder.Widgets
 {
@@ -16,9 +15,9 @@ namespace Shared.PageBuilder.Widgets
         }
 
 
-        public async override Task SetData<T>(Expression<Func<T, bool>> query)
+        public async override Task SetData(PageParams pageParams)
         {
-            await GridData.SetData(query);
+            await GridData.SetData(pageParams);
         }
     }
 }

@@ -7,6 +7,7 @@
         Subniche,
         ProductGroup,
         Price,
+        PriceRange,
         Rating,
         KeywordGroup,
         Date,

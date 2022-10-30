@@ -12,7 +12,7 @@ namespace Shared.Common.Widgets
             _repository = repository;
         }
 
-        public Image Image { get; set; } = null!;
+        public PageImage Image { get; set; } = null!;
         public Border Border { get; set; } = null!;
         public Corners Corners { get; set; } = null!;
         public Shadow Shadow { get; set; } = null!;

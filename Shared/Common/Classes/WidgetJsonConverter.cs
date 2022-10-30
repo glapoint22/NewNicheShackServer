@@ -9,7 +9,12 @@ namespace Shared.Common.Classes
 {
     public sealed class WidgetJsonConverter : JsonConverter<Widget>
     {
-        private readonly IRepository _repository;
+        private readonly IRepository? _repository;
+
+        public WidgetJsonConverter()
+        {
+
+        }
 
         public WidgetJsonConverter(IRepository repository)
         {
@@ -47,31 +52,31 @@ namespace Shared.Common.Classes
                         switch (widgetType)
                         {
                             case WidgetType.Button:
-                                widget = new ButtonWidget(_repository);
+                                widget = new ButtonWidget(_repository!);
                                 break;
                             case WidgetType.Text:
-                                widget = new TextWidget(_repository);
+                                widget = new TextWidget(_repository!);
                                 break;
                             case WidgetType.Image:
-                                widget = new ImageWidget(_repository);
+                                widget = new ImageWidget(_repository!);
                                 break;
                             case WidgetType.Container:
-                                widget = new ContainerWidget(_repository);
+                                widget = new ContainerWidget(_repository!);
                                 break;
                             case WidgetType.Line:
                                 widget = new LineWidget();
                                 break;
                             case WidgetType.Video:
-                                widget = new VideoWidget(_repository);
+                                widget = new VideoWidget(_repository!);
                                 break;
                             case WidgetType.ProductSlider:
-                                widget = new ProductSliderWidget(_repository);
+                                widget = new ProductSliderWidget(_repository!);
                                 break;
                             case WidgetType.Carousel:
-                                widget = new CarouselWidget(_repository);
+                                widget = new CarouselWidget(_repository!);
                                 break;
                             case WidgetType.Grid:
-                                widget = new GridWidget(_repository);
+                                widget = new GridWidget(_repository!);
                                 break;
                         }
 

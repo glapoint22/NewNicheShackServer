@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
-using Website.Domain.Entities;
+using Shared.Common.Entities;
 
 namespace Website.Application.Account.Refresh.Commands
 {

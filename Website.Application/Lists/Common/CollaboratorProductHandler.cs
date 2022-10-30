@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
-
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
-using Website.Domain.Entities;
+using Shared.Common.Entities;
+using Shared.Common.Classes;
 
 namespace Website.Application.Lists.Common
 {

@@ -14,5 +14,7 @@ namespace Shared.QueryBuilder.Classes
         public double? Price { get; set; }
         public AutoQueryType? Auto { get; set; }
         public string? StringValue { get; set; }
+        public Tuple<double, double>? PriceRange { get; set; } = null!;
+        public List<int> Filters { get; set; } = new List<int>();
     }
 }

@@ -1,6 +1,6 @@
 ﻿
 using System.Security.Claims;
-using Website.Domain.Entities;
+using Shared.Common.Entities;
 
 namespace Website.Application.Common.Interfaces
 {

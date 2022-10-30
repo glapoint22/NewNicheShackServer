@@ -1,6 +1,6 @@
 ﻿
 using Website.Application.Common.Interfaces;
-using Website.Domain.Entities;
+using Shared.Common.Entities;
 
 namespace Website.Application.Account.Common
 {

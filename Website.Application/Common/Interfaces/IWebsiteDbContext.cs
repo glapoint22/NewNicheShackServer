@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-using Website.Domain.Entities;
+using Shared.Common.Entities;
 
 namespace Website.Application.Common.Interfaces
 {
@@ -8,6 +8,8 @@ namespace Website.Application.Common.Interfaces
     {
         DbSet<CollaboratorProduct> CollaboratorProducts { get; }
         DbSet<Collaborator> Collaborators { get; }
+        DbSet<FilterOption> FilterOptions { get; }
+        DbSet<Filter> Filters { get; }
         DbSet<KeywordGroup> KeywordGroups { get; }
         DbSet<Keyword> Keywords { get; }
         DbSet<KeywordSearchVolume> KeywordSearchVolumes { get; }
@@ -18,6 +20,8 @@ namespace Website.Application.Common.Interfaces
         DbSet<OrderProduct> OrderProducts { get; }
         DbSet<PageReferenceItem> PageReferenceItems { get; }
         DbSet<Page> Pages { get; }
+        DbSet<PriceRange> PriceRanges { get; }
+        DbSet<ProductFilter> ProductFilters { get; }
         DbSet<ProductOrder> ProductOrders { get; }
         DbSet<ProductPrice> ProductPrices { get; }
         DbSet<Product> Products { get; }

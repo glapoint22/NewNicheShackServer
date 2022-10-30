@@ -155,7 +155,7 @@ namespace Website.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Website.Domain.Entities.Collaborator", b =>
+            modelBuilder.Entity("Shared.Common.Entities.Collaborator", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -204,7 +204,7 @@ namespace Website.Infrastructure.Migrations
                     b.ToTable("Collaborators");
                 });
 
-            modelBuilder.Entity("Website.Domain.Entities.CollaboratorProduct", b =>
+            modelBuilder.Entity("Shared.Common.Entities.CollaboratorProduct", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -228,7 +228,48 @@ namespace Website.Infrastructure.Migrations
                     b.ToTable("CollaboratorProducts");
                 });
 
-            modelBuilder.Entity("Website.Domain.Entities.Keyword", b =>
+            modelBuilder.Entity("Shared.Common.Entities.Filter", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Filters");
+                });
+
+            modelBuilder.Entity("Shared.Common.Entities.FilterOption", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("FilterId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FilterId");
+
+                    b.ToTable("FilterOptions");
+                });
+
+            modelBuilder.Entity("Shared.Common.Entities.Keyword", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -246,7 +287,7 @@ namespace Website.Infrastructure.Migrations
                     b.ToTable("Keywords");
                 });
 
-            modelBuilder.Entity("Website.Domain.Entities.KeywordGroup", b =>
+            modelBuilder.Entity("Shared.Common.Entities.KeywordGroup", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -264,7 +305,7 @@ namespace Website.Infrastructure.Migrations
                     b.ToTable("KeywordGroups");
                 });
 
-            modelBuilder.Entity("Website.Domain.Entities.KeywordInKeywordGroup", b =>
+            modelBuilder.Entity("Shared.Common.Entities.KeywordInKeywordGroup", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -287,7 +328,7 @@ namespace Website.Infrastructure.Migrations
                     b.ToTable("KeywordsInKeywordGroup");
                 });
 
-            modelBuilder.Entity("Website.Domain.Entities.KeywordSearchVolume", b =>
+            modelBuilder.Entity("Shared.Common.Entities.KeywordSearchVolume", b =>
                 {
                     b.Property<int>("KeywordId")
                         .HasColumnType("int");
@@ -300,7 +341,7 @@ namespace Website.Infrastructure.Migrations
                     b.ToTable("KeywordSearchVolumes");
                 });
 
-            modelBuilder.Entity("Website.Domain.Entities.List", b =>
+            modelBuilder.Entity("Shared.Common.Entities.List", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(10)
@@ -324,13 +365,17 @@ namespace Website.Infrastructure.Migrations
                     b.ToTable("Lists");
                 });
 
-            modelBuilder.Entity("Website.Domain.Entities.Media", b =>
+            modelBuilder.Entity("Shared.Common.Entities.Media", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ImageAnySize")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("ImageLg")
                         .HasMaxLength(256)
@@ -368,7 +413,7 @@ namespace Website.Infrastructure.Migrations
                     b.ToTable("Media");
                 });
 
-            modelBuilder.Entity("Website.Domain.Entities.Niche", b =>
+            modelBuilder.Entity("Shared.Common.Entities.Niche", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -391,7 +436,7 @@ namespace Website.Infrastructure.Migrations
                     b.ToTable("Niches");
                 });
 
-            modelBuilder.Entity("Website.Domain.Entities.OrderProduct", b =>
+            modelBuilder.Entity("Shared.Common.Entities.OrderProduct", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -437,7 +482,7 @@ namespace Website.Infrastructure.Migrations
                     b.ToTable("OrderProducts");
                 });
 
-            modelBuilder.Entity("Website.Domain.Entities.Page", b =>
+            modelBuilder.Entity("Shared.Common.Entities.Page", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(10)
@@ -464,7 +509,7 @@ namespace Website.Infrastructure.Migrations
                     b.ToTable("Pages");
                 });
 
-            modelBuilder.Entity("Website.Domain.Entities.PageReferenceItem", b =>
+            modelBuilder.Entity("Shared.Common.Entities.PageReferenceItem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -493,7 +538,31 @@ namespace Website.Infrastructure.Migrations
                     b.ToTable("PageReferenceItems");
                 });
 
-            modelBuilder.Entity("Website.Domain.Entities.Product", b =>
+            modelBuilder.Entity("Shared.Common.Entities.PriceRange", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Label")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.Property<int>("Max")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Min")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PriceRanges");
+                });
+
+            modelBuilder.Entity("Shared.Common.Entities.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -570,7 +639,22 @@ namespace Website.Infrastructure.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("Website.Domain.Entities.ProductOrder", b =>
+            modelBuilder.Entity("Shared.Common.Entities.ProductFilter", b =>
+                {
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("FilterOptionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProductId", "FilterOptionId");
+
+                    b.HasIndex("FilterOptionId");
+
+                    b.ToTable("ProductFilters");
+                });
+
+            modelBuilder.Entity("Shared.Common.Entities.ProductOrder", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(21)
@@ -613,7 +697,7 @@ namespace Website.Infrastructure.Migrations
                     b.ToTable("ProductOrders");
                 });
 
-            modelBuilder.Entity("Website.Domain.Entities.ProductPrice", b =>
+            modelBuilder.Entity("Shared.Common.Entities.ProductPrice", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -634,7 +718,7 @@ namespace Website.Infrastructure.Migrations
                     b.ToTable("ProductPrices");
                 });
 
-            modelBuilder.Entity("Website.Domain.Entities.RefreshToken", b =>
+            modelBuilder.Entity("Shared.Common.Entities.RefreshToken", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(256)
@@ -654,7 +738,7 @@ namespace Website.Infrastructure.Migrations
                     b.ToTable("RefreshTokens");
                 });
 
-            modelBuilder.Entity("Website.Domain.Entities.Subniche", b =>
+            modelBuilder.Entity("Shared.Common.Entities.Subniche", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -682,7 +766,7 @@ namespace Website.Infrastructure.Migrations
                     b.ToTable("Subniches");
                 });
 
-            modelBuilder.Entity("Website.Domain.Entities.User", b =>
+            modelBuilder.Entity("Shared.Common.Entities.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -837,7 +921,7 @@ namespace Website.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Website.Domain.Entities.User", null)
+                    b.HasOne("Shared.Common.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -846,7 +930,7 @@ namespace Website.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Website.Domain.Entities.User", null)
+                    b.HasOne("Shared.Common.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -861,7 +945,7 @@ namespace Website.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Website.Domain.Entities.User", null)
+                    b.HasOne("Shared.Common.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -870,22 +954,22 @@ namespace Website.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Website.Domain.Entities.User", null)
+                    b.HasOne("Shared.Common.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Website.Domain.Entities.Collaborator", b =>
+            modelBuilder.Entity("Shared.Common.Entities.Collaborator", b =>
                 {
-                    b.HasOne("Website.Domain.Entities.List", "List")
+                    b.HasOne("Shared.Common.Entities.List", "List")
                         .WithMany("Collaborators")
                         .HasForeignKey("ListId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Website.Domain.Entities.User", "User")
+                    b.HasOne("Shared.Common.Entities.User", "User")
                         .WithMany("Collaborators")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -896,15 +980,15 @@ namespace Website.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Website.Domain.Entities.CollaboratorProduct", b =>
+            modelBuilder.Entity("Shared.Common.Entities.CollaboratorProduct", b =>
                 {
-                    b.HasOne("Website.Domain.Entities.Collaborator", "Collaborator")
+                    b.HasOne("Shared.Common.Entities.Collaborator", "Collaborator")
                         .WithMany("CollaboratorProducts")
                         .HasForeignKey("CollaboratorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Website.Domain.Entities.Product", "Product")
+                    b.HasOne("Shared.Common.Entities.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -915,15 +999,26 @@ namespace Website.Infrastructure.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Website.Domain.Entities.KeywordInKeywordGroup", b =>
+            modelBuilder.Entity("Shared.Common.Entities.FilterOption", b =>
                 {
-                    b.HasOne("Website.Domain.Entities.KeywordGroup", "KeywordGroup")
+                    b.HasOne("Shared.Common.Entities.Filter", "Filter")
+                        .WithMany("FilterOptions")
+                        .HasForeignKey("FilterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Filter");
+                });
+
+            modelBuilder.Entity("Shared.Common.Entities.KeywordInKeywordGroup", b =>
+                {
+                    b.HasOne("Shared.Common.Entities.KeywordGroup", "KeywordGroup")
                         .WithMany("KeywordsInKeywordGroup")
                         .HasForeignKey("KeywordGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Website.Domain.Entities.Keyword", "Keyword")
+                    b.HasOne("Shared.Common.Entities.Keyword", "Keyword")
                         .WithMany()
                         .HasForeignKey("KeywordId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -934,9 +1029,9 @@ namespace Website.Infrastructure.Migrations
                     b.Navigation("KeywordGroup");
                 });
 
-            modelBuilder.Entity("Website.Domain.Entities.KeywordSearchVolume", b =>
+            modelBuilder.Entity("Shared.Common.Entities.KeywordSearchVolume", b =>
                 {
-                    b.HasOne("Website.Domain.Entities.Keyword", "Keyword")
+                    b.HasOne("Shared.Common.Entities.Keyword", "Keyword")
                         .WithMany()
                         .HasForeignKey("KeywordId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -945,9 +1040,9 @@ namespace Website.Infrastructure.Migrations
                     b.Navigation("Keyword");
                 });
 
-            modelBuilder.Entity("Website.Domain.Entities.OrderProduct", b =>
+            modelBuilder.Entity("Shared.Common.Entities.OrderProduct", b =>
                 {
-                    b.HasOne("Website.Domain.Entities.ProductOrder", "ProductOrder")
+                    b.HasOne("Shared.Common.Entities.ProductOrder", "ProductOrder")
                         .WithMany("OrderProducts")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -956,20 +1051,20 @@ namespace Website.Infrastructure.Migrations
                     b.Navigation("ProductOrder");
                 });
 
-            modelBuilder.Entity("Website.Domain.Entities.PageReferenceItem", b =>
+            modelBuilder.Entity("Shared.Common.Entities.PageReferenceItem", b =>
                 {
-                    b.HasOne("Website.Domain.Entities.KeywordGroup", "KeywordGroup")
+                    b.HasOne("Shared.Common.Entities.KeywordGroup", "KeywordGroup")
                         .WithMany("PageReferenceItems")
                         .HasForeignKey("KeywordGroupId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Website.Domain.Entities.Page", "Page")
+                    b.HasOne("Shared.Common.Entities.Page", "Page")
                         .WithMany("PageReferenceItems")
                         .HasForeignKey("PageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Website.Domain.Entities.Subniche", "Subniche")
+                    b.HasOne("Shared.Common.Entities.Subniche", "Subniche")
                         .WithMany("PageReferenceItems")
                         .HasForeignKey("SubnicheId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -981,21 +1076,21 @@ namespace Website.Infrastructure.Migrations
                     b.Navigation("Subniche");
                 });
 
-            modelBuilder.Entity("Website.Domain.Entities.Product", b =>
+            modelBuilder.Entity("Shared.Common.Entities.Product", b =>
                 {
-                    b.HasOne("Website.Domain.Entities.Media", "Media")
+                    b.HasOne("Shared.Common.Entities.Media", "Media")
                         .WithMany("Products")
                         .HasForeignKey("ImageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Website.Domain.Entities.Subniche", "Subniche")
+                    b.HasOne("Shared.Common.Entities.Subniche", "Subniche")
                         .WithMany()
                         .HasForeignKey("SubnicheId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("Website.Domain.ValueObjects.RecurringPayment", "RecurringPayment", b1 =>
+                    b.OwnsOne("Shared.Common.ValueObjects.RecurringPayment", "RecurringPayment", b1 =>
                         {
                             b1.Property<int>("ProductId")
                                 .HasColumnType("int");
@@ -1036,15 +1131,32 @@ namespace Website.Infrastructure.Migrations
                     b.Navigation("Subniche");
                 });
 
-            modelBuilder.Entity("Website.Domain.Entities.ProductOrder", b =>
+            modelBuilder.Entity("Shared.Common.Entities.ProductFilter", b =>
                 {
-                    b.HasOne("Website.Domain.Entities.Product", "Product")
+                    b.HasOne("Shared.Common.Entities.FilterOption", "FilterOption")
+                        .WithMany()
+                        .HasForeignKey("FilterOptionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Shared.Common.Entities.Product", null)
+                        .WithMany("ProductFilters")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FilterOption");
+                });
+
+            modelBuilder.Entity("Shared.Common.Entities.ProductOrder", b =>
+                {
+                    b.HasOne("Shared.Common.Entities.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Website.Domain.Entities.User", "User")
+                    b.HasOne("Shared.Common.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1055,9 +1167,9 @@ namespace Website.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Website.Domain.Entities.ProductPrice", b =>
+            modelBuilder.Entity("Shared.Common.Entities.ProductPrice", b =>
                 {
-                    b.HasOne("Website.Domain.Entities.Product", "Product")
+                    b.HasOne("Shared.Common.Entities.Product", "Product")
                         .WithMany("ProductPrices")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1066,9 +1178,9 @@ namespace Website.Infrastructure.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Website.Domain.Entities.RefreshToken", b =>
+            modelBuilder.Entity("Shared.Common.Entities.RefreshToken", b =>
                 {
-                    b.HasOne("Website.Domain.Entities.User", "User")
+                    b.HasOne("Shared.Common.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -1077,10 +1189,10 @@ namespace Website.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Website.Domain.Entities.Subniche", b =>
+            modelBuilder.Entity("Shared.Common.Entities.Subniche", b =>
                 {
-                    b.HasOne("Website.Domain.Entities.Niche", "Niche")
-                        .WithMany()
+                    b.HasOne("Shared.Common.Entities.Niche", "Niche")
+                        .WithMany("Subniches")
                         .HasForeignKey("NicheId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1088,49 +1200,61 @@ namespace Website.Infrastructure.Migrations
                     b.Navigation("Niche");
                 });
 
-            modelBuilder.Entity("Website.Domain.Entities.Collaborator", b =>
+            modelBuilder.Entity("Shared.Common.Entities.Collaborator", b =>
                 {
                     b.Navigation("CollaboratorProducts");
                 });
 
-            modelBuilder.Entity("Website.Domain.Entities.KeywordGroup", b =>
+            modelBuilder.Entity("Shared.Common.Entities.Filter", b =>
+                {
+                    b.Navigation("FilterOptions");
+                });
+
+            modelBuilder.Entity("Shared.Common.Entities.KeywordGroup", b =>
                 {
                     b.Navigation("KeywordsInKeywordGroup");
 
                     b.Navigation("PageReferenceItems");
                 });
 
-            modelBuilder.Entity("Website.Domain.Entities.List", b =>
+            modelBuilder.Entity("Shared.Common.Entities.List", b =>
                 {
                     b.Navigation("Collaborators");
                 });
 
-            modelBuilder.Entity("Website.Domain.Entities.Media", b =>
+            modelBuilder.Entity("Shared.Common.Entities.Media", b =>
                 {
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("Website.Domain.Entities.Page", b =>
+            modelBuilder.Entity("Shared.Common.Entities.Niche", b =>
+                {
+                    b.Navigation("Subniches");
+                });
+
+            modelBuilder.Entity("Shared.Common.Entities.Page", b =>
                 {
                     b.Navigation("PageReferenceItems");
                 });
 
-            modelBuilder.Entity("Website.Domain.Entities.Product", b =>
+            modelBuilder.Entity("Shared.Common.Entities.Product", b =>
                 {
+                    b.Navigation("ProductFilters");
+
                     b.Navigation("ProductPrices");
                 });
 
-            modelBuilder.Entity("Website.Domain.Entities.ProductOrder", b =>
+            modelBuilder.Entity("Shared.Common.Entities.ProductOrder", b =>
                 {
                     b.Navigation("OrderProducts");
                 });
 
-            modelBuilder.Entity("Website.Domain.Entities.Subniche", b =>
+            modelBuilder.Entity("Shared.Common.Entities.Subniche", b =>
                 {
                     b.Navigation("PageReferenceItems");
                 });
 
-            modelBuilder.Entity("Website.Domain.Entities.User", b =>
+            modelBuilder.Entity("Shared.Common.Entities.User", b =>
                 {
                     b.Navigation("Collaborators");
                 });

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-using Website.Domain.Entities;
+using Shared.Common.Entities;
 
 namespace Website.Infrastructure.Persistence.Configurations
 {
@@ -23,6 +23,9 @@ namespace Website.Infrastructure.Persistence.Configurations
                 .HasMaxLength(256);
 
             builder.Property(x => x.ImageLg)
+                .HasMaxLength(256);
+
+            builder.Property(x => x.ImageAnySize)
                 .HasMaxLength(256);
 
             builder.Property(x => x.VideoId)

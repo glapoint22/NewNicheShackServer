@@ -15,7 +15,7 @@ namespace Shared.PageBuilder.Widgets
         }
 
         public Caption Caption { get; set; } = null!;
-        public List<QueriedProduct> Products { get; set; } = new List<QueriedProduct>();
+        public List<ProductDto> Products { get; set; } = new List<ProductDto>();
         //public Query Query { get; set; }
     }
 }

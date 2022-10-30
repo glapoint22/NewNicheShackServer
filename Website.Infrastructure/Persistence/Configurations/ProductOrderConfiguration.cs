@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-using Website.Domain.Entities;
+using Shared.Common.Entities;
 
 namespace Website.Infrastructure.Persistence.Configurations
 {

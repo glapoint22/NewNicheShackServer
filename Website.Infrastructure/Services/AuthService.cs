@@ -9,7 +9,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using Website.Application.Common.Interfaces;
-using Website.Domain.Entities;
+using Shared.Common.Entities;
 
 namespace Website.Infrastructure.Services
 {

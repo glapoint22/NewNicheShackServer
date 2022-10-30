@@ -37,7 +37,7 @@ namespace Shared.PageBuilder.Classes
 
 
         // ------------------------------------------------------------------------- Set Data -------------------------------------------------------------------------
-        public async Task SetData<T>(WebPage page, Expression<Func<T, bool>> query)
+        public async Task SetData(WebPage page, PageParams pageParams)
         {
             // If the page background has an image
             if (page.Background != null && page.Background.Image != null)
@@ -50,7 +50,7 @@ namespace Shared.PageBuilder.Classes
             // Rows
             if (page.Rows != null && page.Rows.Count > 0)
             {
-                await SetRowData(page.Rows, query);
+                await SetRowData(page.Rows, pageParams);
             }
         }
 
@@ -61,7 +61,7 @@ namespace Shared.PageBuilder.Classes
 
 
         // ----------------------------------------------------------------------- Set Row Data -----------------------------------------------------------------------
-        private async Task SetRowData<T>(List<Row> rows, Expression<Func<T, bool>> query)
+        private async Task SetRowData(List<Row> rows, PageParams pageParams)
         {
             foreach (Row row in rows)
             {
@@ -83,13 +83,13 @@ namespace Shared.PageBuilder.Classes
 
 
                     // Set the widget data
-                    await widget.SetData(query);
+                    await widget.SetData(pageParams);
 
                     if (column.WidgetData.WidgetType == WidgetType.Container)
                     {
                         ContainerWidget container = (ContainerWidget)column.WidgetData;
 
-                        if (container.Rows != null && container.Rows.Count > 0) await SetRowData(container.Rows, query);
+                        if (container.Rows != null && container.Rows.Count > 0) await SetRowData(container.Rows, pageParams);
                     }
                 }
             }

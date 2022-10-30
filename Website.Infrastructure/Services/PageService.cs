@@ -5,7 +5,7 @@ using Shared.QueryBuilder.Classes;
 using Shared.QueryBuilder.Enums;
 using System.Linq.Expressions;
 using Website.Application.Common.Interfaces;
-using Website.Domain.Entities;
+using Shared.Common.Entities;
 
 namespace Website.Infrastructure.Services
 {
@@ -20,7 +20,7 @@ namespace Website.Infrastructure.Services
             _pageBuilder = pageBuilder;
         }
 
-        public async Task<WebPage> GetPage(string searchTerm, int? nicheId, int? subnicheId, string? filters)
+        public async Task<WebPage> GetPage(string searchTerm, int? nicheId, int? subnicheId, string? filters, int page, string? sortBy)
         {
             // Get the page content
             string pageContent = await _dbContext.Pages
@@ -36,23 +36,24 @@ namespace Website.Infrastructure.Services
                 .FirstAsync();
 
             // Build the page from the page content
-            WebPage page = _pageBuilder.BuildPage(pageContent);
+            WebPage webPage = _pageBuilder.BuildPage(pageContent);
 
-
-            // Build the query
-            var query = BuildQuery<Product>(searchTerm, nicheId, subnicheId, filters);
-
+            // Get the params
+            PageParams pageParams = new(searchTerm, nicheId, subnicheId, page, sortBy, 40, filters);
 
             // Set the data
-            await _pageBuilder.SetData(page, query);
+            await _pageBuilder.SetData(webPage, pageParams);
 
-            return page;
+            return webPage;
         }
 
-        public Task<WebPage> GetPage(int? nicheId, int? subnicheId, string? filters)
+
+
+        public Task<WebPage> GetPage(int? nicheId, int? subnicheId, string? filters, int page, string? sortBy)
         {
             throw new NotImplementedException();
         }
+
 
         public Task<WebPage> GetPage(string pageId)
         {
@@ -62,76 +63,6 @@ namespace Website.Infrastructure.Services
         public Task<WebPage> GetPage(PageType pageType)
         {
             throw new NotImplementedException();
-        }
-
-
-
-        private static Expression<Func<T, bool>> BuildQuery<T>(string? searchTerm, int? nicheId, int? subnicheId, string? filters)
-        {
-            QueryBuilder queryBuilder = new();
-            Query query = new();
-
-
-            if (!string.IsNullOrEmpty(searchTerm))
-            {
-                // Build a query row for the search term
-                QueryElement searchQueryRow = queryBuilder.BuildQueryRow(QueryType.Search, searchTerm);
-                query.Elements.Add(searchQueryRow);
-            }
-
-
-
-
-
-            // Niche
-            if (nicheId != null)
-            {
-                if (query.Elements.Count > 0)
-                {
-                    // Add the logicalOperator
-                    QueryElement row = queryBuilder.BuildQueryRow(LogicalOperatorType.And);
-                    query.Elements.Add(row);
-                }
-
-                // Build a query row for the niche id
-                QueryElement nicheQueryRow = queryBuilder.BuildQueryRow(QueryType.Niche, (int)nicheId);
-                query.Elements.Add(nicheQueryRow);
-            }
-
-
-
-            // Subniche
-            if (subnicheId != null)
-            {
-                if (query.Elements.Count > 0)
-                {
-                    // Add the logicalOperator
-                    QueryElement row = queryBuilder.BuildQueryRow(LogicalOperatorType.And);
-                    query.Elements.Add(row);
-                }
-
-                // Build a query row for the subniche id
-                QueryElement subnicheIdQueryRow = queryBuilder.BuildQueryRow(QueryType.Niche, (int)subnicheId);
-                query.Elements.Add(subnicheIdQueryRow);
-            }
-
-
-            // Filters
-            if (!string.IsNullOrEmpty(filters))
-            {
-                if (query.Elements.Count > 0)
-                {
-                    // Add the logicalOperator
-                    QueryElement row = queryBuilder.BuildQueryRow(LogicalOperatorType.And);
-                    query.Elements.Add(row);
-                }
-
-                // Build a query row for the filters
-                QueryElement filtersQueryRow = queryBuilder.BuildQueryRow(QueryType.Filters, filters);
-                query.Elements.Add(filtersQueryRow);
-            }
-
-            return queryBuilder.BuildQuery<T>(query);
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using MediatR;
 
 using Website.Application.Common.Interfaces;
-using Website.Domain.Entities;
+using Shared.Common.Entities;
 using Website.Domain.Events;
 
 namespace Website.Application.Account.SignUp.EventHandlers

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
 using Website.Application.Lists.UpdateCollaborators.Classes;
-using Website.Domain.Entities;
+using Shared.Common.Entities;
 using Website.Domain.Events;
 
 namespace Website.Application.Lists.UpdateCollaborators.Commands

@@ -7,7 +7,7 @@ using System.Text.Json;
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
 using Website.Application.ProductOrders.PostOrder.Classes;
-using Website.Domain.Entities;
+using Shared.Common.Entities;
 using Website.Domain.Enums;
 
 namespace Website.Application.ProductOrders.PostOrder.Commands

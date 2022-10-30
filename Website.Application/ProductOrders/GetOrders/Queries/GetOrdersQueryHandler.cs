@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
 using Website.Application.ProductOrders.GetOrders.Classes;
+using Shared.Common.Classes;
 
 namespace Website.Application.ProductOrders.GetOrders.Queries
 {

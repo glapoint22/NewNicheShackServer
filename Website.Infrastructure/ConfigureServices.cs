@@ -11,7 +11,7 @@ using Shared.PageBuilder.Classes;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Website.Application.Common.Interfaces;
-using Website.Domain.Entities;
+using Shared.Common.Entities;
 using Website.Infrastructure.BackgroundJobs;
 using Website.Infrastructure.Persistence;
 using Website.Infrastructure.Persistence.Interceptors;

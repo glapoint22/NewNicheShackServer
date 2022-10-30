@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using Website.Domain.Common;
+using Shared.Common.Interfaces;
 
 namespace Website.Infrastructure.Persistence.Interceptors
 {

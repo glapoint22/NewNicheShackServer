@@ -33,10 +33,10 @@ namespace Website.Api.Controllers
         // ---------------------------------------------------------------------- Get Search Page ----------------------------------------------------------------------
         [HttpGet]
         [Route("GetSearchPage")]
-        public async Task<ActionResult> GetSearchPage(string searchTerm, int? nicheId, int? subnicheId, string? filters)
+        public async Task<ActionResult> GetSearchPage(string searchTerm, int? nicheId, int? subnicheId, string? filters, string? sortBy, int page = 1)
         {
 
-            return SetResponse(await _mediator.Send(new GetSearchPageQuery(searchTerm, nicheId, subnicheId, filters)));
+            return SetResponse(await _mediator.Send(new GetSearchPageQuery(searchTerm, nicheId, subnicheId, filters, page, sortBy)));
         }
     }
 }

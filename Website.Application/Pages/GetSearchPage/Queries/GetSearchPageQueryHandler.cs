@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Shared.PageBuilder.Classes;
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
-using Website.Domain.Entities;
+using Shared.Common.Entities;
 
 namespace Website.Application.Pages.GetSearchPage.Queries
 {
@@ -38,7 +38,13 @@ namespace Website.Application.Pages.GetSearchPage.Queries
 
 
             // Get the search page
-            WebPage page = await _pageService.GetPage(request.SearchTerm, request.NicheId, request.SubnicheId, request.Filters);
+            WebPage page = await _pageService.GetPage(
+                request.SearchTerm,
+                request.NicheId, 
+                request.SubnicheId, 
+                request.Filters,
+                request.Page,
+                request.SortBy);
 
             await _dbContext.SaveChangesAsync();
 
