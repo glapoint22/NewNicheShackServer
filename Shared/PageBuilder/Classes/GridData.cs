@@ -16,6 +16,7 @@ namespace Shared.PageBuilder.Classes
         public int ProductCountEnd { get; set; }
 
         private readonly IRepository _repository;
+        private const int _limit = 40;
 
         public GridData(IRepository repository)
         {
@@ -23,15 +24,26 @@ namespace Shared.PageBuilder.Classes
         }
 
 
+
+        // ------------------------------------------------------------------------ Get Data -----------------------------------------------------------------------------
+        public async Task<GridData> GetData(PageParams pageParams)
+        {
+            await SetData(pageParams);
+            return this;
+        }
+
+
+
+
+
+        // ------------------------------------------------------------------------ Set Data -----------------------------------------------------------------------------
         public async Task SetData(PageParams pageParams)
         {
-
-
             Products = await GetProducts(pageParams);
             Filters = await GetFilters(pageParams);
-            PageCount = (int)Math.Ceiling(Convert.ToDouble(TotalProducts) / pageParams.Limit);
-            ProductCountStart = ((pageParams.Page - 1) * pageParams.Limit) + 1;
-            ProductCountEnd = Math.Min(pageParams.Page * pageParams.Limit, TotalProducts);
+            PageCount = (int)Math.Ceiling(Convert.ToDouble(TotalProducts) / _limit);
+            ProductCountStart = ((pageParams.Page - 1) * _limit) + 1;
+            ProductCountEnd = Math.Min(pageParams.Page * _limit, TotalProducts);
         }
 
 
@@ -65,8 +77,8 @@ namespace Shared.PageBuilder.Classes
                     FourStars = x.FourStars,
                     FiveStars = x.FiveStars
                 })
-                .Skip((pageParams.Page - 1) * pageParams.Limit)
-                .Take(pageParams.Limit)
+                .Skip((pageParams.Page - 1) * _limit)
+                .Take(_limit)
                 .ToListAsync();
         }
 

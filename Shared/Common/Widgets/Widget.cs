@@ -27,7 +27,7 @@ namespace Shared.Common.Widgets
         }
 
 
-        public virtual Task SetData(PageParams pageParams)
+        public virtual Task SetData(PageParams? pageParams)
         {
             return Task.CompletedTask;
         }

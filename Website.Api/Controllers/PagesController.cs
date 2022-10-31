@@ -1,5 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Website.Application.Pages.GetBrowsePage.Queries;
+using Website.Application.Pages.GetGridData.Queries;
+using Website.Application.Pages.GetPage.Queries;
 using Website.Application.Pages.GetSearchPage.Queries;
 
 namespace Website.Api.Controllers
@@ -18,12 +21,12 @@ namespace Website.Api.Controllers
 
 
         // ------------------------------------------------------------------------- Get Page --------------------------------------------------------------------------
-        //[HttpGet]
-        //[Route("GetPage")]
-        //public async Task<ActionResult> GetPage(string? id = null, int? pageType = null)
-        //{
-        //    return SetResponse(await _mediator.Send(GetPageQuery(id, pageType)));
-        //}
+        [HttpGet]
+        [Route("GetPage")]
+        public async Task<ActionResult> GetPage(string? id, int? pageType)
+        {
+            return SetResponse(await _mediator.Send(new GetPageQuery(id, pageType)));
+        }
 
 
 
@@ -37,6 +40,32 @@ namespace Website.Api.Controllers
         {
 
             return SetResponse(await _mediator.Send(new GetSearchPageQuery(searchTerm, nicheId, subnicheId, filters, page, sortBy)));
+        }
+
+
+
+
+
+        // ---------------------------------------------------------------------- Get Browse Page ----------------------------------------------------------------------
+        [HttpGet]
+        [Route("GetBrowsePage")]
+        public async Task<ActionResult> GetBrowsePage(int? nicheId, int? subnicheId, string? filters, string? sortBy, int page = 1)
+        {
+
+            return SetResponse(await _mediator.Send(new GetBrowsePageQuery(nicheId, subnicheId, filters, page, sortBy)));
+        }
+
+
+
+
+
+        // ----------------------------------------------------------------------- Get Grid Data -----------------------------------------------------------------------
+        [HttpGet]
+        [Route("GetGridData")]
+        public async Task<ActionResult> GetGridData(string? searchTerm, int? nicheId, int? subnicheId, string? filters, string? sortBy, int page = 1)
+        {
+
+            return SetResponse(await _mediator.Send(new GetGridDataQuery(searchTerm, nicheId, subnicheId, filters, page, sortBy)));
         }
     }
 }

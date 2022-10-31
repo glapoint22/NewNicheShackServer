@@ -3,7 +3,6 @@ using Shared.Common.Enums;
 using Shared.Common.Interfaces;
 using Shared.Common.Widgets;
 using Shared.PageBuilder.Widgets;
-using System.Linq.Expressions;
 using System.Text.Json;
 
 namespace Shared.PageBuilder.Classes
@@ -18,10 +17,33 @@ namespace Shared.PageBuilder.Classes
         }
 
         // ------------------------------------------------------------------------ Build Page ------------------------------------------------------------------------
-        public WebPage BuildPage(string pageContent)
+        public async Task<WebPage> BuildPage(string pageContent)
         {
-            // Deserialize the content into a page
-            WebPage page = JsonSerializer.Deserialize<WebPage>(pageContent, new JsonSerializerOptions
+            WebPage webPage = GetPage(pageContent);
+            await SetData(webPage);
+
+            return webPage;
+        }
+
+
+
+
+
+        // ------------------------------------------------------------------------ Build Page ------------------------------------------------------------------------
+        public async Task<WebPage> BuildPage(string pageContent, PageParams pageParams)
+        {
+            WebPage webPage = GetPage(pageContent);
+            await SetData(webPage, pageParams);
+
+            return webPage;
+        }
+
+
+
+        // ------------------------------------------------------------------------- Get Page -------------------------------------------------------------------------
+        private WebPage GetPage(string pageContent)
+        {
+            return JsonSerializer.Deserialize<WebPage>(pageContent, new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true,
                 Converters =
@@ -29,15 +51,12 @@ namespace Shared.PageBuilder.Classes
                     new WidgetJsonConverter(_repository)
                 }
             })!;
-
-            return page;
         }
 
 
 
-
         // ------------------------------------------------------------------------- Set Data -------------------------------------------------------------------------
-        public async Task SetData(WebPage page, PageParams pageParams)
+        private async Task SetData(WebPage page, PageParams? pageParams = null)
         {
             // If the page background has an image
             if (page.Background != null && page.Background.Image != null)
@@ -61,7 +80,7 @@ namespace Shared.PageBuilder.Classes
 
 
         // ----------------------------------------------------------------------- Set Row Data -----------------------------------------------------------------------
-        private async Task SetRowData(List<Row> rows, PageParams pageParams)
+        private async Task SetRowData(List<Row> rows, PageParams? pageParams)
         {
             foreach (Row row in rows)
             {

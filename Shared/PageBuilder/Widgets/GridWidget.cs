@@ -15,9 +15,9 @@ namespace Shared.PageBuilder.Widgets
         }
 
 
-        public async override Task SetData(PageParams pageParams)
+        public async override Task SetData(PageParams? pageParams)
         {
-            await GridData.SetData(pageParams);
+            await GridData.SetData(pageParams!);
         }
     }
 }

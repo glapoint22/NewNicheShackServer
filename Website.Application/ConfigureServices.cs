@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using Shared.PageBuilder.Classes;
 using System.Reflection;
 using Website.Application.Common.Behaviors;
 
@@ -14,6 +15,8 @@ namespace Website.Application
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly(), includeInternalTypes: true);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+            services.AddScoped<PageBuilder>();
+            services.AddScoped<GridData>();
 
             return services;
         }

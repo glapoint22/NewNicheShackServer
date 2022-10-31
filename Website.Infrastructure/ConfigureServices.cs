@@ -98,10 +98,7 @@ namespace Website.Infrastructure
             services.AddTransient<ICookieService, CookieService>();
             services.AddTransient<IAuthService, AuthService>();
             services.AddScoped<IWebsiteDbContext>(provider => provider.GetRequiredService<WebsiteDbContext>());
-            services.AddScoped<IPageService, PageService>();
             services.AddHttpContextAccessor();
-
-            services.AddScoped<PageBuilder>();
             services.AddScoped<IRepository, Repository>();
 
             return services;

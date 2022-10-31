@@ -5,23 +5,38 @@ namespace Shared.PageBuilder.Classes
 {
     public sealed class PageParams
     {
-        public string? SearchTerm { get; set; } = string.Empty;
+        public string? SearchTerm { get; set; } = null;
         public int? NicheId { get; set; }
         public int? SubnicheId { get; set; }
-        public int Page { get; set; }
-        public string? SortBy { get; set; } = string.Empty;
-        public int Limit { get; set; }
+        public string? SortBy { get; set; } = null;
         public List<FilterParam> FilterParams { get; set; } = new List<FilterParam>();
+        public int Page { get; set; }
 
 
-        public PageParams(string? searchTerm, int? nicheId, int? subnicheId, int page, string? sortBy, int limit, string? filters)
+        public PageParams(string? searchTerm, int? nicheId, int? subnicheId, string? sortBy, string? filters, int page)
         {
             SearchTerm = searchTerm;
             NicheId = nicheId;
             SubnicheId = subnicheId;
             Page = page;
             SortBy = sortBy;
-            Limit = limit;
+
+            if (filters != null)
+            {
+                FilterParams = GetFilterParams(filters);
+            }
+        }
+
+
+
+
+
+        public PageParams(int? nicheId, int? subnicheId, string? sortBy, string? filters, int page)
+        {
+            NicheId = nicheId;
+            SubnicheId = subnicheId;
+            Page = page;
+            SortBy = sortBy;
 
             if (filters != null)
             {
@@ -33,7 +48,7 @@ namespace Shared.PageBuilder.Classes
 
 
         // -------------------------------------------------------------------- Get Filter Params --------------------------------------------------------------------
-        private List<FilterParam> GetFilterParams(string filters)
+        private static List<FilterParam> GetFilterParams(string filters)
         {
             List<FilterParam> filterParams = new();
 
