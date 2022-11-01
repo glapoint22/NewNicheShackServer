@@ -27,14 +27,18 @@ namespace Website.Infrastructure.Persistence
         public DbSet<OrderProduct> OrderProducts => Set<OrderProduct>();
         public DbSet<PageReferenceItem> PageReferenceItems => Set<PageReferenceItem>();
         public DbSet<Page> Pages => Set<Page>();
+        public DbSet<PricePoint> PricePoints => Set<PricePoint>();
         public DbSet<PriceRange> PriceRanges => Set<PriceRange>();
         public DbSet<ProductFilter> ProductFilters => Set<ProductFilter>();
+        public DbSet<ProductMedia> ProductMedia => Set<ProductMedia>();
         public DbSet<ProductOrder> ProductOrders => Set<ProductOrder>();
         public DbSet<ProductPrice> ProductPrices => Set<ProductPrice>();
+        public DbSet<ProductReview> ProductReviews => Set<ProductReview>();
         public DbSet<Product> Products => Set<Product>();
         public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
         public DbSet<Subniche> Subniches => Set<Subniche>();
-        
+        public DbSet<Subproduct> Subproducts => Set<Subproduct>();
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

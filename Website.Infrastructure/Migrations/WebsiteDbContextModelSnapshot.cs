@@ -201,7 +201,7 @@ namespace Website.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Collaborators", (string)null);
+                    b.ToTable("Collaborators");
                 });
 
             modelBuilder.Entity("Shared.Common.Entities.CollaboratorProduct", b =>
@@ -225,7 +225,7 @@ namespace Website.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("CollaboratorProducts", (string)null);
+                    b.ToTable("CollaboratorProducts");
                 });
 
             modelBuilder.Entity("Shared.Common.Entities.Filter", b =>
@@ -243,7 +243,7 @@ namespace Website.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Filters", (string)null);
+                    b.ToTable("Filters");
                 });
 
             modelBuilder.Entity("Shared.Common.Entities.FilterOption", b =>
@@ -266,7 +266,7 @@ namespace Website.Infrastructure.Migrations
 
                     b.HasIndex("FilterId");
 
-                    b.ToTable("FilterOptions", (string)null);
+                    b.ToTable("FilterOptions");
                 });
 
             modelBuilder.Entity("Shared.Common.Entities.Keyword", b =>
@@ -284,7 +284,7 @@ namespace Website.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Keywords", (string)null);
+                    b.ToTable("Keywords");
                 });
 
             modelBuilder.Entity("Shared.Common.Entities.KeywordGroup", b =>
@@ -302,7 +302,7 @@ namespace Website.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("KeywordGroups", (string)null);
+                    b.ToTable("KeywordGroups");
                 });
 
             modelBuilder.Entity("Shared.Common.Entities.KeywordInKeywordGroup", b =>
@@ -325,7 +325,7 @@ namespace Website.Infrastructure.Migrations
 
                     b.HasIndex("KeywordId");
 
-                    b.ToTable("KeywordsInKeywordGroup", (string)null);
+                    b.ToTable("KeywordsInKeywordGroup");
                 });
 
             modelBuilder.Entity("Shared.Common.Entities.KeywordSearchVolume", b =>
@@ -338,7 +338,7 @@ namespace Website.Infrastructure.Migrations
 
                     b.HasKey("KeywordId", "Date");
 
-                    b.ToTable("KeywordSearchVolumes", (string)null);
+                    b.ToTable("KeywordSearchVolumes");
                 });
 
             modelBuilder.Entity("Shared.Common.Entities.List", b =>
@@ -362,7 +362,7 @@ namespace Website.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Lists", (string)null);
+                    b.ToTable("Lists");
                 });
 
             modelBuilder.Entity("Shared.Common.Entities.Media", b =>
@@ -410,7 +410,7 @@ namespace Website.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Media", (string)null);
+                    b.ToTable("Media");
                 });
 
             modelBuilder.Entity("Shared.Common.Entities.Niche", b =>
@@ -433,7 +433,7 @@ namespace Website.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Niches", (string)null);
+                    b.ToTable("Niches");
                 });
 
             modelBuilder.Entity("Shared.Common.Entities.OrderProduct", b =>
@@ -479,7 +479,7 @@ namespace Website.Infrastructure.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderProducts", (string)null);
+                    b.ToTable("OrderProducts");
                 });
 
             modelBuilder.Entity("Shared.Common.Entities.Page", b =>
@@ -506,7 +506,7 @@ namespace Website.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Pages", (string)null);
+                    b.ToTable("Pages");
                 });
 
             modelBuilder.Entity("Shared.Common.Entities.PageReferenceItem", b =>
@@ -535,7 +535,58 @@ namespace Website.Infrastructure.Migrations
 
                     b.HasIndex("SubnicheId");
 
-                    b.ToTable("PageReferenceItems", (string)null);
+                    b.ToTable("PageReferenceItems");
+                });
+
+            modelBuilder.Entity("Shared.Common.Entities.PricePoint", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Header")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int?>("ImageId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductPriceId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Quantity")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("ShippingType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StrikethroughPrice")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("Unit")
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.Property<string>("UnitPrice")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ImageId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("ProductPriceId");
+
+                    b.ToTable("PricePoints");
                 });
 
             modelBuilder.Entity("Shared.Common.Entities.PriceRange", b =>
@@ -559,7 +610,7 @@ namespace Website.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PriceRanges", (string)null);
+                    b.ToTable("PriceRanges");
                 });
 
             modelBuilder.Entity("Shared.Common.Entities.Product", b =>
@@ -636,7 +687,7 @@ namespace Website.Infrastructure.Migrations
 
                     b.HasIndex("SubnicheId");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("Shared.Common.Entities.ProductFilter", b =>
@@ -651,7 +702,33 @@ namespace Website.Infrastructure.Migrations
 
                     b.HasIndex("FilterOptionId");
 
-                    b.ToTable("ProductFilters", (string)null);
+                    b.ToTable("ProductFilters");
+                });
+
+            modelBuilder.Entity("Shared.Common.Entities.ProductMedia", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("Index")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MediaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MediaId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductMedia");
                 });
 
             modelBuilder.Entity("Shared.Common.Entities.ProductOrder", b =>
@@ -694,7 +771,7 @@ namespace Website.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ProductOrders", (string)null);
+                    b.ToTable("ProductOrders");
                 });
 
             modelBuilder.Entity("Shared.Common.Entities.ProductPrice", b =>
@@ -715,7 +792,55 @@ namespace Website.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductPrices", (string)null);
+                    b.ToTable("ProductPrices");
+                });
+
+            modelBuilder.Entity("Shared.Common.Entities.ProductReview", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("Deleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Dislikes")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Likes")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Rating")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("ProductReviews");
                 });
 
             modelBuilder.Entity("Shared.Common.Entities.RefreshToken", b =>
@@ -735,7 +860,7 @@ namespace Website.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("RefreshTokens", (string)null);
+                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("Shared.Common.Entities.Subniche", b =>
@@ -763,7 +888,45 @@ namespace Website.Infrastructure.Migrations
 
                     b.HasIndex("NicheId");
 
-                    b.ToTable("Subniches", (string)null);
+                    b.ToTable("Subniches");
+                });
+
+            modelBuilder.Entity("Shared.Common.Entities.Subproduct", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ImageId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Value")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ImageId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Subproducts");
                 });
 
             modelBuilder.Entity("Shared.Common.Entities.User", b =>
@@ -1076,6 +1239,68 @@ namespace Website.Infrastructure.Migrations
                     b.Navigation("Subniche");
                 });
 
+            modelBuilder.Entity("Shared.Common.Entities.PricePoint", b =>
+                {
+                    b.HasOne("Shared.Common.Entities.Media", "Media")
+                        .WithMany("PricePoints")
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Shared.Common.Entities.Product", "Product")
+                        .WithMany("PricePoints")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Shared.Common.Entities.ProductPrice", "ProductPrice")
+                        .WithMany("PricePoints")
+                        .HasForeignKey("ProductPriceId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.OwnsOne("Shared.Common.ValueObjects.RecurringPayment", "RecurringPayment", b1 =>
+                        {
+                            b1.Property<int>("PricePointId")
+                                .HasColumnType("int");
+
+                            b1.Property<int>("RebillFrequency")
+                                .HasColumnType("int")
+                                .HasColumnName("RebillFrequency");
+
+                            b1.Property<double>("RecurringPrice")
+                                .HasColumnType("float")
+                                .HasColumnName("RecurringPrice");
+
+                            b1.Property<int>("SubscriptionDuration")
+                                .HasColumnType("int")
+                                .HasColumnName("SubscriptionDuration");
+
+                            b1.Property<int>("TimeFrameBetweenRebill")
+                                .HasColumnType("int")
+                                .HasColumnName("TimeFrameBetweenRebill");
+
+                            b1.Property<int>("TrialPeriod")
+                                .HasColumnType("int")
+                                .HasColumnName("TrialPeriod");
+
+                            b1.HasKey("PricePointId");
+
+                            b1.ToTable("PricePoints");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PricePointId");
+                        });
+
+                    b.Navigation("Media");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("ProductPrice");
+
+                    b.Navigation("RecurringPayment")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Shared.Common.Entities.Product", b =>
                 {
                     b.HasOne("Shared.Common.Entities.Media", "Media")
@@ -1090,7 +1315,7 @@ namespace Website.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("Shared.Common.Entities.Product.RecurringPayment#Shared.Common.ValueObjects.RecurringPayment", "RecurringPayment", b1 =>
+                    b.OwnsOne("Shared.Common.ValueObjects.RecurringPayment", "RecurringPayment", b1 =>
                         {
                             b1.Property<int>("ProductId")
                                 .HasColumnType("int");
@@ -1117,7 +1342,7 @@ namespace Website.Infrastructure.Migrations
 
                             b1.HasKey("ProductId");
 
-                            b1.ToTable("Products", (string)null);
+                            b1.ToTable("Products");
 
                             b1.WithOwner()
                                 .HasForeignKey("ProductId");
@@ -1148,10 +1373,29 @@ namespace Website.Infrastructure.Migrations
                     b.Navigation("FilterOption");
                 });
 
+            modelBuilder.Entity("Shared.Common.Entities.ProductMedia", b =>
+                {
+                    b.HasOne("Shared.Common.Entities.Media", "Media")
+                        .WithMany("ProductMedia")
+                        .HasForeignKey("MediaId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Shared.Common.Entities.Product", "Product")
+                        .WithMany("ProductMedia")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Media");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Shared.Common.Entities.ProductOrder", b =>
                 {
                     b.HasOne("Shared.Common.Entities.Product", "Product")
-                        .WithMany()
+                        .WithMany("ProductOrders")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1178,6 +1422,25 @@ namespace Website.Infrastructure.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("Shared.Common.Entities.ProductReview", b =>
+                {
+                    b.HasOne("Shared.Common.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Shared.Common.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Shared.Common.Entities.RefreshToken", b =>
                 {
                     b.HasOne("Shared.Common.Entities.User", "User")
@@ -1198,6 +1461,25 @@ namespace Website.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Niche");
+                });
+
+            modelBuilder.Entity("Shared.Common.Entities.Subproduct", b =>
+                {
+                    b.HasOne("Shared.Common.Entities.Media", "Media")
+                        .WithMany("Subproducts")
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Shared.Common.Entities.Product", "Product")
+                        .WithMany("Subproducts")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Media");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Shared.Common.Entities.Collaborator", b =>
@@ -1224,7 +1506,13 @@ namespace Website.Infrastructure.Migrations
 
             modelBuilder.Entity("Shared.Common.Entities.Media", b =>
                 {
+                    b.Navigation("PricePoints");
+
+                    b.Navigation("ProductMedia");
+
                     b.Navigation("Products");
+
+                    b.Navigation("Subproducts");
                 });
 
             modelBuilder.Entity("Shared.Common.Entities.Niche", b =>
@@ -1239,14 +1527,27 @@ namespace Website.Infrastructure.Migrations
 
             modelBuilder.Entity("Shared.Common.Entities.Product", b =>
                 {
+                    b.Navigation("PricePoints");
+
                     b.Navigation("ProductFilters");
 
+                    b.Navigation("ProductMedia");
+
+                    b.Navigation("ProductOrders");
+
                     b.Navigation("ProductPrices");
+
+                    b.Navigation("Subproducts");
                 });
 
             modelBuilder.Entity("Shared.Common.Entities.ProductOrder", b =>
                 {
                     b.Navigation("OrderProducts");
+                });
+
+            modelBuilder.Entity("Shared.Common.Entities.ProductPrice", b =>
+                {
+                    b.Navigation("PricePoints");
                 });
 
             modelBuilder.Entity("Shared.Common.Entities.Subniche", b =>

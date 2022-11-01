@@ -14,5 +14,8 @@
         public int VideoType { get; set; }
 
         public ICollection<Product> Products { get; private set; } = new HashSet<Product>();
+        public ICollection<Subproduct> Subproducts { get; private set; } = new HashSet<Subproduct>();
+        public ICollection<PricePoint> PricePoints { get; private set; } = new HashSet<PricePoint>();
+        public ICollection<ProductMedia> ProductMedia { get; private set; } = new HashSet<ProductMedia>();
     }
 }

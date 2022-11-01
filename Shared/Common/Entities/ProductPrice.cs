@@ -7,5 +7,6 @@
         public double Price { get; set; }
 
         public Product Product { get; set; } = null!;
+        public ICollection<PricePoint> PricePoints { get; set; } = new HashSet<PricePoint>();
     }
 }

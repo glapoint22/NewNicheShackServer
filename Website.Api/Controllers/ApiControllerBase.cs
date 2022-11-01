@@ -40,19 +40,22 @@ namespace Website.Api.Controllers
 
 
                 // Return the error result
-                string errorCode = result.Failures.First().ErrorCode;
+                if (result.Failures.Count > 0)
+                {
+                    string errorCode = result.Failures.First().ErrorCode;
 
-                if (errorCode == "401")
-                {
-                    return Unauthorized(ModelState);
-                }
-                else if (errorCode == "404")
-                {
-                    return NotFound(ModelState);
-                }
-                else if (errorCode == "409")
-                {
-                    return Conflict(ModelState);
+                    if (errorCode == "401")
+                    {
+                        return Unauthorized(ModelState);
+                    }
+                    else if (errorCode == "404")
+                    {
+                        return NotFound(ModelState);
+                    }
+                    else if (errorCode == "409")
+                    {
+                        return Conflict(ModelState);
+                    }
                 }
 
                 return BadRequest(ModelState);

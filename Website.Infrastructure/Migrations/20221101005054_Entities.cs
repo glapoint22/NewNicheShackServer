@@ -212,6 +212,21 @@ namespace Website.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PriceRanges",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Label = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: false),
+                    Min = table.Column<int>(type: "int", nullable: false),
+                    Max = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PriceRanges", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RefreshTokens",
                 columns: table => new
                 {
@@ -479,6 +494,33 @@ namespace Website.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ProductMedia",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    MediaId = table.Column<int>(type: "int", nullable: false),
+                    Index = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductMedia", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProductMedia_Media_MediaId",
+                        column: x => x.MediaId,
+                        principalTable: "Media",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ProductMedia_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ProductOrders",
                 columns: table => new
                 {
@@ -531,6 +573,69 @@ namespace Website.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ProductReviews",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    Rating = table.Column<double>(type: "float", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Likes = table.Column<int>(type: "int", nullable: false),
+                    Dislikes = table.Column<int>(type: "int", nullable: false),
+                    Deleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductReviews", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProductReviews_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductReviews_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Subproducts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    ImageId = table.Column<int>(type: "int", nullable: false),
+                    Value = table.Column<double>(type: "float", nullable: false),
+                    Type = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Subproducts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Subproducts_Media_ImageId",
+                        column: x => x.ImageId,
+                        principalTable: "Media",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Subproducts_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "OrderProducts",
                 columns: table => new
                 {
@@ -552,6 +657,49 @@ namespace Website.Infrastructure.Migrations
                         name: "FK_OrderProducts_ProductOrders_OrderId",
                         column: x => x.OrderId,
                         principalTable: "ProductOrders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PricePoints",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProductPriceId = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false),
+                    ImageId = table.Column<int>(type: "int", nullable: true),
+                    Header = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Quantity = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    UnitPrice = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
+                    Unit = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: true),
+                    StrikethroughPrice = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
+                    ShippingType = table.Column<int>(type: "int", nullable: false),
+                    TrialPeriod = table.Column<int>(type: "int", nullable: false),
+                    RecurringPrice = table.Column<double>(type: "float", nullable: false),
+                    RebillFrequency = table.Column<int>(type: "int", nullable: false),
+                    TimeFrameBetweenRebill = table.Column<int>(type: "int", nullable: false),
+                    SubscriptionDuration = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PricePoints", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PricePoints_Media_ImageId",
+                        column: x => x.ImageId,
+                        principalTable: "Media",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_PricePoints_ProductPrices_ProductPriceId",
+                        column: x => x.ProductPriceId,
+                        principalTable: "ProductPrices",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_PricePoints_Products_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Products",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -612,9 +760,34 @@ namespace Website.Infrastructure.Migrations
                 column: "SubnicheId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PricePoints_ImageId",
+                table: "PricePoints",
+                column: "ImageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PricePoints_ProductId",
+                table: "PricePoints",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PricePoints_ProductPriceId",
+                table: "PricePoints",
+                column: "ProductPriceId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ProductFilters_FilterOptionId",
                 table: "ProductFilters",
                 column: "FilterOptionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductMedia_MediaId",
+                table: "ProductMedia",
+                column: "MediaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductMedia_ProductId",
+                table: "ProductMedia",
+                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductOrders_ProductId",
@@ -630,6 +803,16 @@ namespace Website.Infrastructure.Migrations
                 name: "IX_ProductPrices_ProductId",
                 table: "ProductPrices",
                 column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductReviews_ProductId",
+                table: "ProductReviews",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductReviews_UserId",
+                table: "ProductReviews",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_ImageId",
@@ -650,6 +833,16 @@ namespace Website.Infrastructure.Migrations
                 name: "IX_Subniches_NicheId",
                 table: "Subniches",
                 column: "NicheId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Subproducts_ImageId",
+                table: "Subproducts",
+                column: "ImageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Subproducts_ProductId",
+                table: "Subproducts",
+                column: "ProductId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -670,13 +863,25 @@ namespace Website.Infrastructure.Migrations
                 name: "PageReferenceItems");
 
             migrationBuilder.DropTable(
+                name: "PricePoints");
+
+            migrationBuilder.DropTable(
+                name: "PriceRanges");
+
+            migrationBuilder.DropTable(
                 name: "ProductFilters");
 
             migrationBuilder.DropTable(
-                name: "ProductPrices");
+                name: "ProductMedia");
+
+            migrationBuilder.DropTable(
+                name: "ProductReviews");
 
             migrationBuilder.DropTable(
                 name: "RefreshTokens");
+
+            migrationBuilder.DropTable(
+                name: "Subproducts");
 
             migrationBuilder.DropTable(
                 name: "Collaborators");
@@ -692,6 +897,9 @@ namespace Website.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Pages");
+
+            migrationBuilder.DropTable(
+                name: "ProductPrices");
 
             migrationBuilder.DropTable(
                 name: "FilterOptions");

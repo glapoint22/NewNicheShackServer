@@ -6,7 +6,7 @@
         public int ProductId { get; set; }
         public string UserId { get; set; } = string.Empty;
         public string Title { get; set; } = string.Empty;
-        public int Rating { get; set; }
+        public double Rating { get; set; }
         public DateTime Date { get; set; }
         public string Text { get; set; } = string.Empty;
         public int Likes { get; set; }

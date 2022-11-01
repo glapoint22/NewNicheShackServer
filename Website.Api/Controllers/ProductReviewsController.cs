@@ -1,6 +1,10 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Website.Application.ProductReviews.Queries;
+using Website.Application.ProductReviews.GetPositiveNegativeReviews.Queries;
+using Website.Application.ProductReviews.GetReviews.Queries;
+using Website.Application.ProductReviews.PostReview.Commands;
+using Website.Application.ProductReviews.RateReview.Commands;
 
 namespace Website.Api.Controllers
 {
@@ -19,11 +23,47 @@ namespace Website.Api.Controllers
         // ---------------------------------------------------------------------- Get Reviews --------------------------------------------------------------------------
         [HttpGet]
         [Route("GetReviews")]
-        public async Task<ActionResult> GetReviews(string productId, int page, string sortBy, string filterBy)
+        public async Task<ActionResult> GetReviews(int productId, string sortBy, string filterBy, int page = 1)
         {
             return SetResponse(await _mediator.Send(new GetReviewsQuery(productId, page, sortBy, filterBy)));
         }
 
 
+
+
+
+
+        // -------------------------------------------------------------- Get Positive Negative Reviews ----------------------------------------------------------------
+        [HttpGet]
+        [Route("GetPositiveNegativeReviews")]
+        public async Task<ActionResult> GetPositiveNegativeReviews(int productId)
+        {
+            return SetResponse(await _mediator.Send(new GetPositiveNegativeReviewsQuery(productId)));
+        }
+
+
+
+
+
+        // --------------------------------------------------------------------- Post Review ---------------------------------------------------------------------------
+        [HttpPost]
+        [Route("PostReview")]
+        [Authorize(Policy = "Account")]
+        public async Task<ActionResult> PostReview(PostReviewCommand postReview)
+        {
+            return SetResponse(await _mediator.Send(postReview));
+        }
+
+
+
+
+
+        // --------------------------------------------------------------------- Rate Review ---------------------------------------------------------------------------
+        [HttpPut]
+        [Route("RateReview")]
+        public async Task<ActionResult> RateReview(RateReviewCommand rateReview)
+        {
+            return SetResponse(await _mediator.Send(rateReview));
+        }
     }
 }

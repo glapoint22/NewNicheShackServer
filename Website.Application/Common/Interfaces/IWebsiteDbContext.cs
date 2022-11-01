@@ -20,13 +20,17 @@ namespace Website.Application.Common.Interfaces
         DbSet<OrderProduct> OrderProducts { get; }
         DbSet<PageReferenceItem> PageReferenceItems { get; }
         DbSet<Page> Pages { get; }
+        DbSet<PricePoint> PricePoints { get; }
         DbSet<PriceRange> PriceRanges { get; }
         DbSet<ProductFilter> ProductFilters { get; }
+        DbSet<ProductMedia> ProductMedia { get; }
         DbSet<ProductOrder> ProductOrders { get; }
         DbSet<ProductPrice> ProductPrices { get; }
+        DbSet<ProductReview> ProductReviews { get; }
         DbSet<Product> Products { get; }
         DbSet<RefreshToken> RefreshTokens { get; }
         DbSet<Subniche> Subniches { get; }
+        DbSet<Subproduct> Subproducts { get; }
         DbSet<User> Users { get; }
 
 

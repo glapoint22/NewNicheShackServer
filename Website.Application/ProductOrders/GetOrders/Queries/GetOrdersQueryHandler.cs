@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Shared.Common.Classes;
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
 using Website.Application.ProductOrders.GetOrders.Classes;
-using Shared.Common.Classes;
 
 namespace Website.Application.ProductOrders.GetOrders.Queries
 {

@@ -1,8 +1,9 @@
-﻿using Shared.Common.ValueObjects;
+﻿using Shared.Common.Classes;
+using Shared.Common.ValueObjects;
 
 namespace Shared.Common.Entities
 {
-    public sealed class Product
+    public sealed class Product : Entity
     {
         public int Id { get; set; }
         public int SubnicheId { get; set; }
@@ -29,5 +30,52 @@ namespace Shared.Common.Entities
         public Media Media { get; set; } = null!;
         public ICollection<ProductPrice> ProductPrices { get; private set; } = new HashSet<ProductPrice>();
         public ICollection<ProductFilter> ProductFilters { get; private set; } = new HashSet<ProductFilter>();
+        public ICollection<ProductOrder> ProductOrders { get; private set; } = new HashSet<ProductOrder>();
+        public ICollection<Subproduct> Subproducts { get; private set; } = new HashSet<Subproduct>();
+        public ICollection<PricePoint> PricePoints { get; private set; } = new HashSet<PricePoint>();
+        public ICollection<ProductMedia> ProductMedia { get; private set; } = new HashSet<ProductMedia>();
+
+
+
+        // ---------------------------------------------------------------------- Set Rating ---------------------------------------------------------------------------
+        public void SetRating(int rating)
+        {
+            // Increment the star based on the rating. So if the rating is 3, the threeStars property will be incremented
+            switch (rating)
+            {
+                case 1:
+                    OneStar++;
+                    break;
+
+                case 2:
+                    TwoStars++;
+                    break;
+
+                case 3:
+                    ThreeStars++;
+                    break;
+
+                case 4:
+                    FourStars++;
+                    break;
+
+                case 5:
+                    FiveStars++;
+                    break;
+            }
+
+
+            // Increment total reviews
+            TotalReviews++;
+
+            // Calculate the product's rating
+            double sum = (5 * FiveStars) +
+                         (4 * FourStars) +
+                         (3 * ThreeStars) +
+                         (2 * TwoStars) +
+                         (1 * OneStar);
+
+            Rating = Math.Round(sum / TotalReviews, 1);
+        }
     }
 }
