@@ -23,6 +23,7 @@ namespace Website.Application.Common.Interfaces
         DbSet<PricePoint> PricePoints { get; }
         DbSet<PriceRange> PriceRanges { get; }
         DbSet<ProductFilter> ProductFilters { get; }
+        DbSet<ProductKeyword> ProductKeywords { get; }
         DbSet<ProductMedia> ProductMedia { get; }
         DbSet<ProductOrder> ProductOrders { get; }
         DbSet<ProductPrice> ProductPrices { get; }

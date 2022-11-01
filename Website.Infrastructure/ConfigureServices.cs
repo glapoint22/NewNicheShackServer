@@ -17,6 +17,7 @@ using Website.Infrastructure.Persistence;
 using Website.Infrastructure.Persistence.Interceptors;
 using Website.Infrastructure.Persistence.Repositories;
 using Website.Infrastructure.Services;
+using Website.Infrastructure.Services.SearchSuggestionsService;
 
 namespace Website.Infrastructure
 {
@@ -35,12 +36,19 @@ namespace Website.Infrastructure
 
             services.AddQuartz(configure =>
             {
-                var jobkey = new JobKey(nameof(ProcessDomainEventsJob));
+                JobKey processDomainEventsJobKey = new(nameof(ProcessDomainEventsJob));
+                JobKey searchSuggestionsJobKey = new(nameof(SearchSuggestionsJob));
 
                 configure
-                    .AddJob<ProcessDomainEventsJob>(jobkey)
-                    .AddTrigger(trigger => trigger.ForJob(jobkey)
+                    .AddJob<ProcessDomainEventsJob>(processDomainEventsJobKey)
+                    .AddTrigger(trigger => trigger.ForJob(processDomainEventsJobKey)
                         .WithSimpleSchedule(schedule => schedule.WithIntervalInSeconds(10)
+                            .RepeatForever()));
+
+                configure
+                    .AddJob<SearchSuggestionsJob>(searchSuggestionsJobKey)
+                    .AddTrigger(trigger => trigger.ForJob(searchSuggestionsJobKey)
+                        .WithSimpleSchedule(schedule => schedule.WithIntervalInHours(1)
                             .RepeatForever()));
 
                 configure.UseMicrosoftDependencyInjectionJobFactory();
@@ -98,6 +106,7 @@ namespace Website.Infrastructure
             services.AddTransient<ICookieService, CookieService>();
             services.AddTransient<IAuthService, AuthService>();
             services.AddScoped<IWebsiteDbContext>(provider => provider.GetRequiredService<WebsiteDbContext>());
+            services.AddSingleton<ISearchSuggestionsService, SearchSuggestionsService>();
             services.AddHttpContextAccessor();
             services.AddScoped<IRepository, Repository>();
 

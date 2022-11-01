@@ -30,6 +30,7 @@ namespace Website.Infrastructure.Persistence
         public DbSet<PricePoint> PricePoints => Set<PricePoint>();
         public DbSet<PriceRange> PriceRanges => Set<PriceRange>();
         public DbSet<ProductFilter> ProductFilters => Set<ProductFilter>();
+        public DbSet<ProductKeyword> ProductKeywords => Set<ProductKeyword>();
         public DbSet<ProductMedia> ProductMedia => Set<ProductMedia>();
         public DbSet<ProductOrder> ProductOrders => Set<ProductOrder>();
         public DbSet<ProductPrice> ProductPrices => Set<ProductPrice>();

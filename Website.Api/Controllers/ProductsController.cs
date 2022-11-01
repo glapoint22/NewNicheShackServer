@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Website.Application.Common.Interfaces;
 using Website.Application.Products.GetProduct.Queries;
 
 namespace Website.Api.Controllers
@@ -9,10 +10,12 @@ namespace Website.Api.Controllers
     public sealed class ProductsController : ApiControllerBase
     {
         private readonly ISender _mediator;
+        private readonly ISearchSuggestionsService _searchSuggestionsService;
 
-        public ProductsController(ISender mediator)
+        public ProductsController(ISender mediator, ISearchSuggestionsService searchSuggestionsService)
         {
             _mediator = mediator;
+            _searchSuggestionsService = searchSuggestionsService;
         }
 
         // ---------------------------------------------------------------------- Get Product --------------------------------------------------------------------------
@@ -21,6 +24,16 @@ namespace Website.Api.Controllers
         public async Task<ActionResult> GetProduct(int productId)
         {
             return SetResponse(await _mediator.Send(new GetProductQuery(productId)));
+        }
+
+
+
+        // ---------------------------------------------------------------- Get Search Suggestions ---------------------------------------------------------------------
+        [HttpGet]
+        [Route("GetSearchSuggestions")]
+        public ActionResult GetSearchSuggestions(string searchTerm, int? nicheId)
+        {
+            return Ok(_searchSuggestionsService.GetSearchSuggestions(searchTerm, nicheId));
         }
     }
 }
