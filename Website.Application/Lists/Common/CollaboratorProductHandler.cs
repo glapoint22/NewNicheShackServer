@@ -20,7 +20,7 @@ namespace Website.Application.Lists.Common
 
 
         // ----------------------------------------------------------------------- Add Product ------------------------------------------------------------------------
-        public CollaboratorProduct AddProduct(int productId, int collaboratorId)
+        public CollaboratorProduct AddProduct(string productId, int collaboratorId)
         {
             CollaboratorProduct collaboratorProduct = new(productId, collaboratorId);
             _dbContext.CollaboratorProducts.Add(collaboratorProduct);
@@ -34,6 +34,7 @@ namespace Website.Application.Lists.Common
         // ----------------------------------------------------------------------- Get Products ------------------------------------------------------------------------
         public async Task<List<CollaboratorProductDto>> GetProducts(string listId, string? sort = null)
         {
+            string? userTrackingCode = null;
             User user = await _userService.GetUserFromClaimsAsync();
 
             return await _dbContext.CollaboratorProducts
@@ -45,8 +46,8 @@ namespace Website.Application.Lists.Common
                     Name = x.Product.Name,
                     Rating = x.Product.Rating,
                     TotalReviews = x.Product.TotalReviews,
-                    MinPrice = x.Product.ProductPrices.Min(z => z.Price),
-                    MaxPrice = x.Product.ProductPrices.Count > 1 ? x.Product.ProductPrices.Max(z => z.Price) : 0,
+                    MinPrice = x.Product.ProductPrices.MinPrice(),
+                    MaxPrice = x.Product.ProductPrices.MaxPrice(),
                     DateAdded = x.DateAdded.ToString(),
                     Collaborator = new CollaboratorDto
                     {
@@ -58,9 +59,7 @@ namespace Website.Application.Lists.Common
                             Src = x.Collaborator.User.Image!
                         }
                     },
-                    Hoplink = x.Product.Hoplink +
-                        (user != null ? (x.Product.Hoplink.Contains('?') ? "&" : "?") + "tid=" +
-                        x.Product.TrackingCode + "_" + user.TrackingCode : ""),
+                    Hoplink = x.Product.GetHoplink(userTrackingCode),
                     Image = new Image
                     {
                         Name = x.Product.Media.Name,

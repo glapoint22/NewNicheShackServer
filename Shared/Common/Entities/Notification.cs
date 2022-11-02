@@ -2,10 +2,10 @@
 {
     public sealed class Notification
     {
-        public int Id { get; set; }
-        public int NotificationGroupId { get; set; }
+        public Guid Id { get; set; }
+        public Guid NotificationGroupId { get; set; }
         public string? UserId { get; set; } = string.Empty;
-        public int? ProductId { get; set; }
+        public string? ProductId { get; set; }
         public int? ReviewId { get; set; }
         public int Type { get; set; }
         public string? UserName { get; set; } = string.Empty;

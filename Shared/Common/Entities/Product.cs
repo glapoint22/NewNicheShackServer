@@ -5,8 +5,8 @@ namespace Shared.Common.Entities
 {
     public sealed class Product : Entity
     {
-        public int Id { get; set; }
-        public int SubnicheId { get; set; }
+        public string Id { get; set; } = string.Empty;
+        public string SubnicheId { get; set; } = string.Empty;
         public int ImageId { get; set; }
         public string Name { get; set; } = string.Empty;
         public string UrlName { get; set; } = string.Empty;
@@ -36,6 +36,14 @@ namespace Shared.Common.Entities
         public ICollection<ProductMedia> ProductMedia { get; private set; } = new HashSet<ProductMedia>();
         public ICollection<Notification> Notifications { get; private set; } = new HashSet<Notification>();
 
+
+
+        // ---------------------------------------------------------------------- Get Hoplink --------------------------------------------------------------------------
+        public string GetHoplink(string? userTrackingCode)
+        {
+            return Hoplink + (userTrackingCode != null ? (Hoplink.Contains('?') ? "&" : "?") +
+                "tid=" + TrackingCode + "_" + userTrackingCode : "");
+        }
 
 
         // ---------------------------------------------------------------------- Set Rating ---------------------------------------------------------------------------

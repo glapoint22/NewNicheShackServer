@@ -6,7 +6,7 @@ namespace Shared.Common.Entities
     public sealed class CollaboratorProduct : Entity
     {
         public Guid Id { get; set; }
-        public int ProductId { get; set; }
+        public string ProductId { get; set; } = string.Empty;
         public int CollaboratorId { get; set; }
         public DateTime DateAdded { get; set; }
 
@@ -15,7 +15,7 @@ namespace Shared.Common.Entities
 
         public CollaboratorProduct() { }
 
-        public CollaboratorProduct(int productId, int collaboratorId)
+        public CollaboratorProduct(string productId, int collaboratorId)
         {
             Id = Guid.NewGuid();
             ProductId = productId;

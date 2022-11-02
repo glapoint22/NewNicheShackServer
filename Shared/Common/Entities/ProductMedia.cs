@@ -3,7 +3,7 @@
     public sealed class ProductMedia
     {
         public int Id { get; set; }
-        public int ProductId { get; set; }
+        public string ProductId { get; set; } = string.Empty;
         public int MediaId { get; set; }
         public int Index { get; set; }
 

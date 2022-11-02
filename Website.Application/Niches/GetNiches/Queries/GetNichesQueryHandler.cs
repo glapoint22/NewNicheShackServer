@@ -18,8 +18,13 @@ namespace Website.Application.Niches.GetNiches.Queries
 
         public async Task<Result> Handle(GetNichesQuery request, CancellationToken cancellationToken)
         {
-            List<Niche> niches = await _dbContext.Niches
-                .AsNoTracking()
+            var niches = await _dbContext.Niches
+                .Select(x => new
+                {
+                    x.Id,
+                    x.Name,
+                    x.UrlName
+                })
                 .ToListAsync(cancellationToken: cancellationToken);
 
             return Result.Succeeded(niches);

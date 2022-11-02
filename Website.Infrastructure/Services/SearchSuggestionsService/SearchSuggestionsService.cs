@@ -12,7 +12,7 @@ namespace Website.Infrastructure.Services.SearchSuggestionsService
 
 
         // ------------------------------------------------------------------ Get Search Suggestions ------------------------------------------------------------------
-        public List<SearchSuggestion>? GetSearchSuggestions(string? searchTerm, int? nicheId)
+        public List<SearchSuggestion>? GetSearchSuggestions(string? searchTerm, string? nicheId)
         {
             if (_rootNode == null || searchTerm == null) return null;
 
@@ -52,11 +52,11 @@ namespace Website.Infrastructure.Services.SearchSuggestionsService
             }
 
 
-            if (nicheId == null) nicheId = 0;
+            if (nicheId == null) nicheId = "All";
 
-            if (!node.Suggestions.ContainsKey((int)nicheId)) return null;
+            if (!node.Suggestions.ContainsKey(nicheId)) return null;
 
-            var suggestions = node.Suggestions[(int)nicheId]
+            var suggestions = node.Suggestions[nicheId]
                 .Select(x => new SearchSuggestion
                 {
                     Name = x.Name,
@@ -64,7 +64,7 @@ namespace Website.Infrastructure.Services.SearchSuggestionsService
                 })
                 .ToList();
 
-            if (nicheId == 0 && suggestions[0].Niche != null) suggestions.Insert(0, new SearchSuggestion { Name = suggestions[0].Name });
+            if (nicheId == "All" && suggestions[0].Niche != null) suggestions.Insert(0, new SearchSuggestion { Name = suggestions[0].Name });
 
             return suggestions;
         }
@@ -75,7 +75,7 @@ namespace Website.Infrastructure.Services.SearchSuggestionsService
 
 
         // ------------------------------------------------------------------ Set Search Suggestions ------------------------------------------------------------------
-        public void SetSearchSuggestions(List<KeywordData> keywords, List<int> nicheIds)
+        public void SetSearchSuggestions(List<KeywordData> keywords, List<string> nicheIds)
         {
             List<SearchTerm> searchTerms = GetSearchTerms(keywords);
             List<SplitSearchTerm> splitSearchTerms = GenerateSplitSearchTerms(searchTerms);

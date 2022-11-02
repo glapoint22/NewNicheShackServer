@@ -60,7 +60,7 @@ namespace Website.Application.ProductOrders.GetOrders.Queries
                     Discount = x.Discount,
                     Tax = x.Tax,
                     Total = x.Total,
-                    Hoplink = x.Product.Hoplink + (x.Product.Hoplink.Contains('?') ? "&" : "?") + "tid=" + x.Product.TrackingCode + "_" + x.User.TrackingCode,
+                    Hoplink = x.Product.GetHoplink(x.User.TrackingCode),
                     ProductId = x.ProductId,
                     Products = x.OrderProducts
                         .OrderByDescending(z => z.LineItemType == "ORIGINAL")
@@ -107,9 +107,7 @@ namespace Website.Application.ProductOrders.GetOrders.Queries
                         Name = x.ProductOrder.Product.Media.Name,
                         Src = x.ProductOrder.Product.Media.ImageSm!
                     } : null!,
-                    Hoplink = x.ProductOrder.Product.Hoplink +
-                        (x.ProductOrder.Product.Hoplink.Contains('?') ? "&" : "?") + "tid=" +
-                        x.ProductOrder.Product.TrackingCode + "_" + x.ProductOrder.User.TrackingCode,
+                    Hoplink = x.ProductOrder.Product.GetHoplink(x.ProductOrder.User.TrackingCode),
                     OrderNumber = x.OrderId,
                     UrlName = x.ProductOrder.Product.UrlName
                 })

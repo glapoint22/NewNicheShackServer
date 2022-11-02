@@ -53,5 +53,28 @@ namespace Shared.Common.Classes
         {
             return source.Where(QueryBuilder.Classes.QueryBuilder.BuildQuery<T>(searchTerm));
         }
+
+
+
+
+
+
+        // ------------------------------------------------------------------------- Min Price --------------------------------------------------------------------------------
+        public static double MinPrice(this IEnumerable<ProductPrice> prices)
+        {
+            return prices.Min(x => x.Price);
+        }
+
+
+
+
+
+
+
+        // ------------------------------------------------------------------------- Max Price --------------------------------------------------------------------------------
+        public static double MaxPrice(this IEnumerable<ProductPrice> prices)
+        {
+            return prices.Count() > 1 ? prices.Max(z => z.Price) : 0;
+        }
     }
 }

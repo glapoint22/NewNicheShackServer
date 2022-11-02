@@ -74,15 +74,19 @@ namespace Website.Application.Notifications.PostNotification.Commands
             if (notificationGroup == null || request.Type == (int)NotificationType.Error)
             {
                 // Then create a new notification group
-                notificationGroup = new NotificationGroup();
+                notificationGroup = new NotificationGroup()
+                {
+                    Id = Guid.NewGuid()
+                };
+
                 _dbContext.NotificationGroups.Add(notificationGroup);
-                await _dbContext.SaveChangesAsync();
             }
 
 
             // Now create the new notification
             var notification = new Notification()
             {
+                Id = Guid.NewGuid(),
                 NotificationGroupId = notificationGroup.Id,
                 UserId = userId,
                 ProductId = request.ProductId,

@@ -36,11 +36,11 @@ namespace Website.Infrastructure.BackgroundJobs
                 .ToListAsync();
 
 
-            List<int> nicheIds = await _dbContext.Niches
+            List<string> nicheIds = await _dbContext.Niches
                 .Select(x => x.Id)
                 .ToListAsync();
 
-            nicheIds.Insert(0, 0);
+            nicheIds.Insert(0, "All");
 
 
             _searchSuggestionsService.SetSearchSuggestions(keywords, nicheIds);

@@ -54,12 +54,12 @@ namespace Website.Application.ProductOrders.PostOrder.Commands
                 string[] trackingCodes = orderNotification.TrackingCodes.ToArray()[0].Split('_');
 
                 // Get the product id
-                int productId = await _dbContext.Products
+                string? productId = await _dbContext.Products
                     .Where(x => x.TrackingCode == trackingCodes[0])
                     .Select(x => x.Id)
                     .SingleOrDefaultAsync();
 
-                if (productId == 0) return Result.Failed();
+                if (productId == null) return Result.Failed();
 
 
                 // Get the user id
@@ -108,7 +108,7 @@ namespace Website.Application.ProductOrders.PostOrder.Commands
 
                 }
 
-                ProductOrder productOrder = new ProductOrder
+                ProductOrder productOrder = new()
                 {
                     Id = id,
                     ProductId = productId,

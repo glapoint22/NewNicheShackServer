@@ -2,7 +2,7 @@
 {
     public sealed class NotificationGroup
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public DateTime? ArchiveDate { get; set; }
     }
 }

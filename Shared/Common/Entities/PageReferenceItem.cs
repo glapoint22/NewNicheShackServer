@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public string PageId { get; set; } = string.Empty;
-        public int? SubnicheId { get; set; }
+        public string? SubnicheId { get; set; }
         public int? KeywordGroupId { get; set; }
 
         public Page Page { get; set; } = null!;

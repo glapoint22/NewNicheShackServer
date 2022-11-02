@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Shared.Common.Classes;
 using Shared.Common.Entities;
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
@@ -19,47 +20,34 @@ namespace Website.Application.Products.GetProduct.Queries
 
         public async Task<Result> Handle(GetProductQuery request, CancellationToken cancellationToken)
         {
+            string? userTrackingCode = null;
             User user = await _userService.GetUserFromClaimsAsync();
+            
+            if (user != null) userTrackingCode = user.TrackingCode;
 
-            Product? product = await _dbContext.Products
+            var product = await _dbContext.Products
+                .AsNoTracking()
                 .Where(x => x.Id == request.ProductId)
-                .Include(x => x.Subproducts)
-                    .ThenInclude(x => x.Media)
-                .Include(x => x.ProductPrices)
-                .Include(x => x.PricePoints)
-                    .ThenInclude(x => x.ProductPrice)
-                .Include(x => x.PricePoints)
-                    .ThenInclude(x => x.Media)
-                .Include(x => x.ProductMedia)
-                    .ThenInclude(x => x.Media)
-                .Include(x => x.Subniche)
-                    .ThenInclude(x => x.Niche)
-                .SingleOrDefaultAsync();
-
-            if (product == null) return Result.Failed();
-
-            return Result.Succeeded(new
-            {
-                product.Id,
-                product.Name,
-                product.UrlName,
-                product.Description,
-                product.Rating,
-                product.TotalReviews,
-                MinPrice = product.ProductPrices.Min(z => z.Price),
-                MaxPrice = product.ProductPrices.Count > 1 ? product.ProductPrices.Max(z => z.Price) : 0,
-                product.OneStar,
-                product.TwoStars,
-                product.ThreeStars,
-                product.FourStars,
-                product.FiveStars,
-                product.SubnicheId,
-                Hoplink = product.Hoplink +
-                        (user != null ? (product.Hoplink.Contains('?') ? "&" : "?") + "tid=" +
-                        product.TrackingCode + "_" + user.TrackingCode : ""),
-                product.ShippingType,
-                product.RecurringPayment,
-                Components = product.Subproducts
+                .Select(product => new
+                {
+                    product.Id,
+                    product.Name,
+                    product.UrlName,
+                    product.Description,
+                    product.Rating,
+                    product.TotalReviews,
+                    MinPrice = product.ProductPrices.MinPrice(),
+                    MaxPrice = product.ProductPrices.MaxPrice(),
+                    product.OneStar,
+                    product.TwoStars,
+                    product.ThreeStars,
+                    product.FourStars,
+                    product.FiveStars,
+                    product.SubnicheId,
+                    Hoplink = product.GetHoplink(userTrackingCode),
+                    product.ShippingType,
+                    product.RecurringPayment,
+                    Components = product.Subproducts
                     .Where(x => x.Type == 0)
                     .Select(x => new
                     {
@@ -72,7 +60,7 @@ namespace Website.Application.Products.GetProduct.Queries
                         },
                         x.Value
                     }).ToList(),
-                Bonuses = product.Subproducts
+                    Bonuses = product.Subproducts
                     .Where(x => x.Type == 1)
                     .Select(x => new
                     {
@@ -85,7 +73,7 @@ namespace Website.Application.Products.GetProduct.Queries
                         },
                         x.Value
                     }).ToList(),
-                PricePoints = product.PricePoints
+                    PricePoints = product.PricePoints
                     .Select(x => new
                     {
                         Image = x.Media != null ? new Image
@@ -103,7 +91,7 @@ namespace Website.Application.Products.GetProduct.Queries
                         x.RecurringPayment
                     })
                     .ToList(),
-                Media = product.ProductMedia
+                    Media = product.ProductMedia
                     .OrderBy(x => x.Index)
                     .Select(x => new
                     {
@@ -115,7 +103,7 @@ namespace Website.Application.Products.GetProduct.Queries
                         x.Media.VideoId,
                         x.Media.VideoType
                     }),
-                Breadcrumb = new List<object>
+                    Breadcrumb = new List<object>
                 {
                     new
                     {
@@ -129,7 +117,12 @@ namespace Website.Application.Products.GetProduct.Queries
                         product.Subniche.UrlName
                     }
                 }
-            });
+                })
+                .SingleOrDefaultAsync();
+
+            if (product == null) return Result.Failed();
+
+            return Result.Succeeded(product);
         }
     }
 }

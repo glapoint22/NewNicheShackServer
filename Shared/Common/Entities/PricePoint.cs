@@ -6,7 +6,7 @@ namespace Shared.Common.Entities
     {
         public int Id { get; set; }
         public int ProductPriceId { get; set; }
-        public int ProductId { get; set; }
+        public string ProductId { get; set; } = string.Empty;
         public int? ImageId { get; set; }
         public string? Header { get; set; } = string.Empty;
         public string? Quantity { get; set; } = string.Empty;

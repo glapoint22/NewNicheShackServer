@@ -3,5 +3,5 @@ using Website.Application.Common.Classes;
 
 namespace Website.Application.Lists.AddProduct.Commands
 {
-    public sealed record AddProductCommand(int ProductId, int CollaboratorId) : IRequest<Result>;
+    public sealed record AddProductCommand(string ProductId, int CollaboratorId) : IRequest<Result>;
 }

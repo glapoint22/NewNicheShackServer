@@ -5,7 +5,7 @@ namespace Website.Application.Notifications.PostNotification.Commands
 {
     public sealed record PostNotificationCommand : IRequest<Result>
     {
-        public int? ProductId { get; init; }
+        public string? ProductId { get; init; }
         public int? ReviewId { get; init; }
         public int Type { get; init; }
         public string UserName { get; init; } = string.Empty;

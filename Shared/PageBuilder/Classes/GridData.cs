@@ -64,8 +64,8 @@ namespace Shared.PageBuilder.Classes
                     UrlName = x.UrlName,
                     Rating = x.Rating,
                     TotalReviews = x.TotalReviews,
-                    MinPrice = x.ProductPrices.Min(z => z.Price),
-                    MaxPrice = x.ProductPrices.Count > 1 ? x.ProductPrices.Max(z => z.Price) : 0,
+                    MinPrice = x.ProductPrices.MinPrice(),
+                    MaxPrice = x.ProductPrices.MaxPrice(),
                     Image = new PageImage
                     {
                         Name = x.Media.Name,
@@ -207,7 +207,7 @@ namespace Shared.PageBuilder.Classes
 
 
         // -------------------------------------------------------------------- Get Niche Filters ------------------------------------------------------------------------
-        private async Task<List<NicheFilter>> GetNicheFilters(List<int> subnicheIds)
+        private async Task<List<NicheFilter>> GetNicheFilters(List<string> subnicheIds)
         {
             var subniches = await _repository.Subniches
                 .Where(x => subnicheIds.Contains(x.Id))
@@ -245,7 +245,7 @@ namespace Shared.PageBuilder.Classes
 
 
         // -------------------------------------------------------------------- Get Custom Filters -----------------------------------------------------------------------
-        private async Task<List<QueryFilter>> GetCustomFilters(List<int> productIds, Expression<Func<ProductFilter, bool>> whereExpression)
+        private async Task<List<QueryFilter>> GetCustomFilters(List<string> productIds, Expression<Func<ProductFilter, bool>> whereExpression)
         {
             var filters = await _repository.ProductFilters
                 .Where(x => productIds

@@ -21,7 +21,7 @@ namespace Website.Api.Controllers
         // ---------------------------------------------------------------------- Get Product --------------------------------------------------------------------------
         [HttpGet]
         [Route("GetProduct")]
-        public async Task<ActionResult> GetProduct(int productId)
+        public async Task<ActionResult> GetProduct(string productId)
         {
             return SetResponse(await _mediator.Send(new GetProductQuery(productId)));
         }
@@ -31,7 +31,7 @@ namespace Website.Api.Controllers
         // ---------------------------------------------------------------- Get Search Suggestions ---------------------------------------------------------------------
         [HttpGet]
         [Route("GetSearchSuggestions")]
-        public ActionResult GetSearchSuggestions(string searchTerm, int? nicheId)
+        public ActionResult GetSearchSuggestions(string searchTerm, string? nicheId)
         {
             return Ok(_searchSuggestionsService.GetSearchSuggestions(searchTerm, nicheId));
         }
