@@ -113,7 +113,7 @@ namespace Website.Application.ProductOrders.PostOrder.Commands
                     Id = id,
                     ProductId = productId,
                     UserId = userId,
-                    Date = DateTime.Now,
+                    Date = DateTime.UtcNow,
                     PaymentMethod = (int)Enum.Parse(typeof(PaymentMethod), paymentMethod),
                     Subtotal = subtotal,
                     ShippingHandling = shipping,

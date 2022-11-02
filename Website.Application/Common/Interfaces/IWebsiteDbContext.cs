@@ -6,6 +6,7 @@ namespace Website.Application.Common.Interfaces
 {
     public interface IWebsiteDbContext
     {
+        DbSet<BlockedNonAccountEmail> BlockedNonAccountEmails { get; }
         DbSet<CollaboratorProduct> CollaboratorProducts { get; }
         DbSet<Collaborator> Collaborators { get; }
         DbSet<FilterOption> FilterOptions { get; }
@@ -17,6 +18,8 @@ namespace Website.Application.Common.Interfaces
         DbSet<List> Lists { get; }
         DbSet<Media> Media { get; }
         DbSet<Niche> Niches { get; }
+        DbSet<NotificationGroup> NotificationGroups { get; }
+        DbSet<Notification> Notifications { get; }
         DbSet<OrderProduct> OrderProducts { get; }
         DbSet<PageReferenceItem> PageReferenceItems { get; }
         DbSet<Page> Pages { get; }

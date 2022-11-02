@@ -23,8 +23,10 @@ namespace Shared.Common.Entities
         public bool? EmailOnDeletedList { get; set; }
         public bool? EmailOnReview { get; set; }
         public string TrackingCode { get; set; } = string.Empty;
+        public bool BlockNotificationSending { get; set; }
 
         public ICollection<Collaborator> Collaborators { get; private set; } = new HashSet<Collaborator>();
+        public ICollection<Notification> Notifications { get; private set; } = new HashSet<Notification>();
 
 
 

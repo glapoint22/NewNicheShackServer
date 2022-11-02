@@ -15,5 +15,6 @@
 
         public Product Product { get; set; } = null!;
         public User User { get; set; } = null!;
+        public ICollection<Notification> Notifications { get; private set; } = new HashSet<Notification>();
     }
 }

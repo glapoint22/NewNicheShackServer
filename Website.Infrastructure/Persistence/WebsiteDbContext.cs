@@ -12,7 +12,7 @@ namespace Website.Infrastructure.Persistence
         public WebsiteDbContext(DbContextOptions<WebsiteDbContext> options) : base(options)
         {
         }
-
+        public DbSet<BlockedNonAccountEmail> BlockedNonAccountEmails => Set<BlockedNonAccountEmail>();
         public DbSet<CollaboratorProduct> CollaboratorProducts => Set<CollaboratorProduct>();
         public DbSet<Collaborator> Collaborators => Set<Collaborator>();
         public DbSet<FilterOption> FilterOptions => Set<FilterOption>();
@@ -24,6 +24,8 @@ namespace Website.Infrastructure.Persistence
         public DbSet<List> Lists => Set<List>();
         public DbSet<Media> Media => Set<Media>();
         public DbSet<Niche> Niches => Set<Niche>();
+        public DbSet<NotificationGroup> NotificationGroups => Set<NotificationGroup>();
+        public DbSet<Notification> Notifications => Set<Notification>();
         public DbSet<OrderProduct> OrderProducts => Set<OrderProduct>();
         public DbSet<PageReferenceItem> PageReferenceItems => Set<PageReferenceItem>();
         public DbSet<Page> Pages => Set<Page>();

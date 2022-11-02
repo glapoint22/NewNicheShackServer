@@ -34,6 +34,7 @@ namespace Shared.Common.Entities
         public ICollection<Subproduct> Subproducts { get; private set; } = new HashSet<Subproduct>();
         public ICollection<PricePoint> PricePoints { get; private set; } = new HashSet<PricePoint>();
         public ICollection<ProductMedia> ProductMedia { get; private set; } = new HashSet<ProductMedia>();
+        public ICollection<Notification> Notifications { get; private set; } = new HashSet<Notification>();
 
 
 
