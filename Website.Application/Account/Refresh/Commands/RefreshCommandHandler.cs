@@ -92,7 +92,10 @@ namespace Website.Application.Account.Refresh.Commands
 
             if (newRefreshToken != null)
             {
-                return Result.Succeeded(newRefreshToken);
+                return Result.Succeeded(new
+                {
+                    value = newRefreshToken
+                });
             }
 
             return Result.Succeeded();

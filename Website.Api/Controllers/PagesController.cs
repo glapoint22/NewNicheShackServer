@@ -7,7 +7,7 @@ using Website.Application.Pages.GetSearchPage.Queries;
 
 namespace Website.Api.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public sealed class PagesController : ApiControllerBase
     {
@@ -21,11 +21,20 @@ namespace Website.Api.Controllers
 
 
         // ------------------------------------------------------------------------- Get Page --------------------------------------------------------------------------
-        [HttpGet]
-        [Route("GetPage")]
-        public async Task<ActionResult> GetPage(string? id, int? pageType)
+        [HttpGet("PageType")]
+        public async Task<ActionResult> GetPage(int pageType)
         {
-            return SetResponse(await _mediator.Send(new GetPageQuery(id, pageType)));
+            return SetResponse(await _mediator.Send(new GetPageQuery(PageType: pageType)));
+        }
+
+
+
+
+        // ------------------------------------------------------------------------- Get Page --------------------------------------------------------------------------
+        [HttpGet("PageId")]
+        public async Task<ActionResult> GetPage(string id)
+        {
+            return SetResponse(await _mediator.Send(new GetPageQuery(Id: id)));
         }
 
 

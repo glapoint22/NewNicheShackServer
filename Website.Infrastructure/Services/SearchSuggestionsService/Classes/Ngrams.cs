@@ -11,25 +11,25 @@
         public Ngrams(List<SplitSearchTerm> splitSearchTerms)
         {
             // Unigrams
-            HashSet<string> unigrams = new HashSet<string>();
-            List<string> unigramList = new List<string>();
-            List<KeyValuePair<int, int>> unigramIndices = new List<KeyValuePair<int, int>>();
+            HashSet<string> unigrams = new();
+            List<string> unigramList = new();
+            List<KeyValuePair<int, int>> unigramIndices = new();
 
             // Bigrams
-            Dictionary<string, List<string>> bigramList = new Dictionary<string, List<string>>();
-            Dictionary<string, List<KeyValuePair<int, int>>> bigramIndices = new Dictionary<string, List<KeyValuePair<int, int>>>();
-            Dictionary<string, Dictionary<string, string>> bigramPartialWords = new Dictionary<string, Dictionary<string, string>>();
+            Dictionary<string, List<string>> bigramList = new();
+            Dictionary<string, List<KeyValuePair<int, int>>> bigramIndices = new();
+            Dictionary<string, Dictionary<string, string>> bigramPartialWords = new();
 
             // Trigrams
-            Dictionary<Tuple<string, string>, List<string>> trigramList = new Dictionary<Tuple<string, string>, List<string>>();
-            Dictionary<Tuple<string, string>, List<KeyValuePair<int, int>>> trigramIndices = new Dictionary<Tuple<string, string>, List<KeyValuePair<int, int>>>();
-            Dictionary<Tuple<string, string>, Dictionary<string, string>> trigramPartialWords = new Dictionary<Tuple<string, string>, Dictionary<string, string>>();
+            Dictionary<Tuple<string, string>, List<string>> trigramList = new();
+            Dictionary<Tuple<string, string>, List<KeyValuePair<int, int>>> trigramIndices = new();
+            Dictionary<Tuple<string, string>, Dictionary<string, string>> trigramPartialWords = new();
 
 
             // Quadgrams
-            Dictionary<Tuple<string, string, string>, List<string>> quadgramList = new Dictionary<Tuple<string, string, string>, List<string>>();
-            Dictionary<Tuple<string, string, string>, List<KeyValuePair<int, int>>> quadgramIndices = new Dictionary<Tuple<string, string, string>, List<KeyValuePair<int, int>>>();
-            Dictionary<Tuple<string, string, string>, Dictionary<string, string>> quadgramPartialWords = new Dictionary<Tuple<string, string, string>, Dictionary<string, string>>();
+            Dictionary<Tuple<string, string, string>, List<string>> quadgramList = new();
+            Dictionary<Tuple<string, string, string>, List<KeyValuePair<int, int>>> quadgramIndices = new();
+            Dictionary<Tuple<string, string, string>, Dictionary<string, string>> quadgramPartialWords = new();
 
 
             foreach (SplitSearchTerm splitSearchTerm in splitSearchTerms)
@@ -78,7 +78,7 @@
                 .ToList();
 
 
-            bigramList = bigramList.ToDictionary(x => x.Key, x => x.Value.OrderBy(z => z.Count()).ToList());
+            bigramList = bigramList.ToDictionary(x => x.Key, x => x.Value.OrderBy(z => z.Length).ToList());
             bigramIndices = bigramList
                 .Select(x => new
                 {
@@ -96,7 +96,7 @@
 
 
 
-            trigramList = trigramList.ToDictionary(x => x.Key, x => x.Value.OrderBy(z => z.Count()).ToList());
+            trigramList = trigramList.ToDictionary(x => x.Key, x => x.Value.OrderBy(z => z.Length).ToList());
             trigramIndices = trigramList
                 .Select(x => new
                 {
@@ -118,7 +118,7 @@
 
 
 
-            quadgramList = quadgramList.ToDictionary(x => x.Key, x => x.Value.OrderBy(z => z.Count()).ToList());
+            quadgramList = quadgramList.ToDictionary(x => x.Key, x => x.Value.OrderBy(z => z.Length).ToList());
             quadgramIndices = quadgramList
                 .Select(x => new
                 {
@@ -149,11 +149,11 @@
         }
 
 
-        private void GeneratePartialWords<T>(Dictionary<T, List<string>> ngramList, Dictionary<T, Dictionary<string, string>> ngramPartialWords)
+        private static void GeneratePartialWords<T>(Dictionary<T, List<string>> ngramList, Dictionary<T, Dictionary<string, string>> ngramPartialWords) where T : notnull
         {
             foreach (KeyValuePair<T, List<string>> ngram in ngramList)
             {
-                Dictionary<string, string> dictionary = new Dictionary<string, string>();
+                Dictionary<string, string> dictionary = new();
 
                 foreach (string word in ngram.Value)
                 {
@@ -187,7 +187,7 @@
 
 
 
-        private void SetNgramList<T>(Dictionary<T, List<string>> ngram, T key, string word)
+        private static void SetNgramList<T>(Dictionary<T, List<string>> ngram, T key, string word) where T : notnull
         {
             if (!ngram.ContainsKey(key))
             {

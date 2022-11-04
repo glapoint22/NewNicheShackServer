@@ -23,7 +23,7 @@ using Website.Application.Account.SignUp.Commands;
 
 namespace Website.Api.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public sealed class AccountController : ApiControllerBase
     {
@@ -221,6 +221,7 @@ namespace Website.Api.Controllers
         // ------------------------------------------------------------------------- Refresh --------------------------------------------------------------------------
         [HttpGet]
         [Route("Refresh")]
+        [Authorize(Policy = "Account")]
         public async Task<ActionResult> Refresh()
         {
             return SetResponse(await _mediator.Send(new RefreshCommand()));

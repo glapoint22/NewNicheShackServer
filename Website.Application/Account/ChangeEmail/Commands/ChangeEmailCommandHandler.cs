@@ -21,23 +21,14 @@ namespace Website.Application.Account.ChangeEmail.Commands
         public async Task<Result> Handle(ChangeEmailCommand request, CancellationToken cancellationToken)
         {
             User user = await _userService.GetUserFromClaimsAsync();
-
-            if (user == null) throw new Exception("Error while trying to get user from claims.");
-
-            user.AddDomainEvent(new UserChangedEmailEvent(user.Id));
-
             IdentityResult result = await _userService.ChangeEmailAsync(user, request.NewEmail, request.OneTimePassword);
 
             if (!await _userService.CheckPasswordAsync(user, request.Password) || !result.Succeeded) return Result.Failed();
 
-            //// Send the confirmation email
-            //if (user.EmailOnEmailChange == true)
-            //{
-            //    // TODO: Send email
-            //}
-
             // Update the user cookie
             await UpdateUserCookie(user);
+
+            user.AddDomainEvent(new UserChangedEmailEvent(user.Id));
 
 
             return Result.Succeeded();

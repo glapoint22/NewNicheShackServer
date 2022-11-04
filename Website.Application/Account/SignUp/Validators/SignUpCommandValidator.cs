@@ -1,12 +1,11 @@
 ﻿using FluentValidation;
 using Website.Application.Account.SignUp.Commands;
-using Website.Application.Common.Interfaces;
 
 namespace Website.Application.Account.SignUp.Validators
 {
     public sealed class SignUpCommandValidator : AbstractValidator<SignUpCommand>
     {
-        public SignUpCommandValidator(IWebsiteDbContext dbContext)
+        public SignUpCommandValidator()
         {
             RuleFor(x => x.FirstName)
                 .NotEmpty()

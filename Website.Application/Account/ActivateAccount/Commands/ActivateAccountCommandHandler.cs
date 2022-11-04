@@ -27,27 +27,31 @@ namespace Website.Application.Account.ActivateAccount.Commands
         {
             User user = await _userService.GetUserByEmailAsync(request.Email);
 
-            if (user.EmailConfirmed) return Result.Failed("409");
+            if (user == null) throw new Exception();
 
-            IdentityResult identityResult = await _userService.ConfirmEmailAsync(user, request.Token);
-            if (!identityResult.Succeeded) return Result.Failed();
+            if (!user.EmailConfirmed)
+            {
+                IdentityResult identityResult = await _userService.ConfirmEmailAsync(user, request.OneTimePassword);
+                if (!identityResult.Succeeded) return Result.Failed();
 
-            // Add the domain event
-            user.AddDomainEvent(new UserActivatedAccountEvent(user.Id));
+                // Log in the user
+                List<Claim> claims = _authService.GetClaims(user, true);
+                string accessToken = _authService.GenerateAccessToken(claims);
+                string refreshToken = _authService.GenerateRefreshToken(user.Id);
+                string userData = _userService.GetUserData(user);
+                DateTimeOffset? expiration = _userService.GetExpirationFromClaims(claims);
 
-            // Log in the user
-            List<Claim> claims = _authService.GetClaims(user, true);
-            string accessToken = _authService.GenerateAccessToken(claims);
-            string refreshToken = _authService.GenerateRefreshToken(user.Id);
-            string userData = _userService.GetUserData(user);
-            DateTimeOffset? expiration = _userService.GetExpirationFromClaims(claims);
+                // Set the cookies
+                _cookieService.SetCookie("access", accessToken, expiration);
+                _cookieService.SetCookie("refresh", refreshToken, expiration);
+                _cookieService.SetCookie("user", userData, expiration);
 
-            // Set the cookies
-            _cookieService.SetCookie("access", accessToken, expiration);
-            _cookieService.SetCookie("refresh", refreshToken, expiration);
-            _cookieService.SetCookie("user", userData, expiration);
+                await _dbContext.SaveChangesAsync();
 
-            await _dbContext.SaveChangesAsync();
+
+                // Add the domain event
+                user.AddDomainEvent(new UserActivatedAccountEvent(user.Id));
+            }
 
             return Result.Succeeded();
         }

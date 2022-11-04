@@ -74,25 +74,23 @@ namespace Website.Infrastructure.Services
 
 
         // --------------------------------------------------------------------- Create User Async ---------------------------------------------------------------------
-        public async Task<User> CreateUserAsync(string firstName, string lastName, string email, string? password = null)
+        public async Task<User?> CreateUserAsync(string firstName, string lastName, string email, string? password = null)
         {
             User user;
-
-            user = await _userManager.FindByEmailAsync(email);
-
-            if (user != null) return user;
+            IdentityResult result;
 
             user = new(firstName, lastName, email);
 
             if (password != null)
             {
-                user.AddDomainEvent(new UserCreatedEvent(user.Id));
-                await _userManager.CreateAsync(user, password);
+                result = await _userManager.CreateAsync(user, password);
             }
             else
             {
-                await _userManager.CreateAsync(user);
+                result = await _userManager.CreateAsync(user);
             }
+
+            if (!result.Succeeded) return null;
 
             return user;
         }

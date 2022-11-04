@@ -17,7 +17,7 @@ namespace Website.Application.Common.Interfaces
 
         Task<IdentityResult> ConfirmEmailAsync(User user, string token);
 
-        Task<User> CreateUserAsync(string firstName, string lastName, string email, string? password = null);
+        Task<User?> CreateUserAsync(string firstName, string lastName, string email, string? password = null);
 
         Task<string> GenerateChangeEmailTokenAsync(User user, string newEmail);
 
