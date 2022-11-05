@@ -37,29 +37,55 @@ namespace Shared.Common.Entities
         public IReadOnlyCollection<INotification> DomainEvents => _domainEvents.AsReadOnly();
 
 
-        public User() { }
 
-        public User(string firstName, string lastName, string email)
+        // -------------------------------------------------------------------------- Create ---------------------------------------------------------------------------
+        public static User Create(string firstName, string lastName, string email)
         {
-            FirstName = firstName;
-            LastName = lastName;
-            Email = email;
-            UserName = email;
-            TrackingCode = Guid.NewGuid().ToString("N").Substring(0, 10).ToUpper();
+            // Create the user
+            User user = new()
+            {
+                FirstName = firstName,
+                LastName = lastName,
+                Email = email,
+                UserName = email,
+                TrackingCode = Guid.NewGuid().ToString("N").Substring(0, 10).ToUpper()
+            };
+
 
             // Create the user's first list
             string listName = firstName + (firstName.Substring(firstName.Length - 1).ToLower() == "s" ? "' List" : "'s List");
             List list = new(listName);
 
             // Add this user as a collaborator to the list
-            Collaborator collaborator = new(list.Id, Id, true);
+            Collaborator collaborator = new(list.Id, user.Id, true);
 
 
-            Collaborators.Add(collaborator);
+            user.Collaborators.Add(collaborator);
             collaborator.List = list;
+
+            return user;
         }
 
 
+
+
+
+        // ------------------------------------------------------------------------ Change Name ------------------------------------------------------------------------
+        public void ChangeName(string firstName, string lastName)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+        }
+
+
+
+
+
+        // ------------------------------------------------------------------------ Change Image -----------------------------------------------------------------------
+        public void ChangeImage(string image)
+        {
+            Image = image;
+        }
 
 
 
@@ -82,36 +108,5 @@ namespace Shared.Common.Entities
         {
             _domainEvents.Clear();
         }
-
-
-
-
-
-
-        // ------------------------------------------------------------------------- Create User -------------------------------------------------------------------------
-        //public static User CreateUser(string firstName, string lastName, string email)
-        //{
-        //    User user = new()
-        //    {
-        //        FirstName = firstName,
-        //        LastName = lastName,
-        //        Email = email,
-        //        UserName = email
-        //    };
-
-
-        //    // Create the user's first list
-        //    string listName = firstName + (firstName.Substring(firstName.Length - 1).ToLower() == "s" ? "' List" : "'s List");
-        //    List list = new(listName);
-
-        //    // Add this user as a collaborator to the list
-        //    Collaborator collaborator = new(list.Id, user.Id, true);
-
-
-        //    user.Collaborators.Add(collaborator);
-        //    collaborator.List = list;
-
-        //    return user;
-        //}
     }
 }

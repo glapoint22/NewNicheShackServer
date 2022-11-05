@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
-
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
 using Shared.Common.Entities;
@@ -20,16 +19,11 @@ namespace Website.Application.Account.ResetPassword.Commands
         {
             User user = await _userService.GetUserByEmailAsync(request.Email);
 
-            if (user != null)
-            {
-                IdentityResult result = await _userService.ResetPasswordAsync(user, request.Token, request.NewPassword);
+            IdentityResult result = await _userService.ResetPasswordAsync(user, request.OneTimePassword, request.NewPassword);
 
-                if (result.Succeeded) return Result.Succeeded();
+            if (!result.Succeeded) return Result.Failed("409");
 
-                return Result.Failed();
-            }
-
-            throw new Exception("Error while trying to get user from email.");
+            return Result.Succeeded();
         }
     }
 }

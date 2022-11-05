@@ -19,6 +19,7 @@ namespace Website.Application.Account.ResendAccountActivationEmail.Commands
         public async Task<Result> Handle(ResendAccountActivationEmailCommand request, CancellationToken cancellationToken)
         {
             User user = await _userService.GetUserByEmailAsync(request.Email);
+            string token = await _userService.GenerateEmailConfirmationTokenAsync(user);
 
             // TODO: Send email
 

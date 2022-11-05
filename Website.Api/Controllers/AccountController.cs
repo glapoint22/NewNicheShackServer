@@ -13,7 +13,6 @@ using Website.Application.Account.DeleteAccount.Commands;
 using Website.Application.Account.DeleteRefreshToken.Commands;
 using Website.Application.Account.ExternalLogIn.Commands;
 using Website.Application.Account.ForgotPassword.Commands;
-using Website.Application.Account.IsDuplicateEmail.Queries;
 using Website.Application.Account.LogIn.Commands;
 using Website.Application.Account.LogOut.Commands;
 using Website.Application.Account.Refresh.Commands;
@@ -141,9 +140,9 @@ namespace Website.Api.Controllers
         [HttpDelete]
         [Route("DeleteAccount")]
         [Authorize(Policy = "Account")]
-        public async Task<ActionResult> DeleteAccount(string token, string password)
+        public async Task<ActionResult> DeleteAccount(string oneTimePassword, string password)
         {
-            return SetResponse(await _mediator.Send(new DeleteAccountCommand(token, password)));
+            return SetResponse(await _mediator.Send(new DeleteAccountCommand(oneTimePassword, password)));
         }
 
 
@@ -183,16 +182,6 @@ namespace Website.Api.Controllers
 
 
 
-        // -------------------------------------------------------------------- Is Duplicate Email ----------------------------------------------------------------------
-        [HttpGet]
-        [Route("IsDuplicateEmail")]
-        public async Task<ActionResult> IsDuplicateEmail(string email)
-        {
-            return Ok(await _mediator.Send(new IsDuplicateEmailQuery(email)));
-        }
-
-
-
 
 
 
@@ -221,7 +210,6 @@ namespace Website.Api.Controllers
         // ------------------------------------------------------------------------- Refresh --------------------------------------------------------------------------
         [HttpGet]
         [Route("Refresh")]
-        [Authorize(Policy = "Account")]
         public async Task<ActionResult> Refresh()
         {
             return SetResponse(await _mediator.Send(new RefreshCommand()));

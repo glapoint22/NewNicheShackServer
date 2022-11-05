@@ -1,5 +1,4 @@
 ﻿using MediatR;
-
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
 using Shared.Common.Entities;
@@ -18,17 +17,13 @@ namespace Website.Application.Account.ForgotPassword.Commands
         public async Task<Result> Handle(ForgotPasswordCommand request, CancellationToken cancellationToken)
         {
             User user = await _userService.GetUserByEmailAsync(request.Email);
+            if (user == null) return Result.Failed("409");
 
-            if (user != null)
-            {
-                string token = await _userService.GeneratePasswordResetTokenAsync(user);
+            string token = await _userService.GeneratePasswordResetTokenAsync(user);
 
-                // TODO: Send email
+            // TODO: Send email
 
-                return Result.Succeeded();
-            }
-
-            throw new Exception("Error while trying to get user from email.");
+            return Result.Succeeded();
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using MediatR;
-
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
 using Shared.Common.Entities;
@@ -18,17 +17,11 @@ namespace Website.Application.Account.CreateChangeEmailOTP.Commands
         public async Task<Result> Handle(CreateChangeEmailOTPCommand request, CancellationToken cancellationToken)
         {
             User user = await _userService.GetUserFromClaimsAsync();
+            string token = await _userService.GenerateChangeEmailTokenAsync(user, request.Email);
 
-            if (user != null)
-            {
-                string token = await _userService.GenerateChangeEmailTokenAsync(user, request.Email);
+            // TODO: Send email
 
-                // TODO: Send email
-
-                return Result.Succeeded();
-            }
-
-            throw new Exception("Error while trying to get user from claims.");
+            return Result.Succeeded();
         }
     }
 }

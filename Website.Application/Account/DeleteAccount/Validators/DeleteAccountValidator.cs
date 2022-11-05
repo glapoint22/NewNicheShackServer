@@ -7,7 +7,7 @@ namespace Website.Application.Account.DeleteAccount.Validators
     {
         public DeleteAccountValidator()
         {
-            RuleFor(x => x.Token)
+            RuleFor(x => x.OneTimePassword)
                 .NotEmpty();
 
             RuleFor(x => x.Password)

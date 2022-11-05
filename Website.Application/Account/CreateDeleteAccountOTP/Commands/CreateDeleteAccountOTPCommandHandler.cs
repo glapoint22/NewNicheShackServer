@@ -1,5 +1,4 @@
 ﻿using MediatR;
-
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
 using Shared.Common.Entities;
@@ -19,13 +18,7 @@ namespace Website.Application.Account.CreateDeleteAccountOTP.Commands
         {
             User user = await _userService.GetUserFromClaimsAsync();
 
-            if (user != null)
-            {
-                string token = await _userService.GenerateDeleteAccountTokenAsync(user);
-
-                // TODO: Send email
-            }
-
+            string token = await _userService.GenerateDeleteAccountTokenAsync(user);
 
             return Result.Succeeded();
         }

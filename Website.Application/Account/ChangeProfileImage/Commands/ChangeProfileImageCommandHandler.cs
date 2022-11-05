@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Primitives;
-
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using Website.Application.Account.Common;
@@ -29,8 +28,6 @@ namespace Website.Application.Account.ChangeProfileImage.Commands
         public async Task<Result> Handle(ChangeProfileImageCommand request, CancellationToken cancellationToken)
         {
             User user = await _userService.GetUserFromClaimsAsync();
-
-            if (user == null) throw new Exception("Error while trying to get user from claims.");
 
             string wwwroot = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
             string imagesFolder = Path.Combine(wwwroot, "Images");
@@ -113,12 +110,12 @@ namespace Website.Application.Account.ChangeProfileImage.Commands
 
             scaledBitmap.Save(newImage, ImageFormat.Png);
 
-
-            user.Image = imageName;
-
+            // Change the image
+            user.ChangeImage(imageName);
             user.AddDomainEvent(new UserChangedProfileImageEvent(user.Id));
-            IdentityResult result = await _userService.UpdateAsync(user);
 
+
+            IdentityResult result = await _userService.UpdateAsync(user);
             if (!result.Succeeded) return Result.Failed();
 
             // Update the user cookie

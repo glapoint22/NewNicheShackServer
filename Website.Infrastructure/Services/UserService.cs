@@ -79,7 +79,7 @@ namespace Website.Infrastructure.Services
             User user;
             IdentityResult result;
 
-            user = new(firstName, lastName, email);
+            user = User.Create(firstName, lastName, email);
 
             if (password != null)
             {

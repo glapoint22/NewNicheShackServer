@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
-
 using Website.Application.Account.Common;
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
@@ -22,23 +21,12 @@ namespace Website.Application.Account.ChangeName.Commands
         {
             User user = await _userService.GetUserFromClaimsAsync();
 
-            if (user == null) throw new Exception("Error while trying to get user from claims.");
-
-            user.FirstName = request.FirstName;
-            user.LastName = request.LastName;
-
+            // Change the name
+            user.ChangeName(request.FirstName, request.LastName);
             user.AddDomainEvent(new UserChangedNameEvent(user.Id));
 
-            IdentityResult result = await _userService.UpdateAsync(user);
+            await _userService.UpdateAsync(user);
 
-            if (!result.Succeeded) return Result.Failed();
-
-
-            //// Send the confirmation email
-            //if (user.EmailOnNameChange == true)
-            //{
-            //    // TODO: Send email
-            //}
 
             // Update the user cookie
             await UpdateUserCookie(user);

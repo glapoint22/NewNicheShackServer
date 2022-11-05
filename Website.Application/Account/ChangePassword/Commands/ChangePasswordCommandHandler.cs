@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
-
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
 using Shared.Common.Entities;
@@ -11,23 +10,23 @@ namespace Website.Application.Account.ChangePassword.Commands
     public sealed class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand, Result>
     {
         private readonly IUserService _userService;
+        private readonly IWebsiteDbContext _dbContext;
 
-        public ChangePasswordCommandHandler(IUserService userService)
+        public ChangePasswordCommandHandler(IUserService userService, IWebsiteDbContext dbContext)
         {
             _userService = userService;
+            _dbContext = dbContext;
         }
 
         public async Task<Result> Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
         {
             User user = await _userService.GetUserFromClaimsAsync();
 
-            if (user == null) throw new Exception("Error while trying to get user from claims.");
+            IdentityResult result = await _userService.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
+            if (!result.Succeeded) return Result.Failed();
 
             user.AddDomainEvent(new UserChangedPasswordEvent(user.Id));
-
-            IdentityResult result = await _userService.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
-
-            if (!result.Succeeded) return Result.Failed();
+            await _dbContext.SaveChangesAsync();
 
             return Result.Succeeded();
         }
