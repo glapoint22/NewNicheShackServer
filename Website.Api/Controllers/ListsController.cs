@@ -18,7 +18,7 @@ using Website.Application.Lists.UpdateCollaborators.Commands;
 
 namespace Website.Api.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public sealed class ListsController : ApiControllerBase
     {
@@ -148,9 +148,9 @@ namespace Website.Api.Controllers
         [HttpGet]
         [Route("GetLists")]
         [Authorize(Policy = "Account")]
-        public async Task<ActionResult> GetLists()
+        public async Task<ActionResult> GetLists(string? listId, string? sort)
         {
-            return SetResponse(await _mediator.Send(new GetListsQuery()));
+            return SetResponse(await _mediator.Send(new GetListsQuery(listId, sort)));
         }
 
 
@@ -175,8 +175,8 @@ namespace Website.Api.Controllers
 
         // --------------------------------------------------------------------- Get Shared List ------------------------------------------------------------------------
         [HttpGet]
-        [Route("SharedList")]
-        public async Task<ActionResult> GetSharedList(string listId, string sort)
+        [Route("GetSharedList")]
+        public async Task<ActionResult> GetSharedList(string listId, string? sort)
         {
             return SetResponse(await _mediator.Send(new GetSharedListQuery(listId, sort)));
         }
@@ -223,7 +223,7 @@ namespace Website.Api.Controllers
 
         // ------------------------------------------------------------------ Update Collaborators ---------------------------------------------------------------------
         [HttpPut]
-        [Route("Collaborators")]
+        [Route("UpdateCollaborators")]
         [Authorize(Policy = "Account")]
         public async Task<ActionResult> UpdateCollaborators(UpdateCollaboratorsCommand updateCollaborators)
         {

@@ -33,9 +33,9 @@ namespace Website.Application.Lists.GetCollaborators.Queries
                         x.CanShareList,
                         x.CanEditList,
                         x.CanInviteCollaborators,
+                        x.CanManageCollaborators,
                         x.CanDeleteList,
-                        x.CanRemoveFromList,
-                        x.CanManageCollaborators
+                        x.CanRemoveFromList
                     }
                 })
                 .ToListAsync(cancellationToken: cancellationToken);

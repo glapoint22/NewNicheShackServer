@@ -33,8 +33,10 @@ namespace Website.Application.Lists.DeleteList.Commands
             if (list == null) return Result.Failed();
 
             // Add the list deleted event
-            list.AddDomainEvent(new ListDeletedEvent(list.Name, userId, list.Collaborators.Select(x => x.UserId).ToList()));
-
+            if (list.Collaborators.Count > 0)
+            {
+                list.AddDomainEvent(new ListDeletedEvent(list.Name, userId, list.Collaborators.Select(x => x.UserId).ToList()));
+            }
 
             // Delete and save
             _dbContext.Lists.Remove(list);

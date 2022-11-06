@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
 using Website.Application.Lists.UpdateCollaborators.Classes;
@@ -50,7 +49,7 @@ namespace Website.Application.Lists.UpdateCollaborators.Commands
                         collaborator.CanAddToList = updatedCollaborator.ListPermissions.CanAddToList;
                         collaborator.CanInviteCollaborators = updatedCollaborator.ListPermissions.CanInviteCollaborators;
                         collaborator.CanManageCollaborators = updatedCollaborator.ListPermissions.CanManageCollaborators;
-                        collaborator.CanRemoveFromList = updatedCollaborator.ListPermissions.CanRemoveItem;
+                        collaborator.CanRemoveFromList = updatedCollaborator.ListPermissions.CanRemoveFromList;
 
                         // add the event
                         collaborator.AddDomainEvent(new CollaboratorUpdatedEvent(collaborator.UserId, request.ListId));

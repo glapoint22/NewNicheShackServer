@@ -25,13 +25,18 @@ namespace Website.Application.Lists.GetListInfo.Queries
                 .Include(x => x.User)
                 .FirstOrDefaultAsync(cancellationToken: cancellationToken);
 
-            if (listOwner == null) return Result.Failed();
+            if (listOwner == null) return Result.Failed("404");
 
+            // If user is already collaborating on this list
             if (await _dbContext.Collaborators
                 .AnyAsync(x => x.UserId == _userService.GetUserIdFromClaims() && x.ListId == listOwner.ListId))
             {
-                return Result.Succeeded();
+                return Result.Succeeded(new {
+                    isCollaborator = true,
+                    listId = listOwner.ListId
+                });
             }
+
 
             return Result.Succeeded(new
             {
