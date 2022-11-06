@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
 using Shared.Common.Entities;
@@ -24,13 +23,16 @@ namespace Website.Application.Lists.DeleteList.Commands
             string userId = _userService.GetUserIdFromClaims();
 
             // Get the list to delete
-            List list = await _dbContext.Lists
-                .Where(x => x.Id == request.Id)
+            List? list = await _dbContext.Lists
+                .Where(x => x.Id == request.Id && x.Collaborators
+                    .Any(z => z.UserId == userId && (z.IsOwner || z.CanDeleteList)))
                 .Include(x => x.Collaborators
                     .Where(x => x.UserId != userId && x.User.EmailOnDeletedList == true))
-                .SingleAsync();
+                .SingleOrDefaultAsync();
 
-            // Trigger the list deleted event
+            if (list == null) return Result.Failed();
+
+            // Add the list deleted event
             list.AddDomainEvent(new ListDeletedEvent(list.Name, userId, list.Collaborators.Select(x => x.UserId).ToList()));
 
 

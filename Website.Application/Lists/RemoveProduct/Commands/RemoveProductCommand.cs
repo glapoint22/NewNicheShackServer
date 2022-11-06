@@ -3,5 +3,5 @@ using Website.Application.Common.Classes;
 
 namespace Website.Application.Lists.RemoveProduct.Commands
 {
-    public sealed record RemoveProductCommand(Guid CollaboratorProductId) : IRequest<Result>;
+    public sealed record RemoveProductCommand(string ProductId, string ListId) : IRequest<Result>;
 }

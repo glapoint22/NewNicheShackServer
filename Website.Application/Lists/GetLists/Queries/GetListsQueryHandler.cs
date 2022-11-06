@@ -29,9 +29,7 @@ namespace Website.Application.Lists.GetLists.Queries
                     x.Id,
                     x.Name,
                     x.Description,
-                    TotalProducts = x.Collaborators
-                        .SelectMany(z => z.CollaboratorProducts)
-                        .Count(),
+                    TotalProducts = x.Products.Count,
                     x.CollaborateId,
                     CollaboratorCount = x.Collaborators
                         .Count(z => !z.IsOwner && z.UserId != userId),
@@ -48,7 +46,7 @@ namespace Website.Application.Lists.GetLists.Queries
                             z.CanEditList,
                             z.CanInviteCollaborators,
                             z.CanDeleteList,
-                            z.CanRemoveItem,
+                            z.CanRemoveFromList,
                             z.CanManageCollaborators
                         })
                         .Single(),

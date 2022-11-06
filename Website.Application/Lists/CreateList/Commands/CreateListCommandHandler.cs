@@ -1,5 +1,4 @@
 ﻿using MediatR;
-
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
 using Shared.Common.Entities;
@@ -22,10 +21,10 @@ namespace Website.Application.Lists.CreateList.Commands
             string userId = _userService.GetUserIdFromClaims();
 
             // Create the list
-            List list = new(request.Name, request.Description);
+            List list = List.Create(request.Name, request.Description);
 
             // Add this user as a collaborator to the list
-            Collaborator collaborator = new(list.Id, userId, true);
+            Collaborator collaborator = Collaborator.Create(list.Id, userId, true);
 
             _dbContext.Lists.Add(list);
             _dbContext.Collaborators.Add(collaborator);

@@ -54,10 +54,10 @@ namespace Shared.Common.Entities
 
             // Create the user's first list
             string listName = firstName + (firstName.Substring(firstName.Length - 1).ToLower() == "s" ? "' List" : "'s List");
-            List list = new(listName);
+            List list = List.Create(listName);
 
             // Add this user as a collaborator to the list
-            Collaborator collaborator = new(list.Id, user.Id, true);
+            Collaborator collaborator = Collaborator.Create(list.Id, user.Id, true);
 
 
             user.Collaborators.Add(collaborator);

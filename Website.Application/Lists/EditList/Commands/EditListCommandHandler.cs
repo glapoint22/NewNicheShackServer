@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
 using Shared.Common.Entities;
@@ -24,10 +23,12 @@ namespace Website.Application.Lists.EditList.Commands
             string userId = _userService.GetUserIdFromClaims();
 
             // Get the list to edit
-            List list = await _dbContext.Lists.
-                Where(x => x.Id == request.Id)
-                .SingleAsync(cancellationToken: cancellationToken);
+            List? list = await _dbContext.Lists.
+                Where(x => x.Id == request.Id && x.Collaborators
+                    .Any(z => z.UserId == userId && (z.IsOwner || z.CanEditList)))
+                .SingleOrDefaultAsync(cancellationToken: cancellationToken);
 
+            if (list == null) return Result.Failed();
 
             // Edit
             list.Edit(request.Name, request.Description);

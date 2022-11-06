@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
 using Shared.Common.Entities;
@@ -22,17 +21,21 @@ namespace Website.Application.Lists.AddCollaborator.Commands
         public async Task<Result> Handle(AddCollaboratorCommand request, CancellationToken cancellationToken)
         {
             string userId = _userService.GetUserIdFromClaims();
-            string listId = await _dbContext.Lists
-                .Where(x => x.CollaborateId == request.CollaborateId)
-                .Select(x => x.Id)
-                .SingleAsync();
 
-            // Add the new collaborator
-            Collaborator collaborator = new(listId, userId);
-            _dbContext.Collaborators.Add(collaborator);
+            List? list = await _dbContext.Lists
+                .Where(x => x.CollaborateId == request.CollaborateId)
+                .Include(x => x.Collaborators)
+                .SingleOrDefaultAsync();
+
+            if (list == null) return Result.Failed();
+
+            // Add the collaborator
+            bool succeeded = list.AddCollaborator(userId, false);
+            if (!succeeded) return Result.Failed();
+
 
             // Add the domain event
-            collaborator.AddDomainEvent(new CollaboratorAddedToListEvent(listId, userId));
+            list.AddDomainEvent(new CollaboratorAddedToListEvent(list.Id, userId));
 
             await _dbContext.SaveChangesAsync();
 

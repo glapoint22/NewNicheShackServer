@@ -7,7 +7,6 @@ namespace Website.Application.Common.Interfaces
     public interface IWebsiteDbContext
     {
         DbSet<BlockedNonAccountEmail> BlockedNonAccountEmails { get; }
-        DbSet<CollaboratorProduct> CollaboratorProducts { get; }
         DbSet<Collaborator> Collaborators { get; }
         DbSet<FilterOption> FilterOptions { get; }
         DbSet<Filter> Filters { get; }
@@ -15,6 +14,7 @@ namespace Website.Application.Common.Interfaces
         DbSet<Keyword> Keywords { get; }
         DbSet<KeywordSearchVolume> KeywordSearchVolumes { get; }
         DbSet<KeywordInKeywordGroup> KeywordsInKeywordGroup { get; }
+        DbSet<ListProduct> ListProducts { get; }
         DbSet<List> Lists { get; }
         DbSet<Media> Media { get; }
         DbSet<Niche> Niches { get; }

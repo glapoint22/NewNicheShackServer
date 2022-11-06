@@ -13,27 +13,28 @@ namespace Shared.Common.Entities
         public bool CanEditList { get; set; }
         public bool CanInviteCollaborators { get; set; }
         public bool CanDeleteList { get; set; }
-        public bool CanRemoveItem { get; set; }
+        public bool CanRemoveFromList { get; set; }
         public bool CanManageCollaborators { get; set; }
 
         public User User { get; set; } = null!;
         public List List { get; set; } = null!;
-        public ICollection<CollaboratorProduct> CollaboratorProducts { get; private set; } = new HashSet<CollaboratorProduct>();
 
-        public Collaborator() { }
 
-        public Collaborator(string listId, string userId, bool isOwner = false)
+        public static Collaborator Create(string listId, string userId, bool isOwner = false)
         {
-            UserId = userId;
-            ListId = listId;
-            IsOwner = isOwner;
-            CanAddToList = isOwner;
-            CanShareList = true;
-            CanEditList = isOwner;
-            CanInviteCollaborators = isOwner;
-            CanDeleteList = isOwner;
-            CanRemoveItem = isOwner;
-            CanManageCollaborators = isOwner;
+            return new()
+            {
+                UserId = userId,
+                ListId = listId,
+                IsOwner = isOwner,
+                CanAddToList = true,
+                CanShareList = true,
+                CanEditList = isOwner,
+                CanInviteCollaborators = isOwner,
+                CanDeleteList = isOwner,
+                CanRemoveFromList = isOwner,
+                CanManageCollaborators = isOwner
+            };
         }
     }
 }

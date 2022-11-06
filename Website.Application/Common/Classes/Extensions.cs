@@ -6,9 +6,9 @@ namespace Website.Application.Common.Classes
     public static class Extensions
     {
         // -------------------------------------------------------------------------- Sort By ---------------------------------------------------------------------------------
-        public static IOrderedQueryable<CollaboratorProduct> SortBy(this IQueryable<CollaboratorProduct> source, string? sortBy)
+        public static IOrderedQueryable<ListProduct> SortBy(this IQueryable<ListProduct> source, string? sortBy)
         {
-            IOrderedQueryable<CollaboratorProduct> result;
+            IOrderedQueryable<ListProduct> result;
 
 
             switch (sortBy)

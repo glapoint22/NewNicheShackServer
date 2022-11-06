@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
-using Website.Application.Lists.GetCollaboratorProducts.Queries;
+using Website.Application.Lists.GetListProducts.Queries;
 
 namespace Website.Application.Lists.GetSharedList.Queries
 {
@@ -19,7 +19,7 @@ namespace Website.Application.Lists.GetSharedList.Queries
 
         public async Task<Result> Handle(GetSharedListQuery request, CancellationToken cancellationToken)
         {
-            var result = await _mediator.Send(new GetCollaboratorProductsQuery(request.ListId, request.Sort), cancellationToken);
+            var result = await _mediator.Send(new GetListProductsQuery(request.ListId, request.Sort), cancellationToken);
 
             var listName = await _dbContext.Lists
                 .Where(x => x.Id == request.ListId)

@@ -6,10 +6,10 @@ using Website.Application.Lists.AddProduct.Commands;
 using Website.Application.Lists.CreateList.Commands;
 using Website.Application.Lists.DeleteList.Commands;
 using Website.Application.Lists.EditList.Commands;
-using Website.Application.Lists.GetCollaboratorProducts.Queries;
 using Website.Application.Lists.GetCollaborators.Queries;
 using Website.Application.Lists.GetDropdownLists.Queries;
 using Website.Application.Lists.GetListInfo.Queries;
+using Website.Application.Lists.GetListProducts.Queries;
 using Website.Application.Lists.GetLists.Queries;
 using Website.Application.Lists.GetSharedList.Queries;
 using Website.Application.Lists.MoveProduct.Commands;
@@ -96,17 +96,7 @@ namespace Website.Api.Controllers
 
 
 
-
-
-
-
-        // ---------------------------------------------------------------- Get Collaborators Products -----------------------------------------------------------------
-        [HttpGet]
-        [Route("GetCollaboratorProducts")]
-        public async Task<ActionResult> GetCollaboratorProducts(string listId)
-        {
-            return SetResponse(await _mediator.Send(new GetCollaboratorProductsQuery(listId)));
-        }
+        
 
 
 
@@ -134,6 +124,22 @@ namespace Website.Api.Controllers
         {
             return SetResponse(await _mediator.Send(new GetDropdownListsQuery()));
         }
+
+
+
+
+
+
+        // --------------------------------------------------------------------- Get List Products ---------------------------------------------------------------------
+        [HttpGet]
+        [Route("GetListProducts")]
+        public async Task<ActionResult> GetListProducts(string listId)
+        {
+            return SetResponse(await _mediator.Send(new GetListProductsQuery(listId)));
+        }
+
+
+
 
 
 
@@ -202,9 +208,9 @@ namespace Website.Api.Controllers
         [HttpDelete]
         [Route("RemoveProduct")]
         [Authorize(Policy = "Account")]
-        public async Task<ActionResult> RemoveProduct(Guid collaboratorProductId)
+        public async Task<ActionResult> RemoveProduct(string productId, string listId)
         {
-            return SetResponse(await _mediator.Send(new RemoveProductCommand(collaboratorProductId)));
+            return SetResponse(await _mediator.Send(new RemoveProductCommand(productId, listId)));
         }
 
 

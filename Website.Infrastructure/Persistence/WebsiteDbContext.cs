@@ -13,7 +13,6 @@ namespace Website.Infrastructure.Persistence
         {
         }
         public DbSet<BlockedNonAccountEmail> BlockedNonAccountEmails => Set<BlockedNonAccountEmail>();
-        public DbSet<CollaboratorProduct> CollaboratorProducts => Set<CollaboratorProduct>();
         public DbSet<Collaborator> Collaborators => Set<Collaborator>();
         public DbSet<FilterOption> FilterOptions => Set<FilterOption>();
         public DbSet<Filter> Filters => Set<Filter>();
@@ -21,6 +20,7 @@ namespace Website.Infrastructure.Persistence
         public DbSet<Keyword> Keywords => Set<Keyword>();
         public DbSet<KeywordSearchVolume> KeywordSearchVolumes => Set<KeywordSearchVolume>();
         public DbSet<KeywordInKeywordGroup> KeywordsInKeywordGroup => Set<KeywordInKeywordGroup>();
+        public DbSet<ListProduct> ListProducts => Set<ListProduct>();
         public DbSet<List> Lists => Set<List>();
         public DbSet<Media> Media => Set<Media>();
         public DbSet<Niche> Niches => Set<Niche>();

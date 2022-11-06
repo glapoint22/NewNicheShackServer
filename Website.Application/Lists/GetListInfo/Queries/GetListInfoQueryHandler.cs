@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
 using Shared.Common.Entities;
@@ -20,11 +19,13 @@ namespace Website.Application.Lists.GetListInfo.Queries
 
         public async Task<Result> Handle(GetListInfoQuery request, CancellationToken cancellationToken)
         {
-            Collaborator listOwner = await _dbContext.Collaborators
+            Collaborator? listOwner = await _dbContext.Collaborators
                 .Where(x => x.List.CollaborateId == request.CollaborateId)
                 .Include(x => x.List)
                 .Include(x => x.User)
-                .FirstAsync(cancellationToken: cancellationToken);
+                .FirstOrDefaultAsync(cancellationToken: cancellationToken);
+
+            if (listOwner == null) return Result.Failed();
 
             if (await _dbContext.Collaborators
                 .AnyAsync(x => x.UserId == _userService.GetUserIdFromClaims() && x.ListId == listOwner.ListId))
