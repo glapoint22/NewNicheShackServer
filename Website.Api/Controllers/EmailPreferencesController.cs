@@ -7,7 +7,7 @@ using Website.Application.EmailPreferences.Queries;
 
 namespace Website.Api.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public sealed class EmailPreferencesController : ApiControllerBase
     {

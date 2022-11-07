@@ -5,7 +5,7 @@ using Website.Application.Niches.GetSubniches.Queries;
 
 namespace Website.Api.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public sealed class NichesController : ApiControllerBase
     {

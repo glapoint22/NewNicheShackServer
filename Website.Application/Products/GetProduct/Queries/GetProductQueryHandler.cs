@@ -97,7 +97,7 @@ namespace Website.Application.Products.GetProduct.Queries
                     {
                         x.Media.Name,
                         x.Media.Thumbnail,
-                        x.Media.MediaType,
+                        Type = x.Media.MediaType,
                         x.Media.ImageMd,
                         x.Media.ImageLg,
                         x.Media.VideoId,
@@ -120,7 +120,7 @@ namespace Website.Application.Products.GetProduct.Queries
                 })
                 .SingleOrDefaultAsync();
 
-            if (product == null) return Result.Failed();
+            if (product == null) return Result.Failed("404");
 
             return Result.Succeeded(product);
         }

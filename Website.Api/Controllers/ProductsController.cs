@@ -5,7 +5,7 @@ using Website.Application.Products.GetProduct.Queries;
 
 namespace Website.Api.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public sealed class ProductsController : ApiControllerBase
     {

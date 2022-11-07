@@ -133,9 +133,10 @@ namespace Website.Api.Controllers
         // --------------------------------------------------------------------- Get List Products ---------------------------------------------------------------------
         [HttpGet]
         [Route("GetListProducts")]
-        public async Task<ActionResult> GetListProducts(string listId)
+        [Authorize(Policy = "Account")]
+        public async Task<ActionResult> GetListProducts(string listId, string? sort)
         {
-            return SetResponse(await _mediator.Send(new GetListProductsQuery(listId)));
+            return SetResponse(await _mediator.Send(new GetListProductsQuery(listId, sort)));
         }
 
 
@@ -180,6 +181,22 @@ namespace Website.Api.Controllers
         {
             return SetResponse(await _mediator.Send(new GetSharedListQuery(listId, sort)));
         }
+
+
+
+
+
+
+
+        // ------------------------------------------------------------------ Get Shared List Products -----------------------------------------------------------------
+        [HttpGet]
+        [Route("GetSharedListProducts")]
+        public async Task<ActionResult> GetSharedListProducts(string listId, string? sort)
+        {
+            return SetResponse(await _mediator.Send(new GetListProductsQuery(listId, sort)));
+        }
+
+
 
 
 

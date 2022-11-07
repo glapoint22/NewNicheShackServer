@@ -19,29 +19,25 @@ namespace Website.Application.EmailPreferences.Commands
         {
             User user = await _userService.GetUserFromClaimsAsync();
 
-            if (user != null)
-            {
-                var emailPreferences = request.Preferences;
 
-                user.EmailOnNameChange = emailPreferences.NameChange;
-                user.EmailOnEmailChange = emailPreferences.EmailChange;
-                user.EmailOnPasswordChange = emailPreferences.PasswordChange;
-                user.EmailOnProfileImageChange = emailPreferences.ProfileImageChange;
-                user.EmailOnNewCollaborator = emailPreferences.NewCollaborator;
-                user.EmailOnRemovedCollaborator = emailPreferences.RemovedCollaborator;
-                user.EmailOnRemovedListItem = emailPreferences.RemovedListItem;
-                user.EmailOnMovedListItem = emailPreferences.MovedListItem;
-                user.EmailOnAddedListItem = emailPreferences.AddedListItem;
-                user.EmailOnEditedList = emailPreferences.EditedList;
-                user.EmailOnDeletedList = emailPreferences.DeletedList;
-                user.EmailOnReview = emailPreferences.Review;
+            var emailPreferences = request.Preferences;
 
-                await _userService.UpdateAsync(user);
+            user.EmailOnNameChange = emailPreferences.NameChange;
+            user.EmailOnEmailChange = emailPreferences.EmailChange;
+            user.EmailOnPasswordChange = emailPreferences.PasswordChange;
+            user.EmailOnProfileImageChange = emailPreferences.ProfileImageChange;
+            user.EmailOnNewCollaborator = emailPreferences.NewCollaborator;
+            user.EmailOnRemovedCollaborator = emailPreferences.RemovedCollaborator;
+            user.EmailOnRemovedListItem = emailPreferences.RemovedListItem;
+            user.EmailOnMovedListItem = emailPreferences.MovedListItem;
+            user.EmailOnAddedListItem = emailPreferences.AddedListItem;
+            user.EmailOnEditedList = emailPreferences.EditedList;
+            user.EmailOnDeletedList = emailPreferences.DeletedList;
+            user.EmailOnReview = emailPreferences.Review;
 
-                return Result.Succeeded();
-            }
+            await _userService.UpdateAsync(user);
 
-            throw new Exception("Error while trying to get user from claims.");
+            return Result.Succeeded();
         }
     }
 }

@@ -25,7 +25,7 @@ namespace Website.Application.Lists.MoveProduct.Commands
 
 
             List<List> lists = await _dbContext.Lists
-                .Where(x => x.Id == request.SourceListId && x.Id == request.DestinationListId)
+                .Where(x => x.Id == request.SourceListId || x.Id == request.DestinationListId)
                 .Include(x => x.Products)
                 .Include(x => x.Collaborators
                     .Where(z => z.UserId == userId))
@@ -55,7 +55,7 @@ namespace Website.Application.Lists.MoveProduct.Commands
             succeeded = destinationList.AddProduct(request.ProductId, destinationList.Collaborators[0]);
 
             // If not succeeded
-            if (!succeeded) return Result.Failed();
+            if (!succeeded) return Result.Failed("409");
 
 
             destinationList.AddDomainEvent(new ProductMovedToListEvent(request.SourceListId, request.DestinationListId, request.ProductId, userId));

@@ -39,11 +39,14 @@ namespace Website.Application.Lists.Common
 
 
         // -------------------------------------------------------------------------- Select ---------------------------------------------------------------------------------
-        public static IQueryable<ListProductDto> Select(this IQueryable<ListProduct> source, string? userTrackingCode)
+        public static IQueryable<ListProductDto> Select(this IQueryable<ListProduct> source, User? user)
         {
+            string? userTrackingCode = null;
+            if (user != null) userTrackingCode = user.TrackingCode;
+
             return source.Select(x => new ListProductDto
             {
-                ProductId = x.ProductId,
+                Id = x.ProductId,
                 Name = x.Product.Name,
                 Rating = x.Product.Rating,
                 TotalReviews = x.Product.TotalReviews,
@@ -53,7 +56,7 @@ namespace Website.Application.Lists.Common
                 Collaborator = new CollaboratorDto
                 {
                     Id = x.UserId,
-                    Name = x.User.FirstName,
+                    Name = user != null && user.Id == x.UserId ? "you" : x.User.FirstName,
                     ProfileImage = new Image
                     {
                         Name = x.User.FirstName,

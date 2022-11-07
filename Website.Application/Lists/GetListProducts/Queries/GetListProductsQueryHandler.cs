@@ -21,15 +21,12 @@ namespace Website.Application.Lists.GetListProducts.Queries
 
         public async Task<Result> Handle(GetListProductsQuery request, CancellationToken cancellationToken)
         {
-            string? userTrackingCode = null;
             User user = await _userService.GetUserFromClaimsAsync();
-
-            if (user != null) userTrackingCode = user.TrackingCode;
 
             List<ListProductDto> products = await _dbContext.ListProducts
                 .SortBy(request.Sort)
                 .Where(x => x.ListId == request.ListId)
-                .Select(userTrackingCode)
+                .Select(user)
                 .ToListAsync();
 
             return Result.Succeeded(products);

@@ -4,7 +4,7 @@ namespace Website.Application.Lists.Common
 {
     public sealed class ListProductDto
     {
-        public string ProductId { get; set; } = string.Empty;
+        public string Id { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public double Rating { get; set; }
         public int TotalReviews { get; set; }

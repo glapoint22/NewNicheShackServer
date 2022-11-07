@@ -22,7 +22,6 @@ namespace Website.Application.Lists.GetLists.Queries
         public async Task<Result> Handle(GetListsQuery request, CancellationToken cancellationToken)
         {
             User user = await _userService.GetUserFromClaimsAsync();
-            string userTrackingCode = user.TrackingCode;
 
             List<ListDto> lists = await _dbContext.Lists
                 .Where(x => x.Collaborators
@@ -85,8 +84,8 @@ namespace Website.Application.Lists.GetLists.Queries
 
             List<ListProductDto> products = await _dbContext.ListProducts
                 .SortBy(request.Sort)
-                .Where(x => x.ListId == request.ListId)
-                .Select(userTrackingCode)
+                .Where(x => x.ListId == listId)
+                .Select(user)
                 .ToListAsync();
 
             return Result.Succeeded(new

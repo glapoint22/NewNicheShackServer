@@ -69,18 +69,13 @@ namespace Shared.Common.Entities
         {
             string userId = collaborator.UserId;
 
-            if (_products.Any(p => p.ProductId == productId && p.UserId == userId)) return false;
+            // Make sure this list does not contain this product
+            if (_products.Any(p => p.ProductId == productId)) return false;
 
             // See if the collaborator has permissions to add to the list
             if (!collaborator.IsOwner && !collaborator.CanAddToList) return false;
 
-            ListProduct listProduct = new()
-            {
-                ListId = Id,
-                ProductId = productId,
-                UserId = userId,
-                DateAdded = DateTime.UtcNow
-            };
+            ListProduct listProduct = ListProduct.Create(Id, productId, userId);
 
             _products.Add(listProduct);
 
@@ -99,7 +94,7 @@ namespace Shared.Common.Entities
 
             // Get the product
             ListProduct? listProduct = _products
-                .Where(p => p.ProductId == productId && p.UserId == collaborator.UserId)
+                .Where(p => p.ProductId == productId)
                 .SingleOrDefault();
 
             if (listProduct == null) return false;
