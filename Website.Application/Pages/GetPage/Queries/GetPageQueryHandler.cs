@@ -19,10 +19,12 @@ namespace Website.Application.Pages.GetPage.Queries
 
         public async Task<Result> Handle(GetPageQuery request, CancellationToken cancellationToken)
         {
-            string pageContent = await _dbContext.Pages
+            string? pageContent = await _dbContext.Pages
                 .Where(x => x.Id == request.Id || x.PageType == request.PageType)
                 .Select(x => x.Content)
-                .SingleAsync(cancellationToken: cancellationToken);
+                .SingleOrDefaultAsync(cancellationToken: cancellationToken);
+
+            if (pageContent == null) return Result.Failed("404");
 
             WebPage page = await _pageBuilder.BuildPage(pageContent);
 
