@@ -203,6 +203,8 @@ namespace Shared.PageBuilder.Classes
                 PriceFilter = priceFilter,
                 RatingFilter = ratingFilter,
                 CustomFilters = customFilters
+                    .OrderBy(x => x.Caption)
+                    .ToList()
             };
         }
 
@@ -274,11 +276,14 @@ namespace Shared.PageBuilder.Classes
                 .GroupBy(x => x.caption, (key, x) => new QueryFilter
                 {
                     Caption = key,
-                    Options = x.Select(z => new QueryFilterOption
-                    {
-                        Id = z.option.id,
-                        Label = z.option.label
-                    }).ToList()
+                    Options = x
+                        .OrderBy(z => z.option.label)
+                        .Select(z => new QueryFilterOption
+                        {
+                            Id = z.option.id,
+                            Label = z.option.label
+                        })
+                        .ToList()
                 })
                 .ToList();
         }
