@@ -1,12 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Shared.Common.Entities;
 using Shared.PageBuilder.Classes;
 using Shared.QueryBuilder.Enums;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Text.RegularExpressions;
-using System.Web;
 
 namespace Shared.QueryBuilder.Classes
 {
@@ -109,6 +106,12 @@ namespace Shared.QueryBuilder.Classes
                             break;
 
                         case "Price":
+                            QueryElement priceQueryRow = BuildQueryRow(QueryType.PriceRange,
+                                new Tuple<double, double>(filterParam.Values[0], filterParam.Values[1]));
+                            query.Elements.Add(priceQueryRow);
+                            break;
+
+                        case "Price Range":
                             QueryElement priceRangeQueryRow = BuildQueryRow(QueryType.PriceRange,
                                 new Tuple<double, double>(filterParam.Values[0], filterParam.Values[1]));
                             query.Elements.Add(priceRangeQueryRow);
@@ -430,7 +433,8 @@ namespace Shared.QueryBuilder.Classes
         // --------------------------------------------------------------------- Get Niche Expression ---------------------------------------------------------------------
         private static Expression GetNicheExpression(string nicheId, ParameterExpression parameter)
         {
-            MemberExpression nicheIdProperty = Expression.Property(parameter, "NicheId");
+            MemberExpression subnicheProperty = Expression.Property(parameter, "Subniche");
+            MemberExpression nicheIdProperty = Expression.Property(subnicheProperty, "NicheId");
             ConstantExpression nicheIdExpression = Expression.Constant(nicheId);
             return Expression.Equal(nicheIdProperty, nicheIdExpression);
         }
@@ -496,16 +500,16 @@ namespace Shared.QueryBuilder.Classes
             MethodCallExpression selectExp = Expression.Call(
                 typeof(Enumerable),
                 "Select",
-                new Type[] { typeof(ProductFilter), typeof(int) },
+                new Type[] { typeof(ProductFilter), typeof(string) },
                 whereExp,
-                Expression.Lambda<Func<ProductFilter, int>>(productIdProperty, productFilterParameter));
+                Expression.Lambda<Func<ProductFilter, string>>(productIdProperty, productFilterParameter));
 
 
             // Contains
             return Expression.Call(
                 typeof(Enumerable),
                 "Contains",
-                new[] { typeof(int) },
+                new[] { typeof(string) },
                 selectExp,
                 idProperty);
         }
@@ -563,14 +567,51 @@ namespace Shared.QueryBuilder.Classes
             // Loop through each word
             foreach (string word in searchWordsArray)
             {
-                ConstantExpression pattern = Expression.Constant("%" + word + "%");
-                MethodCallExpression methodCall = Expression.Call(like,
+                ConstantExpression pattern = Expression.Constant("% " + word + " %");
+                MethodCallExpression like1 = Expression.Call(like,
                     Expression.Property(null, typeof(EF), nameof(EF.Functions)), nameProperty, pattern);
 
-                expression = Expression.OrElse(expression, methodCall);
+                pattern = Expression.Constant("% " + word);
+                MethodCallExpression like2 = Expression.Call(like,
+                    Expression.Property(null, typeof(EF), nameof(EF.Functions)), nameProperty, pattern);
+
+
+                pattern = Expression.Constant(word + " %");
+                MethodCallExpression like3 = Expression.Call(like,
+                    Expression.Property(null, typeof(EF), nameof(EF.Functions)), nameProperty, pattern);
+
+
+                pattern = Expression.Constant(word);
+                MethodCallExpression like4 = Expression.Call(like,
+                    Expression.Property(null, typeof(EF), nameof(EF.Functions)), nameProperty, pattern);
+
+                BinaryExpression searchExpression = Expression.OrElse(like1, like2);
+
+                searchExpression = Expression.OrElse(searchExpression, like3);
+                searchExpression = Expression.OrElse(searchExpression, like4);
+
+                expression = Expression.OrElse(expression, searchExpression);
             }
 
-            return expression;
+            // ProductKeywords property
+            MemberExpression productKeywordsProperty = Expression.Property(parameter, "ProductKeywords");
+
+            // ProductKeyword param and its properties
+            ParameterExpression productKeywordParameter = Expression.Parameter(typeof(ProductKeyword), "z");
+            MemberExpression keywordProperty = Expression.Property(productKeywordParameter, "Keyword");
+            MemberExpression keywordNameProperty = Expression.Property(keywordProperty, "Name");
+
+            ConstantExpression searchTermExpression = Expression.Constant(searchTerm);
+
+
+            MethodCallExpression anyMethodExpression = Expression.Call(
+            typeof(Enumerable),
+            "Any",
+            new Type[] { typeof(ProductKeyword) },
+            productKeywordsProperty,
+            Expression.Lambda<Func<ProductKeyword, bool>>(Expression.Equal(keywordNameProperty, searchTermExpression), productKeywordParameter));
+
+            return Expression.OrElse(expression, anyMethodExpression);
         }
     }
 }

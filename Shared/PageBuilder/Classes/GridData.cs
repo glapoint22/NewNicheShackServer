@@ -89,18 +89,18 @@ namespace Shared.PageBuilder.Classes
         private async Task<Filters> GetFilters(PageParams pageParams)
         {
             List<QueryFilter> customFilters = new();
-            List<NicheFilter> nicheFilters = null!;
+            NicheFilters nicheFilters = null!;
             PriceFilter priceFilter = null!;
             QueryFilter ratingFilter = null!;
 
-            int length = pageParams.FilterParams.Count == 0 ? 1 : 2;
+            int iterations = pageParams.FilterParams.Count == 0 ? 1 : 2;
 
-            for (int i = 0; i < length; i++)
+            for (int i = 0; i < iterations; i++)
             {
                 // If excludeLastFilter is true, query builder will ignore the last filter in the list.
                 // This will make sure that all filter options will be shown for that filter and not just
                 // the option(s) that are checked
-                bool excludeLastFilter = length == 2 && i == 0;
+                bool excludeLastFilter = iterations == 2 && i == 0;
 
 
                 // Build the query based on the page params
@@ -127,16 +127,18 @@ namespace Shared.PageBuilder.Classes
                 TotalProducts = productData.Count;
 
                 // Niche Filters
-                if (length == 1 || i == 1)
+                if (iterations == 1 || i == 1)
                 {
                     nicheFilters = await GetNicheFilters(productData.Select(z => z.subnicheId).ToList());
                 }
 
 
                 // Price Filter
-                if (length == 1 ||
-                    (pageParams.FilterParams.Last().Name == "Price" && i == 0) ||
-                    (pageParams.FilterParams.Last().Name != "Price" && i == 1))
+                if (iterations == 1 ||
+                    ((pageParams.FilterParams.Last().Name == "Price" || 
+                        pageParams.FilterParams.Last().Name == "Price Range") && i == 0) ||
+                    (pageParams.FilterParams.Last().Name != "Price" && 
+                        pageParams.FilterParams.Last().Name != "Price Range" && i == 1))
                 {
                     priceFilter = await GetPriceFilter(productData.SelectMany(x => x.prices).ToList());
                 }
@@ -144,7 +146,7 @@ namespace Shared.PageBuilder.Classes
 
 
                 // Rating Filter
-                if (length == 1 ||
+                if (iterations == 1 ||
                     (pageParams.FilterParams.Last().Name == "Customer Rating" && i == 0) ||
                     (pageParams.FilterParams.Last().Name != "Customer Rating" && i == 1))
                 {
@@ -155,8 +157,9 @@ namespace Shared.PageBuilder.Classes
 
 
                 // Custom Filters
-                if (length == 1 ||
+                if (iterations == 1 ||
                     (pageParams.FilterParams.Last().Name != "Price" &&
+                        pageParams.FilterParams.Last().Name != "Price Range" &&
                         pageParams.FilterParams.Last().Name != "Customer Rating" && i == 0) ||
                     i == 1)
                 {
@@ -164,8 +167,9 @@ namespace Shared.PageBuilder.Classes
                     // This will make sure that we only query for each filter once
                     Expression<Func<ProductFilter, bool>> whereExpression = null!;
 
-                    if (length == 1 ||
+                    if (iterations == 1 ||
                         pageParams.FilterParams.Last().Name == "Price" ||
+                        pageParams.FilterParams.Last().Name == "Price Range" ||
                         pageParams.FilterParams.Last().Name == "Customer Rating")
                     {
                         // Include all filters
@@ -207,26 +211,26 @@ namespace Shared.PageBuilder.Classes
 
 
         // -------------------------------------------------------------------- Get Niche Filters ------------------------------------------------------------------------
-        private async Task<List<NicheFilter>> GetNicheFilters(List<string> subnicheIds)
+        private async Task<NicheFilters> GetNicheFilters(List<string> subnicheIds)
         {
             var subniches = await _repository.Subniches
                 .Where(x => subnicheIds.Contains(x.Id))
                 .Include(x => x.Niche)
                 .ToListAsync();
 
-            return subniches.Select(x => new
+            List<Niche> niches = subniches.Select(x => new
             {
                 niche = x.Niche,
                 subniches = x.Niche.Subniches
             })
             .Distinct()
-            .Select(x => new NicheFilter
+            .Select(x => new Niche
             {
                 Id = x.niche.Id,
                 Name = x.niche.Name,
                 UrlName = x.niche.UrlName,
                 Subniches = x.subniches
-                    .Select(z => new SubnicheFilter
+                    .Select(z => new Subniche
                     {
                         Id = z.Id,
                         Name = z.Name,
@@ -235,6 +239,9 @@ namespace Shared.PageBuilder.Classes
                     .ToList()
             })
             .ToList();
+
+
+            return new NicheFilters(niches);
         }
 
 

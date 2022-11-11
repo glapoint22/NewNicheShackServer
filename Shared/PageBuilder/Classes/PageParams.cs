@@ -69,7 +69,7 @@ namespace Shared.PageBuilder.Classes
                 filterParams.Add(new FilterParam
                 {
                     Name = filterName,
-                    Values = filterValues.Split(',')
+                    Values = filterValues.Split(',', '-')
                             .Select(x => Convert.ToInt32(x))
                             .ToList()
                 });

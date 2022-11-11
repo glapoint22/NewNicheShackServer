@@ -21,7 +21,7 @@ namespace Website.Application.Pages.GetSearchPage.Queries
 
         public async Task<Result> Handle(GetSearchPageQuery request, CancellationToken cancellationToken)
         {
-            string pageContent = null!;
+            string? pageContent = null!;
 
             // Set the params
             PageParams pageParams = new(
@@ -57,7 +57,7 @@ namespace Website.Application.Pages.GetSearchPage.Queries
                         .Select(z => z.PageId)
                         .Single())
                     .Select(x => x.Content)
-                    .SingleAsync(cancellationToken: cancellationToken);
+                    .SingleOrDefaultAsync(cancellationToken: cancellationToken);
             }
 
 

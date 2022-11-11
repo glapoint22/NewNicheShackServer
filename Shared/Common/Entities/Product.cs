@@ -30,6 +30,7 @@ namespace Shared.Common.Entities
         public Media Media { get; set; } = null!;
         public ICollection<ProductPrice> ProductPrices { get; private set; } = new HashSet<ProductPrice>();
         public ICollection<ProductFilter> ProductFilters { get; private set; } = new HashSet<ProductFilter>();
+        public ICollection<ProductKeyword> ProductKeywords { get; private set; } = new HashSet<ProductKeyword>();
         public ICollection<ProductOrder> ProductOrders { get; private set; } = new HashSet<ProductOrder>();
         public ICollection<Subproduct> Subproducts { get; private set; } = new HashSet<Subproduct>();
         public ICollection<PricePoint> PricePoints { get; private set; } = new HashSet<PricePoint>();
