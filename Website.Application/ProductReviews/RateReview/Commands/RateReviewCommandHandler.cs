@@ -20,9 +20,7 @@ namespace Website.Application.ProductReviews.RateReview.Commands
 
             if (review == null) return Result.Failed();
 
-            // Increment the likes or dislikes
-            review.Likes += request.Likes;
-            review.Dislikes += request.Dislikes;
+            review.Rate(request.Likes, request.Dislikes);
 
             // Update and save
             _dbContext.ProductReviews.Update(review);

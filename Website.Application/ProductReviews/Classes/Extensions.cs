@@ -47,7 +47,7 @@ namespace Website.Application.ProductReviews.Classes
 
 
         // --------------------------------------------------------------------------- Where ---------------------------------------------------------------------------------
-        public static IQueryable<ProductReview> Where(this IQueryable<ProductReview> source, string filterBy)
+        public static IQueryable<ProductReview> Where(this IQueryable<ProductReview> source, string? filterBy)
         {
             switch (filterBy)
             {
@@ -97,7 +97,7 @@ namespace Website.Application.ProductReviews.Classes
                     Name = x.User.FirstName + " " + x.User.LastName,
                     Src = x.User.Image!
                 },
-                Date = x.Date.ToString("MMMM dd, yyyy"),
+                Date = x.Date.ToString(),
                 IsVerified = x.Product.ProductOrders.Any(z => z.UserId == x.UserId && z.ProductId == x.ProductId),
                 Text = x.Text,
                 Likes = x.Likes,

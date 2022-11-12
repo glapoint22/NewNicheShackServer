@@ -8,7 +8,7 @@ using Website.Application.ProductReviews.RateReview.Commands;
 
 namespace Website.Api.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public sealed class ProductReviewsController : ApiControllerBase
     {
@@ -23,7 +23,7 @@ namespace Website.Api.Controllers
         // ---------------------------------------------------------------------- Get Reviews --------------------------------------------------------------------------
         [HttpGet]
         [Route("GetReviews")]
-        public async Task<ActionResult> GetReviews(string productId, string sortBy, string filterBy, int page = 1)
+        public async Task<ActionResult> GetReviews(string productId, string? sortBy, string? filterBy, int page = 1)
         {
             return SetResponse(await _mediator.Send(new GetReviewsQuery(productId, page, sortBy, filterBy)));
         }

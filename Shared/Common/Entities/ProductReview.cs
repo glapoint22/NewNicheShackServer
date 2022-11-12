@@ -16,5 +16,27 @@
         public Product Product { get; set; } = null!;
         public User User { get; set; } = null!;
         public ICollection<Notification> Notifications { get; private set; } = new HashSet<Notification>();
+
+
+        public static ProductReview Create(string productId, string userId, string title, double rating, string text)
+        {
+            return new()
+            {
+                ProductId = productId,
+                UserId = userId,
+                Title = title,
+                Rating = rating,
+                Date = DateTime.UtcNow,
+                Text = text
+            };
+        }
+
+
+        public void Rate(int likes, int dislikes)
+        {
+            // Increment the likes or dislikes
+            Likes += likes;
+            Dislikes += dislikes;
+        }
     }
 }

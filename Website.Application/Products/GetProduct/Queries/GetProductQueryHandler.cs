@@ -107,6 +107,7 @@ namespace Website.Application.Products.GetProduct.Queries
                 {
                     new
                     {
+                        product.Subniche.Niche.Id,
                         product.Subniche.Niche.Name,
                         product.Subniche.Niche.UrlName
                     },
