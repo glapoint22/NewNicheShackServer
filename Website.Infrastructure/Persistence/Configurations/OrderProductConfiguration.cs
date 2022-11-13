@@ -21,6 +21,9 @@ namespace Website.Infrastructure.Persistence.Configurations
 
             builder.Property(x => x.LineItemType)
                 .HasMaxLength(8);
+
+            builder.Property(x => x.RebillFrequency)
+                .HasMaxLength(10);
         }
     }
 }

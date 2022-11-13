@@ -39,7 +39,7 @@ namespace Shared.QueryBuilder.Classes
             if (!string.IsNullOrEmpty(pageParams.SearchTerm))
             {
                 // Build a query row for the search term
-                QueryElement searchQueryRow = BuildQueryRow(QueryType.Search, pageParams.SearchTerm);
+                QueryElement searchQueryRow = BuildQueryRow(QueryType.GridSearch, pageParams.SearchTerm);
                 query.Elements.Add(searchQueryRow);
             }
 
@@ -359,6 +359,11 @@ namespace Shared.QueryBuilder.Classes
                     expression = GetSearchExpression(queryRow.StringValue!, parameter);
                     break;
 
+                // Search
+                case QueryType.GridSearch:
+                    expression = GetGridSearchExpression(queryRow.StringValue!, parameter);
+                    break;
+
                 case QueryType.Filters:
                     expression = GetFiltersExpression(queryRow.Filters, parameter);
                     break;
@@ -592,6 +597,18 @@ namespace Shared.QueryBuilder.Classes
 
                 expression = Expression.OrElse(expression, searchExpression);
             }
+
+            return expression;
+        }
+
+
+
+
+
+        // ----------------------------------------------------------------- Get Grid Search Expression ------------------------------------------------------------------
+        private static Expression GetGridSearchExpression(string searchTerm, ParameterExpression parameter)
+        {
+            Expression expression = GetSearchExpression(searchTerm, parameter);
 
             // ProductKeywords property
             MemberExpression productKeywordsProperty = Expression.Property(parameter, "ProductKeywords");

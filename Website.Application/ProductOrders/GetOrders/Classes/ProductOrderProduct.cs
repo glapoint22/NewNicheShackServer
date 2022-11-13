@@ -8,9 +8,10 @@ namespace Website.Application.ProductOrders.GetOrders.Classes
         public int Quantity { get; set; }
         public double Price { get; set; }
         public Image Image { get; set; } = null!;
-        public string RebillFrequency { get; set; } = string.Empty;
+        public string? RebillFrequency { get; set; } = string.Empty;
         public double RebillAmount { get; set; }
         public int PaymentsRemaining { get; set; }
         public string UrlName { get; set; } = string.Empty;
+        public string ProductId { get; set; } = string.Empty;
     }
 }

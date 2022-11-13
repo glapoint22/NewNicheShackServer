@@ -9,7 +9,7 @@ namespace Website.Application.ProductOrders.GetOrders.Classes
         public static IQueryable<ProductOrder> Where(this IQueryable<ProductOrder> source, string filter, string? searchTerm = null)
         {
             // If there is a search term
-            if (string.IsNullOrEmpty(searchTerm))
+            if (!string.IsNullOrEmpty(searchTerm))
             {
                 source = source.Where(x => x.Id == searchTerm);
             }

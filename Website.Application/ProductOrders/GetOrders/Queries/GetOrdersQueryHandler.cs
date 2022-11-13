@@ -25,17 +25,27 @@ namespace Website.Application.ProductOrders.GetOrders.Queries
         public async Task<Result> Handle(GetOrdersQuery request, CancellationToken cancellationToken)
         {
             string userId = _userService.GetUserIdFromClaims();
+            string filter = request.Filter ?? "last-30";
 
             if (!string.IsNullOrEmpty(request.SearchTerm))
             {
-                List<ProductOrderDto> orders = await GetOrders(userId, request.Filter, request.SearchTerm);
+                List<ProductOrderDto> orders = await GetOrders(userId, filter, request.SearchTerm);
 
-                if (orders.Count > 0) return Result.Succeeded(orders);
+                if (orders.Count > 0) return Result.Succeeded(new
+                {
+                    orders
+                });
 
-                return Result.Succeeded(await GetOrderProducts(userId, request.SearchTerm));
+                return Result.Succeeded(new
+                {
+                    Products = await GetOrderProducts(userId, request.SearchTerm)
+                });
             }
 
-            return Result.Succeeded(await GetOrders(userId, request.Filter));
+            return Result.Succeeded(new
+            {
+                Orders = await GetOrders(userId, filter)
+            });
         }
 
 
@@ -52,7 +62,7 @@ namespace Website.Application.ProductOrders.GetOrders.Queries
                 .Select(x => new ProductOrderDto
                 {
                     OrderNumber = x.Id,
-                    Date = x.Date.ToString("MMMM dd, yyyy"),
+                    Date = x.Date.ToString(),
                     PaymentMethod = GetPaymentMethod(x.PaymentMethod),
                     PaymentMethodImg = GetPaymentMethodImage(x.PaymentMethod),
                     Subtotal = x.Subtotal,
@@ -77,7 +87,8 @@ namespace Website.Application.ProductOrders.GetOrders.Queries
                             RebillFrequency = z.RebillFrequency,
                             RebillAmount = z.RebillAmount,
                             PaymentsRemaining = z.PaymentsRemaining,
-                            UrlName = z.ProductOrder.Product.UrlName
+                            UrlName = z.ProductOrder.Product.UrlName,
+                            ProductId = z.ProductOrder.ProductId
                         })
                         .ToList()
                 })
@@ -100,7 +111,7 @@ namespace Website.Application.ProductOrders.GetOrders.Queries
                 .Where(searchTerm)
                 .Select(x => new OrderProductDto
                 {
-                    Date = x.ProductOrder.Date.ToString("MMMM dd, yyyy"),
+                    Date = x.ProductOrder.Date.ToString(),
                     Name = x.Name,
                     Image = x.LineItemType == "ORIGINAL" ? new Image
                     {

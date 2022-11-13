@@ -7,7 +7,7 @@ using Website.Application.ProductOrders.PostOrder.Commands;
 
 namespace Website.Api.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public sealed class ProductOrdersController : ApiControllerBase
     {
@@ -35,9 +35,9 @@ namespace Website.Api.Controllers
         [HttpGet]
         [Route("GetOrders")]
         [Authorize(Policy = "Account")]
-        public async Task<ActionResult> GetOrders(string filter = "last-30", string? searchTerm = null)
+        public async Task<ActionResult> GetOrders(string? filter, string? orderSearch = null)
         {
-            return SetResponse(await _mediator.Send(new GetOrdersQuery(filter, searchTerm)));
+            return SetResponse(await _mediator.Send(new GetOrdersQuery(filter, orderSearch)));
         }
 
 

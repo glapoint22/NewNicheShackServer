@@ -13,6 +13,7 @@
         Date,
         Auto,
         Search,
-        Filters
+        Filters,
+        GridSearch
     }
 }

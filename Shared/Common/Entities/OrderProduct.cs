@@ -7,8 +7,8 @@
         public string Name { get; set; } = string.Empty;
         public int Quantity { get; set; }
         public double Price { get; set; }
-        public string LineItemType { get; set; } = string.Empty;
-        public string RebillFrequency { get; set; } = string.Empty;
+        public string? LineItemType { get; set; }
+        public string? RebillFrequency { get; set; }
         public double RebillAmount { get; set; }
         public int PaymentsRemaining { get; set; }
 
