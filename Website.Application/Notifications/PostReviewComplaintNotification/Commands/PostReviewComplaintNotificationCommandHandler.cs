@@ -31,7 +31,7 @@ namespace Website.Application.Notifications.PostReviewComplaintNotification.Comm
 
             // First, check to see if a notification group for this type of notification already exists
             Guid notificationGroupId = await _dbContext.Notifications
-                .Where(x => x.Type == (int)NotificationType.Review && x.ReviewId == request.ReviewId)
+                .Where(x => x.Type == (int)NotificationType.ReviewComplaint && x.ReviewId == request.ReviewId)
                 .Select(x => x.NotificationGroupId)
                 .FirstOrDefaultAsync();
 

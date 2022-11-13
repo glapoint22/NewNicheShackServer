@@ -7,7 +7,7 @@ namespace Website.Application.ProductReviews.PostReview.EventHandlers
     {
         public Task Handle(PostedReviewEvent notification, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
     }
 }

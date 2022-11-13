@@ -37,7 +37,7 @@ namespace Website.Application.ProductReviews.PostReview.Commands
             _dbContext.Products.Update(product);
 
 
-            product.AddDomainEvent(new PostedReviewEvent(userId, request.ProductId, request.Rating, request.Title, request.Text));
+            product.AddDomainEvent(new PostedReviewEvent(userId, request.ProductId, productReview.Id, request.Rating, request.Title, request.Text));
             await _dbContext.SaveChangesAsync();
 
             return Result.Succeeded();

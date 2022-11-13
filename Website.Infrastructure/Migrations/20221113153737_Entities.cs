@@ -9,6 +9,26 @@ namespace Website.Infrastructure.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterColumn<string>(
+                name: "LastName",
+                table: "Users",
+                type: "nvarchar(40)",
+                maxLength: 40,
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(100)",
+                oldMaxLength: 100);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "FirstName",
+                table: "Users",
+                type: "nvarchar(40)",
+                maxLength: 40,
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(100)",
+                oldMaxLength: 100);
+
             migrationBuilder.AddColumn<bool>(
                 name: "BlockNotificationSending",
                 table: "Users",
@@ -355,7 +375,7 @@ namespace Website.Infrastructure.Migrations
                     CanEditList = table.Column<bool>(type: "bit", nullable: false),
                     CanInviteCollaborators = table.Column<bool>(type: "bit", nullable: false),
                     CanDeleteList = table.Column<bool>(type: "bit", nullable: false),
-                    CanRemoveItem = table.Column<bool>(type: "bit", nullable: false),
+                    CanRemoveFromList = table.Column<bool>(type: "bit", nullable: false),
                     CanManageCollaborators = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
@@ -474,27 +494,33 @@ namespace Website.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CollaboratorProducts",
+                name: "ListProducts",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ListId = table.Column<string>(type: "nvarchar(10)", nullable: false),
                     ProductId = table.Column<string>(type: "nvarchar(10)", nullable: false),
-                    CollaboratorId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     DateAdded = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CollaboratorProducts", x => x.Id);
+                    table.PrimaryKey("PK_ListProducts", x => new { x.ListId, x.ProductId, x.UserId });
                     table.ForeignKey(
-                        name: "FK_CollaboratorProducts_Collaborators_CollaboratorId",
-                        column: x => x.CollaboratorId,
-                        principalTable: "Collaborators",
+                        name: "FK_ListProducts_Lists_ListId",
+                        column: x => x.ListId,
+                        principalTable: "Lists",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CollaboratorProducts_Products_ProductId",
+                        name: "FK_ListProducts_Products_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Products",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ListProducts_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -632,8 +658,7 @@ namespace Website.Infrastructure.Migrations
                 name: "ProductReviews",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ProductId = table.Column<string>(type: "nvarchar(10)", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
@@ -767,9 +792,9 @@ namespace Website.Infrastructure.Migrations
                     NotificationGroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     ProductId = table.Column<string>(type: "nvarchar(10)", nullable: true),
-                    ReviewId = table.Column<int>(type: "int", nullable: true),
+                    ReviewId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     UserImage = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Text = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NonAccountName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -804,16 +829,6 @@ namespace Website.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CollaboratorProducts_CollaboratorId",
-                table: "CollaboratorProducts",
-                column: "CollaboratorId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_CollaboratorProducts_ProductId",
-                table: "CollaboratorProducts",
-                column: "ProductId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Collaborators_ListId",
                 table: "Collaborators",
                 column: "ListId");
@@ -837,6 +852,16 @@ namespace Website.Infrastructure.Migrations
                 name: "IX_KeywordsInKeywordGroup_KeywordId",
                 table: "KeywordsInKeywordGroup",
                 column: "KeywordId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ListProducts_ProductId",
+                table: "ListProducts",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ListProducts_UserId",
+                table: "ListProducts",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Notifications_NotificationGroupId",
@@ -980,13 +1005,16 @@ namespace Website.Infrastructure.Migrations
                 name: "BlockedNonAccountEmails");
 
             migrationBuilder.DropTable(
-                name: "CollaboratorProducts");
+                name: "Collaborators");
 
             migrationBuilder.DropTable(
                 name: "KeywordSearchVolumes");
 
             migrationBuilder.DropTable(
                 name: "KeywordsInKeywordGroup");
+
+            migrationBuilder.DropTable(
+                name: "ListProducts");
 
             migrationBuilder.DropTable(
                 name: "Notifications");
@@ -1019,7 +1047,7 @@ namespace Website.Infrastructure.Migrations
                 name: "Subproducts");
 
             migrationBuilder.DropTable(
-                name: "Collaborators");
+                name: "Lists");
 
             migrationBuilder.DropTable(
                 name: "NotificationGroups");
@@ -1044,9 +1072,6 @@ namespace Website.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "Keywords");
-
-            migrationBuilder.DropTable(
-                name: "Lists");
 
             migrationBuilder.DropTable(
                 name: "Products");
@@ -1122,6 +1147,26 @@ namespace Website.Infrastructure.Migrations
             migrationBuilder.DropColumn(
                 name: "TrackingCode",
                 table: "Users");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "LastName",
+                table: "Users",
+                type: "nvarchar(100)",
+                maxLength: 100,
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(40)",
+                oldMaxLength: 40);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "FirstName",
+                table: "Users",
+                type: "nvarchar(100)",
+                maxLength: 100,
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(40)",
+                oldMaxLength: 40);
         }
     }
 }

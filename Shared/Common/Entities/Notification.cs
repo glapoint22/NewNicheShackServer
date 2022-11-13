@@ -1,5 +1,4 @@
 ﻿using Shared.Common.Enums;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Shared.Common.Entities
 {
@@ -9,9 +8,9 @@ namespace Shared.Common.Entities
         public Guid NotificationGroupId { get; set; }
         public string? UserId { get; set; }
         public string? ProductId { get; set; }
-        public int? ReviewId { get; set; }
+        public Guid ReviewId { get; set; }
         public int Type { get; set; }
-        public string? UserName { get; set; }
+        public string? Name { get; set; }
         public string? UserImage { get; set; }
         public string? Text { get; set; }
         public string? NonAccountName { get; set; }
@@ -88,14 +87,14 @@ namespace Shared.Common.Entities
 
 
 
-        public static Notification CreateReviewComplaintNotification(Guid notificationGroupId, string productId, int reviewId, string text)
+        public static Notification CreateReviewComplaintNotification(Guid notificationGroupId, string productId, Guid reviewId, string text)
         {
             Notification notification = new()
             {
                 Id = Guid.NewGuid(),
                 NotificationGroupId = notificationGroupId,
                 ProductId = productId,
-                Type = (int)NotificationType.Review,
+                Type = (int)NotificationType.ReviewComplaint,
                 ReviewId = reviewId,
                 Text = text,
                 CreationDate = DateTime.UtcNow
@@ -116,7 +115,7 @@ namespace Shared.Common.Entities
                 Id = Guid.NewGuid(),
                 NotificationGroupId = notificationGroupId,
                 Type = (int)NotificationType.UserName,
-                UserName = userName,
+                Name = userName,
                 UserId = userId,
                 CreationDate = DateTime.UtcNow
             };
@@ -149,16 +148,39 @@ namespace Shared.Common.Entities
 
 
 
-        public static Notification CreateListNotification(Guid notificationGroupId, string userId, string newName, string? newDescription)
+        public static Notification CreateListNotification(Guid notificationGroupId, string userId, string name, string? description)
         {
             Notification notification = new()
             {
                 Id = Guid.NewGuid(),
                 NotificationGroupId = notificationGroupId,
                 Type = (int)NotificationType.List,
-                UserName = newName,
+                Name = name,
                 UserId = userId,
-                Text = newDescription,
+                Text = description,
+                CreationDate = DateTime.UtcNow
+            };
+
+            SetNotificationGroupId(notification);
+
+            return notification;
+        }
+
+
+
+
+        public static Notification CreatePostedReviewNotification(Guid notificationGroupId, string userId, string productId, Guid reviewId, string title, string text)
+        {
+            Notification notification = new()
+            {
+                Id = Guid.NewGuid(),
+                NotificationGroupId = notificationGroupId,
+                Type = (int)NotificationType.List,
+                ProductId = productId,
+                ReviewId = reviewId,
+                Name = title,
+                UserId = userId,
+                Text = text,
                 CreationDate = DateTime.UtcNow
             };
 

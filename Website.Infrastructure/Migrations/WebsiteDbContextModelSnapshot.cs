@@ -468,6 +468,10 @@ namespace Website.Infrastructure.Migrations
                     b.Property<bool>("IsArchived")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Name")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
                     b.Property<string>("NonAccountEmail")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -482,8 +486,8 @@ namespace Website.Infrastructure.Migrations
                     b.Property<string>("ProductId")
                         .HasColumnType("nvarchar(10)");
 
-                    b.Property<int?>("ReviewId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ReviewId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Text")
                         .HasColumnType("nvarchar(max)");
@@ -497,10 +501,6 @@ namespace Website.Infrastructure.Migrations
                     b.Property<string>("UserImage")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
 
                     b.HasKey("Id");
 
@@ -917,11 +917,9 @@ namespace Website.Infrastructure.Migrations
 
             modelBuilder.Entity("Shared.Common.Entities.ProductReview", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -1543,7 +1541,7 @@ namespace Website.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("Shared.Common.Entities.Product", "Product")
-                        .WithMany()
+                        .WithMany("ProductKeywords")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1714,6 +1712,8 @@ namespace Website.Infrastructure.Migrations
                     b.Navigation("PricePoints");
 
                     b.Navigation("ProductFilters");
+
+                    b.Navigation("ProductKeywords");
 
                     b.Navigation("ProductMedia");
 

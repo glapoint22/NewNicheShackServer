@@ -2,7 +2,7 @@
 {
     public sealed class ProductReview
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string ProductId { get; set; } = string.Empty;
         public string UserId { get; set; } = string.Empty;
         public string Title { get; set; } = string.Empty;
@@ -22,6 +22,7 @@
         {
             return new()
             {
+                Id = Guid.NewGuid(),
                 ProductId = productId,
                 UserId = userId,
                 Title = title,

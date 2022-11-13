@@ -5,7 +5,7 @@
         UserName,
         UserImage,
         Message,
-        Review,
+        ReviewComplaint,
         ProductNameDoesNotMatchWithProductDescription,
         ProductNameDoesNotMatchWithProductImage,
         ProductNameOther,
@@ -28,6 +28,7 @@
         ProductSiteNolongerInService,
         MissingProductOther,
         Error,
-        List
+        List,
+        PostedReview
     }
 }

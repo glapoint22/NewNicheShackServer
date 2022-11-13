@@ -8,7 +8,7 @@ namespace Website.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<Notification> builder)
         {
-            builder.Property(x => x.UserName)
+            builder.Property(x => x.Name)
                 .HasMaxLength(200);
 
             builder.Property(x => x.UserImage)

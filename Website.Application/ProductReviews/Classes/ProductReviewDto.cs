@@ -4,7 +4,7 @@ namespace Website.Application.ProductReviews.Classes
 {
     public sealed class ProductReviewDto
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Title { get; set; } = string.Empty;
         public double Rating { get; set; }
         public string UserName { get; set; } = string.Empty;
