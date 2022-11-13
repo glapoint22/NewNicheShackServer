@@ -7,7 +7,7 @@ namespace Website.Application.Account.ChangeProfileImage.EventHandlers
     {
         public Task Handle(UserChangedProfileImageEvent notification, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
     }
 }

@@ -1,16 +1,15 @@
 ﻿using MediatR;
-
 using Website.Application.Common.Interfaces;
 using Shared.Common.Entities;
 using Website.Domain.Events;
 
 namespace Website.Application.Account.SignUp.EventHandlers
 {
-    public sealed class UserCreatedEmailConfirmationEventHandler : INotificationHandler<UserCreatedEvent>
+    public sealed class UserCreatedEventHandler : INotificationHandler<UserCreatedEvent>
     {
         private readonly IUserService _userService;
 
-        public UserCreatedEmailConfirmationEventHandler(IUserService userService)
+        public UserCreatedEventHandler(IUserService userService)
         {
             _userService = userService;
         }

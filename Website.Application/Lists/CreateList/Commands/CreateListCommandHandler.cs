@@ -2,6 +2,7 @@
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
 using Shared.Common.Entities;
+using Website.Domain.Events;
 
 namespace Website.Application.Lists.CreateList.Commands
 {
@@ -28,6 +29,8 @@ namespace Website.Application.Lists.CreateList.Commands
 
             _dbContext.Lists.Add(list);
             _dbContext.Collaborators.Add(collaborator);
+
+            list.AddDomainEvent(new ListEvent(userId, request.Name, request.Description));
 
             await _dbContext.SaveChangesAsync();
 

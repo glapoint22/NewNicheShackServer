@@ -1,11 +1,14 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Website.Application.Notifications.PostNotification.Commands;
+using Website.Application.Notifications.PostMessageNotification.Commands;
+using Website.Application.Notifications.PostNonAccountMessageNotification.Commands;
+using Website.Application.Notifications.PostProductNotification.Commands;
+using Website.Application.Notifications.PostReviewComplaintNotification.Commands;
 
 namespace Website.Api.Controllers
 {
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public sealed class NotificationsController : ApiControllerBase
     {
@@ -17,24 +20,59 @@ namespace Website.Api.Controllers
         }
 
 
-        // --------------------------------------------------------------------------- Post Notification -------------------------------------------------------------------------
+
+
+        // ----------------------------------------------------------------- Post Non Account Message Notification ---------------------------------------------------------------
         [HttpPost]
-        [Route("PostNotification")]
-        [Authorize(Policy = "Account")]
-        public async Task<ActionResult> PostNotification(PostNotificationCommand postNotification)
+        [Route("PostNonAccountMessage")]
+        public async Task<ActionResult> PostNonAccountMessageNotification(PostNonAccountMessageNotificationCommand PostNonAccountMessageNotification)
         {
-            return SetResponse(await _mediator.Send(postNotification));
+            return SetResponse(await _mediator.Send(PostNonAccountMessageNotification));
         }
 
 
 
 
-        // ----------------------------------------------------------------------------- Post Message ----------------------------------------------------------------------------
+
+
+        // ----------------------------------------------------------------------- Post Message Notification ---------------------------------------------------------------------
         [HttpPost]
         [Route("PostMessage")]
-        public async Task<ActionResult> PostMessage(PostNotificationCommand postNotification)
+        [Authorize(Policy = "Account")]
+        public async Task<ActionResult> PostMessageNotification(PostMessageNotificationCommand PostMessageNotification)
         {
-            return SetResponse(await _mediator.Send(postNotification));
+            return SetResponse(await _mediator.Send(PostMessageNotification));
+        }
+
+
+
+
+
+
+
+        // ------------------------------------------------------------------------ Post Product Notification --------------------------------------------------------------------
+        [HttpPost]
+        [Route("PostProductNotification")]
+        [Authorize(Policy = "Account")]
+        public async Task<ActionResult> PostProductNotification(PostProductNotificationCommand PostProductNotification)
+        {
+            return SetResponse(await _mediator.Send(PostProductNotification));
+        }
+
+
+
+
+
+
+
+
+        // ------------------------------------------------------------------- Post Review Complaint Notification ----------------------------------------------------------------
+        [HttpPost]
+        [Route("PostReviewComplaintNotification")]
+        [Authorize(Policy = "Account")]
+        public async Task<ActionResult> PostReviewComplaintNotification(PostReviewComplaintNotificationCommand PostReviewComplaintNotification)
+        {
+            return SetResponse(await _mediator.Send(PostReviewComplaintNotification));
         }
     }
 }

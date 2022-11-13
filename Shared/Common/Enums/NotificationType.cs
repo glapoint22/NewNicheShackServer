@@ -27,6 +27,7 @@
         ProductInactive,
         ProductSiteNolongerInService,
         MissingProductOther,
-        Error
+        Error,
+        List
     }
 }

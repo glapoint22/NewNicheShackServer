@@ -7,7 +7,7 @@ namespace Website.Application.Lists.EditList.EventHandlers
     {
         public Task Handle(ListEditedEvent notification, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
     }
 }

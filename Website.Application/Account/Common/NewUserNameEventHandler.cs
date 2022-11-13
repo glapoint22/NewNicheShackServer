@@ -5,18 +5,18 @@ using Shared.Common.Enums;
 using Website.Application.Common.Interfaces;
 using Website.Domain.Events;
 
-namespace Website.Application.Account.ChangeProfileImage.EventHandlers
+namespace Website.Application.Account.Common
 {
-    public sealed class UserChangedProfileImageNotificationEventHandler : INotificationHandler<UserChangedProfileImageEvent>
+    public sealed class NewUserNameEventHandler : INotificationHandler<UserEvent>
     {
         private readonly IWebsiteDbContext _dbContext;
 
-        public UserChangedProfileImageNotificationEventHandler(IWebsiteDbContext dbContext)
+        public NewUserNameEventHandler(IWebsiteDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public async Task Handle(UserChangedProfileImageEvent notification, CancellationToken cancellationToken)
+        public async Task Handle(UserEvent notification, CancellationToken cancellationToken)
         {
             User user = (await _dbContext.Users.FindAsync(notification.UserId))!;
 
@@ -25,14 +25,14 @@ namespace Website.Application.Account.ChangeProfileImage.EventHandlers
 
             // First, check to see if a notification group for this type of notification already exists
             Guid notificationGroupId = await _dbContext.Notifications
-                .Where(x => x.Type == (int)NotificationType.UserImage && x.UserId == user.Id)
+                .Where(x => x.Type == (int)NotificationType.UserName && x.UserId == user.Id)
                 .Select(x => x.NotificationGroupId)
                 .FirstOrDefaultAsync();
 
 
             // Create the notification
-            Notification newUserImageNotification = Notification.CreateNewUserImageNotification(notificationGroupId, user.Id, user.Image!);
-            _dbContext.Notifications.Add(newUserImageNotification);
+            Notification newUserNameNotification = Notification.CreateNewUserNameNotification(notificationGroupId, user.Id, user.FirstName + ' ' + user.LastName);
+            _dbContext.Notifications.Add(newUserNameNotification);
 
             await _dbContext.SaveChangesAsync();
         }

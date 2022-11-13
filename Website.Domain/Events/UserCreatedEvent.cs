@@ -1,6 +1,7 @@
-﻿using MediatR;
-
-namespace Website.Domain.Events
+﻿namespace Website.Domain.Events
 {
-    public sealed record UserCreatedEvent(string UserId) : INotification;
+    public sealed record UserCreatedEvent : UserEvent
+    {
+        public UserCreatedEvent(string UserId) : base(UserId) { }
+    }
 }

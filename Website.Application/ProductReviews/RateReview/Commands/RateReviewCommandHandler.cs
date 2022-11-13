@@ -16,9 +16,7 @@ namespace Website.Application.ProductReviews.RateReview.Commands
 
         public async Task<Result> Handle(RateReviewCommand request, CancellationToken cancellationToken)
         {
-            ProductReview? review = await _dbContext.ProductReviews.FindAsync(request.ReviewId);
-
-            if (review == null) return Result.Failed();
+            ProductReview review = (await _dbContext.ProductReviews.FindAsync(request.ReviewId))!;
 
             review.Rate(request.Likes, request.Dislikes);
 
