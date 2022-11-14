@@ -725,8 +725,8 @@ namespace Website.Infrastructure.Migrations
                     Name = table.Column<string>(type: "nvarchar(21)", maxLength: 21, nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
-                    LineItemType = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: false),
-                    RebillFrequency = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LineItemType = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: true),
+                    RebillFrequency = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
                     RebillAmount = table.Column<double>(type: "float", nullable: false),
                     PaymentsRemaining = table.Column<int>(type: "int", nullable: false)
                 },

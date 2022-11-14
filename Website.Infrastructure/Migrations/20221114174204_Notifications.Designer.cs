@@ -12,8 +12,8 @@ using Website.Infrastructure.Persistence;
 namespace Website.Infrastructure.Migrations
 {
     [DbContext(typeof(WebsiteDbContext))]
-    [Migration("20221113153737_Entities")]
-    partial class Entities
+    [Migration("20221114174204_Notifications")]
+    partial class Notifications
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -488,7 +488,7 @@ namespace Website.Infrastructure.Migrations
                     b.Property<string>("ProductId")
                         .HasColumnType("nvarchar(10)");
 
-                    b.Property<Guid>("ReviewId")
+                    b.Property<Guid?>("ReviewId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Text")
@@ -540,7 +540,6 @@ namespace Website.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("LineItemType")
-                        .IsRequired()
                         .HasMaxLength(8)
                         .HasColumnType("nvarchar(8)");
 
@@ -567,8 +566,8 @@ namespace Website.Infrastructure.Migrations
                         .HasColumnType("float");
 
                     b.Property<string>("RebillFrequency")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.HasKey("Id");
 

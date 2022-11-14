@@ -486,7 +486,7 @@ namespace Website.Infrastructure.Migrations
                     b.Property<string>("ProductId")
                         .HasColumnType("nvarchar(10)");
 
-                    b.Property<Guid>("ReviewId")
+                    b.Property<Guid?>("ReviewId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Text")

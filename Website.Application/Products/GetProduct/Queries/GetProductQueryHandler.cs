@@ -43,54 +43,9 @@ namespace Website.Application.Products.GetProduct.Queries
                     product.ThreeStars,
                     product.FourStars,
                     product.FiveStars,
-                    product.SubnicheId,
                     Hoplink = product.GetHoplink(userTrackingCode),
                     product.ShippingType,
                     product.RecurringPayment,
-                    Components = product.Subproducts
-                    .Where(x => x.Type == 0)
-                    .Select(x => new
-                    {
-                        x.Name,
-                        x.Description,
-                        Image = new Image
-                        {
-                            Name = x.Media.Name,
-                            Src = x.Media.ImageSm!
-                        },
-                        x.Value
-                    }).ToList(),
-                    Bonuses = product.Subproducts
-                    .Where(x => x.Type == 1)
-                    .Select(x => new
-                    {
-                        x.Name,
-                        x.Description,
-                        Image = new Image
-                        {
-                            Name = x.Media.Name,
-                            Src = x.Media.ImageSm!
-                        },
-                        x.Value
-                    }).ToList(),
-                    PricePoints = product.PricePoints
-                    .Select(x => new
-                    {
-                        Image = x.Media != null ? new Image
-                        {
-                            Name = x.Media.Name,
-                            Src = x.Media.ImageSm!
-                        } : null,
-                        x.Header,
-                        x.Quantity,
-                        x.UnitPrice,
-                        x.Unit,
-                        x.StrikethroughPrice,
-                        x.ProductPrice.Price,
-                        x.ShippingType,
-                        x.RecurringPayment
-                    })
-                    .ToList(),
                     Media = product.ProductMedia
                     .OrderBy(x => x.Index)
                     .Select(x => new
@@ -104,20 +59,20 @@ namespace Website.Application.Products.GetProduct.Queries
                         x.Media.VideoType
                     }),
                     Breadcrumb = new List<object>
-                {
-                    new
                     {
-                        product.Subniche.Niche.Id,
-                        product.Subniche.Niche.Name,
-                        product.Subniche.Niche.UrlName
-                    },
-                    new
-                    {
-                        Id = product.SubnicheId,
-                        product.Subniche.Name,
-                        product.Subniche.UrlName
+                        new
+                        {
+                            product.Subniche.Niche.Id,
+                            product.Subniche.Niche.Name,
+                            product.Subniche.Niche.UrlName
+                        },
+                        new
+                        {
+                            Id = product.SubnicheId,
+                            product.Subniche.Name,
+                            product.Subniche.UrlName
+                        }
                     }
-                }
                 })
                 .SingleOrDefaultAsync();
 

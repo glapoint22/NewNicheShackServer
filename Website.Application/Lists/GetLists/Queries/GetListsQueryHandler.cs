@@ -78,6 +78,8 @@ namespace Website.Application.Lists.GetLists.Queries
                 })
                 .ToListAsync(cancellationToken: cancellationToken);
 
+            if (lists.Count == 0) return Result.Succeeded();
+
 
             string listId = request.ListId ?? lists.Select(x => x.Id).First();
 

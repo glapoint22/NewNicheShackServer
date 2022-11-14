@@ -8,7 +8,7 @@ namespace Shared.Common.Entities
         public Guid NotificationGroupId { get; set; }
         public string? UserId { get; set; }
         public string? ProductId { get; set; }
-        public Guid ReviewId { get; set; }
+        public Guid? ReviewId { get; set; }
         public int Type { get; set; }
         public string? Name { get; set; }
         public string? UserImage { get; set; }

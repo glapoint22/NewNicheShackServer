@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Website.Application.Common.Interfaces;
 using Website.Application.Products.GetProduct.Queries;
+using Website.Application.Products.GetProperties.Queries;
 
 namespace Website.Api.Controllers
 {
@@ -26,6 +27,16 @@ namespace Website.Api.Controllers
             return SetResponse(await _mediator.Send(new GetProductQuery(productId)));
         }
 
+
+
+
+        // --------------------------------------------------------------------- Get Properties ------------------------------------------------------------------------
+        [HttpGet]
+        [Route("GetProperties")]
+        public async Task<ActionResult> GetProperties(string productId)
+        {
+            return SetResponse(await _mediator.Send(new GetPropertiesQuery(productId)));
+        }
 
 
         // ---------------------------------------------------------------- Get Search Suggestions ---------------------------------------------------------------------
