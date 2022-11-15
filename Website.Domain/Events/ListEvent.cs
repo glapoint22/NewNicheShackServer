@@ -2,5 +2,5 @@
 
 namespace Website.Domain.Events
 {
-    public record ListEvent(string UserId, string NewName, string? NewDescription) : INotification;
+    public record ListEvent(string UserId, string ListId, string Name, string? Description) : INotification;
 }

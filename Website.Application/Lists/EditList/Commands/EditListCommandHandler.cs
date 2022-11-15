@@ -32,7 +32,7 @@ namespace Website.Application.Lists.EditList.Commands
 
             // Edit
             list.Edit(request.Name, request.Description);
-            list.AddDomainEvent(new ListEditedEvent(userId, list.Name, list.Description, request.Name, request.Description));
+            list.AddDomainEvent(new ListEditedEvent(userId, list.Id, list.Name, list.Description, request.Name, request.Description));
 
             // Save the changes
             _dbContext.Lists.Update(list);

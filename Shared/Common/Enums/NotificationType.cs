@@ -29,6 +29,6 @@
         MissingProductOther,
         Error,
         List,
-        PostedReview
+        Review
     }
 }

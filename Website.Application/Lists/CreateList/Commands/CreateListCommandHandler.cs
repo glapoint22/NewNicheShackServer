@@ -30,7 +30,7 @@ namespace Website.Application.Lists.CreateList.Commands
             _dbContext.Lists.Add(list);
             _dbContext.Collaborators.Add(collaborator);
 
-            list.AddDomainEvent(new ListEvent(userId, request.Name, request.Description));
+            list.AddDomainEvent(new ListEvent(userId, list.Id, request.Name, request.Description));
 
             await _dbContext.SaveChangesAsync();
 

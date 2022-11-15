@@ -36,7 +36,7 @@ namespace Website.Application.Notifications.PostProductNotification.Commands
 
 
             // Create the notification
-            Notification notification = Notification.CreateProductNotification(notificationGroupId, request.ProductId, request.Type, request.Text);
+            Notification notification = Notification.CreateProductNotification(notificationGroupId, userId, request.ProductId, request.Type, request.Text);
             _dbContext.Notifications.Add(notification);
 
             await _dbContext.SaveChangesAsync();

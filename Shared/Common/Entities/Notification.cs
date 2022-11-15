@@ -1,4 +1,5 @@
 ﻿using Shared.Common.Enums;
+using System.Text.Json;
 
 namespace Shared.Common.Entities
 {
@@ -8,6 +9,7 @@ namespace Shared.Common.Entities
         public Guid NotificationGroupId { get; set; }
         public string? UserId { get; set; }
         public string? ProductId { get; set; }
+        public string? ListId { get; set; }
         public Guid? ReviewId { get; set; }
         public int Type { get; set; }
         public string? Name { get; set; }
@@ -23,6 +25,7 @@ namespace Shared.Common.Entities
         public Product Product { get; set; } = null!;
         public User User { get; set; } = null!;
         public ProductReview ProductReview { get; set; } = null!;
+        public List List { get; set; } = null!;
 
 
 
@@ -67,12 +70,13 @@ namespace Shared.Common.Entities
 
 
 
-        public static Notification CreateProductNotification(Guid notificationGroupId, string productId, int type, string? text)
+        public static Notification CreateProductNotification(Guid notificationGroupId, string userId, string productId, int type, string? text)
         {
             Notification notification = new()
             {
                 Id = Guid.NewGuid(),
                 NotificationGroupId = notificationGroupId,
+                UserId = userId,
                 ProductId = productId,
                 Type = type,
                 Text = text,
@@ -87,12 +91,13 @@ namespace Shared.Common.Entities
 
 
 
-        public static Notification CreateReviewComplaintNotification(Guid notificationGroupId, string productId, Guid reviewId, string text)
+        public static Notification CreateReviewComplaintNotification(Guid notificationGroupId, string userId, string productId, Guid reviewId, string text)
         {
             Notification notification = new()
             {
                 Id = Guid.NewGuid(),
                 NotificationGroupId = notificationGroupId,
+                UserId = userId,
                 ProductId = productId,
                 Type = (int)NotificationType.ReviewComplaint,
                 ReviewId = reviewId,
@@ -148,16 +153,17 @@ namespace Shared.Common.Entities
 
 
 
-        public static Notification CreateListNotification(Guid notificationGroupId, string userId, string name, string? description)
+        public static Notification CreateListNotification(Guid notificationGroupId, string listId, string name, string? description, string userId)
         {
             Notification notification = new()
             {
                 Id = Guid.NewGuid(),
                 NotificationGroupId = notificationGroupId,
                 Type = (int)NotificationType.List,
+                ListId = listId,
                 Name = name,
-                UserId = userId,
                 Text = description,
+                UserId = userId,
                 CreationDate = DateTime.UtcNow
             };
 
@@ -169,18 +175,45 @@ namespace Shared.Common.Entities
 
 
 
-        public static Notification CreatePostedReviewNotification(Guid notificationGroupId, string userId, string productId, Guid reviewId, string title, string text)
+        public static Notification CreateReviewNotification(Guid notificationGroupId, string userId, string productId, Guid reviewId)
         {
             Notification notification = new()
             {
                 Id = Guid.NewGuid(),
                 NotificationGroupId = notificationGroupId,
-                Type = (int)NotificationType.List,
+                Type = (int)NotificationType.Review,
                 ProductId = productId,
                 ReviewId = reviewId,
-                Name = title,
                 UserId = userId,
-                Text = text,
+                CreationDate = DateTime.UtcNow
+            };
+
+            SetNotificationGroupId(notification);
+
+            return notification;
+        }
+
+
+
+
+
+        public static Notification CreateErrorNotification(Exception error)
+        {
+            var errorObject = new
+            {
+                error.Message,
+                error.InnerException,
+                error.Source
+            };
+
+            var serializedError = JsonSerializer.Serialize(errorObject);
+
+            Notification notification = new()
+            {
+                Id = Guid.NewGuid(),
+                NotificationGroupId = Guid.Empty,
+                Type = (int)NotificationType.Error,
+                Text = serializedError,
                 CreationDate = DateTime.UtcNow
             };
 

@@ -25,13 +25,13 @@ namespace Website.Application.Lists.Common
 
             // First, check to see if a notification group for this type of notification already exists
             Guid notificationGroupId = await _dbContext.Notifications
-                .Where(x => x.Type == (int)NotificationType.List && x.UserId == notification.UserId)
+                .Where(x => x.Type == (int)NotificationType.List && x.UserId == notification.UserId && x.ListId == notification.ListId)
                 .Select(x => x.NotificationGroupId)
                 .FirstOrDefaultAsync();
 
 
             // Create the notification
-            Notification ListNotification = Notification.CreateListNotification(notificationGroupId, notification.UserId, notification.NewName, notification.NewDescription);
+            Notification ListNotification = Notification.CreateListNotification(notificationGroupId, notification.ListId, notification.Name, notification.Description, notification.UserId);
             _dbContext.Notifications.Add(ListNotification);
 
             await _dbContext.SaveChangesAsync();

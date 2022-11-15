@@ -14,6 +14,7 @@ namespace Shared.Common.Entities
 
         public IReadOnlyList<Collaborator> Collaborators => _collaborators.AsReadOnly();
         public IReadOnlyList<ListProduct> Products => _products.AsReadOnly();
+        public ICollection<Notification> Notifications { get; private set; } = new HashSet<Notification>();
 
 
 

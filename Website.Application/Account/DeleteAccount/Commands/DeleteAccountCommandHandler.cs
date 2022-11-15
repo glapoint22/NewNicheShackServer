@@ -33,7 +33,21 @@ namespace Website.Application.Account.DeleteAccount.Commands
             .Select(x => x.List)
             .ToListAsync();
 
-            // Remove the lists and the user
+            // Notifications
+            List<Notification> notifications = await _dbContext.Notifications
+                .Where(x => x.UserId == user.Id)
+                .Include(z => z.NotificationGroup)
+                .ToListAsync();
+
+            if (notifications.Count > 0)
+            {
+                _dbContext.Notifications.RemoveRange(notifications);
+
+                List<NotificationGroup> groups = notifications.Select(x => x.NotificationGroup).ToList();
+                _dbContext.NotificationGroups.RemoveRange(groups);
+            }
+
+            // Remove
             _dbContext.Lists.RemoveRange(lists);
             _dbContext.Users.Remove(user);
 

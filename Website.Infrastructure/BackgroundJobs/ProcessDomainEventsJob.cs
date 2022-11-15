@@ -1,5 +1,7 @@
 ﻿using MediatR;
 using Quartz;
+using Shared.Common.Entities;
+using Website.Application.Common.Interfaces;
 using Website.Infrastructure.Persistence.Interceptors;
 
 namespace Website.Infrastructure.BackgroundJobs
@@ -8,10 +10,12 @@ namespace Website.Infrastructure.BackgroundJobs
     public sealed class ProcessDomainEventsJob : IJob
     {
         private readonly IPublisher _publisher;
+        private readonly IWebsiteDbContext _dbContext;
 
-        public ProcessDomainEventsJob(IPublisher publisher)
+        public ProcessDomainEventsJob(IPublisher publisher, IWebsiteDbContext dbContext)
         {
             _publisher = publisher;
+            _dbContext = dbContext;
         }
 
         public async Task Execute(IJobExecutionContext context)
@@ -22,7 +26,20 @@ namespace Website.Infrastructure.BackgroundJobs
             {
                 foreach (var domainEvent in domainEvents)
                 {
-                    await _publisher.Publish(domainEvent);
+                    try
+                    {
+                        await _publisher.Publish(domainEvent);
+                    }
+                    catch (Exception error)
+                    {
+                        // Create the notification
+                        Notification notification = Notification.CreateErrorNotification(error);
+                        _dbContext.Notifications.Add(notification);
+
+                        await _dbContext.SaveChangesAsync();
+                        throw;
+                    }
+                    
                 }
             }
         }

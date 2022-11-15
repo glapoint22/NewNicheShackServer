@@ -32,6 +32,18 @@ namespace Website.Application.Lists.DeleteList.Commands
 
             if (list == null) return Result.Failed();
 
+            List<Notification> notifications = await _dbContext.Notifications
+                .Where(x => x.ListId == list.Id)
+                .Include(x => x.NotificationGroup)
+                .ToListAsync();
+
+            if (notifications.Count > 0)
+            {
+                _dbContext.Notifications.RemoveRange(notifications);
+                _dbContext.NotificationGroups.Remove(notifications.Select(x => x.NotificationGroup).First());
+            }
+
+
             // Add the list deleted event
             if (list.Collaborators.Count > 0)
             {
