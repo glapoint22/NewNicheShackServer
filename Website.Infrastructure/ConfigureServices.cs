@@ -5,9 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Quartz;
-
 using Shared.Common.Interfaces;
-using Shared.PageBuilder.Classes;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Website.Application.Common.Interfaces;
@@ -23,7 +21,7 @@ namespace Website.Infrastructure
 {
     public static class ConfigureServices
     {
-        public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection InfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddSingleton<DomainEventsInterceptor>();
 

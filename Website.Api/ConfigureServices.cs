@@ -6,7 +6,7 @@ namespace Website.Api
 {
     public static class ConfigureServices
     {
-        public static IServiceCollection AddApiServices(this IServiceCollection services)
+        public static IServiceCollection ApiServices(this IServiceCollection services)
         {
             services.AddMediatR(Assembly.GetExecutingAssembly());
             services.AddControllers()
