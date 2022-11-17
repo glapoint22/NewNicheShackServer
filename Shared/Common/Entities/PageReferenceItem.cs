@@ -7,8 +7,8 @@
         public string? SubnicheId { get; set; }
         public int? KeywordGroupId { get; set; }
 
-        public Page Page { get; set; } = null!;
         public Subniche Subniche { get; set; } = null!;
+        public Page Page { get; set; } = null!;
         public KeywordGroup KeywordGroup { get; set; } = null!;
     }
 }

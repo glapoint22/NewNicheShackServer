@@ -8,6 +8,7 @@
         public string Content { get; set; } = string.Empty;
         public int PageType { get; set; }
 
-        public ICollection<PageReferenceItem> PageReferenceItems { get; private set; } = new HashSet<PageReferenceItem>();
+        private readonly List<PageReferenceItem> _pageReferenceItems = new();
+        public IReadOnlyList<PageReferenceItem> PageReferenceItems => _pageReferenceItems.AsReadOnly();
     }
 }

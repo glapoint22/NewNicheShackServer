@@ -1,6 +1,4 @@
-﻿using Shared.Common.Entities;
-
-namespace Shared.PageBuilder.Classes
+﻿namespace Shared.PageBuilder.Classes
 {
     public sealed class NicheFilter
     {
@@ -10,12 +8,12 @@ namespace Shared.PageBuilder.Classes
         public SubnicheFilters SubnicheFilters { get; set; } = null!;
         public bool Visible { get; set; } = false;
 
-        public NicheFilter(Niche niche)
+        public NicheFilter(NicheDto niche)
         {
             Id = niche.Id;
             Name = niche.Name;
             UrlName = niche.UrlName;
-            SubnicheFilters = new SubnicheFilters((List<Subniche>)niche.Subniches);
+            SubnicheFilters = new SubnicheFilters(niche.Subniches);
         }
     }
 }

@@ -8,6 +8,7 @@
         public string UrlName { get; set; } = string.Empty;
 
         public Niche Niche { get; set; } = null!;
-        public ICollection<PageReferenceItem> PageReferenceItems { get; set; } = new HashSet<PageReferenceItem>();
+        private readonly List<PageReferenceItem> _pageReferenceItems = new();
+        public IReadOnlyList<PageReferenceItem> PageReferenceItems => _pageReferenceItems.AsReadOnly();
     }
 }

@@ -9,7 +9,7 @@ namespace Shared.PageBuilder.Classes
         public string UrlName { get; set; } = null!;
         public bool Visible { get; set; } = false;
 
-        public SubnicheFilter(Subniche subniche)
+        public SubnicheFilter(SubnicheDto subniche)
         {
             Id = subniche.Id;
             Name = subniche.Name;

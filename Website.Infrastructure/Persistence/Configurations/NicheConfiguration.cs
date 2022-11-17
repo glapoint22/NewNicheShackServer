@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
 using Shared.Common.Entities;
 
 namespace Website.Infrastructure.Persistence.Configurations

@@ -6,6 +6,7 @@
         public string Name { get; set; } = string.Empty;
 
         public ICollection<KeywordInKeywordGroup> KeywordsInKeywordGroup { get; set; } = new HashSet<KeywordInKeywordGroup>();
-        public ICollection<PageReferenceItem> PageReferenceItems { get; set; } = new HashSet<PageReferenceItem>();
+        private readonly List<PageReferenceItem> _pageReferenceItems = new();
+        public IReadOnlyList<PageReferenceItem> PageReferenceItems => _pageReferenceItems.AsReadOnly();
     }
 }

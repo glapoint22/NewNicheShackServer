@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-
 using Shared.Common.Entities;
 
 namespace Website.Application.Common.Interfaces

@@ -7,11 +7,11 @@ namespace Shared.PageBuilder.Classes
         public List<NicheFilter> Visible { get; set; } = new List<NicheFilter>();
         public List<NicheFilter> Hidden { get; set; } = new List<NicheFilter>();
 
-        public NicheFilters(List<Niche> niches)
+        public NicheFilters(List<NicheDto> niches)
         {
             for (int i = 0; i < niches.Count; i++)
             {
-                Niche niche = niches[i];
+                NicheDto niche = niches[i];
                 NicheFilter nicheFilter = new(niche);
 
                 if (niches.Count >= 8)

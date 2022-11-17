@@ -220,19 +220,19 @@ namespace Shared.PageBuilder.Classes
                 .Include(x => x.Niche)
                 .ToListAsync();
 
-            List<Niche> niches = subniches.Select(x => new
+            List<NicheDto> niches = subniches.Select(x => new
             {
                 niche = x.Niche,
                 subniches = x.Niche.Subniches
             })
             .Distinct()
-            .Select(x => new Niche
+            .Select(x => new NicheDto
             {
                 Id = x.niche.Id,
                 Name = x.niche.Name,
                 UrlName = x.niche.UrlName,
                 Subniches = x.subniches
-                    .Select(z => new Subniche
+                    .Select(z => new SubnicheDto
                     {
                         Id = z.Id,
                         Name = z.Name,

@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-
 using System.Reflection;
 using Website.Application.Common.Interfaces;
 using Shared.Common.Entities;

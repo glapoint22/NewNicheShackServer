@@ -12,8 +12,8 @@ using Website.Infrastructure.Persistence;
 namespace Website.Infrastructure.Migrations
 {
     [DbContext(typeof(WebsiteDbContext))]
-    [Migration("20221114174204_Notifications")]
-    partial class Notifications
+    [Migration("20221117150616_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -470,6 +470,9 @@ namespace Website.Infrastructure.Migrations
                     b.Property<bool>("IsArchived")
                         .HasColumnType("bit");
 
+                    b.Property<string>("ListId")
+                        .HasColumnType("nvarchar(10)");
+
                     b.Property<string>("Name")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
@@ -505,6 +508,8 @@ namespace Website.Infrastructure.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ListId");
 
                     b.HasIndex("NotificationGroupId");
 
@@ -1333,6 +1338,10 @@ namespace Website.Infrastructure.Migrations
 
             modelBuilder.Entity("Shared.Common.Entities.Notification", b =>
                 {
+                    b.HasOne("Shared.Common.Entities.List", "List")
+                        .WithMany("Notifications")
+                        .HasForeignKey("ListId");
+
                     b.HasOne("Shared.Common.Entities.NotificationGroup", "NotificationGroup")
                         .WithMany()
                         .HasForeignKey("NotificationGroupId")
@@ -1353,6 +1362,8 @@ namespace Website.Infrastructure.Migrations
                         .WithMany("Notifications")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("List");
 
                     b.Navigation("NotificationGroup");
 
@@ -1681,6 +1692,8 @@ namespace Website.Infrastructure.Migrations
             modelBuilder.Entity("Shared.Common.Entities.List", b =>
                 {
                     b.Navigation("Collaborators");
+
+                    b.Navigation("Notifications");
 
                     b.Navigation("Products");
                 });
