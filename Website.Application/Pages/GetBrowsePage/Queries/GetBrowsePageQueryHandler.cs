@@ -10,12 +10,12 @@ namespace Website.Application.Pages.GetBrowsePage.Queries
     public sealed class GetBrowsePageQueryHandler : IRequestHandler<GetBrowsePageQuery, Result>
     {
         private readonly IWebsiteDbContext _dbContext;
-        private readonly PageBuilder _pageBuilder;
+        private readonly IPageService _pageService;
 
-        public GetBrowsePageQueryHandler(IWebsiteDbContext dbContext, PageBuilder pageBuilder)
+        public GetBrowsePageQueryHandler(IWebsiteDbContext dbContext, IPageService pageService)
         {
             _dbContext = dbContext;
-            _pageBuilder = pageBuilder;
+            _pageService = pageService;
         }
 
 
@@ -55,8 +55,7 @@ namespace Website.Application.Pages.GetBrowsePage.Queries
                         .SingleAsync(cancellationToken: cancellationToken);
             }
 
-            WebPage page = await _pageBuilder.BuildPage(pageContent, pageParams);
-
+            WebPage page = await _pageService.GetPage(pageContent, pageParams);
             return Result.Succeeded(page);
         }
     }

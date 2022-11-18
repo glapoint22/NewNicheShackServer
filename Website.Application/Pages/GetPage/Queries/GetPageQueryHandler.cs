@@ -9,12 +9,12 @@ namespace Website.Application.Pages.GetPage.Queries
     public sealed class GetPageQueryHandler : IRequestHandler<GetPageQuery, Result>
     {
         private readonly IWebsiteDbContext _dbContext;
-        private readonly PageBuilder _pageBuilder;
+        private readonly IPageService _pageService;
 
-        public GetPageQueryHandler(IWebsiteDbContext dbContext, PageBuilder pageBuilder)
+        public GetPageQueryHandler(IWebsiteDbContext dbContext, IPageService pageService)
         {
             _dbContext = dbContext;
-            _pageBuilder = pageBuilder;
+            _pageService = pageService;
         }
 
         public async Task<Result> Handle(GetPageQuery request, CancellationToken cancellationToken)
@@ -26,8 +26,7 @@ namespace Website.Application.Pages.GetPage.Queries
 
             if (pageContent == null) return Result.Failed("404");
 
-            WebPage page = await _pageBuilder.BuildPage(pageContent);
-
+            WebPage page = await _pageService.GetPage(pageContent);
             return Result.Succeeded(page);
         }
     }

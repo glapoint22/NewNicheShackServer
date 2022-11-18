@@ -1,12 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shared.Common.Classes;
 using Shared.Common.Entities;
-using Shared.Common.Interfaces;
+using Shared.PageBuilder.Classes;
+using Shared.QueryBuilder.Classes;
 using System.Linq.Expressions;
+using Website.Application.Common.Interfaces;
 
-namespace Shared.PageBuilder.Classes
+namespace Website.Infrastructure.Services.PageService.Classes
 {
-    public sealed class GridData
+    public sealed class GridData : IGridData
     {
         public List<ProductDto> Products { get; set; } = new List<ProductDto>();
         public int TotalProducts { get; set; }
@@ -15,18 +17,18 @@ namespace Shared.PageBuilder.Classes
         public int ProductCountStart { get; set; }
         public int ProductCountEnd { get; set; }
 
-        private readonly IRepository _repository;
         private const int _limit = 40;
+        private readonly IWebsiteDbContext _dbContext;
 
-        public GridData(IRepository repository)
+        public GridData(IWebsiteDbContext dbContext)
         {
-            _repository = repository;
+            _dbContext = dbContext;
         }
 
 
 
         // ------------------------------------------------------------------------ Get Data -----------------------------------------------------------------------------
-        public async Task<GridData> GetData(PageParams pageParams)
+        public async Task<IGridData> GetData(PageParams pageParams)
         {
             await SetData(pageParams);
             return this;
@@ -52,9 +54,9 @@ namespace Shared.PageBuilder.Classes
         // ---------------------------------------------------------------------- Get Products ---------------------------------------------------------------------------
         private async Task<List<ProductDto>> GetProducts(PageParams pageParams)
         {
-            var query = QueryBuilder.Classes.QueryBuilder.BuildQuery<Product>(pageParams);
+            var query = QueryBuilder.BuildQuery<Product>(pageParams);
 
-            return await _repository.Products
+            return await _dbContext.Products
                 .Where(query)
                 .SortBy(pageParams.SearchTerm, pageParams.SortBy)
                 .Select(x => new ProductDto
@@ -104,13 +106,13 @@ namespace Shared.PageBuilder.Classes
 
 
                 // Build the query based on the page params
-                var query = QueryBuilder.Classes.QueryBuilder.BuildQuery<Product>(pageParams, excludeLastFilter);
+                var query = QueryBuilder.BuildQuery<Product>(pageParams, excludeLastFilter);
 
 
 
                 // Get the product data for the filters
                 // Product data will also give us the total number of products
-                var productData = await _repository.Products
+                var productData = await _dbContext.Products
                     .Where(query)
                     .Select(x => new
                     {
@@ -135,9 +137,9 @@ namespace Shared.PageBuilder.Classes
 
                 // Price Filter
                 if (iterations == 1 ||
-                    ((pageParams.FilterParams.Last().Name == "Price" || 
+                    ((pageParams.FilterParams.Last().Name == "Price" ||
                         pageParams.FilterParams.Last().Name == "Price Range") && i == 0) ||
-                    (pageParams.FilterParams.Last().Name != "Price" && 
+                    (pageParams.FilterParams.Last().Name != "Price" &&
                         pageParams.FilterParams.Last().Name != "Price Range" && i == 1))
                 {
                     priceFilter = await GetPriceFilter(productData.SelectMany(x => x.prices).ToList());
@@ -215,7 +217,7 @@ namespace Shared.PageBuilder.Classes
         // -------------------------------------------------------------------- Get Niche Filters ------------------------------------------------------------------------
         private async Task<NicheFilters> GetNicheFilters(List<string> subnicheIds)
         {
-            var subniches = await _repository.Subniches
+            var subniches = await _dbContext.Subniches
                 .Where(x => subnicheIds.Contains(x.Id))
                 .Include(x => x.Niche)
                 .ToListAsync();
@@ -256,7 +258,7 @@ namespace Shared.PageBuilder.Classes
         // -------------------------------------------------------------------- Get Custom Filters -----------------------------------------------------------------------
         private async Task<List<QueryFilter>> GetCustomFilters(List<string> productIds, Expression<Func<ProductFilter, bool>> whereExpression)
         {
-            var filters = await _repository.ProductFilters
+            var filters = await _dbContext.ProductFilters
                 .Where(x => productIds
                     .Contains(x.ProductId))
                 .Where(whereExpression)
@@ -355,7 +357,7 @@ namespace Shared.PageBuilder.Classes
         // --------------------------------------------------------------------- Get Price Filter ------------------------------------------------------------------------
         private async Task<PriceFilter> GetPriceFilter(List<double> prices)
         {
-            var priceRanges = await _repository.PriceRanges.GetAll();
+            var priceRanges = await _dbContext.PriceRanges.ToListAsync();
 
             var options = priceRanges
                 .Where(x => prices

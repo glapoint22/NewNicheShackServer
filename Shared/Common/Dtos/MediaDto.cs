@@ -7,6 +7,7 @@
         public string? ImageSm { get; set; } = string.Empty;
         public string? ImageMd { get; set; } = string.Empty;
         public string? ImageLg { get; set; } = string.Empty;
+        public string? ImageAnySize { get; set; } = string.Empty;
         public string? VideoId { get; set; } = string.Empty;
         public int VideoType { get; set; }
     }

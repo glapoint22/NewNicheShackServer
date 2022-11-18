@@ -1,18 +1,10 @@
 ﻿using Shared.Common.Classes;
-using Shared.Common.Interfaces;
 using System.Text.Json;
 
 namespace Shared.Common.Widgets
 {
     public sealed class ButtonWidget : Widget
     {
-        private readonly IRepository _repository;
-
-        public ButtonWidget(IRepository repository)
-        {
-            _repository = repository;
-        }
-
         public Background? Background { get; set; }
         public Border? Border { get; set; }
         public Caption? Caption { get; set; }

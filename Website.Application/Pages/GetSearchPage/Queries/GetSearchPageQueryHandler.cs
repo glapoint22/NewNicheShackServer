@@ -11,12 +11,12 @@ namespace Website.Application.Pages.GetSearchPage.Queries
     public sealed class GetSearchPageQueryHandler : IRequestHandler<GetSearchPageQuery, Result>
     {
         private readonly IWebsiteDbContext _dbContext;
-        private readonly PageBuilder _pageBuilder;
+        private readonly IPageService _pageService;
 
-        public GetSearchPageQueryHandler(IWebsiteDbContext dbContext, PageBuilder pageBuilder)
+        public GetSearchPageQueryHandler(IWebsiteDbContext dbContext, IPageService pageService)
         {
             _dbContext = dbContext;
-            _pageBuilder = pageBuilder;
+            _pageService = pageService;
         }
 
         public async Task<Result> Handle(GetSearchPageQuery request, CancellationToken cancellationToken)
@@ -69,11 +69,12 @@ namespace Website.Application.Pages.GetSearchPage.Queries
                     .SingleAsync(cancellationToken: cancellationToken);
 
 
-            WebPage page = await _pageBuilder.BuildPage(pageContent, pageParams);
+            WebPage page = await _pageService.GetPage(pageContent, pageParams);
 
             await _dbContext.SaveChangesAsync();
 
             return Result.Succeeded(page);
+
         }
     }
 }

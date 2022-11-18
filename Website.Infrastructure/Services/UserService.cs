@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-
 using System.Security.Claims;
 using Website.Application.Common.Interfaces;
 using Shared.Common.Entities;
-using Website.Domain.Events;
 
 namespace Website.Infrastructure.Services
 {

@@ -13,9 +13,9 @@ using Shared.Common.Entities;
 using Website.Infrastructure.BackgroundJobs;
 using Website.Infrastructure.Persistence;
 using Website.Infrastructure.Persistence.Interceptors;
-using Website.Infrastructure.Persistence.Repositories;
 using Website.Infrastructure.Services;
 using Website.Infrastructure.Services.SearchSuggestionsService;
+using Website.Infrastructure.Services.PageService;
 
 namespace Website.Infrastructure
 {
@@ -106,7 +106,7 @@ namespace Website.Infrastructure
             services.AddScoped<IWebsiteDbContext>(provider => provider.GetRequiredService<WebsiteDbContext>());
             services.AddSingleton<ISearchSuggestionsService, SearchSuggestionsService>();
             services.AddHttpContextAccessor();
-            services.AddScoped<IRepository, Repository>();
+            services.AddScoped<IPageService, PageService>();
 
             return services;
         }

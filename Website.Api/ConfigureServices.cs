@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using Shared.Common.Classes;
 using System.Reflection;
+using Website.Infrastructure.Services.PageService.Classes;
 
 namespace Website.Api
 {
@@ -12,7 +12,7 @@ namespace Website.Api
             services.AddControllers()
                 .AddJsonOptions(options =>
                 {
-                    options.JsonSerializerOptions.Converters.Add(new WidgetJsonConverter());
+                    options.JsonSerializerOptions.Converters.Add(new WebsiteWidgetJsonConverter());
                 });
 
             return services;

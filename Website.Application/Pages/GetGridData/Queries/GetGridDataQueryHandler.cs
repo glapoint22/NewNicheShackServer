@@ -1,16 +1,17 @@
 ﻿using MediatR;
 using Shared.PageBuilder.Classes;
 using Website.Application.Common.Classes;
+using Website.Application.Common.Interfaces;
 
 namespace Website.Application.Pages.GetGridData.Queries
 {
     public sealed class GetGridDataQueryHandler : IRequestHandler<GetGridDataQuery, Result>
     {
-        private readonly GridData _gridData;
+        private readonly IPageService _pageService;
 
-        public GetGridDataQueryHandler(GridData gridData)
+        public GetGridDataQueryHandler(IPageService pageService)
         {
-            _gridData = gridData;
+            _pageService = pageService;
         }
 
         public async Task<Result> Handle(GetGridDataQuery request, CancellationToken cancellationToken)
@@ -24,7 +25,7 @@ namespace Website.Application.Pages.GetGridData.Queries
                 request.Filters,
                 request.Page);
 
-            GridData gridData = await _gridData.GetData(pageParams);
+            IGridData gridData = await _pageService.GetGridData(pageParams);
 
             return Result.Succeeded(gridData);
         }

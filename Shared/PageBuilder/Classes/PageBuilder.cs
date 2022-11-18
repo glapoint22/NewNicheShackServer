@@ -1,21 +1,11 @@
 ﻿using Shared.Common.Classes;
 using Shared.Common.Enums;
-using Shared.Common.Interfaces;
 using Shared.Common.Widgets;
-using Shared.PageBuilder.Widgets;
-using System.Text.Json;
 
 namespace Shared.PageBuilder.Classes
 {
-    public sealed class PageBuilder
+    public abstract class PageBuilder
     {
-        private readonly IRepository _repository;
-
-        public PageBuilder(IRepository repository)
-        {
-            _repository = repository;
-        }
-
         // ------------------------------------------------------------------------ Build Page ------------------------------------------------------------------------
         public async Task<WebPage> BuildPage(string pageContent)
         {
@@ -40,18 +30,7 @@ namespace Shared.PageBuilder.Classes
 
 
 
-        // ------------------------------------------------------------------------- Get Page -------------------------------------------------------------------------
-        private WebPage GetPage(string pageContent)
-        {
-            return JsonSerializer.Deserialize<WebPage>(pageContent, new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true,
-                Converters =
-                {
-                    new WidgetJsonConverter(_repository)
-                }
-            })!;
-        }
+
 
 
 
@@ -61,7 +40,7 @@ namespace Shared.PageBuilder.Classes
             // If the page background has an image
             if (page.Background != null && page.Background.Image != null)
             {
-                await page.Background.Image.SetData(_repository);
+                await SetImageData(page.Background.Image);
             }
 
 
@@ -86,14 +65,14 @@ namespace Shared.PageBuilder.Classes
             {
                 if (row.Background != null && row.Background.Image != null)
                 {
-                    await row.Background.Image.SetData(_repository);
+                    await SetImageData(row.Background.Image);
                 }
 
                 foreach (Column column in row.Columns)
                 {
                     if (column.Background != null && column.Background.Image != null)
                     {
-                        await column.Background.Image.SetData(_repository);
+                        await SetImageData(column.Background.Image);
                     }
 
 
@@ -120,42 +99,14 @@ namespace Shared.PageBuilder.Classes
 
         // ------------------------------------------------------------------------ Get Widget ------------------------------------------------------------------------
 
-        private static Widget GetWidget(Widget widgetData)
-        {
-            Widget widget = null!;
+        protected abstract Widget GetWidget(Widget widgetData);
 
-            switch (widgetData.WidgetType)
-            {
-                case WidgetType.Button:
-                    widget = (ButtonWidget)widgetData;
-                    break;
-                case WidgetType.Text:
-                    widget = (TextWidget)widgetData;
-                    break;
-                case WidgetType.Image:
-                    widget = (ImageWidget)widgetData;
-                    break;
-                case WidgetType.Container:
-                    widget = (ContainerWidget)widgetData;
-                    break;
-                case WidgetType.Line:
-                    widget = (LineWidget)widgetData;
-                    break;
-                case WidgetType.Video:
-                    widget = (VideoWidget)widgetData;
-                    break;
-                case WidgetType.ProductSlider:
-                    widget = (ProductSliderWidget)widgetData;
-                    break;
-                case WidgetType.Carousel:
-                    widget = (CarouselWidget)widgetData;
-                    break;
-                case WidgetType.Grid:
-                    widget = (GridWidget)widgetData;
-                    break;
-            }
 
-            return widget;
-        }
+        // ------------------------------------------------------------------------- Get Page -------------------------------------------------------------------------
+        protected abstract WebPage GetPage(string pageContent);
+
+
+        // ---------------------------------------------------------------------- Set Image Data ----------------------------------------------------------------------
+        protected abstract Task SetImageData(PageImage image);
     }
 }
