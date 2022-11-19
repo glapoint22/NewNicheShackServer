@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using Website.Application.Common.Interfaces;
-using Shared.Common.Entities;
+using Website.Domain.Entities;
 
 namespace Website.Infrastructure.Services
 {

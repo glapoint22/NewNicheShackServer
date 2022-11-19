@@ -1,5 +1,5 @@
-﻿using Shared.Common.Entities;
-using Website.Application.Common.Classes;
+﻿using Website.Application.Common.Classes;
+using Website.Domain.Entities;
 
 namespace Website.Application.ProductReviews.Classes
 {

@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using Shared.Common.Entities;
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
+using Website.Domain.Entities;
 using Website.Domain.Events;
 
 namespace Website.Application.ProductReviews.PostReview.Commands

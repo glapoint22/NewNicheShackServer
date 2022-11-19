@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Shared.Common.Entities;
 using Shared.Common.Enums;
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
+using Website.Domain.Entities;
 
 namespace Website.Application.Notifications.PostMessageNotification.Commands
 {
@@ -32,7 +32,7 @@ namespace Website.Application.Notifications.PostMessageNotification.Commands
                 .Where(x => x.Type == (int)NotificationType.Message && x.UserId == userId)
                 .Select(x => x.NotificationGroupId)
                 .FirstOrDefaultAsync();
-            
+
 
             // Create the notification
             Notification notification = Notification.CreateMessageNotification(notificationGroupId, userId, request.Text);

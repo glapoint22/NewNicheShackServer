@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
-
 using System.Security.Claims;
-using Shared.Common.Entities;
+using Website.Domain.Entities;
 
 namespace Website.Application.Common.Interfaces
 {

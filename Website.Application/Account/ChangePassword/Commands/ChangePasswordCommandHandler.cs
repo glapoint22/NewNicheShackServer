@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
-using Shared.Common.Entities;
+using Website.Domain.Entities;
 using Website.Domain.Events;
 
 namespace Website.Application.Account.ChangePassword.Commands

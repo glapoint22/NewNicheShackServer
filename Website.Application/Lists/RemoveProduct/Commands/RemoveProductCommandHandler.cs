@@ -1,9 +1,9 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
-using Shared.Common.Entities;
+using Website.Domain.Entities;
 using Website.Domain.Events;
-using Microsoft.EntityFrameworkCore;
 
 namespace Website.Application.Lists.RemoveProduct.Commands
 {

@@ -1,5 +1,5 @@
-﻿using Shared.Common.Entities;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
+using Website.Domain.Entities;
 
 namespace Website.Application.ProductOrders.GetOrders.Classes
 {

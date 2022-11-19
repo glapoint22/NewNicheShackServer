@@ -1,10 +1,9 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-
 using System.Security.Claims;
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
-using Shared.Common.Entities;
+using Website.Domain.Entities;
 
 namespace Website.Application.Account.Refresh.Commands
 {

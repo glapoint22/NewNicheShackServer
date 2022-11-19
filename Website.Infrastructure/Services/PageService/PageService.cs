@@ -1,4 +1,5 @@
 ﻿using Shared.PageBuilder.Classes;
+using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
 using Website.Infrastructure.Services.PageService.Classes;
 
@@ -15,7 +16,7 @@ namespace Website.Infrastructure.Services.PageService
             _gridData = new GridData(dbContext);
         }
 
-        public Task<IGridData> GetGridData(PageParams pageParams)
+        public Task<GridData> GetGridData(PageParams pageParams)
         {
             return _gridData.GetData(pageParams);
         }

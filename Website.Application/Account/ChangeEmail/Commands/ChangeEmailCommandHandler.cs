@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Website.Application.Account.Common;
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
-using Shared.Common.Entities;
+using Website.Domain.Entities;
 using Website.Domain.Events;
 
 namespace Website.Application.Account.ChangeEmail.Commands
@@ -28,8 +28,8 @@ namespace Website.Application.Account.ChangeEmail.Commands
 
             // Change email
             IdentityResult result = await _userService.ChangeEmailAsync(user, request.NewEmail, request.OneTimePassword);
-            if(!result.Succeeded) return Result.Failed("409");
-            
+            if (!result.Succeeded) return Result.Failed("409");
+
 
             // Update the user cookie
             await UpdateUserCookie(user);

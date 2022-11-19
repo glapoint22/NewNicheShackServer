@@ -1,6 +1,6 @@
 ﻿using Shared.Common.Classes;
-using Shared.Common.Entities;
 using Website.Application.Common.Classes;
+using Website.Domain.Entities;
 
 namespace Website.Application.Lists.Common
 {

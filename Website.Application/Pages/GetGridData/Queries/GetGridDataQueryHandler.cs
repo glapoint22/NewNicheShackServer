@@ -25,7 +25,7 @@ namespace Website.Application.Pages.GetGridData.Queries
                 request.Filters,
                 request.Page);
 
-            IGridData gridData = await _pageService.GetGridData(pageParams);
+            var gridData = await _pageService.GetGridData(pageParams);
 
             return Result.Succeeded(gridData);
         }

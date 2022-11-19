@@ -32,11 +32,21 @@ namespace Website.Application.Pages.GetBrowsePage.Queries
                 request.Filters,
                 request.Page);
 
-            // See if we have a custom browse page
-            string? pageId = await _dbContext.PageReferenceItems
+            // See if we have a custom browse page from a subniche
+            string? pageId = await _dbContext.PageSubniches
                 .Where(x => x.SubnicheId == request.SubnicheId)
                 .Select(x => x.PageId)
                 .SingleOrDefaultAsync(cancellationToken: cancellationToken);
+
+
+            // See if we have a custom browse page from a niche
+            if (pageId == null)
+            {
+                pageId = await _dbContext.PageNiches
+                .Where(x => x.NicheId == request.NicheId)
+                .Select(x => x.PageId)
+                .SingleOrDefaultAsync(cancellationToken: cancellationToken);
+            }
 
             if (pageId != null)
             {

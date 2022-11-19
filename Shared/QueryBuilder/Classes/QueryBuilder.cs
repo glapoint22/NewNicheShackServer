@@ -1,16 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Shared.Common.Entities;
-using Shared.PageBuilder.Classes;
 using Shared.QueryBuilder.Enums;
 using System.Linq.Expressions;
 using System.Reflection;
 
 namespace Shared.QueryBuilder.Classes
 {
-    public sealed class QueryBuilder
+    public class QueryBuilder
     {
         // ------------------------------------------------------------------------ Build Query -----------------------------------------------------------------------
-        public static Expression<Func<T, bool>> BuildQuery<T>(string searchTerm)
+        public Expression<Func<T, bool>> BuildQuery<T>(string searchTerm)
         {
             Query query = new();
 
@@ -27,117 +25,11 @@ namespace Shared.QueryBuilder.Classes
 
 
 
-
-
-
         // ------------------------------------------------------------------------ Build Query -----------------------------------------------------------------------
-        public static Expression<Func<T, bool>> BuildQuery<T>(PageParams pageParams, bool excludeLastFilter = false)
-        {
-            Query query = new();
-
-
-            if (!string.IsNullOrEmpty(pageParams.SearchTerm))
-            {
-                // Build a query row for the search term
-                QueryElement searchQueryRow = BuildQueryRow(QueryType.GridSearch, pageParams.SearchTerm);
-                query.Elements.Add(searchQueryRow);
-            }
-
-
-
-
-
-            // Niche
-            if (pageParams.NicheId != null)
-            {
-                if (query.Elements.Count > 0)
-                {
-                    // Add the logicalOperator
-                    QueryElement row = BuildQueryRow(LogicalOperatorType.And);
-                    query.Elements.Add(row);
-                }
-
-                // Build a query row for the niche id
-                QueryElement nicheQueryRow = BuildQueryRow(QueryType.Niche, pageParams.NicheId);
-                query.Elements.Add(nicheQueryRow);
-            }
-
-
-
-            // Subniche
-            if (pageParams.SubnicheId != null)
-            {
-                if (query.Elements.Count > 0)
-                {
-                    // Add the logicalOperator
-                    QueryElement row = BuildQueryRow(LogicalOperatorType.And);
-                    query.Elements.Add(row);
-                }
-
-                // Build a query row for the subniche id
-                QueryElement subnicheIdQueryRow = BuildQueryRow(QueryType.Subniche, pageParams.SubnicheId);
-                query.Elements.Add(subnicheIdQueryRow);
-            }
-
-
-            // Filters
-            if (pageParams.FilterParams.Count > 0)
-            {
-                int count = excludeLastFilter ? pageParams.FilterParams.Count - 1 : pageParams.FilterParams.Count;
-
-                for (int i = 0; i < count; i++)
-                {
-                    FilterParam filterParam = pageParams.FilterParams[i];
-
-                    if (query.Elements.Count > 0)
-                    {
-                        // Add the logicalOperator
-                        QueryElement row = BuildQueryRow(LogicalOperatorType.And);
-                        query.Elements.Add(row);
-                    }
-
-
-                    switch (filterParam.Name)
-                    {
-                        case "Customer Rating":
-                            QueryElement ratingQueryRow = BuildQueryRow(QueryType.Rating, filterParam.Values[0],
-                                ComparisonOperatorType.GreaterThanOrEqual);
-                            query.Elements.Add(ratingQueryRow);
-                            break;
-
-                        case "Price":
-                            QueryElement priceQueryRow = BuildQueryRow(QueryType.PriceRange,
-                                new Tuple<double, double>(filterParam.Values[0], filterParam.Values[1]));
-                            query.Elements.Add(priceQueryRow);
-                            break;
-
-                        case "Price Range":
-                            QueryElement priceRangeQueryRow = BuildQueryRow(QueryType.PriceRange,
-                                new Tuple<double, double>(filterParam.Values[0], filterParam.Values[1]));
-                            query.Elements.Add(priceRangeQueryRow);
-                            break;
-
-
-                        default:
-                            QueryElement filtersQueryRow = BuildQueryRow(QueryType.Filters, filterParam.Values);
-                            query.Elements.Add(filtersQueryRow);
-                            break;
-                    }
-                }
-            }
-
-            return BuildQuery<T>(query);
-        }
-
-
-
-
-
-        // ------------------------------------------------------------------------ Build Query -----------------------------------------------------------------------
-        private static Expression<Func<T, bool>> BuildQuery<T>(Query query)
+        protected Expression<Func<T, bool>> BuildQuery<T>(Query query)
         {
             ParameterExpression parameter = Expression.Parameter(typeof(T), "x");
-            Expression expression = GenerateExpression<T>(query, parameter);
+            Expression expression = GenerateExpression(query, parameter);
 
             if (expression == null) return null!;
 
@@ -150,7 +42,7 @@ namespace Shared.QueryBuilder.Classes
 
 
         // --------------------------------------------------------------------- Build Query Row ---------------------------------------------------------------------
-        private static QueryElement BuildQueryRow(QueryType queryType, string stringValue)
+        protected static QueryElement BuildQueryRow(QueryType queryType, string stringValue)
         {
             // Create the row
             QueryRow row = new()
@@ -174,7 +66,7 @@ namespace Shared.QueryBuilder.Classes
 
 
         // --------------------------------------------------------------------- Build Query Row ---------------------------------------------------------------------
-        private static QueryElement BuildQueryRow(QueryType queryType, int intValue, ComparisonOperatorType? comparisonOperatorType = null)
+        protected static QueryElement BuildQueryRow(QueryType queryType, int intValue, ComparisonOperatorType? comparisonOperatorType = null)
         {
             // Create the row
             QueryRow row = new()
@@ -199,7 +91,7 @@ namespace Shared.QueryBuilder.Classes
 
 
         // --------------------------------------------------------------------- Build Query Row ---------------------------------------------------------------------
-        private static QueryElement BuildQueryRow(QueryType queryType, Tuple<double, double> priceRange)
+        protected static QueryElement BuildQueryRow(QueryType queryType, Tuple<double, double> priceRange)
         {
             // Create the row
             QueryRow row = new()
@@ -222,7 +114,7 @@ namespace Shared.QueryBuilder.Classes
 
 
         // --------------------------------------------------------------------- Build Query Row ---------------------------------------------------------------------
-        private static QueryElement BuildQueryRow(QueryType queryType, List<int> filters)
+        protected static QueryElement BuildQueryRow(QueryType queryType, List<int> filters)
         {
             // Create the row
             QueryRow row = new()
@@ -245,7 +137,7 @@ namespace Shared.QueryBuilder.Classes
 
 
         // --------------------------------------------------------------------- Build Query Row ---------------------------------------------------------------------
-        private static QueryElement BuildQueryRow(LogicalOperatorType logicalOperatorType)
+        protected static QueryElement BuildQueryRow(LogicalOperatorType logicalOperatorType)
         {
             // Create the row
             QueryRow row = new()
@@ -276,7 +168,7 @@ namespace Shared.QueryBuilder.Classes
 
 
         // -------------------------------------------------------------------- Generate Expression -------------------------------------------------------------------
-        private static Expression GenerateExpression<T>(Query query, ParameterExpression parameter)
+        private Expression GenerateExpression(Query query, ParameterExpression parameter)
         {
             Expression expression = null!;
 
@@ -287,7 +179,7 @@ namespace Shared.QueryBuilder.Classes
                 if (i == 0)
                 {
                     expression = queryElement.QueryElementType == QueryElementType.QueryRow ?
-                        GetExpression<T>(queryElement.QueryRow, parameter) : GenerateExpression<T>(queryElement.QueryGroup.Query, parameter);
+                        GetExpression(queryElement.QueryRow, parameter) : GenerateExpression(queryElement.QueryGroup.Query, parameter);
                 }
                 else
                 {
@@ -297,11 +189,11 @@ namespace Shared.QueryBuilder.Classes
                     // Is the query element a row or group?
                     if (nextQueryElement.QueryElementType == QueryElementType.QueryRow)
                     {
-                        rightExpression = GetExpression<T>(nextQueryElement.QueryRow, parameter);
+                        rightExpression = GetExpression(nextQueryElement.QueryRow, parameter);
                     }
                     else
                     {
-                        rightExpression = GenerateExpression<T>(nextQueryElement.QueryGroup.Query, parameter);
+                        rightExpression = GenerateExpression(nextQueryElement.QueryGroup.Query, parameter);
                     }
 
 
@@ -327,7 +219,7 @@ namespace Shared.QueryBuilder.Classes
 
 
         // ----------------------------------------------------------------------- Get Expression ---------------------------------------------------------------------
-        private static Expression GetExpression<T>(QueryRow queryRow, ParameterExpression parameter)
+        protected virtual Expression GetExpression(QueryRow queryRow, ParameterExpression parameter)
         {
             Expression expression;
 
@@ -344,11 +236,6 @@ namespace Shared.QueryBuilder.Classes
                     break;
 
                 // Price Range
-                case QueryType.PriceRange:
-                    expression = GetPriceRangeExpression<T>(queryRow.PriceRange!, parameter);
-                    break;
-
-
                 case QueryType.Rating:
                     expression = GetRatingExpression((int)queryRow.IntValue!, (ComparisonOperatorType)queryRow.ComparisonOperatorType!, parameter);
                     break;
@@ -357,15 +244,6 @@ namespace Shared.QueryBuilder.Classes
                 // Search
                 case QueryType.Search:
                     expression = GetSearchExpression(queryRow.StringValue!, parameter);
-                    break;
-
-                // Search
-                case QueryType.GridSearch:
-                    expression = GetGridSearchExpression(queryRow.StringValue!, parameter);
-                    break;
-
-                case QueryType.Filters:
-                    expression = GetFiltersExpression<T>(queryRow.Filters, parameter);
                     break;
 
 
@@ -461,104 +339,8 @@ namespace Shared.QueryBuilder.Classes
 
 
 
-
-        // ------------------------------------------------------------------- Get Filters Expression --------------------------------------------------------------------
-        private static Expression GetFiltersExpression<T>(List<int> filters, ParameterExpression parameter)
-        {
-            MemberExpression productFiltersProperty = Expression.Property(parameter, "ProductFilters");
-            MemberExpression idProperty = Expression.Property(parameter, "Id");
-
-            // ProductFilter param and its properties
-            Type productFilter = typeof(T).GetProperty("ProductFilters")!.PropertyType.GenericTypeArguments[0];
-            ParameterExpression productFilterParameter = Expression.Parameter(productFilter, "z");
-            MemberExpression filterOptionIdProperty = Expression.Property(productFilterParameter, "FilterOptionId");
-            MemberExpression productIdProperty = Expression.Property(productFilterParameter, "ProductId");
-
-            Expression filterOptionIdsExpression = null!;
-
-
-            // Create an expression for the filters
-            foreach (int filterOptionId in filters)
-            {
-                Expression equalExpression = Expression.Equal(filterOptionIdProperty, Expression.Constant(filterOptionId));
-
-                if (filterOptionIdsExpression == null)
-                {
-                    filterOptionIdsExpression = equalExpression;
-                }
-                else
-                {
-                    filterOptionIdsExpression = Expression.OrElse(filterOptionIdsExpression, equalExpression);
-                }
-            }
-
-
-            Type delegateType = typeof(Func<,>).MakeGenericType(productFilter, typeof(bool));
-
-            // Where
-            MethodCallExpression whereExp = Expression.Call(
-                typeof(Enumerable),
-                "Where",
-                new Type[] { productFilter },
-                productFiltersProperty,
-                Expression.Lambda(delegateType, filterOptionIdsExpression, productFilterParameter));
-
-
-            delegateType = typeof(Func<,>).MakeGenericType(productFilter, typeof(string));
-
-            // Select
-            MethodCallExpression selectExp = Expression.Call(
-                typeof(Enumerable),
-                "Select",
-                new Type[] { productFilter, typeof(string) },
-                whereExp,
-                Expression.Lambda(delegateType, productIdProperty, productFilterParameter));
-
-
-            // Contains
-            return Expression.Call(
-                typeof(Enumerable),
-                "Contains",
-                new[] { typeof(string) },
-                selectExp,
-                idProperty);
-        }
-
-
-
-
-        // ----------------------------------------------------------------- Get Price Range Expression --------------------------------------------------------------------
-        private static Expression GetPriceRangeExpression<T>(Tuple<double, double> prices, ParameterExpression parameter)
-        {
-            MemberExpression productPricesProperty = Expression.Property(parameter, "ProductPrices");
-
-
-            // ProductPrice param and its properties
-            Type productPrice = typeof(T).GetProperty("ProductPrices")!.PropertyType.GenericTypeArguments[0];
-            ParameterExpression productPriceParameter = Expression.Parameter(productPrice, "z");
-            MemberExpression priceProperty = Expression.Property(productPriceParameter, "Price");
-
-            var greaterThanExpression = Expression.GreaterThanOrEqual(priceProperty, Expression.Constant(prices.Item1));
-            var lessThanExpression = Expression.LessThanOrEqual(priceProperty, Expression.Constant(prices.Item2));
-
-            Type delegateType = typeof(Func<,>).MakeGenericType(productPrice, typeof(bool));
-
-            return Expression.Call(
-            typeof(Enumerable),
-            "Any",
-            new Type[] { productPrice },
-            productPricesProperty,
-            Expression.Lambda(delegateType, Expression.AndAlso(greaterThanExpression, lessThanExpression), productPriceParameter));
-        }
-
-
-
-
-
-
-
         // ------------------------------------------------------------------- Get Search Expression ---------------------------------------------------------------------
-        private static Expression GetSearchExpression(string searchTerm, ParameterExpression parameter)
+        protected static Expression GetSearchExpression(string searchTerm, ParameterExpression parameter)
         {
             Expression expression;
 
@@ -607,36 +389,6 @@ namespace Shared.QueryBuilder.Classes
             }
 
             return expression;
-        }
-
-
-
-
-
-        // ----------------------------------------------------------------- Get Grid Search Expression ------------------------------------------------------------------
-        private static Expression GetGridSearchExpression(string searchTerm, ParameterExpression parameter)
-        {
-            Expression expression = GetSearchExpression(searchTerm, parameter);
-
-            // ProductKeywords property
-            MemberExpression productKeywordsProperty = Expression.Property(parameter, "ProductKeywords");
-
-            // ProductKeyword param and its properties
-            ParameterExpression productKeywordParameter = Expression.Parameter(typeof(ProductKeyword), "z");
-            MemberExpression keywordProperty = Expression.Property(productKeywordParameter, "Keyword");
-            MemberExpression keywordNameProperty = Expression.Property(keywordProperty, "Name");
-
-            ConstantExpression searchTermExpression = Expression.Constant(searchTerm);
-
-
-            MethodCallExpression anyMethodExpression = Expression.Call(
-            typeof(Enumerable),
-            "Any",
-            new Type[] { typeof(ProductKeyword) },
-            productKeywordsProperty,
-            Expression.Lambda<Func<ProductKeyword, bool>>(Expression.Equal(keywordNameProperty, searchTermExpression), productKeywordParameter));
-
-            return Expression.OrElse(expression, anyMethodExpression);
         }
     }
 }

@@ -5,17 +5,16 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Quartz;
-using Shared.Common.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Website.Application.Common.Interfaces;
-using Shared.Common.Entities;
+using Website.Domain.Entities;
 using Website.Infrastructure.BackgroundJobs;
 using Website.Infrastructure.Persistence;
 using Website.Infrastructure.Persistence.Interceptors;
 using Website.Infrastructure.Services;
-using Website.Infrastructure.Services.SearchSuggestionsService;
 using Website.Infrastructure.Services.PageService;
+using Website.Infrastructure.Services.SearchSuggestionsService;
 
 namespace Website.Infrastructure
 {

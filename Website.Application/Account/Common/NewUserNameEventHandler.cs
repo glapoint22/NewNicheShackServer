@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Shared.Common.Entities;
 using Shared.Common.Enums;
 using Website.Application.Common.Interfaces;
+using Website.Domain.Entities;
 using Website.Domain.Events;
 
 namespace Website.Application.Account.Common

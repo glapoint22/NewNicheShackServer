@@ -1,10 +1,10 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Shared.Common.Classes;
-using Shared.Common.Entities;
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
 using Website.Application.Lists.Common;
+using Website.Domain.Entities;
 
 namespace Website.Application.Lists.GetListProducts.Queries
 {

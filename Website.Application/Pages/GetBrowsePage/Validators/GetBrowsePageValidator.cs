@@ -13,7 +13,7 @@ namespace Website.Application.Pages.GetBrowsePage.Validators
                 .MustAsync(async (query, cancellation) =>
                 {
                     if (query.NicheId == null && query.SubnicheId == null) return false;
-                    
+
 
                     return await dbContext.Subniches
                         .AnyAsync(x => x.Id == query.SubnicheId || x.NicheId == query.NicheId, cancellationToken: cancellation);

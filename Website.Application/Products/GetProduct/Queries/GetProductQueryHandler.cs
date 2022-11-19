@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Shared.Common.Classes;
-using Shared.Common.Entities;
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
+using Website.Domain.Entities;
 
 namespace Website.Application.Products.GetProduct.Queries
 {
@@ -22,7 +22,7 @@ namespace Website.Application.Products.GetProduct.Queries
         {
             string? userTrackingCode = null;
             User user = await _userService.GetUserFromClaimsAsync();
-            
+
             if (user != null) userTrackingCode = user.TrackingCode;
 
             var product = await _dbContext.Products

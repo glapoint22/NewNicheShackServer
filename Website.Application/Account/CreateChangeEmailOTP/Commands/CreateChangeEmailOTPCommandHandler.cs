@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
-using Shared.Common.Entities;
+using Website.Domain.Entities;
 
 namespace Website.Application.Account.CreateChangeEmailOTP.Commands
 {

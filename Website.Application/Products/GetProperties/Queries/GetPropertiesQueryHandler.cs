@@ -55,7 +55,7 @@ namespace Website.Application.Products.GetProperties.Queries
                 .ToListAsync();
 
             string subnicheId = await _dbContext.Products
-                .Where(x => x.Id== request.ProductId)
+                .Where(x => x.Id == request.ProductId)
                 .Select(x => x.SubnicheId)
                 .SingleAsync();
 

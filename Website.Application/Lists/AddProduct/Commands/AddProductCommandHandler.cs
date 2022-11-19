@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Shared.Common.Entities;
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
+using Website.Domain.Entities;
 using Website.Domain.Events;
 
 namespace Website.Application.Lists.AddProduct.Commands

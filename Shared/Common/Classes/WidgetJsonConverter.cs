@@ -54,7 +54,7 @@ namespace Shared.Common.Classes
         public override void Write(Utf8JsonWriter writer, Widget widget, JsonSerializerOptions options)
         {
             SerializeWidget(writer, widget, options);
-            
+
         }
 
 

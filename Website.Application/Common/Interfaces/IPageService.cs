@@ -1,4 +1,5 @@
 ﻿using Shared.PageBuilder.Classes;
+using Website.Application.Common.Classes;
 
 namespace Website.Application.Common.Interfaces
 {
@@ -8,6 +9,6 @@ namespace Website.Application.Common.Interfaces
 
         Task<WebPage> GetPage(string pageContent, PageParams pageParams);
 
-        Task<IGridData> GetGridData(PageParams pageParams);
+        Task<GridData> GetGridData(PageParams pageParams);
     }
 }

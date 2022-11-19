@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Quartz;
-using Shared.Common.Entities;
 using Website.Application.Common.Interfaces;
+using Website.Domain.Entities;
 using Website.Infrastructure.Persistence.Interceptors;
 
 namespace Website.Infrastructure.BackgroundJobs
@@ -39,7 +39,7 @@ namespace Website.Infrastructure.BackgroundJobs
                         await _dbContext.SaveChangesAsync();
                         throw;
                     }
-                    
+
                 }
             }
         }

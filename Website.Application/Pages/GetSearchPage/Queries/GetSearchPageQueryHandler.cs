@@ -1,10 +1,10 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Shared.PageBuilder.Classes;
+using Shared.PageBuilder.Enums;
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
-using Shared.Common.Entities;
-using Shared.PageBuilder.Enums;
+using Website.Domain.Entities;
 
 namespace Website.Application.Pages.GetSearchPage.Queries
 {
@@ -47,17 +47,16 @@ namespace Website.Application.Pages.GetSearchPage.Queries
                     Date = DateTime.UtcNow
                 });
 
-                // Get the custom search page
-                pageContent = await _dbContext.Pages
-                    .Where(x => x.Id == x.PageReferenceItems
-                        .Where(z => z.KeywordGroupId == z.KeywordGroup.KeywordsInKeywordGroup
-                            .Where(q => q.KeywordId == keywordId)
-                            .Select(q => q.KeywordGroupId)
-                           .Single())
-                        .Select(z => z.PageId)
-                        .Single())
-                    .Select(x => x.Content)
+
+                var pageId = await _dbContext.PageKeywords
+                    .Where(x => x.KeywordId == keywordId)
+                    .Select(x => x.PageId)
                     .SingleOrDefaultAsync(cancellationToken: cancellationToken);
+
+                pageContent = await _dbContext.Pages
+                    .Where(x => x.Id == pageId)
+                    .Select(x => x.Content)
+                    .SingleAsync(cancellationToken: cancellationToken);
             }
 
 

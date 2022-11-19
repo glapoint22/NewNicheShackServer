@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Shared.Common.Entities;
 using Shared.Common.Enums;
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
+using Website.Domain.Entities;
 
 namespace Website.Application.Notifications.PostReviewComplaintNotification.Commands
 {

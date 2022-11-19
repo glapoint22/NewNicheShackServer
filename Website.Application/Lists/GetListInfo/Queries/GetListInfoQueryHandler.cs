@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
-using Shared.Common.Entities;
+using Website.Domain.Entities;
 
 namespace Website.Application.Lists.GetListInfo.Queries
 {
@@ -31,7 +31,8 @@ namespace Website.Application.Lists.GetListInfo.Queries
             if (await _dbContext.Collaborators
                 .AnyAsync(x => x.UserId == _userService.GetUserIdFromClaims() && x.ListId == listOwner.ListId))
             {
-                return Result.Succeeded(new {
+                return Result.Succeeded(new
+                {
                     isCollaborator = true,
                     listId = listOwner.ListId
                 });
