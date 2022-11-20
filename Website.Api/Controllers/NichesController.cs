@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Common.Controllers;
 using Website.Application.Niches.GetNiches.Queries;
 using Website.Application.Niches.GetSubniches.Queries;
 

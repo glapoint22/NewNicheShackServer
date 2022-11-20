@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Configuration;
 using Website.Application.Common.Interfaces;
 
 namespace Website.Infrastructure.Services
@@ -7,12 +6,10 @@ namespace Website.Infrastructure.Services
     public sealed class CookieService : ICookieService
     {
         private readonly HttpContext _httpContext;
-        private readonly IConfiguration _configuration;
 
-        public CookieService(IHttpContextAccessor httpContextAccessor, IConfiguration configuration)
+        public CookieService(IHttpContextAccessor httpContextAccessor)
         {
             _httpContext = httpContextAccessor.HttpContext!;
-            _configuration = configuration;
         }
 
         // ----------------------------------------------------------------------- Delete Cookie -----------------------------------------------------------------------

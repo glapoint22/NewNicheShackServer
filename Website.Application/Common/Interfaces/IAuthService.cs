@@ -1,5 +1,4 @@
 ﻿using System.Security.Claims;
-using Website.Domain.Entities;
 
 namespace Website.Application.Common.Interfaces
 {
@@ -7,15 +6,11 @@ namespace Website.Application.Common.Interfaces
     {
         string GenerateAccessToken(List<Claim> claims);
 
-        string GenerateRefreshToken(string userId);
-
         string? GetAccessTokenFromHeader();
 
-        List<Claim> GetClaims(User user, bool isPersistent);
+        List<Claim> GenerateClaims(string userId, string role, bool isPersistent);
 
-        List<Claim> GetClaims(User user, string provider, bool hasPassword);
-
-        string GetOrderNotificationKey();
+        List<Claim> GenerateClaims(string userId, string role, string provider, bool hasPassword);
 
         ClaimsPrincipal? GetPrincipalFromToken(string accessToken);
     }

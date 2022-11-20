@@ -1,5 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Shared.Common.Classes;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
@@ -13,13 +15,13 @@ namespace Website.Application.ProductOrders.PostOrder.Commands
 {
     public sealed class PostOrderCommandHandler : IRequestHandler<PostOrderCommand, Result>
     {
-        private readonly IAuthService _authService;
         private readonly IWebsiteDbContext _dbContext;
+        private readonly IConfiguration _configuration;
 
-        public PostOrderCommandHandler(IAuthService authService, IWebsiteDbContext dbContext)
+        public PostOrderCommandHandler(IWebsiteDbContext dbContext, IConfiguration configuration)
         {
-            _authService = authService;
             _dbContext = dbContext;
+            _configuration = configuration;
         }
 
 
@@ -139,7 +141,7 @@ namespace Website.Application.ProductOrders.PostOrder.Commands
         {
             string decryptedString = null!;
 
-            byte[] inputBytes = Encoding.UTF8.GetBytes(_authService.GetOrderNotificationKey());
+            byte[] inputBytes = Encoding.UTF8.GetBytes(_configuration["OrderNotification:Key"]);
 
             SHA1 sha1 = SHA1.Create();
             byte[] key = sha1.ComputeHash(inputBytes);

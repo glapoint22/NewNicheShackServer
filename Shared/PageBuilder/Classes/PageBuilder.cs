@@ -18,24 +18,8 @@ namespace Shared.PageBuilder.Classes
 
 
 
-
-        // ------------------------------------------------------------------------ Build Page ------------------------------------------------------------------------
-        public async Task<WebPage> BuildPage(string pageContent, PageParams pageParams)
-        {
-            WebPage webPage = GetPage(pageContent);
-            await SetData(webPage, pageParams);
-
-            return webPage;
-        }
-
-
-
-
-
-
-
         // ------------------------------------------------------------------------- Set Data -------------------------------------------------------------------------
-        private async Task SetData(WebPage page, PageParams? pageParams = null)
+        protected async Task SetData(WebPage page)
         {
             // If the page background has an image
             if (page.Background != null && page.Background.Image != null)
@@ -48,7 +32,7 @@ namespace Shared.PageBuilder.Classes
             // Rows
             if (page.Rows != null && page.Rows.Count > 0)
             {
-                await SetRowData(page.Rows, pageParams);
+                await SetRowData(page.Rows);
             }
         }
 
@@ -59,7 +43,7 @@ namespace Shared.PageBuilder.Classes
 
 
         // ----------------------------------------------------------------------- Set Row Data -----------------------------------------------------------------------
-        private async Task SetRowData(List<Row> rows, PageParams? pageParams)
+        private async Task SetRowData(List<Row> rows)
         {
             foreach (Row row in rows)
             {
@@ -81,13 +65,13 @@ namespace Shared.PageBuilder.Classes
 
 
                     // Set the widget data
-                    await widget.SetData(pageParams);
+                    await SetWidgetData(widget);
 
                     if (column.WidgetData.WidgetType == WidgetType.Container)
                     {
                         ContainerWidget container = (ContainerWidget)column.WidgetData;
 
-                        if (container.Rows != null && container.Rows.Count > 0) await SetRowData(container.Rows, pageParams);
+                        if (container.Rows != null && container.Rows.Count > 0) await SetRowData(container.Rows);
                     }
                 }
             }
@@ -108,5 +92,8 @@ namespace Shared.PageBuilder.Classes
 
         // ---------------------------------------------------------------------- Set Image Data ----------------------------------------------------------------------
         protected abstract Task SetImageData(PageImage image);
+
+        // --------------------------------------------------------------------- Set Widget Data ----------------------------------------------------------------------
+        protected abstract Task SetWidgetData(Widget widget);
     }
 }

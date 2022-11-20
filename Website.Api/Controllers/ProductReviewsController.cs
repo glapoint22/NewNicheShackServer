@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Common.Controllers;
 using Website.Application.ProductReviews.GetPositiveNegativeReviews.Queries;
 using Website.Application.ProductReviews.GetReviews.Queries;
 using Website.Application.ProductReviews.PostReview.Commands;

@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Shared.Common.Classes;
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
 

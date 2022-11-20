@@ -24,6 +24,8 @@ namespace Website.Domain.Entities
         public bool? EmailOnReview { get; set; }
         public string TrackingCode { get; set; } = string.Empty;
         public bool BlockNotificationSending { get; set; }
+        public int NoncompliantStrikes { get; set; }
+        public bool Suspended { get; set; }
 
         public ICollection<Collaborator> Collaborators { get; private set; } = new HashSet<Collaborator>();
         public ICollection<Notification> Notifications { get; private set; } = new HashSet<Notification>();

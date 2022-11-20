@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Shared.Common.Classes;
 using Website.Application.Account.Common;
-using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
 using Website.Domain.Entities;
 using Website.Domain.Events;

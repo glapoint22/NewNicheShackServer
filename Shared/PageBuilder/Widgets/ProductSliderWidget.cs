@@ -1,6 +1,6 @@
 ﻿using Shared.Common.Classes;
+using Shared.Common.Dtos;
 using Shared.Common.Widgets;
-using Shared.PageBuilder.Classes;
 
 namespace Shared.PageBuilder.Widgets
 {

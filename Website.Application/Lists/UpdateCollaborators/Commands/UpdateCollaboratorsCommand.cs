@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using Website.Application.Common.Classes;
+using Shared.Common.Classes;
 using Website.Application.Lists.UpdateCollaborators.Classes;
 
 namespace Website.Application.Lists.UpdateCollaborators.Commands

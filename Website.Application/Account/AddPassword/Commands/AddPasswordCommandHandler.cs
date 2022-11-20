@@ -1,7 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+using Shared.Common.Classes;
 using System.Security.Claims;
-using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
 using Website.Domain.Entities;
 
@@ -13,13 +14,15 @@ namespace Website.Application.Account.AddPassword.Commands
         private readonly IAuthService _authService;
         private readonly ICookieService _cookieService;
         private readonly IWebsiteDbContext _dbContext;
+        private readonly IConfiguration _configuration;
 
-        public AddPasswordCommandHandler(IUserService userService, IAuthService authService, ICookieService cookieService, IWebsiteDbContext dbContext)
+        public AddPasswordCommandHandler(IUserService userService, IAuthService authService, ICookieService cookieService, IWebsiteDbContext dbContext, IConfiguration configuration)
         {
             _userService = userService;
             _authService = authService;
             _cookieService = cookieService;
             _dbContext = dbContext;
+            _configuration = configuration;
         }
 
         public async Task<Result> Handle(AddPasswordCommand request, CancellationToken cancellationToken)
@@ -44,17 +47,18 @@ namespace Website.Application.Account.AddPassword.Commands
                     if (externalLogInProvider == null) throw new Exception("Error while trying to get external log in provider from claims.");
 
                     // Log in the user
-                    List<Claim> claims = _authService.GetClaims(user, externalLogInProvider, true);
+                    List<Claim> claims = _authService.GenerateClaims(user.Id, externalLogInProvider, true);
                     string accessToken = _authService.GenerateAccessToken(claims);
-                    string refreshToken = _authService.GenerateRefreshToken(user.Id);
+                    RefreshToken refreshToken = RefreshToken.Create(user.Id, _configuration["TokenValidation:RefreshExpiresInDays"]);
                     string userData = _userService.GetUserData(user, externalLogInProvider, true);
                     DateTimeOffset? expiration = _userService.GetExpirationFromClaims(claims);
 
                     // Set the cookies
                     _cookieService.SetCookie("access", accessToken, expiration);
-                    _cookieService.SetCookie("refresh", refreshToken, expiration);
+                    _cookieService.SetCookie("refresh", refreshToken.Id, expiration);
                     _cookieService.SetCookie("user", userData, expiration);
 
+                    _dbContext.RefreshTokens.Add(refreshToken);
                     await _dbContext.SaveChangesAsync();
 
                     return Result.Succeeded();

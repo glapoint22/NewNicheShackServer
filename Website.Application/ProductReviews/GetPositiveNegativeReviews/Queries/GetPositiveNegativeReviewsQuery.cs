@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using Website.Application.Common.Classes;
+using Shared.Common.Classes;
 
 namespace Website.Application.ProductReviews.GetPositiveNegativeReviews.Queries
 {

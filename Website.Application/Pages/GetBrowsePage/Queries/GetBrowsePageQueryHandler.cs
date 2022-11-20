@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Shared.Common.Classes;
 using Shared.PageBuilder.Classes;
 using Shared.PageBuilder.Enums;
 using Website.Application.Common.Classes;

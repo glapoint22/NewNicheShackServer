@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Website.Application.Common.Classes;
+using Shared.Common.Classes;
 
-namespace Website.Api.Controllers
+namespace Shared.Common.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

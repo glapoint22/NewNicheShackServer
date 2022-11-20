@@ -1,4 +1,4 @@
-﻿namespace Shared.PageBuilder.Classes
+﻿namespace Website.Application.Common.Classes
 {
     public sealed class FilterParam
     {

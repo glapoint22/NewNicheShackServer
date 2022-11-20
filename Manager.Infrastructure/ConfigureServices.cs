@@ -1,4 +1,5 @@
-﻿using Manager.Domain.Entities;
+﻿using Manager.Application.Common.Interfaces;
+using Manager.Domain.Entities;
 using Manager.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -63,6 +64,9 @@ namespace Manager.Infrastructure
                     policy.RequireClaim(JwtRegisteredClaimNames.Aud, configuration["TokenValidation:Site"]);
                 });
             });
+
+
+            services.AddScoped<IManagerDbContext>(provider => provider.GetRequiredService<ManagerDbContext>());
 
             return services;
         }

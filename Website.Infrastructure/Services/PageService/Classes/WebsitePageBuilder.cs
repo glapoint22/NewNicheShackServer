@@ -5,6 +5,7 @@ using Shared.Common.Enums;
 using Shared.Common.Widgets;
 using Shared.PageBuilder.Classes;
 using System.Text.Json;
+using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
 using Website.Infrastructure.Services.PageService.Widgetes;
 
@@ -13,12 +14,26 @@ namespace Website.Infrastructure.Services.PageService.Classes
     public sealed class WebsitePageBuilder : PageBuilder
     {
         private readonly IWebsiteDbContext _dbContext;
+        private PageParams _pageParams = null!;
 
         public WebsitePageBuilder(IWebsiteDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
+
+        // ------------------------------------------------------------------------ Build Page ------------------------------------------------------------------------
+        public async Task<WebPage> BuildPage(string pageContent, PageParams pageParams)
+        {
+            _pageParams = pageParams;
+            WebPage webPage = GetPage(pageContent);
+            await SetData(webPage);
+
+            return webPage;
+        }
+
+
+        // ------------------------------------------------------------------------- Get Page -------------------------------------------------------------------------
         protected override WebPage GetPage(string pageContent)
         {
             return JsonSerializer.Deserialize<WebPage>(pageContent, new JsonSerializerOptions
@@ -31,6 +46,10 @@ namespace Website.Infrastructure.Services.PageService.Classes
             })!;
         }
 
+
+
+
+        // ------------------------------------------------------------------------ Get Widget ------------------------------------------------------------------------
         protected override Widget GetWidget(Widget widgetData)
         {
             Widget widget = null!;
@@ -69,6 +88,9 @@ namespace Website.Infrastructure.Services.PageService.Classes
             return widget;
         }
 
+
+
+        // ---------------------------------------------------------------------- Set Image Data ----------------------------------------------------------------------
         protected override async Task SetImageData(PageImage image)
         {
             MediaDto media = await _dbContext.Media
@@ -85,6 +107,21 @@ namespace Website.Infrastructure.Services.PageService.Classes
                 .SingleAsync();
 
             image.SetData(media);
+        }
+
+
+
+
+        // --------------------------------------------------------------------- Set Widget Data ----------------------------------------------------------------------
+        protected async override Task SetWidgetData(Widget widget)
+        {
+            WebsiteWidget? websiteWidget = widget as WebsiteWidget;
+
+            if (websiteWidget != null)
+            {
+                await websiteWidget.SetData(_pageParams);
+            }
+
         }
     }
 }

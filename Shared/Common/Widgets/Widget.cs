@@ -1,5 +1,4 @@
 ﻿using Shared.Common.Enums;
-using Shared.PageBuilder.Classes;
 using System.Text.Json;
 
 namespace Shared.Common.Widgets
@@ -27,7 +26,7 @@ namespace Shared.Common.Widgets
         }
 
 
-        public virtual Task SetData(PageParams? pageParams)
+        public virtual Task SetData()
         {
             return Task.CompletedTask;
         }

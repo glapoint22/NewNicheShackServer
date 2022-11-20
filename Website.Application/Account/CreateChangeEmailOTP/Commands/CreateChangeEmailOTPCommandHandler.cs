@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using Website.Application.Common.Classes;
+using Shared.Common.Classes;
 using Website.Application.Common.Interfaces;
 using Website.Domain.Entities;
 

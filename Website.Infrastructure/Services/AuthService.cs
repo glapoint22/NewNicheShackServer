@@ -4,11 +4,9 @@ using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using Website.Application.Common.Interfaces;
-using Website.Domain.Entities;
 
 namespace Website.Infrastructure.Services
 {
@@ -16,13 +14,11 @@ namespace Website.Infrastructure.Services
     {
         private readonly IConfiguration _configuration;
         private readonly HttpContext _httpContext;
-        private readonly IWebsiteDbContext _dbContext;
 
-        public AuthService(IConfiguration configuration, IHttpContextAccessor httpContextAccessor, IWebsiteDbContext dbContext)
+        public AuthService(IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             _configuration = configuration;
             _httpContext = httpContextAccessor.HttpContext!;
-            _dbContext = dbContext;
         }
 
 
@@ -41,25 +37,6 @@ namespace Website.Infrastructure.Services
 
 
 
-        // -------------------------------------------------------------------- Generate Refresh Token -----------------------------------------------------------------
-        public string GenerateRefreshToken(string userId)
-        {
-            var randomNumber = new byte[32];
-            var rng = RandomNumberGenerator.Create();
-
-            rng.GetBytes(randomNumber);
-
-            RefreshToken refreshToken = new()
-            {
-                Id = Convert.ToBase64String(randomNumber),
-                UserId = userId,
-                Expiration = DateTime.UtcNow.AddDays(Convert.ToInt32(_configuration["TokenValidation:RefreshExpiresInDays"]))
-            };
-
-            _dbContext.RefreshTokens.Add(refreshToken);
-
-            return refreshToken.Id;
-        }
 
 
 
@@ -79,12 +56,12 @@ namespace Website.Infrastructure.Services
 
 
         // -------------------------------------------------------------------------- Get Claims -----------------------------------------------------------------------
-        public List<Claim> GetClaims(User user, bool isPersistent)
+        public List<Claim> GenerateClaims(string userId, string role, bool isPersistent)
         {
             List<Claim> claims = new()
             {
-                new Claim("AccountAccess", "user"),
-                new Claim(ClaimTypes.NameIdentifier, user.Id),
+                new Claim("AccountAccess", role),
+                new Claim(ClaimTypes.NameIdentifier, userId),
                 new Claim(JwtRegisteredClaimNames.Iss, _configuration["TokenValidation:Site"]),
                 new Claim(JwtRegisteredClaimNames.Aud, _configuration["TokenValidation:Site"]),
             };
@@ -104,9 +81,9 @@ namespace Website.Infrastructure.Services
 
 
         // -------------------------------------------------------------------------- Get Claims -----------------------------------------------------------------------
-        public List<Claim> GetClaims(User user, string provider, bool hasPassword)
+        public List<Claim> GenerateClaims(string userId, string role, string provider, bool hasPassword)
         {
-            List<Claim> claims = GetClaims(user, true);
+            List<Claim> claims = GenerateClaims(userId, role, true);
             claims.Add(new Claim("externalLoginProvider", provider));
             claims.Add(new Claim("hasPassword", hasPassword.ToString()));
 
@@ -114,13 +91,6 @@ namespace Website.Infrastructure.Services
         }
 
 
-
-
-        // ------------------------------------------------------------------- Get Order Notification Key --------------------------------------------------------------
-        public string GetOrderNotificationKey()
-        {
-            return _configuration["OrderNotification:Key"];
-        }
 
 
 

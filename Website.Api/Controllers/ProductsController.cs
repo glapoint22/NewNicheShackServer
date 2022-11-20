@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Common.Controllers;
 using Website.Application.Common.Interfaces;
 using Website.Application.Products.GetProduct.Queries;
 using Website.Application.Products.GetProperties.Queries;

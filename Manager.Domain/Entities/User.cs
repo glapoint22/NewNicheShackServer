@@ -7,5 +7,7 @@ namespace Manager.Domain.Entities
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public string? Image { get; set; }
+
+        public ICollection<NotificationEmployeeNote> NotificationEmployeeNotes { get; private set; } = new HashSet<NotificationEmployeeNote>();
     }
 }

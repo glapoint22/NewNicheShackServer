@@ -1,6 +1,6 @@
 ﻿using FluentValidation.Results;
 
-namespace Website.Application.Common.Classes
+namespace Shared.Common.Classes
 {
     public class Result
     {

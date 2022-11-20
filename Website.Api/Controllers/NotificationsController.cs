@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Common.Controllers;
 using Website.Application.Notifications.PostMessageNotification.Commands;
 using Website.Application.Notifications.PostNonAccountMessageNotification.Commands;
 using Website.Application.Notifications.PostProductNotification.Commands;

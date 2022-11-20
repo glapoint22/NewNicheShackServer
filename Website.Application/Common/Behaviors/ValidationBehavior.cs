@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using MediatR;
+using Shared.Common.Classes;
 using Website.Application.Common.Classes;
 
 namespace Website.Application.Common.Behaviors

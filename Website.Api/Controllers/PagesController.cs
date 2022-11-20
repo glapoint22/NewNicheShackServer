@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Common.Controllers;
 using Website.Application.Pages.GetBrowsePage.Queries;
 using Website.Application.Pages.GetGridData.Queries;
 using Website.Application.Pages.GetPage.Queries;

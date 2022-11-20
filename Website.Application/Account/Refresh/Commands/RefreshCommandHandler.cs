@@ -1,5 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Shared.Common.Classes;
 using System.Security.Claims;
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
@@ -13,18 +15,20 @@ namespace Website.Application.Account.Refresh.Commands
         private readonly IWebsiteDbContext _dbContext;
         private readonly ICookieService _cookieService;
         private readonly IAuthService _authService;
+        private readonly IConfiguration _configuration;
 
-        public RefreshCommandHandler(IUserService userService, IWebsiteDbContext dbContext, ICookieService cookieService, IAuthService authService)
+        public RefreshCommandHandler(IUserService userService, IWebsiteDbContext dbContext, ICookieService cookieService, IAuthService authService, IConfiguration configuration)
         {
             _userService = userService;
             _dbContext = dbContext;
             _cookieService = cookieService;
             _authService = authService;
+            _configuration = configuration;
         }
 
         public async Task<Result> Handle(RefreshCommand request, CancellationToken cancellationToken)
         {
-            string newRefreshToken = null!;
+            RefreshToken newRefreshToken = null!;
             string? refreshTokenCookie = _cookieService.GetCookie("refresh");
 
             if (refreshTokenCookie != null)
@@ -57,7 +61,7 @@ namespace Website.Application.Account.Refresh.Commands
                                     if (user != null)
                                     {
                                         accessToken = _authService.GenerateAccessToken(claims);
-                                        newRefreshToken = _authService.GenerateRefreshToken(userId);
+                                        newRefreshToken = RefreshToken.Create(user.Id, _configuration["TokenValidation:RefreshExpiresInDays"]);
 
                                         string userData;
 
@@ -77,7 +81,7 @@ namespace Website.Application.Account.Refresh.Commands
                                         DateTimeOffset? expiration = expirationClaim != null ? DateTimeOffset.Parse(expirationClaim.Value) : null;
 
                                         _cookieService.SetCookie("access", accessToken, expiration);
-                                        _cookieService.SetCookie("refresh", newRefreshToken, expiration);
+                                        _cookieService.SetCookie("refresh", newRefreshToken.Id, expiration);
                                         _cookieService.SetCookie("user", userData, expiration);
 
                                         await _dbContext.SaveChangesAsync();
@@ -93,7 +97,7 @@ namespace Website.Application.Account.Refresh.Commands
             {
                 return Result.Succeeded(new
                 {
-                    value = newRefreshToken
+                    value = newRefreshToken.Id
                 });
             }
 

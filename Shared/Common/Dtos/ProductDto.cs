@@ -1,6 +1,6 @@
 ﻿using Shared.Common.Classes;
 
-namespace Shared.PageBuilder.Classes
+namespace Shared.Common.Dtos
 {
     public sealed class ProductDto
     {

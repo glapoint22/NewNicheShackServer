@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Common.Controllers;
 using Website.Application.Lists.AddCollaborator.Commands;
 using Website.Application.Lists.AddProduct.Commands;
 using Website.Application.Lists.CreateList.Commands;

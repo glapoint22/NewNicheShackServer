@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Primitives;
+using Shared.Common.Classes;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using Website.Application.Account.Common;
-using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
 using Website.Domain.Entities;
 using Website.Domain.Events;

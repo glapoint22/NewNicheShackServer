@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Shared.Common.Classes;
 using Shared.PageBuilder.Classes;
 using Shared.PageBuilder.Enums;
 using Website.Application.Common.Classes;
@@ -53,10 +54,14 @@ namespace Website.Application.Pages.GetSearchPage.Queries
                     .Select(x => x.PageId)
                     .SingleOrDefaultAsync(cancellationToken: cancellationToken);
 
-                pageContent = await _dbContext.Pages
+                if (pageId != null)
+                {
+                    pageContent = await _dbContext.Pages
                     .Where(x => x.Id == pageId)
                     .Select(x => x.Content)
-                    .SingleAsync(cancellationToken: cancellationToken);
+                    .SingleOrDefaultAsync(cancellationToken: cancellationToken);
+                }
+
             }
 
 

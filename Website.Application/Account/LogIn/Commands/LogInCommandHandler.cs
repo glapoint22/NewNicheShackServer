@@ -1,6 +1,7 @@
 ﻿using MediatR;
+using Microsoft.Extensions.Configuration;
+using Shared.Common.Classes;
 using System.Security.Claims;
-using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
 using Website.Domain.Entities;
 
@@ -12,13 +13,15 @@ namespace Website.Application.Account.LogIn.Commands
         private readonly IAuthService _authService;
         private readonly ICookieService _cookieService;
         private readonly IWebsiteDbContext _dbContext;
+        private readonly IConfiguration _configuration;
 
-        public LogInCommandHandler(IUserService userService, IAuthService authService, ICookieService cookieService, IWebsiteDbContext dbContext)
+        public LogInCommandHandler(IUserService userService, IAuthService authService, ICookieService cookieService, IWebsiteDbContext dbContext, IConfiguration configuration)
         {
             _userService = userService;
             _authService = authService;
             _cookieService = cookieService;
             _dbContext = dbContext;
+            _configuration = configuration;
         }
 
         public async Task<Result> Handle(LogInCommand request, CancellationToken cancellationToken)
@@ -34,17 +37,18 @@ namespace Website.Application.Account.LogIn.Commands
 
 
             // Log in the user
-            List<Claim> claims = _authService.GetClaims(user, request.IsPersistent);
+            List<Claim> claims = _authService.GenerateClaims(user.Id, "user", request.IsPersistent);
             string accessToken = _authService.GenerateAccessToken(claims);
-            string refreshToken = _authService.GenerateRefreshToken(user.Id);
+            RefreshToken refreshToken = RefreshToken.Create(user.Id, _configuration["TokenValidation:RefreshExpiresInDays"]);
             string userData = _userService.GetUserData(user);
             DateTimeOffset? expiration = _userService.GetExpirationFromClaims(claims);
 
             // Set the cookies
             _cookieService.SetCookie("access", accessToken, expiration);
-            _cookieService.SetCookie("refresh", refreshToken, expiration);
+            _cookieService.SetCookie("refresh", refreshToken.Id, expiration);
             _cookieService.SetCookie("user", userData, expiration);
 
+            _dbContext.RefreshTokens.Add(refreshToken);
             await _dbContext.SaveChangesAsync();
 
             return Result.Succeeded();

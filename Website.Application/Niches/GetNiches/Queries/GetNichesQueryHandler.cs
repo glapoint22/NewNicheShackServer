@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Website.Application.Common.Classes;
+using Shared.Common.Classes;
 using Website.Application.Common.Interfaces;
 
 namespace Website.Application.Niches.GetNiches.Queries

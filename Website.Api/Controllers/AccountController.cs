@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Common.Controllers;
 using Website.Application.Account.ActivateAccount.Commands;
 using Website.Application.Account.AddPassword.Commands;
 using Website.Application.Account.ChangeEmail.Commands;

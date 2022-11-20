@@ -1,10 +1,12 @@
 using Manager.Api;
+using Manager.Application;
 using Manager.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.ApiServices();
+builder.Services.ApplicationServices(builder.Configuration);
 builder.Services.InfrastructureServices(builder.Configuration);
 
 var app = builder.Build();

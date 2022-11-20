@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Common.Controllers;
 using Website.Application.EmailPreferences.Commands;
 using Website.Application.EmailPreferences.Common;
 using Website.Application.EmailPreferences.Queries;
