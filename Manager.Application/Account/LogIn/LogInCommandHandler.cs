@@ -1,23 +1,24 @@
-﻿using MediatR;
+﻿using Manager.Application.Common.Interfaces;
+using Manager.Domain.Entities;
+using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Shared.Common.Classes;
 using System.Security.Claims;
-using Website.Application.Common.Interfaces;
-using Website.Domain.Entities;
 
-namespace Website.Application.Account.LogIn.Commands
+namespace Manager.Application.Account.LogIn
 {
     public sealed class LogInCommandHandler : IRequestHandler<LogInCommand, Result>
     {
-        private readonly IUserService _userService;
+        private readonly UserManager<User> _userManager;
         private readonly IAuthService _authService;
         private readonly ICookieService _cookieService;
-        private readonly IWebsiteDbContext _dbContext;
+        private readonly IManagerDbContext _dbContext;
         private readonly IConfiguration _configuration;
 
-        public LogInCommandHandler(IUserService userService, IAuthService authService, ICookieService cookieService, IWebsiteDbContext dbContext, IConfiguration configuration)
+        public LogInCommandHandler(UserManager<User> userManager, IAuthService authService, ICookieService cookieService, IManagerDbContext dbContext, IConfiguration configuration)
         {
-            _userService = userService;
+            _userManager = userManager;
             _authService = authService;
             _cookieService = cookieService;
             _dbContext = dbContext;
@@ -26,21 +27,18 @@ namespace Website.Application.Account.LogIn.Commands
 
         public async Task<Result> Handle(LogInCommand request, CancellationToken cancellationToken)
         {
-            User user = await _userService.GetUserByEmailAsync(request.Email);
+            User user = await _userManager.FindByEmailAsync(request.Email);
 
-            if (user == null || await _userService.CheckPasswordAsync(user, request.Password) == false)
+            if (user == null || await _userManager.CheckPasswordAsync(user, request.Password) == false)
             {
                 return Result.Failed("401");
             }
 
-            if (!user.EmailConfirmed) return Result.Failed("409");
-
-
             // Generate the claims and the tokens
-            List<Claim> claims = _authService.GenerateClaims(user.Id, "user", request.IsPersistent);
+            List<Claim> claims = _authService.GenerateClaims(user.Id, "admin", true);
             string accessToken = _authService.GenerateAccessToken(claims);
             RefreshToken refreshToken = RefreshToken.Create(user.Id, _configuration["TokenValidation:RefreshExpiresInDays"]);
-            string userData = _userService.GetUserData(user);
+            string userData = user.FirstName + "," + user.LastName + "," + user.Image;
             DateTimeOffset? expiration = _authService.GetExpirationFromClaims(claims);
 
             // Set the cookies

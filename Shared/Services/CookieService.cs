@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Website.Application.Common.Interfaces;
 
-namespace Website.Infrastructure.Services
+namespace Shared.Services
 {
-    public sealed class CookieService : ICookieService
+    public abstract class CookieService
     {
-        private readonly HttpContext _httpContext;
+        protected readonly HttpContext _httpContext;
 
         public CookieService(IHttpContextAccessor httpContextAccessor)
         {

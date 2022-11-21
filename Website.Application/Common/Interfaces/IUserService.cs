@@ -25,12 +25,7 @@ namespace Website.Application.Common.Interfaces
         Task<string> GenerateEmailConfirmationTokenAsync(User user);
 
         Task<string> GeneratePasswordResetTokenAsync(User user);
-
-        DateTimeOffset? GetExpirationFromClaims();
-
-        DateTimeOffset? GetExpirationFromClaims(List<Claim> claims);
-
-        string? GetExternalLogInProviderFromClaims();
+        
 
         Task<User> GetUserFromClaimsAsync();
 

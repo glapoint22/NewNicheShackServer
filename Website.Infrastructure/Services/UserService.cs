@@ -145,50 +145,6 @@ namespace Website.Infrastructure.Services
 
 
 
-        // ---------------------------------------------------------------- Get Expiration From Claims --------------------------------------------------------------
-        public DateTimeOffset? GetExpirationFromClaims()
-        {
-            Claim? expiration = _user?.FindFirst(ClaimTypes.Expiration);
-
-            if (expiration != null)
-            {
-                return DateTimeOffset.Parse(expiration.Value);
-            }
-
-            return null;
-        }
-
-
-
-
-
-        // ---------------------------------------------------------------- Get Expiration From Claims --------------------------------------------------------------
-        public DateTimeOffset? GetExpirationFromClaims(List<Claim> claims)
-        {
-            Claim? expirationClaim = claims.FirstOrDefault(x => x.Type == ClaimTypes.Expiration);
-
-            if (expirationClaim == null) return null;
-            return DateTimeOffset.Parse(expirationClaim.Value);
-        }
-
-
-
-
-
-        // --------------------------------------------------------- Get External Log In Prodvider From Claims -----------------------------------------------------------
-        public string? GetExternalLogInProviderFromClaims()
-        {
-            return _user?.FindFirstValue("externalLoginProvider");
-        }
-
-
-
-
-
-
-
-
-
 
         // ----------------------------------------------------------------- Get User By Email Async ---------------------------------------------------------------------
         public async Task<User> GetUserByEmailAsync(string email)

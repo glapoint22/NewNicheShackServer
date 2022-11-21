@@ -42,7 +42,7 @@ namespace Website.Application.Account.ActivateAccount.Commands
                 string accessToken = _authService.GenerateAccessToken(claims);
                 RefreshToken refreshToken = RefreshToken.Create(user.Id, _configuration["TokenValidation:RefreshExpiresInDays"]);
                 string userData = _userService.GetUserData(user);
-                DateTimeOffset? expiration = _userService.GetExpirationFromClaims(claims);
+                DateTimeOffset? expiration = _authService.GetExpirationFromClaims(claims);
 
                 // Set the cookies
                 _cookieService.SetCookie("access", accessToken, expiration);

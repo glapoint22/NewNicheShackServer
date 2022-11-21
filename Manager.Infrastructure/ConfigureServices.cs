@@ -1,6 +1,7 @@
 ﻿using Manager.Application.Common.Interfaces;
 using Manager.Domain.Entities;
 using Manager.Infrastructure.Persistence;
+using Manager.Infrastructure.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using Website.Infrastructure.Services;
 
 namespace Manager.Infrastructure
 {
@@ -67,6 +69,9 @@ namespace Manager.Infrastructure
 
 
             services.AddScoped<IManagerDbContext>(provider => provider.GetRequiredService<ManagerDbContext>());
+            services.AddTransient<ICookieService, ManagerCookieService>();
+            services.AddTransient<IAuthService, ManagerAuthService>();
+            services.AddHttpContextAccessor();
 
             return services;
         }

@@ -100,8 +100,8 @@ namespace Website.Infrastructure
 
 
             services.AddTransient<IUserService, UserService>();
-            services.AddTransient<ICookieService, CookieService>();
-            services.AddTransient<IAuthService, AuthService>();
+            services.AddTransient<ICookieService, WebsiteCookieService>();
+            services.AddTransient<IAuthService, WebsiteAuthService>();
             services.AddScoped<IWebsiteDbContext>(provider => provider.GetRequiredService<WebsiteDbContext>());
             services.AddSingleton<ISearchSuggestionsService, SearchSuggestionsService>();
             services.AddHttpContextAccessor();

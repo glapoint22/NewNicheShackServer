@@ -6,19 +6,20 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Text.RegularExpressions;
-using Website.Application.Common.Interfaces;
 
-namespace Website.Infrastructure.Services
+namespace Shared.Services
 {
-    public sealed class AuthService : IAuthService
+    public abstract class AuthService
     {
-        private readonly IConfiguration _configuration;
-        private readonly HttpContext _httpContext;
+        protected readonly IConfiguration _configuration;
+        protected readonly HttpContext _httpContext;
+        protected readonly ClaimsPrincipal _claimsPrincipal;
 
         public AuthService(IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             _configuration = configuration;
             _httpContext = httpContextAccessor.HttpContext!;
+            _claimsPrincipal = _httpContext.User;
         }
 
 
@@ -80,19 +81,6 @@ namespace Website.Infrastructure.Services
 
 
 
-        // -------------------------------------------------------------------------- Get Claims -----------------------------------------------------------------------
-        public List<Claim> GenerateClaims(string userId, string role, string provider, bool hasPassword)
-        {
-            List<Claim> claims = GenerateClaims(userId, role, true);
-            claims.Add(new Claim("externalLoginProvider", provider));
-            claims.Add(new Claim("hasPassword", hasPassword.ToString()));
-
-            return claims;
-        }
-
-
-
-
 
         // ------------------------------------------------------------------- Get Principal From Token -----------------------------------------------------------------
         public ClaimsPrincipal? GetPrincipalFromToken(string accessToken)
@@ -127,6 +115,35 @@ namespace Website.Infrastructure.Services
                 return null;
 
             return principal;
+        }
+
+
+
+
+
+        // ---------------------------------------------------------------- Get Expiration From Claims --------------------------------------------------------------
+        public DateTimeOffset? GetExpirationFromClaims()
+        {
+            Claim? expiration = _claimsPrincipal.FindFirst(ClaimTypes.Expiration);
+
+            if (expiration != null)
+            {
+                return DateTimeOffset.Parse(expiration.Value);
+            }
+
+            return null;
+        }
+
+
+
+
+        // ---------------------------------------------------------------- Get Expiration From Claims --------------------------------------------------------------
+        public DateTimeOffset? GetExpirationFromClaims(List<Claim> claims)
+        {
+            Claim? expirationClaim = claims.FirstOrDefault(x => x.Type == ClaimTypes.Expiration);
+
+            if (expirationClaim == null) return null;
+            return DateTimeOffset.Parse(expirationClaim.Value);
         }
     }
 }

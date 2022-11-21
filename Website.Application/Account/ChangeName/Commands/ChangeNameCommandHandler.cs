@@ -11,7 +11,7 @@ namespace Website.Application.Account.ChangeName.Commands
     {
         private readonly IUserService _userService;
 
-        public ChangeNameCommandHandler(IUserService userService, ICookieService cookieService) : base(userService, cookieService)
+        public ChangeNameCommandHandler(IUserService userService, ICookieService cookieService, IAuthService authService) : base(userService, cookieService, authService)
         {
             _userService = userService;
         }

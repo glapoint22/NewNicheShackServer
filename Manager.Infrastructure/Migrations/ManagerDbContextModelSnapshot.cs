@@ -54,6 +54,26 @@ namespace Manager.Infrastructure.Migrations
                     b.ToTable("NotificationEmployeeNotes");
                 });
 
+            modelBuilder.Entity("Manager.Domain.Entities.RefreshToken", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTime>("Expiration")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RefreshTokens");
+                });
+
             modelBuilder.Entity("Manager.Domain.Entities.User", b =>
                 {
                     b.Property<string>("Id")
@@ -271,6 +291,17 @@ namespace Manager.Infrastructure.Migrations
                     b.HasOne("Manager.Domain.Entities.User", "User")
                         .WithMany("NotificationEmployeeNotes")
                         .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Manager.Domain.Entities.RefreshToken", b =>
+                {
+                    b.HasOne("Manager.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

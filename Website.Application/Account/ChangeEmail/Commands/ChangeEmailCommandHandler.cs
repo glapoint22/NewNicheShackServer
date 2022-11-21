@@ -13,7 +13,7 @@ namespace Website.Application.Account.ChangeEmail.Commands
         private readonly IUserService _userService;
         private readonly IWebsiteDbContext _dbContext;
 
-        public ChangeEmailCommandHandler(IUserService userService, ICookieService cookieService, IWebsiteDbContext dbContext) : base(userService, cookieService)
+        public ChangeEmailCommandHandler(IUserService userService, ICookieService cookieService, IWebsiteDbContext dbContext, IAuthService authService) : base(userService, cookieService, authService)
         {
             _userService = userService;
             _dbContext = dbContext;

@@ -11,6 +11,7 @@ namespace Manager.Infrastructure.Persistence
         public ManagerDbContext(DbContextOptions<ManagerDbContext> options) : base(options) { }
 
         public DbSet<NotificationEmployeeNote> NotificationEmployeeNotes => Set<NotificationEmployeeNote>();
+        public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 
 
         protected override void OnModelCreating(ModelBuilder builder)

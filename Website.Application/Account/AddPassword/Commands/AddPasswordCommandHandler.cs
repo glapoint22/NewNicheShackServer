@@ -42,7 +42,7 @@ namespace Website.Application.Account.AddPassword.Commands
 
                 if (hasPassword || result.Succeeded)
                 {
-                    string? externalLogInProvider = _userService.GetExternalLogInProviderFromClaims();
+                    string? externalLogInProvider = _authService.GetExternalLogInProviderFromClaims();
 
                     if (externalLogInProvider == null) throw new Exception("Error while trying to get external log in provider from claims.");
 
@@ -51,7 +51,7 @@ namespace Website.Application.Account.AddPassword.Commands
                     string accessToken = _authService.GenerateAccessToken(claims);
                     RefreshToken refreshToken = RefreshToken.Create(user.Id, _configuration["TokenValidation:RefreshExpiresInDays"]);
                     string userData = _userService.GetUserData(user, externalLogInProvider, true);
-                    DateTimeOffset? expiration = _userService.GetExpirationFromClaims(claims);
+                    DateTimeOffset? expiration = _authService.GetExpirationFromClaims(claims);
 
                     // Set the cookies
                     _cookieService.SetCookie("access", accessToken, expiration);

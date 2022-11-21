@@ -18,7 +18,7 @@ namespace Website.Application.Account.ChangeProfileImage.Commands
         private readonly HttpContext _httpContext;
         private readonly IUserService _userService;
 
-        public ChangeProfileImageCommandHandler(IHttpContextAccessor httpContextAccessor, IUserService userService, ICookieService cookieService) : base(userService, cookieService)
+        public ChangeProfileImageCommandHandler(IHttpContextAccessor httpContextAccessor, IUserService userService, ICookieService cookieService, IAuthService authService) : base(userService, cookieService, authService)
         {
             _httpContext = httpContextAccessor.HttpContext!;
             _userService = userService;

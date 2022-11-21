@@ -7,19 +7,21 @@ namespace Website.Application.Account.Common
     {
         private readonly IUserService _userService;
         private readonly ICookieService _cookieService;
+        private readonly IAuthService _authService;
 
-        public UpdateUserCommandHandler(IUserService userService, ICookieService cookieService)
+        public UpdateUserCommandHandler(IUserService userService, ICookieService cookieService, IAuthService authService)
         {
             _userService = userService;
             _cookieService = cookieService;
+            _authService = authService;
         }
 
         public async Task UpdateUserCookie(User user)
         {
             // This will update the user cookie
             string userData;
-            DateTimeOffset? expiration = _userService.GetExpirationFromClaims();
-            string? externalLogInProvider = _userService.GetExternalLogInProviderFromClaims();
+            DateTimeOffset? expiration = _authService.GetExpirationFromClaims();
+            string? externalLogInProvider = _authService.GetExternalLogInProviderFromClaims();
 
             if (externalLogInProvider != null)
             {
