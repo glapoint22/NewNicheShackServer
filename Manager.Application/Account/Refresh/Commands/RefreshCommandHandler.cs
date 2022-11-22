@@ -1,29 +1,29 @@
-﻿using MediatR;
+﻿using Manager.Application.Common.Interfaces;
+using Manager.Domain.Entities;
+using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Shared.Common.Classes;
 using System.Security.Claims;
-using Website.Application.Common.Classes;
-using Website.Application.Common.Interfaces;
-using Website.Domain.Entities;
 
-namespace Website.Application.Account.Refresh.Commands
+namespace Manager.Application.Account.Refresh.Commands
 {
     public sealed class RefreshCommandHandler : IRequestHandler<RefreshCommand, Result>
     {
-        private readonly IUserService _userService;
-        private readonly IWebsiteDbContext _dbContext;
+        private readonly IManagerDbContext _dbContext;
         private readonly ICookieService _cookieService;
         private readonly IAuthService _authService;
         private readonly IConfiguration _configuration;
+        private readonly UserManager<User> _userManager;
 
-        public RefreshCommandHandler(IUserService userService, IWebsiteDbContext dbContext, ICookieService cookieService, IAuthService authService, IConfiguration configuration)
+        public RefreshCommandHandler(IManagerDbContext dbContext, ICookieService cookieService, IAuthService authService, IConfiguration configuration, UserManager<User> userManager)
         {
-            _userService = userService;
             _dbContext = dbContext;
             _cookieService = cookieService;
             _authService = authService;
             _configuration = configuration;
+            _userManager = userManager;
         }
 
         public async Task<Result> Handle(RefreshCommand request, CancellationToken cancellationToken)
@@ -56,7 +56,7 @@ namespace Website.Application.Account.Refresh.Commands
                             {
                                 if (DateTime.Compare(DateTime.UtcNow, refreshToken.Expiration) < 0)
                                 {
-                                    User user = await _userService.GetUserByIdAsync(userId);
+                                    User user = await _userManager.FindByIdAsync(userId);
 
                                     if (user != null)
                                     {
@@ -65,19 +65,7 @@ namespace Website.Application.Account.Refresh.Commands
 
                                         _dbContext.RefreshTokens.Add(newRefreshToken);
 
-                                        string userData;
-
-                                        if (principal.Claims.Any(x => x.Type == "externalLoginProvider"))
-                                        {
-                                            string provider = principal.FindFirstValue("externalLoginProvider");
-                                            bool hasPassword = principal.FindFirstValue("hasPassword") == "True";
-
-                                            userData = _userService.GetUserData(user, provider, hasPassword);
-                                        }
-                                        else
-                                        {
-                                            userData = _userService.GetUserData(user);
-                                        }
+                                        string userData = user.FirstName + "," + user.LastName + "," + user.Email + "," + user.Image;
 
                                         Claim? expirationClaim = principal.FindFirst(ClaimTypes.Expiration);
                                         DateTimeOffset? expiration = expirationClaim != null ? DateTimeOffset.Parse(expirationClaim.Value) : null;

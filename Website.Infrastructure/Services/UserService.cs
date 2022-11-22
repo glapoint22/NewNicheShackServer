@@ -198,18 +198,6 @@ namespace Website.Infrastructure.Services
 
 
 
-
-        // ------------------------------------------------------------------ Get User Id From Claims --------------------------------------------------------------------
-        public string GetUserIdFromClaims()
-        {
-            return _user?.FindFirst(ClaimTypes.NameIdentifier)?.Value!;
-        }
-
-
-
-
-
-
         // -------------------------------------------------------------------- Has Password Async ------------------------------------------------------------------------
         public async Task<bool> HasPasswordAsync(User user)
         {

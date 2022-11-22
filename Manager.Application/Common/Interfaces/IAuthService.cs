@@ -16,5 +16,7 @@ namespace Manager.Application.Common.Interfaces
         DateTimeOffset? GetExpirationFromClaims();
 
         DateTimeOffset? GetExpirationFromClaims(List<Claim> claims);
+
+        string GetUserIdFromClaims();
     }
 }

@@ -11,18 +11,18 @@ namespace Website.Application.Lists.MoveProduct.Commands
     public sealed class MoveProductCommandHandler : IRequestHandler<MoveProductCommand, Result>
     {
         private readonly IWebsiteDbContext _dbContext;
-        private readonly IUserService _userService;
+        private readonly IAuthService _authService;
 
-        public MoveProductCommandHandler(IWebsiteDbContext dbContext, IUserService userService)
+        public MoveProductCommandHandler(IWebsiteDbContext dbContext, IAuthService authService)
         {
             _dbContext = dbContext;
-            _userService = userService;
+            _authService = authService;
         }
 
         public async Task<Result> Handle(MoveProductCommand request, CancellationToken cancellationToken)
         {
             // Get user id from claims
-            string userId = _userService.GetUserIdFromClaims();
+            string userId = _authService.GetUserIdFromClaims();
 
 
             List<List> lists = await _dbContext.Lists

@@ -7,18 +7,18 @@ namespace Website.Application.EmailPreferences.Queries
 {
     public sealed class GetEmailPreferencesQueryHandler : IRequestHandler<GetEmailPreferencesQuery, Preferences>
     {
-        private readonly IUserService _userService;
         private readonly IWebsiteDbContext _dbContext;
+        private readonly IAuthService _authService;
 
-        public GetEmailPreferencesQueryHandler(IUserService userService, IWebsiteDbContext dbContext)
+        public GetEmailPreferencesQueryHandler(IWebsiteDbContext dbContext, IAuthService authService)
         {
-            _userService = userService;
             _dbContext = dbContext;
+            _authService = authService;
         }
 
         public async Task<Preferences> Handle(GetEmailPreferencesQuery request, CancellationToken cancellationToken)
         {
-            string userId = _userService.GetUserIdFromClaims();
+            string userId = _authService.GetUserIdFromClaims();
 
             var preferences = await _dbContext.Users
                 .Where(x => x.Id == userId)

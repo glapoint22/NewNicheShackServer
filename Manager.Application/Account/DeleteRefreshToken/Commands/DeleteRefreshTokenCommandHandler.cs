@@ -1,19 +1,18 @@
-﻿using MediatR;
+﻿using Manager.Application.Common.Interfaces;
+using Manager.Domain.Entities;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Shared.Common.Classes;
 using System.Web;
-using Website.Application.Common.Classes;
-using Website.Application.Common.Interfaces;
-using Website.Domain.Entities;
 
-namespace Website.Application.Account.DeleteRefreshToken.Commands
+namespace Manager.Application.Account.DeleteRefreshToken.Commands
 {
     public sealed class DeleteRefreshTokenCommandHandler : IRequestHandler<DeleteRefreshTokenCommand, Result>
     {
-        private readonly IWebsiteDbContext _dbContext;
+        private readonly IManagerDbContext _dbContext;
         private readonly IAuthService _authService;
 
-        public DeleteRefreshTokenCommandHandler(IWebsiteDbContext dbContext, IAuthService authService)
+        public DeleteRefreshTokenCommandHandler(IManagerDbContext dbContext, IAuthService authService)
         {
             _dbContext = dbContext;
             _authService = authService;

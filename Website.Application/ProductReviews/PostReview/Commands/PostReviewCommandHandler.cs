@@ -8,13 +8,13 @@ namespace Website.Application.ProductReviews.PostReview.Commands
 {
     public sealed class PostReviewCommandHandler : IRequestHandler<PostReviewCommand, Result>
     {
-        private readonly IUserService _userService;
         private readonly IWebsiteDbContext _dbContext;
+        private readonly IAuthService _authService;
 
-        public PostReviewCommandHandler(IUserService userService, IWebsiteDbContext dbContext)
+        public PostReviewCommandHandler(IWebsiteDbContext dbContext, IAuthService authService)
         {
-            _userService = userService;
             _dbContext = dbContext;
+            _authService = authService;
         }
 
         public async Task<Result> Handle(PostReviewCommand request, CancellationToken cancellationToken)
@@ -23,7 +23,7 @@ namespace Website.Application.ProductReviews.PostReview.Commands
             Product? product = await _dbContext.Products.FindAsync(request.ProductId);
             if (product == null) return Result.Failed("404");
 
-            string userId = _userService.GetUserIdFromClaims();
+            string userId = _authService.GetUserIdFromClaims();
 
             // Create the product review
             ProductReview productReview = ProductReview.Create(request.ProductId, userId, request.Title, request.Rating, request.Text);

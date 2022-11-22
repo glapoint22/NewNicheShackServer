@@ -9,13 +9,13 @@ namespace Website.Application.ProductOrders.GetOrders.Queries
 {
     public sealed class GetOrdersQueryHandler : IRequestHandler<GetOrdersQuery, Result>
     {
-        private readonly IUserService _userService;
         private readonly IWebsiteDbContext _dbContext;
+        private readonly IAuthService _authService;
 
-        public GetOrdersQueryHandler(IUserService userService, IWebsiteDbContext dbContext)
+        public GetOrdersQueryHandler(IWebsiteDbContext dbContext, IAuthService authService)
         {
-            _userService = userService;
             _dbContext = dbContext;
+            _authService = authService;
         }
 
 
@@ -24,7 +24,7 @@ namespace Website.Application.ProductOrders.GetOrders.Queries
         // -------------------------------------------------------------------------- Handle ---------------------------------------------------------------------------------
         public async Task<Result> Handle(GetOrdersQuery request, CancellationToken cancellationToken)
         {
-            string userId = _userService.GetUserIdFromClaims();
+            string userId = _authService.GetUserIdFromClaims();
             string filter = request.Filter ?? "last-30";
 
             if (!string.IsNullOrEmpty(request.SearchTerm))

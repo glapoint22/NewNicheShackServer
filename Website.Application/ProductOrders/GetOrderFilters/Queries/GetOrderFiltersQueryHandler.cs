@@ -9,17 +9,17 @@ namespace Website.Application.ProductOrders.GetOrderFilters.Queries
     public sealed class GetOrderFiltersQueryHandler : IRequestHandler<GetOrderFiltersQuery, Result>
     {
         private readonly IWebsiteDbContext _dbContext;
-        private readonly IUserService _userService;
+        private readonly IAuthService _authService;
 
-        public GetOrderFiltersQueryHandler(IWebsiteDbContext dbContext, IUserService userService)
+        public GetOrderFiltersQueryHandler(IWebsiteDbContext dbContext, IAuthService authService)
         {
             _dbContext = dbContext;
-            _userService = userService;
+            _authService = authService;
         }
 
         public async Task<Result> Handle(GetOrderFiltersQuery request, CancellationToken cancellationToken)
         {
-            string userId = _userService.GetUserIdFromClaims();
+            string userId = _authService.GetUserIdFromClaims();
 
             List<KeyValuePair<string, string>> filterOptions = new()
             {

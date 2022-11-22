@@ -10,18 +10,18 @@ namespace Website.Application.Lists.DeleteList.Commands
 {
     public sealed class DeleteListCommandHandler : IRequestHandler<DeleteListCommand, Result>
     {
-        private readonly IUserService _userService;
         private readonly IWebsiteDbContext _dbContext;
+        private readonly IAuthService _authService;
 
-        public DeleteListCommandHandler(IWebsiteDbContext dbContext, IUserService userService)
+        public DeleteListCommandHandler(IWebsiteDbContext dbContext, IAuthService authService)
         {
             _dbContext = dbContext;
-            _userService = userService;
+            _authService = authService;
         }
 
         public async Task<Result> Handle(DeleteListCommand request, CancellationToken cancellationToken)
         {
-            string userId = _userService.GetUserIdFromClaims();
+            string userId = _authService.GetUserIdFromClaims();
 
             // Get the list to delete
             List? list = await _dbContext.Lists

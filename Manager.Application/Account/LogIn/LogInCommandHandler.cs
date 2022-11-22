@@ -38,7 +38,7 @@ namespace Manager.Application.Account.LogIn
             List<Claim> claims = _authService.GenerateClaims(user.Id, "admin", true);
             string accessToken = _authService.GenerateAccessToken(claims);
             RefreshToken refreshToken = RefreshToken.Create(user.Id, _configuration["TokenValidation:RefreshExpiresInDays"]);
-            string userData = user.FirstName + "," + user.LastName + "," + user.Image;
+            string userData = user.FirstName + "," + user.LastName + "," + user.Email + "," + user.Image;
             DateTimeOffset? expiration = _authService.GetExpirationFromClaims(claims);
 
             // Set the cookies

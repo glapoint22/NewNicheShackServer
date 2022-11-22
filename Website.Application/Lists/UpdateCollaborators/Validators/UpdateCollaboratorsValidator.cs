@@ -7,9 +7,9 @@ namespace Website.Application.Lists.UpdateCollaborators.Validators
 {
     public sealed class UpdateCollaboratorsValidator : AbstractValidator<UpdateCollaboratorsCommand>
     {
-        public UpdateCollaboratorsValidator(IWebsiteDbContext dbContext, IUserService userService)
+        public UpdateCollaboratorsValidator(IWebsiteDbContext dbContext, IAuthService authService)
         {
-            string userId = userService.GetUserIdFromClaims();
+            string userId = authService.GetUserIdFromClaims();
             bool listExists = false;
 
             RuleFor(x => x.ListId)

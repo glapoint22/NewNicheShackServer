@@ -11,19 +11,19 @@ namespace Website.Application.Notifications.PostReviewComplaintNotification.Comm
     public sealed class PostReviewComplaintNotificationCommandHandler : IRequestHandler<PostReviewComplaintNotificationCommand, Result>
     {
         private readonly IWebsiteDbContext _dbContext;
-        private readonly IUserService _userService;
+        private readonly IAuthService _authService;
 
-        public PostReviewComplaintNotificationCommandHandler(IWebsiteDbContext dbContext, IUserService userService)
+        public PostReviewComplaintNotificationCommandHandler(IWebsiteDbContext dbContext, IAuthService authService)
         {
             _dbContext = dbContext;
-            _userService = userService;
+            _authService = authService;
         }
 
 
 
         public async Task<Result> Handle(PostReviewComplaintNotificationCommand request, CancellationToken cancellationToken)
         {
-            string userId = _userService.GetUserIdFromClaims();
+            string userId = _authService.GetUserIdFromClaims();
 
             // Check to see if the user is on the block list
             if (await _dbContext.Users

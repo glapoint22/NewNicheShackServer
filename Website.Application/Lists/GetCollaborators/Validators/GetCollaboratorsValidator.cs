@@ -7,9 +7,9 @@ namespace Website.Application.Lists.GetCollaborators.Validators
 {
     public sealed class GetCollaboratorsValidator : AbstractValidator<GetCollaboratorsQuery>
     {
-        public GetCollaboratorsValidator(IWebsiteDbContext dbContext, IUserService userService)
+        public GetCollaboratorsValidator(IWebsiteDbContext dbContext, IAuthService authService)
         {
-            string userId = userService.GetUserIdFromClaims();
+            string userId = authService.GetUserIdFromClaims();
 
             RuleFor(x => x.ListId)
                 .NotEmpty()

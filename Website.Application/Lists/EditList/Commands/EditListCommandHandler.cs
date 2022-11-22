@@ -10,18 +10,18 @@ namespace Website.Application.Lists.EditList.Commands
 {
     public sealed class EditListCommandHandler : IRequestHandler<EditListCommand, Result>
     {
-        private readonly IUserService _userService;
         private readonly IWebsiteDbContext _dbContext;
+        private readonly IAuthService _authService;
 
-        public EditListCommandHandler(IUserService userService, IWebsiteDbContext dbContext)
+        public EditListCommandHandler(IWebsiteDbContext dbContext, IAuthService authService)
         {
-            _userService = userService;
             _dbContext = dbContext;
+            _authService = authService;
         }
 
         public async Task<Result> Handle(EditListCommand request, CancellationToken cancellationToken)
         {
-            string userId = _userService.GetUserIdFromClaims();
+            string userId = _authService.GetUserIdFromClaims();
 
             // Get the list to edit
             List? list = await _dbContext.Lists.

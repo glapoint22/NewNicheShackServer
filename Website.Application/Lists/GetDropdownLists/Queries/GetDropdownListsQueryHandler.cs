@@ -8,18 +8,18 @@ namespace Website.Application.Lists.GetDropdownLists.Queries
 {
     public sealed class GetDropdownListsQueryHandler : IRequestHandler<GetDropdownListsQuery, Result>
     {
-        private readonly IUserService _userService;
         private readonly IWebsiteDbContext _dbContext;
+        private readonly IAuthService _authService;
 
-        public GetDropdownListsQueryHandler(IUserService userService, IWebsiteDbContext dbContext)
+        public GetDropdownListsQueryHandler(IWebsiteDbContext dbContext, IAuthService authService)
         {
-            _userService = userService;
             _dbContext = dbContext;
+            _authService = authService;
         }
 
         public async Task<Result> Handle(GetDropdownListsQuery request, CancellationToken cancellationToken)
         {
-            string userId = _userService.GetUserIdFromClaims();
+            string userId = _authService.GetUserIdFromClaims();
 
             var lists = await _dbContext.Collaborators
                 .Where(x => x.UserId == userId && (x.IsOwner || x.CanAddToList))

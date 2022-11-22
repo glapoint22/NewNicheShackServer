@@ -11,18 +11,18 @@ namespace Website.Application.Lists.AddProduct.Commands
     public sealed class AddProductCommandHandler : IRequestHandler<AddProductCommand, Result>
     {
         private readonly IWebsiteDbContext _dbContext;
-        private readonly IUserService _userService;
+        private readonly IAuthService _authService;
 
-        public AddProductCommandHandler(IWebsiteDbContext dbContext, IUserService userService)
+        public AddProductCommandHandler(IWebsiteDbContext dbContext, IAuthService authService)
         {
             _dbContext = dbContext;
-            _userService = userService;
+            _authService = authService;
         }
 
         public async Task<Result> Handle(AddProductCommand request, CancellationToken cancellationToken)
         {
             // Get the user id from claims
-            string userId = _userService.GetUserIdFromClaims();
+            string userId = _authService.GetUserIdFromClaims();
 
             List? list = await _dbContext.Lists
                 .Where(x => x.Id == request.ListId)

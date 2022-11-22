@@ -10,12 +10,12 @@ namespace Website.Application.Lists.GetListInfo.Queries
     public sealed class GetListInfoQueryHandler : IRequestHandler<GetListInfoQuery, Result>
     {
         private readonly IWebsiteDbContext _dbContext;
-        private readonly IUserService _userService;
+        private readonly IAuthService _authService;
 
-        public GetListInfoQueryHandler(IWebsiteDbContext dbContext, IUserService userService)
+        public GetListInfoQueryHandler(IWebsiteDbContext dbContext, IAuthService authService)
         {
             _dbContext = dbContext;
-            _userService = userService;
+            _authService = authService;
         }
 
         public async Task<Result> Handle(GetListInfoQuery request, CancellationToken cancellationToken)
@@ -30,7 +30,7 @@ namespace Website.Application.Lists.GetListInfo.Queries
 
             // If user is already collaborating on this list
             if (await _dbContext.Collaborators
-                .AnyAsync(x => x.UserId == _userService.GetUserIdFromClaims() && x.ListId == listOwner.ListId))
+                .AnyAsync(x => x.UserId == _authService.GetUserIdFromClaims() && x.ListId == listOwner.ListId))
             {
                 return Result.Succeeded(new
                 {

@@ -8,18 +8,18 @@ namespace Website.Application.Lists.CreateList.Commands
 {
     public sealed class CreateListCommandHandler : IRequestHandler<CreateListCommand, Result>
     {
-        private readonly IUserService _userService;
         private readonly IWebsiteDbContext _dbContext;
+        private readonly IAuthService _authService;
 
-        public CreateListCommandHandler(IUserService userService, IWebsiteDbContext dbContext)
+        public CreateListCommandHandler(IWebsiteDbContext dbContext, IAuthService authService)
         {
-            _userService = userService;
             _dbContext = dbContext;
+            _authService = authService;
         }
 
         public async Task<Result> Handle(CreateListCommand request, CancellationToken cancellationToken)
         {
-            string userId = _userService.GetUserIdFromClaims();
+            string userId = _authService.GetUserIdFromClaims();
 
             // Create the list
             List list = List.Create(request.Name, request.Description);

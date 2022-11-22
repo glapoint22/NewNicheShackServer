@@ -11,17 +11,17 @@ namespace Website.Application.Lists.AddCollaborator.Commands
     public sealed class AddCollaboratorCommandHandler : IRequestHandler<AddCollaboratorCommand, Result>
     {
         private readonly IWebsiteDbContext _dbContext;
-        private readonly IUserService _userService;
+        private readonly IAuthService _authService;
 
-        public AddCollaboratorCommandHandler(IWebsiteDbContext dbContext, IUserService userService)
+        public AddCollaboratorCommandHandler(IWebsiteDbContext dbContext, IAuthService authService)
         {
             _dbContext = dbContext;
-            _userService = userService;
+            _authService = authService;
         }
 
         public async Task<Result> Handle(AddCollaboratorCommand request, CancellationToken cancellationToken)
         {
-            string userId = _userService.GetUserIdFromClaims();
+            string userId = _authService.GetUserIdFromClaims();
 
             List? list = await _dbContext.Lists
                 .Where(x => x.CollaborateId == request.CollaborateId)

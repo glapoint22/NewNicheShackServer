@@ -37,8 +37,6 @@ namespace Website.Application.Common.Interfaces
 
         string GetUserData(User user, string provider, bool hasPassword);
 
-        string GetUserIdFromClaims();
-
         Task<bool> HasPasswordAsync(User user);
 
         Task<IdentityResult> ResetPasswordAsync(User user, string token, string newPassword);

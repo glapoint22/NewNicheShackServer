@@ -145,5 +145,14 @@ namespace Shared.Services
             if (expirationClaim == null) return null;
             return DateTimeOffset.Parse(expirationClaim.Value);
         }
+
+
+
+
+        // ------------------------------------------------------------------ Get User Id From Claims --------------------------------------------------------------------
+        public string GetUserIdFromClaims()
+        {
+            return _claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier)?.Value!;
+        }
     }
 }

@@ -11,17 +11,17 @@ namespace Website.Application.Notifications.PostMessageNotification.Commands
     public sealed class PostMessageNotificationCommandHandler : IRequestHandler<PostMessageNotificationCommand, Result>
     {
         private readonly IWebsiteDbContext _dbContext;
-        private readonly IUserService _userService;
+        private readonly IAuthService _authService;
 
-        public PostMessageNotificationCommandHandler(IWebsiteDbContext dbContext, IUserService userService)
+        public PostMessageNotificationCommandHandler(IWebsiteDbContext dbContext, IAuthService authService)
         {
             _dbContext = dbContext;
-            _userService = userService;
+            _authService = authService;
         }
 
         public async Task<Result> Handle(PostMessageNotificationCommand request, CancellationToken cancellationToken)
         {
-            string userId = _userService.GetUserIdFromClaims();
+            string userId = _authService.GetUserIdFromClaims();
 
             // Check to see if the user is on the block list
             if (await _dbContext.Users
