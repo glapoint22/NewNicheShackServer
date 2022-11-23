@@ -5,8 +5,14 @@
         public Guid Id { get; set; }
         public DateTime? ArchiveDate { get; set; }
 
-        public ICollection<Notification> Notifications { get; private set; } = new HashSet<Notification>();
+        // Notifications
+        private readonly List<Notification> _notifications = new();
+        public IReadOnlyList<Notification> Notifications => _notifications.AsReadOnly();
 
+
+
+
+        // -------------------------------------------------------------------------------- Create ------------------------------------------------------------------------------
         public static NotificationGroup Create()
         {
             NotificationGroup notificationGroup = new()
@@ -15,6 +21,33 @@
             };
 
             return notificationGroup;
+        }
+
+
+
+
+
+        // -------------------------------------------------------------------------------- Archive ------------------------------------------------------------------------------
+        public void Archive()
+        {
+            // Archive the group
+            ArchiveDate = DateTime.UtcNow;
+
+            // Archaive the notification
+            if (_notifications.Count > 0)
+            {
+                _notifications[0].IsArchived = true;
+            }
+        }
+
+
+
+
+
+        // -------------------------------------------------------------------------- Delete Notifications -----------------------------------------------------------------------
+        public void DeleteNotifications(List<Guid> notificationIds)
+        {
+            _notifications.RemoveAll(x => notificationIds.Contains(x.Id));
         }
     }
 }
