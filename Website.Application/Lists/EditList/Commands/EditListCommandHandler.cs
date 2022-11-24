@@ -36,7 +36,6 @@ namespace Website.Application.Lists.EditList.Commands
             list.AddDomainEvent(new ListEditedEvent(userId, list.Id, list.Name, list.Description, request.Name, request.Description));
 
             // Save the changes
-            _dbContext.Lists.Update(list);
             await _dbContext.SaveChangesAsync();
 
             return Result.Succeeded();

@@ -33,10 +33,6 @@ namespace Website.Application.ProductReviews.PostReview.Commands
             product.SetRating(request.Rating);
 
 
-            // Update the product and save the changes to the database
-            _dbContext.Products.Update(product);
-
-
             product.AddDomainEvent(new PostedReviewEvent(userId, request.ProductId, productReview.Id, request.Rating, request.Title, request.Text));
             await _dbContext.SaveChangesAsync();
 

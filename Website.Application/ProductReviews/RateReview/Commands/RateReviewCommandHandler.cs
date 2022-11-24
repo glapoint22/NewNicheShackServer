@@ -20,8 +20,6 @@ namespace Website.Application.ProductReviews.RateReview.Commands
 
             review.Rate(request.Likes, request.Dislikes);
 
-            // Update and save
-            _dbContext.ProductReviews.Update(review);
             await _dbContext.SaveChangesAsync();
 
             return Result.Succeeded();

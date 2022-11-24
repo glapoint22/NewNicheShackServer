@@ -20,7 +20,7 @@ namespace Website.Application.ProductReviews.GetReviews.Queries
         {
             var reviews = await _dbContext.ProductReviews
                 .SortBy(request.SortBy)
-                .Where(x => x.ProductId == request.ProductId)
+                .Where(x => x.ProductId == request.ProductId && !x.Deleted)
                 .Where(request.FilterBy)
                 .Select()
                 .Skip((request.Page - 1) * 10)
@@ -28,7 +28,7 @@ namespace Website.Application.ProductReviews.GetReviews.Queries
                 .ToListAsync();
 
             int totalReviews = await _dbContext.ProductReviews
-                .Where(x => x.ProductId == request.ProductId)
+                .Where(x => x.ProductId == request.ProductId && !x.Deleted)
                 .Where(request.FilterBy)
                 .CountAsync(cancellationToken);
 

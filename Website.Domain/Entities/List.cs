@@ -52,7 +52,7 @@ namespace Website.Domain.Entities
 
 
         // -------------------------------------------------------------------------- Edit ----------------------------------------------------------------------------
-        public void Edit(string name, string description)
+        public void Edit(string name, string? description)
         {
             Name = name;
             Description = description;

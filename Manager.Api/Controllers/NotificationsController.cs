@@ -4,11 +4,15 @@ using Manager.Application.Notifications.Archive.Commands;
 using Manager.Application.Notifications.DeleteNotifications.Commands;
 using Manager.Application.Notifications.GetArchivedNotifications.Queries;
 using Manager.Application.Notifications.GetErrorNotification.Queries;
+using Manager.Application.Notifications.GetMessageNotification.Queries;
 using Manager.Application.Notifications.GetNewNotifications.Queries;
 using Manager.Application.Notifications.GetNotificationCount.Queries;
+using Manager.Application.Notifications.GetProductNotification.Queries;
+using Manager.Application.Notifications.GetReviewComplaintNotification.Queries;
 using Manager.Application.Notifications.GetUserImageNotification.Queries;
 using Manager.Application.Notifications.GetUserNameNotification.Queries;
 using Manager.Application.Notifications.PostNote.Commands;
+using Manager.Application.Notifications.RemoveReview.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +33,109 @@ namespace Manager.Api.Controllers
         }
 
 
+
+
+        // -------------------------------------------------------------------- Add Noncompliant Strike User Image ---------------------------------------------------------------
+        [HttpPut]
+        [Route("AddNoncompliantStrikeUserImage")]
+        public async Task<ActionResult> AddNoncompliantStrikeUserImage(AddNoncompliantStrikeUserImageCommand addNoncompliantStrikeUserImage)
+        {
+            return SetResponse(await _mediator.Send(addNoncompliantStrikeUserImage));
+        }
+
+
+
+
+
+
+
+
+        // --------------------------------------------------------------------- Add Noncompliant Strike User Name ---------------------------------------------------------------
+        [HttpPut]
+        [Route("AddNoncompliantStrikeUserName")]
+        public async Task<ActionResult> AddNoncompliantStrikeUserName(AddNoncompliantStrikeUserNameCommand addNoncompliantStrikeUserName)
+        {
+            return SetResponse(await _mediator.Send(addNoncompliantStrikeUserName));
+        }
+
+
+
+
+
+
+
+        // -------------------------------------------------------------------------------- Archive ------------------------------------------------------------------------------
+        [HttpPut]
+        [Route("Archive")]
+        public async Task<ActionResult> Archive(ArchiveCommand archive)
+        {
+            return SetResponse(await _mediator.Send(archive));
+        }
+
+
+
+
+
+        // --------------------------------------------------------------------------- Delete Notifications ----------------------------------------------------------------------
+        [HttpDelete]
+        [Route("DeleteNotifications")]
+        public async Task<ActionResult> DeleteNotifications(Guid notificationGroupId, [FromQuery] List<Guid> notificationIds)
+        {
+            return SetResponse(await _mediator.Send(new DeleteNotificationsCommand(notificationGroupId, notificationIds)));
+        }
+
+
+
+
+
+
+
+
+
+        // ----------------------------------------------------------------------- Get Archived Notifications --------------------------------------------------------------------
+        [HttpGet]
+        [Route("GetArchivedNotifications")]
+        public async Task<ActionResult> GetArchivedNotifications()
+        {
+            return SetResponse(await _mediator.Send(new GetArchivedNotificationsQuery()));
+        }
+
+
+
+
+
+
+
+        // ------------------------------------------------------------------------- Get Error Notification ----------------------------------------------------------------------
+        [HttpGet]
+        [Route("GetErrorNotification")]
+        public async Task<ActionResult> GetErrorNotification(Guid notificationGroupId)
+        {
+            return SetResponse(await _mediator.Send(new GetErrorNotificationQuery(notificationGroupId)));
+        }
+
+
+
+
+
+
+
+
+        // ------------------------------------------------------------------------ Get Message Notification ---------------------------------------------------------------------
+        [HttpGet]
+        [Route("GetMessageNotification")]
+        public async Task<ActionResult> GetMessageNotification(Guid notificationGroupId, bool isNew)
+        {
+            return SetResponse(await _mediator.Send(new GetMessageNotificationQuery(notificationGroupId, isNew)));
+        }
+
+
+
+
+
+
+
+
         // ------------------------------------------------------------------------- Get New Notifications -----------------------------------------------------------------------
         [HttpGet]
         [Route("GetNewNotifications")]
@@ -46,36 +153,33 @@ namespace Manager.Api.Controllers
 
 
 
-        // ----------------------------------------------------------------------- Get Archived Notifications --------------------------------------------------------------------
+
+
+
+
+        // ------------------------------------------------------------------------ Get Product Notification ---------------------------------------------------------------------
         [HttpGet]
-        [Route("GetArchivedNotifications")]
-        public async Task<ActionResult> GetArchivedNotifications()
+        [Route("GetProductNotification")]
+        public async Task<ActionResult> GetProductNotification(Guid notificationGroupId)
         {
-            return SetResponse(await _mediator.Send(new GetArchivedNotificationsQuery()));
+            return SetResponse(await _mediator.Send(new GetProductNotificationQuery(notificationGroupId)));
         }
 
 
 
 
 
-        // ------------------------------------------------------------------------- Get Error Notification ----------------------------------------------------------------------
+
+
+        // ------------------------------------------------------------------- Get Review Complaint Notification -----------------------------------------------------------------
         [HttpGet]
-        [Route("GetErrorNotification")]
-        public async Task<ActionResult> GetErrorNotification(Guid notificationGroupId)
+        [Route("GetReviewComplaintNotification")]
+        public async Task<ActionResult> GetReviewComplaintNotification(Guid notificationGroupId)
         {
-            return SetResponse(await _mediator.Send(new GetErrorNotificationQuery(notificationGroupId)));
+            return SetResponse(await _mediator.Send(new GetReviewComplaintNotificationQuery(notificationGroupId)));
         }
 
 
-
-
-        // ----------------------------------------------------------------------- Get User Name Notification --------------------------------------------------------------------
-        [HttpGet]
-        [Route("GetUserNameNotification")]
-        public async Task<ActionResult> GetUserNameNotification(Guid notificationGroupId, bool isNew)
-        {
-            return SetResponse(await _mediator.Send(new GetUserNameNotificationQuery(notificationGroupId, isNew)));
-        }
 
 
 
@@ -92,6 +196,29 @@ namespace Manager.Api.Controllers
 
 
 
+
+
+
+
+
+
+        // ----------------------------------------------------------------------- Get User Name Notification --------------------------------------------------------------------
+        [HttpGet]
+        [Route("GetUserNameNotification")]
+        public async Task<ActionResult> GetUserNameNotification(Guid notificationGroupId, bool isNew)
+        {
+            return SetResponse(await _mediator.Send(new GetUserNameNotificationQuery(notificationGroupId, isNew)));
+        }
+
+
+
+        
+
+
+
+
+
+
         // ------------------------------------------------------------------------------- Post Note -----------------------------------------------------------------------------
         [HttpPost]
         [Route("PostNote")]
@@ -100,49 +227,22 @@ namespace Manager.Api.Controllers
             return SetResponse(await _mediator.Send(postNote));
         }
 
+        
 
 
 
-        // -------------------------------------------------------------------------------- Archive ------------------------------------------------------------------------------
+
+        
+
+
+
+
+        // ----------------------------------------------------------------------------- Remove Review ---------------------------------------------------------------------------
         [HttpPut]
-        [Route("Archive")]
-        public async Task<ActionResult> Archive(ArchiveCommand archive)
+        [Route("RemoveReview")]
+        public async Task<ActionResult> RemoveReview(RemoveReviewCommand RemoveReview)
         {
-            return SetResponse(await _mediator.Send(archive));
-        }
-
-
-
-
-        // --------------------------------------------------------------------- Add Noncompliant Strike User Name ---------------------------------------------------------------
-        [HttpPut]
-        [Route("AddNoncompliantStrikeUserName")]
-        public async Task<ActionResult> AddNoncompliantStrikeUserName(AddNoncompliantStrikeUserNameCommand addNoncompliantStrikeUserName)
-        {
-            return SetResponse(await _mediator.Send(addNoncompliantStrikeUserName));
-        }
-
-
-
-
-        // -------------------------------------------------------------------- Add Noncompliant Strike User Image ---------------------------------------------------------------
-        [HttpPut]
-        [Route("AddNoncompliantStrikeUserImage")]
-        public async Task<ActionResult> AddNoncompliantStrikeUserImage(AddNoncompliantStrikeUserImageCommand addNoncompliantStrikeUserImage)
-        {
-            return SetResponse(await _mediator.Send(addNoncompliantStrikeUserImage));
-        }
-
-
-
-
-
-        // --------------------------------------------------------------------------- Delete Notifications ----------------------------------------------------------------------
-        [HttpDelete]
-        [Route("DeleteNotifications")]
-        public async Task<ActionResult> DeleteNotifications(Guid notificationGroupId, [FromQuery] List<Guid> notificationIds)
-        {
-            return SetResponse(await _mediator.Send(new DeleteNotificationsCommand(notificationGroupId, notificationIds)));
+            return SetResponse(await _mediator.Send(RemoveReview));
         }
     }
 }
