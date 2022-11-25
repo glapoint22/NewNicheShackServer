@@ -380,10 +380,15 @@ namespace Shared.QueryBuilder.Classes
                 MethodCallExpression like4 = Expression.Call(like,
                     Expression.Property(null, typeof(EF), nameof(EF.Functions)), nameProperty, pattern);
 
+                pattern = Expression.Constant(word + "%");
+                MethodCallExpression like5 = Expression.Call(like,
+                    Expression.Property(null, typeof(EF), nameof(EF.Functions)), nameProperty, pattern);
+
                 BinaryExpression searchExpression = Expression.OrElse(like1, like2);
 
                 searchExpression = Expression.OrElse(searchExpression, like3);
                 searchExpression = Expression.OrElse(searchExpression, like4);
+                searchExpression = Expression.OrElse(searchExpression, like5);
 
                 expression = Expression.OrElse(expression, searchExpression);
             }

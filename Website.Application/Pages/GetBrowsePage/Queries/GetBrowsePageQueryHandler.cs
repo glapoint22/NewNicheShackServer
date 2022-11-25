@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Shared.Common.Classes;
 using Shared.PageBuilder.Classes;
 using Shared.PageBuilder.Enums;
+using Shared.PageBuilder.Widgets.GridWidget.Classes;
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
 

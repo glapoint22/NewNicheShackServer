@@ -1,4 +1,5 @@
-﻿using Website.Application.Common.Classes;
+﻿using Shared.Common.Dtos;
+using Website.Application.Common.Classes;
 
 namespace Website.Infrastructure.Services.SearchSuggestionsService.Classes
 {

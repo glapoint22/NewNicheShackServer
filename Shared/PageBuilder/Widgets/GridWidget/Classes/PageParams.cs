@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using System.Web;
 
-namespace Website.Application.Common.Classes
+namespace Shared.PageBuilder.Widgets.GridWidget.Classes
 {
     public sealed class PageParams
     {

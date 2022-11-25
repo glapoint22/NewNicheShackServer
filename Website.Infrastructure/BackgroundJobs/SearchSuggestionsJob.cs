@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Quartz;
+using Shared.Common.Dtos;
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
 

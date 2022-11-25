@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using Shared.Common.Dtos;
+using System.Text.RegularExpressions;
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
 using Website.Infrastructure.Services.SearchSuggestionsService.Classes;

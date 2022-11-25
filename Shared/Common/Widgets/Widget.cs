@@ -1,4 +1,5 @@
 ﻿using Shared.Common.Enums;
+using Shared.Common.Interfaces;
 using System.Text.Json;
 
 namespace Shared.Common.Widgets
@@ -8,7 +9,6 @@ namespace Shared.Common.Widgets
         public float? Width { get; set; }
         public float? Height { get; set; }
         public WidgetType WidgetType { get; set; }
-
 
 
         public virtual void SetProperty(string? property, ref Utf8JsonReader reader, JsonSerializerOptions options)
@@ -26,7 +26,7 @@ namespace Shared.Common.Widgets
         }
 
 
-        public virtual Task SetData()
+        public virtual Task SetData(IRepository repository)
         {
             return Task.CompletedTask;
         }

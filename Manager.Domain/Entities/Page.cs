@@ -1,4 +1,4 @@
-﻿namespace Website.Domain.Entities
+﻿namespace Manager.Domain.Entities
 {
     public sealed class Page
     {

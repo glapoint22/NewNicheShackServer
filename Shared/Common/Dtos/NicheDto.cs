@@ -1,4 +1,4 @@
-﻿namespace Website.Application.Common.Classes
+﻿namespace Shared.Common.Dtos
 {
     public sealed class NicheDto
     {

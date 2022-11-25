@@ -1,4 +1,6 @@
-﻿namespace Website.Application.Common.Classes
+﻿using Shared.Common.Dtos;
+
+namespace Website.Application.Common.Classes
 {
     public sealed class SearchSuggestion
     {

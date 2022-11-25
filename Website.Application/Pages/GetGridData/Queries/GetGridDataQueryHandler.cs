@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Shared.Common.Classes;
-using Website.Application.Common.Classes;
+using Shared.PageBuilder.Widgets.GridWidget.Classes;
 using Website.Application.Common.Interfaces;
 
 namespace Website.Application.Pages.GetGridData.Queries

@@ -20,4 +20,8 @@
     <ProjectReference Include="..\Manager.Application\Manager.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\PageService\Classes\" />
+  </ItemGroup>
+
 </Project>

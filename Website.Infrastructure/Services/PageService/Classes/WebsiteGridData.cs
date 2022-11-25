@@ -1,27 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shared.Common.Classes;
 using Shared.Common.Dtos;
+using Shared.PageBuilder.Widgets.GridWidget.Classes;
 using System.Linq.Expressions;
 using Website.Application.Common.Classes;
 using Website.Application.Common.Interfaces;
 using Website.Domain.Entities;
 
-namespace Website.Application.Common.Classes
+namespace Website.Infrastructure.Services.PageService.Classes
 {
-    public sealed class GridData
+    public sealed class WebsiteGridData : GridData
     {
-        public List<ProductDto> Products { get; set; } = new List<ProductDto>();
-        public int TotalProducts { get; set; }
-        public int PageCount { get; set; }
-        public Filters Filters { get; set; } = null!;
-        public int ProductCountStart { get; set; }
-        public int ProductCountEnd { get; set; }
-
-        private const int _limit = 40;
         private readonly IWebsiteDbContext _dbContext;
         private readonly WebsiteQueryBuilder _queryBuilder = new();
 
-        public GridData(IWebsiteDbContext dbContext)
+        public WebsiteGridData(IWebsiteDbContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -40,7 +33,7 @@ namespace Website.Application.Common.Classes
 
 
         // ------------------------------------------------------------------------ Set Data -----------------------------------------------------------------------------
-        public async Task SetData(PageParams pageParams)
+        private async Task SetData(PageParams pageParams)
         {
             Products = await GetProducts(pageParams);
             Filters = await GetFilters(pageParams);

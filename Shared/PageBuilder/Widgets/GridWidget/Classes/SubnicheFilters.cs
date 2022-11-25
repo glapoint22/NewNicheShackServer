@@ -1,4 +1,6 @@
-﻿namespace Website.Application.Common.Classes
+﻿using Shared.Common.Dtos;
+
+namespace Shared.PageBuilder.Widgets.GridWidget.Classes
 {
     public sealed class SubnicheFilters
     {

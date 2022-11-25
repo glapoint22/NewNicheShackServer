@@ -1,4 +1,5 @@
 ﻿using Shared.Common.Classes;
+using Shared.Common.Interfaces;
 using System.Text.Json;
 
 namespace Shared.Common.Widgets
@@ -77,6 +78,15 @@ namespace Shared.Common.Widgets
                 case "textActiveColor":
                     TextActiveColor = (string?)JsonSerializer.Deserialize(ref reader, typeof(string), options);
                     break;
+            }
+        }
+
+
+        public async override Task SetData(IRepository repository)
+        {
+            if (Background != null && Background.Image != null)
+            {
+                await Background.Image.SetData(repository);
             }
         }
     }

@@ -1,5 +1,5 @@
 ﻿using Shared.PageBuilder.Classes;
-using Website.Application.Common.Classes;
+using Shared.PageBuilder.Widgets.GridWidget.Classes;
 
 namespace Website.Application.Common.Interfaces
 {
