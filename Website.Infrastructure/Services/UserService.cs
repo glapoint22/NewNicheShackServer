@@ -77,7 +77,7 @@ namespace Website.Infrastructure.Services
             User user;
             IdentityResult result;
 
-            user = User.Create(firstName, lastName, email);
+            user = User.Create(firstName, lastName, email.ToLower());
 
             if (password != null)
             {

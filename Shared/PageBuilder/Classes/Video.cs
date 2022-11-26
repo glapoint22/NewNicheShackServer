@@ -1,4 +1,6 @@
-﻿namespace Shared.PageBuilder.Classes
+﻿using Shared.Common.Interfaces;
+
+namespace Shared.PageBuilder.Classes
 {
     public sealed class Video
     {
@@ -7,5 +9,10 @@
         public string Name { get; set; } = string.Empty;
         public int VideoType { get; set; }
         public string VideoId { get; set; } = string.Empty;
+
+
+        public async Task SetData(IRepository repository)
+        {
+        }
     }
 }

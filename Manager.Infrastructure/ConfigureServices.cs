@@ -2,6 +2,7 @@
 using Manager.Domain.Entities;
 using Manager.Infrastructure.Persistence;
 using Manager.Infrastructure.Services;
+using Manager.Infrastructure.Services.PageService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -71,6 +72,7 @@ namespace Manager.Infrastructure
             services.AddScoped<IManagerDbContext>(provider => provider.GetRequiredService<ManagerDbContext>());
             services.AddTransient<ICookieService, ManagerCookieService>();
             services.AddTransient<IAuthService, ManagerAuthService>();
+            services.AddScoped<IPageService, PageService>();
             services.AddHttpContextAccessor();
 
             return services;

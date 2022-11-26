@@ -37,7 +37,7 @@ namespace Manager.Application.Notifications.GetErrorNotification.Queries
                     x.User.LastName,
                     x.User.Image,
                     x.User.Email,
-                    x.Note,
+                    Text = x.Note,
                     Date = x.CreationDate
                 }).ToListAsync();
 

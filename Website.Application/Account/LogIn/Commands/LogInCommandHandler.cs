@@ -26,7 +26,7 @@ namespace Website.Application.Account.LogIn.Commands
 
         public async Task<Result> Handle(LogInCommand request, CancellationToken cancellationToken)
         {
-            User user = await _userService.GetUserByEmailAsync(request.Email);
+            User user = await _userService.GetUserByEmailAsync(request.Email.ToLower());
 
             if (user == null || await _userService.CheckPasswordAsync(user, request.Password) == false)
             {

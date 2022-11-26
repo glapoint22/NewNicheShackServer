@@ -2,6 +2,7 @@
 using Shared.Common.Enums;
 using Shared.Common.Interfaces;
 using Shared.Common.Widgets;
+using Shared.PageBuilder.Widgets;
 using Shared.PageBuilder.Widgets.GridWidget;
 using System.Text.Json;
 
@@ -11,7 +12,7 @@ namespace Shared.PageBuilder.Classes
     {
         private readonly IRepository _repository;
 
-        protected PageBuilder(IRepository repository)
+        public PageBuilder(IRepository repository)
         {
             _repository = repository;
         }
@@ -117,25 +118,25 @@ namespace Shared.PageBuilder.Classes
                     widget = (ButtonWidget)widgetData;
                     break;
                 case WidgetType.Text:
-                    //widget = (TextWidget)widgetData;
+                    widget = (TextWidget)widgetData;
                     break;
                 case WidgetType.Image:
-                    //widget = (ImageWidget)widgetData;
+                    widget = (ImageWidget)widgetData;
                     break;
                 case WidgetType.Container:
-                    //widget = (ContainerWidget)widgetData;
+                    widget = (ContainerWidget)widgetData;
                     break;
                 case WidgetType.Line:
-                    //widget = (LineWidget)widgetData;
+                    widget = (LineWidget)widgetData;
                     break;
                 case WidgetType.Video:
-                    //widget = (VideoWidget)widgetData;
+                    widget = (VideoWidget)widgetData;
                     break;
                 case WidgetType.ProductSlider:
-                    //widget = (ProductSliderWidget)widgetData;
+                    widget = (ProductSliderWidget)widgetData;
                     break;
                 case WidgetType.Carousel:
-                    //widget = (CarouselWidget)widgetData;
+                    widget = (CarouselWidget)widgetData;
                     break;
                 case WidgetType.Grid:
                     widget = (GridWidget)widgetData;
