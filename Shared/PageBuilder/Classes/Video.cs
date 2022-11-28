@@ -1,10 +1,11 @@
-﻿using Shared.Common.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using Shared.Common.Interfaces;
 
 namespace Shared.PageBuilder.Classes
 {
     public sealed class Video
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string Thumbnail { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public int VideoType { get; set; }
@@ -13,6 +14,20 @@ namespace Shared.PageBuilder.Classes
 
         public async Task SetData(IRepository repository)
         {
+            var video = await repository.Media(x => x.Id == Id)
+                .Select(x => new
+                {
+                    x.Name,
+                    x.Thumbnail,
+                    x.VideoType,
+                    x.VideoId
+                })
+                .SingleAsync();
+
+            Name = video.Name;
+            Thumbnail = video.Thumbnail!;
+            VideoType = video.VideoType;
+            VideoId = video.VideoId!;
         }
     }
 }

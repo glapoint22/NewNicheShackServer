@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Shared.Common.Classes;
 using System.Reflection;
 
 namespace Manager.Api
@@ -8,7 +9,11 @@ namespace Manager.Api
         public static IServiceCollection ApiServices(this IServiceCollection services)
         {
             services.AddMediatR(Assembly.GetExecutingAssembly());
-            services.AddControllers();
+            services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(new WidgetJsonConverter());
+                });
 
             return services;
         }

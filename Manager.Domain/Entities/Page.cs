@@ -1,4 +1,4 @@
-﻿using Manager.Domain.Classes;
+﻿using Shared.Common.Classes;
 
 namespace Manager.Domain.Entities
 {

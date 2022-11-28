@@ -1,11 +1,13 @@
 ﻿using Shared.Common.Dtos;
 using Shared.Common.Interfaces;
+using Shared.Services.MediaService.Interfaces;
+using System.Linq.Expressions;
 
 namespace Website.Infrastructure.Services.PageService.Classes
 {
     public sealed class Repository : IRepository
     {
-        public Task<MediaDto> GetMedia(int Id)
+        public IQueryable<IMedia> Media(Expression<Func<IMedia, bool>> predicate)
         {
             throw new NotImplementedException();
         }

@@ -10,6 +10,7 @@ namespace Manager.Infrastructure.Persistence
     {
         public ManagerDbContext(DbContextOptions<ManagerDbContext> options) : base(options) { }
 
+        public DbSet<Media> Media => Set<Media>();
         public DbSet<NotificationEmployeeNote> NotificationEmployeeNotes => Set<NotificationEmployeeNote>();
         public DbSet<Page> Pages => Set<Page>();
         public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();

@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Manager.Domain.Classes
+namespace Shared.Common.Classes
 {
     public sealed class Utility
     {

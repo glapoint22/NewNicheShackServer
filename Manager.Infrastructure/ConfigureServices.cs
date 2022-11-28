@@ -73,6 +73,7 @@ namespace Manager.Infrastructure
             services.AddTransient<ICookieService, ManagerCookieService>();
             services.AddTransient<IAuthService, ManagerAuthService>();
             services.AddScoped<IPageService, PageService>();
+            services.AddScoped<IMediaService, ManagerMediaService>();
             services.AddHttpContextAccessor();
 
             return services;
