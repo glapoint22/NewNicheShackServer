@@ -1,4 +1,4 @@
-﻿namespace Website.Domain.Classes
+﻿namespace Shared.Common.Classes
 {
     public abstract class ValueObject
     {

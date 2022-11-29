@@ -41,6 +41,10 @@ namespace Manager.Domain.Entities
         public int MediaType { get; set; }
 
 
+
+        public ICollection<Product> Products { get; private set; } = new HashSet<Product>();
+
+
         public static Media CreateImage(string name)
         {
             return new Media()

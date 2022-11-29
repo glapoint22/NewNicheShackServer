@@ -14,7 +14,10 @@ namespace Manager.Infrastructure.Persistence
         public DbSet<NotificationEmployeeNote> NotificationEmployeeNotes => Set<NotificationEmployeeNote>();
         public DbSet<Page> Pages => Set<Page>();
         public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
-
+        public DbSet<Niche> Niches => Set<Niche>();
+        public DbSet<Product> Products => Set<Product>();
+        public DbSet<Subniche> Subniches => Set<Subniche>();
+        public DbSet<Vendor> Vendors => Set<Vendor>();
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

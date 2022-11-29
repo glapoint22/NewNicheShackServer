@@ -1,5 +1,5 @@
-﻿using Website.Domain.Classes;
-using Website.Domain.ValueObjects;
+﻿using Shared.Common.ValueObjects;
+using Website.Domain.Classes;
 
 namespace Website.Domain.Entities
 {

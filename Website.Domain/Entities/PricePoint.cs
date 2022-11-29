@@ -1,4 +1,4 @@
-﻿using Website.Domain.ValueObjects;
+﻿using Shared.Common.ValueObjects;
 
 namespace Website.Domain.Entities
 {

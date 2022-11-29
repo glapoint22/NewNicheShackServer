@@ -1,6 +1,6 @@
-﻿using Website.Domain.Classes;
+﻿using Shared.Common.Classes;
 
-namespace Website.Domain.ValueObjects
+namespace Shared.Common.ValueObjects
 {
     public sealed class RecurringPayment : ValueObject
     {
