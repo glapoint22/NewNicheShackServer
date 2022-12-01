@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Shared.Common.Enums;
+using Shared.Common.Interfaces;
 using Shared.Services.MediaService.Classes;
-using Shared.Services.MediaService.Interfaces;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;

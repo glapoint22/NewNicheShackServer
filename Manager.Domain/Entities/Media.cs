@@ -1,5 +1,5 @@
 ﻿using Shared.Common.Enums;
-using Shared.Services.MediaService.Interfaces;
+using Shared.Common.Interfaces;
 
 namespace Manager.Domain.Entities
 {
@@ -43,6 +43,9 @@ namespace Manager.Domain.Entities
 
 
         public ICollection<Product> Products { get; private set; } = new HashSet<Product>();
+        public ICollection<Subproduct> Subproducts { get; private set; } = new HashSet<Subproduct>();
+        public ICollection<ProductMedia> ProductMedia { get; private set; } = new HashSet<ProductMedia>();
+        public ICollection<PricePoint> PricePoints { get; private set; } = new HashSet<PricePoint>();
 
 
         public static Media CreateImage(string name)

@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
+using Shared.Common.Classes;
 using Shared.QueryBuilder.Enums;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -26,7 +28,7 @@ namespace Shared.QueryBuilder.Classes
 
 
         // ------------------------------------------------------------------------ Build Query -----------------------------------------------------------------------
-        protected Expression<Func<T, bool>> BuildQuery<T>(Query query)
+        public Expression<Func<T, bool>> BuildQuery<T>(Query query)
         {
             ParameterExpression parameter = Expression.Parameter(typeof(T), "x");
             Expression expression = GenerateExpression(query, parameter);
@@ -49,6 +51,28 @@ namespace Shared.QueryBuilder.Classes
             {
                 QueryType = queryType,
                 StringValue = stringValue,
+            };
+
+
+            // Create the element
+            return new QueryElement()
+            {
+                QueryElementType = QueryElementType.QueryRow,
+                QueryRow = row
+            };
+        }
+
+
+
+
+        // --------------------------------------------------------------------- Build Query Row ---------------------------------------------------------------------
+        protected static QueryElement BuildQueryRow(QueryType queryType, Item item)
+        {
+            // Create the row
+            QueryRow row = new()
+            {
+                QueryType = queryType,
+                Item = item,
             };
 
 
@@ -227,12 +251,12 @@ namespace Shared.QueryBuilder.Classes
             {
                 // Niche
                 case QueryType.Niche:
-                    expression = GetNicheExpression(queryRow.StringValue!, parameter);
+                    expression = GetNicheExpression(queryRow.Item?.Id!, parameter);
                     break;
 
                 // Subniche
                 case QueryType.Subniche:
-                    expression = GetSubnicheExpression(queryRow.StringValue!, parameter);
+                    expression = GetSubnicheExpression(queryRow.Item?.Id!, parameter);
                     break;
 
                 // Price Range
@@ -255,8 +279,9 @@ namespace Shared.QueryBuilder.Classes
 
                 //case QueryType.KeywordGroup:
                 //    break;
-                //case QueryType.Date:
-                //    break;
+                case QueryType.Date:
+                    expression = GetDateExpression((DateTime)queryRow.Date!, (ComparisonOperatorType)queryRow.ComparisonOperatorType!, parameter);
+                    break;
 
                 // Default
                 default:
@@ -304,9 +329,21 @@ namespace Shared.QueryBuilder.Classes
         // --------------------------------------------------------------------- Get Rating Expression --------------------------------------------------------------------
         private static Expression GetRatingExpression(int rating, ComparisonOperatorType comparisonOperatorType, ParameterExpression parameter)
         {
-            MemberExpression ratingExpression = Expression.Property(parameter, "Rating");
-            ConstantExpression value = Expression.Constant(Convert.ToDouble(rating));
-            return GetComparisonOperatorExpression(comparisonOperatorType, ratingExpression, value);
+            MemberExpression ratingProperty = Expression.Property(parameter, "Rating");
+            ConstantExpression ratingValue = Expression.Constant(Convert.ToDouble(rating));
+            return GetComparisonOperatorExpression(comparisonOperatorType, ratingProperty, ratingValue);
+        }
+
+
+
+
+
+        // ---------------------------------------------------------------------- Get Date Expression ---------------------------------------------------------------------
+        private static Expression GetDateExpression(DateTime date, ComparisonOperatorType comparisonOperatorType, ParameterExpression parameter)
+        {
+            MemberExpression dateProperty = Expression.Property(parameter, "Date");
+            ConstantExpression dateValue = Expression.Constant(date);
+            return GetComparisonOperatorExpression(comparisonOperatorType, dateProperty, dateValue);
         }
 
 

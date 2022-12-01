@@ -11,6 +11,15 @@ namespace Shared.PageBuilder.Classes
 
         public async Task SetData(IRepository repository)
         {
+            if (Image != null)
+            {
+                await Image.SetData(repository);
+            }
+
+            if (Link != null)
+            {
+                await Link.SetData(repository);
+            }
         }
     }
 }

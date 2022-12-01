@@ -1,4 +1,4 @@
-﻿namespace Shared.Services.MediaService.Interfaces
+﻿namespace Shared.Common.Interfaces
 {
     public interface IMedia
     {

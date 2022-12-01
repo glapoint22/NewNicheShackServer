@@ -2,7 +2,7 @@
 {
     public sealed class NotificationEmployeeNote
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public Guid NotificationGroupId { get; set; }
         public Guid? NotificationId { get; set; }
         public string EmployeeId { get; set; } = string.Empty;
@@ -16,6 +16,7 @@
         {
             return new NotificationEmployeeNote
             {
+                Id = Guid.NewGuid(),
                 NotificationGroupId = notificationGroupId,
                 NotificationId = notificationId,
                 EmployeeId = employeeId,

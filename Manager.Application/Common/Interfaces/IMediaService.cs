@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Shared.Common.Enums;
-using Shared.Services.MediaService.Interfaces;
+using Shared.Common.Interfaces;
 using System.Drawing;
 
 namespace Manager.Application.Common.Interfaces

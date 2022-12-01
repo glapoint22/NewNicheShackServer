@@ -1,7 +1,5 @@
 ﻿using Manager.Application.Common.Interfaces;
-using Shared.Common.Dtos;
 using Shared.Common.Interfaces;
-using Shared.Services.MediaService.Interfaces;
 using System.Linq.Expressions;
 
 namespace Manager.Infrastructure.Services.PageService.Classes
@@ -21,14 +19,16 @@ namespace Manager.Infrastructure.Services.PageService.Classes
                 .Where(predicate);
         }
 
-        public Task<PageDto> GetPage(string Id)
+        public IQueryable<IPage> Pages(Expression<Func<IPage, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return _dbContext.Pages
+                .Where(predicate);
         }
 
-        public Task<ProductDto> GetProduct(string Id)
+        public IQueryable<IProduct> Products(Expression<Func<IProduct, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return _dbContext.Products
+                .Where(predicate);
         }
     }
 }

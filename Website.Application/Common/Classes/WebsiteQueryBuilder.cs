@@ -1,4 +1,5 @@
-﻿using Shared.PageBuilder.Widgets.GridWidget.Classes;
+﻿using Shared.Common.Classes;
+using Shared.PageBuilder.Widgets.GridWidget.Classes;
 using Shared.QueryBuilder.Classes;
 using Shared.QueryBuilder.Enums;
 using System.Linq.Expressions;
@@ -191,7 +192,10 @@ namespace Website.Application.Common.Classes
                 }
 
                 // Build a query row for the niche id
-                QueryElement nicheQueryRow = BuildQueryRow(QueryType.Niche, pageParams.NicheId);
+                QueryElement nicheQueryRow = BuildQueryRow(QueryType.Niche, new Item
+                {
+                    Id = pageParams.NicheId
+                });
                 query.Elements.Add(nicheQueryRow);
             }
 
@@ -208,7 +212,10 @@ namespace Website.Application.Common.Classes
                 }
 
                 // Build a query row for the subniche id
-                QueryElement subnicheIdQueryRow = BuildQueryRow(QueryType.Subniche, pageParams.SubnicheId);
+                QueryElement subnicheIdQueryRow = BuildQueryRow(QueryType.Subniche, new Item
+                {
+                    Id = pageParams.SubnicheId
+                });
                 query.Elements.Add(subnicheIdQueryRow);
             }
 

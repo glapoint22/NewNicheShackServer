@@ -7,11 +7,11 @@
         Subniche,
         ProductGroup,
         Price,
-        PriceRange,
         Rating,
         KeywordGroup,
         Date,
         Auto,
+        PriceRange,
         Search,
         Filters,
         GridSearch

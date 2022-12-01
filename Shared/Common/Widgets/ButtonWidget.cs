@@ -88,6 +88,11 @@ namespace Shared.Common.Widgets
             {
                 await Background.Image.SetData(repository);
             }
+
+            if (Link != null)
+            {
+                await Link.SetData(repository);
+            }
         }
     }
 }

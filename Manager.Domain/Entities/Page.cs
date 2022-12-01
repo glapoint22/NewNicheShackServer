@@ -1,8 +1,9 @@
 ﻿using Shared.Common.Classes;
+using Shared.Common.Interfaces;
 
 namespace Manager.Domain.Entities
 {
-    public sealed class Page
+    public sealed class Page : IPage
     {
         public string Id { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;

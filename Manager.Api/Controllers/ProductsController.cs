@@ -21,7 +21,7 @@ namespace Manager.Api.Controllers
 
         // ------------------------------------------------------------------------------ Search Products ------------------------------------------------------------------------
         [HttpGet]
-        [Route("Search")]
+        [Route("LinkSearch")]
         public async Task<ActionResult> SearchProducts(string searchTerm)
         {
             return SetResponse(await _mediator.Send(new SearchProductsQuery(searchTerm)));

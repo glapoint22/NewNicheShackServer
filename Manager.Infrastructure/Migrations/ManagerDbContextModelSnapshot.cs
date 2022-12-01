@@ -22,6 +22,114 @@ namespace Manager.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("Manager.Domain.Entities.Filter", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Filters");
+                });
+
+            modelBuilder.Entity("Manager.Domain.Entities.FilterOption", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("FilterId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FilterId");
+
+                    b.ToTable("FilterOptions");
+                });
+
+            modelBuilder.Entity("Manager.Domain.Entities.Keyword", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Keywords");
+                });
+
+            modelBuilder.Entity("Manager.Domain.Entities.KeywordGroup", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("ForProduct")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("KeywordGroups");
+                });
+
+            modelBuilder.Entity("Manager.Domain.Entities.KeywordGroupBelongingToProduct", b =>
+                {
+                    b.Property<string>("ProductId")
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<Guid>("KeywordGroupId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ProductId", "KeywordGroupId");
+
+                    b.HasIndex("KeywordGroupId");
+
+                    b.ToTable("KeywordGroupsBelongingToProduct");
+                });
+
+            modelBuilder.Entity("Manager.Domain.Entities.KeywordInKeywordGroup", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("KeywordGroupId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("KeywordId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("KeywordGroupId");
+
+                    b.HasIndex("KeywordId");
+
+                    b.ToTable("KeywordsInKeywordGroup");
+                });
+
             modelBuilder.Entity("Manager.Domain.Entities.Media", b =>
                 {
                     b.Property<Guid>("Id")
@@ -121,11 +229,9 @@ namespace Manager.Infrastructure.Migrations
 
             modelBuilder.Entity("Manager.Domain.Entities.NotificationEmployeeNote", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
@@ -178,6 +284,56 @@ namespace Manager.Infrastructure.Migrations
                     b.ToTable("Pages");
                 });
 
+            modelBuilder.Entity("Manager.Domain.Entities.PricePoint", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Header")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<Guid?>("ImageId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ProductId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<Guid>("ProductPriceId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Quantity")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("ShippingType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StrikethroughPrice")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("Unit")
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
+
+                    b.Property<string>("UnitPrice")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ImageId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("ProductPriceId");
+
+                    b.ToTable("PricePoints");
+                });
+
             modelBuilder.Entity("Manager.Domain.Entities.Product", b =>
                 {
                     b.Property<string>("Id")
@@ -188,18 +344,16 @@ namespace Manager.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Disabled")
                         .HasColumnType("bit");
 
                     b.Property<string>("Hoplink")
-                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<Guid>("ImageId")
+                    b.Property<Guid?>("ImageId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
@@ -219,8 +373,9 @@ namespace Manager.Infrastructure.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<int>("VendorId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("VendorId")
+                        .IsRequired()
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -231,6 +386,126 @@ namespace Manager.Infrastructure.Migrations
                     b.HasIndex("VendorId");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("Manager.Domain.Entities.ProductFilter", b =>
+                {
+                    b.Property<string>("ProductId")
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<Guid>("FilterOptionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ProductId", "FilterOptionId");
+
+                    b.HasIndex("FilterOptionId");
+
+                    b.ToTable("ProductFilters");
+                });
+
+            modelBuilder.Entity("Manager.Domain.Entities.ProductGroup", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProductGroups");
+                });
+
+            modelBuilder.Entity("Manager.Domain.Entities.ProductInProductGroup", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductGroupId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ProductId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(10)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductGroupId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductsInProductGroup");
+                });
+
+            modelBuilder.Entity("Manager.Domain.Entities.ProductKeyword", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("KeywordId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ProductId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(10)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("KeywordId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductKeywords");
+                });
+
+            modelBuilder.Entity("Manager.Domain.Entities.ProductMedia", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Index")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("MediaId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ProductId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(10)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MediaId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductMedia");
+                });
+
+            modelBuilder.Entity("Manager.Domain.Entities.ProductPrice", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<string>("ProductId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(10)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductPrices");
                 });
 
             modelBuilder.Entity("Manager.Domain.Entities.RefreshToken", b =>
@@ -278,6 +553,41 @@ namespace Manager.Infrastructure.Migrations
                     b.HasIndex("NicheId");
 
                     b.ToTable("Subniches");
+                });
+
+            modelBuilder.Entity("Manager.Domain.Entities.Subproduct", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("ImageId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("ProductId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Value")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ImageId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Subproducts");
                 });
 
             modelBuilder.Entity("Manager.Domain.Entities.User", b =>
@@ -361,11 +671,9 @@ namespace Manager.Infrastructure.Migrations
 
             modelBuilder.Entity("Manager.Domain.Entities.Vendor", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -522,6 +830,55 @@ namespace Manager.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Manager.Domain.Entities.FilterOption", b =>
+                {
+                    b.HasOne("Manager.Domain.Entities.Filter", "Filter")
+                        .WithMany()
+                        .HasForeignKey("FilterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Filter");
+                });
+
+            modelBuilder.Entity("Manager.Domain.Entities.KeywordGroupBelongingToProduct", b =>
+                {
+                    b.HasOne("Manager.Domain.Entities.KeywordGroup", "KeywordGroup")
+                        .WithMany()
+                        .HasForeignKey("KeywordGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Manager.Domain.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("KeywordGroup");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Manager.Domain.Entities.KeywordInKeywordGroup", b =>
+                {
+                    b.HasOne("Manager.Domain.Entities.KeywordGroup", "KeywordGroup")
+                        .WithMany()
+                        .HasForeignKey("KeywordGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Manager.Domain.Entities.Keyword", "Keyword")
+                        .WithMany()
+                        .HasForeignKey("KeywordId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Keyword");
+
+                    b.Navigation("KeywordGroup");
+                });
+
             modelBuilder.Entity("Manager.Domain.Entities.NotificationEmployeeNote", b =>
                 {
                     b.HasOne("Manager.Domain.Entities.User", "User")
@@ -533,13 +890,73 @@ namespace Manager.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Manager.Domain.Entities.PricePoint", b =>
+                {
+                    b.HasOne("Manager.Domain.Entities.Media", "Media")
+                        .WithMany("PricePoints")
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Manager.Domain.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Manager.Domain.Entities.ProductPrice", "ProductPrice")
+                        .WithMany("PricePoints")
+                        .HasForeignKey("ProductPriceId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.OwnsOne("Shared.Common.ValueObjects.RecurringPayment", "RecurringPayment", b1 =>
+                        {
+                            b1.Property<Guid>("PricePointId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<int>("RebillFrequency")
+                                .HasColumnType("int")
+                                .HasColumnName("RebillFrequency");
+
+                            b1.Property<double>("RecurringPrice")
+                                .HasColumnType("float")
+                                .HasColumnName("RecurringPrice");
+
+                            b1.Property<int>("SubscriptionDuration")
+                                .HasColumnType("int")
+                                .HasColumnName("SubscriptionDuration");
+
+                            b1.Property<int>("TimeFrameBetweenRebill")
+                                .HasColumnType("int")
+                                .HasColumnName("TimeFrameBetweenRebill");
+
+                            b1.Property<int>("TrialPeriod")
+                                .HasColumnType("int")
+                                .HasColumnName("TrialPeriod");
+
+                            b1.HasKey("PricePointId");
+
+                            b1.ToTable("PricePoints");
+
+                            b1.WithOwner()
+                                .HasForeignKey("PricePointId");
+                        });
+
+                    b.Navigation("Media");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("ProductPrice");
+
+                    b.Navigation("RecurringPayment")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Manager.Domain.Entities.Product", b =>
                 {
                     b.HasOne("Manager.Domain.Entities.Media", "Media")
                         .WithMany("Products")
-                        .HasForeignKey("ImageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ImageId");
 
                     b.HasOne("Manager.Domain.Entities.Subniche", "Subniche")
                         .WithMany()
@@ -548,7 +965,7 @@ namespace Manager.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("Manager.Domain.Entities.Vendor", "Vendor")
-                        .WithMany()
+                        .WithMany("Products")
                         .HasForeignKey("VendorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -596,6 +1013,92 @@ namespace Manager.Infrastructure.Migrations
                     b.Navigation("Vendor");
                 });
 
+            modelBuilder.Entity("Manager.Domain.Entities.ProductFilter", b =>
+                {
+                    b.HasOne("Manager.Domain.Entities.FilterOption", "FilterOption")
+                        .WithMany()
+                        .HasForeignKey("FilterOptionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Manager.Domain.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FilterOption");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Manager.Domain.Entities.ProductInProductGroup", b =>
+                {
+                    b.HasOne("Manager.Domain.Entities.ProductGroup", "ProductGroup")
+                        .WithMany()
+                        .HasForeignKey("ProductGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Manager.Domain.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("ProductGroup");
+                });
+
+            modelBuilder.Entity("Manager.Domain.Entities.ProductKeyword", b =>
+                {
+                    b.HasOne("Manager.Domain.Entities.Keyword", "Keyword")
+                        .WithMany()
+                        .HasForeignKey("KeywordId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Manager.Domain.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Keyword");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Manager.Domain.Entities.ProductMedia", b =>
+                {
+                    b.HasOne("Manager.Domain.Entities.Media", "Media")
+                        .WithMany("ProductMedia")
+                        .HasForeignKey("MediaId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Manager.Domain.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Media");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Manager.Domain.Entities.ProductPrice", b =>
+                {
+                    b.HasOne("Manager.Domain.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Manager.Domain.Entities.RefreshToken", b =>
                 {
                     b.HasOne("Manager.Domain.Entities.User", "User")
@@ -616,6 +1119,24 @@ namespace Manager.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Niche");
+                });
+
+            modelBuilder.Entity("Manager.Domain.Entities.Subproduct", b =>
+                {
+                    b.HasOne("Manager.Domain.Entities.Media", "Media")
+                        .WithMany("Subproducts")
+                        .HasForeignKey("ImageId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Manager.Domain.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Media");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -671,12 +1192,28 @@ namespace Manager.Infrastructure.Migrations
 
             modelBuilder.Entity("Manager.Domain.Entities.Media", b =>
                 {
+                    b.Navigation("PricePoints");
+
+                    b.Navigation("ProductMedia");
+
                     b.Navigation("Products");
+
+                    b.Navigation("Subproducts");
+                });
+
+            modelBuilder.Entity("Manager.Domain.Entities.ProductPrice", b =>
+                {
+                    b.Navigation("PricePoints");
                 });
 
             modelBuilder.Entity("Manager.Domain.Entities.User", b =>
                 {
                     b.Navigation("NotificationEmployeeNotes");
+                });
+
+            modelBuilder.Entity("Manager.Domain.Entities.Vendor", b =>
+                {
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

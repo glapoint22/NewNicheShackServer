@@ -1,6 +1,4 @@
-﻿using Shared.Common.Dtos;
-using Shared.Common.Interfaces;
-using Shared.Services.MediaService.Interfaces;
+﻿using Shared.Common.Interfaces;
 using System.Linq.Expressions;
 
 namespace Website.Infrastructure.Services.PageService.Classes
@@ -12,12 +10,12 @@ namespace Website.Infrastructure.Services.PageService.Classes
             throw new NotImplementedException();
         }
 
-        public Task<PageDto> GetPage(string Id)
+        public IQueryable<IPage> Pages(Expression<Func<IPage, bool>> predicate)
         {
             throw new NotImplementedException();
         }
 
-        public Task<ProductDto> GetProduct(string Id)
+        public IQueryable<IProduct> Products(Expression<Func<IProduct, bool>> predicate)
         {
             throw new NotImplementedException();
         }
