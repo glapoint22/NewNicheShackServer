@@ -43,6 +43,7 @@ namespace Manager.Infrastructure.Services.PageService.Classes
                             Name = x.Name,
                             MinPrice = x.ProductPrices.MinPrice(),
                             MaxPrice = x.ProductPrices.MaxPrice(),
+                            Rating = x.Rating,
                             Image = new PageImage
                             {
                                 Name = x.Media.Name,

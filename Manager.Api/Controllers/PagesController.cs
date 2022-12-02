@@ -1,4 +1,5 @@
 ﻿using Manager.Application.Pages.GetPage.Queries;
+using Manager.Application.Pages.SearchLinkPages.Queries;
 using Manager.Application.Pages.SearchPages.Queries;
 using Manager.Application.Pages.UpdatePage.Commands;
 using MediatR;
@@ -27,6 +28,18 @@ namespace Manager.Api.Controllers
         {
             return SetResponse(await _mediator.Send(new GetPageQuery(id)));
         }
+
+
+
+
+        // ----------------------------------------------------------------------------- Search Link Pages -----------------------------------------------------------------------
+        [HttpGet]
+        [Route("LinkSearch")]
+        public async Task<ActionResult> SearchLinkPages(string searchTerm)
+        {
+            return SetResponse(await _mediator.Send(new SearchLinkPagesQuery(searchTerm)));
+        }
+
 
 
 

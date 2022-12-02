@@ -41,6 +41,31 @@ namespace Shared.Common.Widgets
             {
                 await Background.Image.SetData(repository);
             }
+
+            if (TextBoxData != null)
+            {
+                await SetLinks(TextBoxData, repository);
+            }
+
+        }
+
+
+        public async Task SetLinks(List<TextBoxData> textBoxData, IRepository repository)
+        {
+            var children = textBoxData.SelectMany(x => x.Children).ToList();
+
+            foreach (var child in children)
+            {
+                if (child.Link != null)
+                {
+                    await child.Link.SetData(repository);
+                }
+
+                if (child.Children.Count > 0)
+                {
+                    await SetLinks(child.Children, repository);
+                }
+            }
         }
     }
 }

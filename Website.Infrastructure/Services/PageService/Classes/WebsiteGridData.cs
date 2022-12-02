@@ -216,12 +216,13 @@ namespace Website.Infrastructure.Services.PageService.Classes
                 .Include(x => x.Niche)
                 .ToListAsync();
 
-            List<NicheDto> niches = subniches.Select(x => new
+
+            List<NicheDto> niches = subniches
+            .Select(x => new
             {
                 niche = x.Niche,
                 subniches = x.Niche.Subniches
             })
-            .Distinct()
             .Select(x => new NicheDto
             {
                 Id = x.niche.Id,
@@ -236,8 +237,8 @@ namespace Website.Infrastructure.Services.PageService.Classes
                     })
                     .ToList()
             })
+            .GroupBy(x => x.Id, (key, x) => x.First())
             .ToList();
-
 
             return new NicheFilters(niches);
         }

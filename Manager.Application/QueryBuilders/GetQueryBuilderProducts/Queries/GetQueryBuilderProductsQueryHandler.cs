@@ -39,6 +39,7 @@ namespace Manager.Application.QueryBuilders.GetQueryBuilderProducts.Queries
                     Name = x.Name,
                     MinPrice = x.ProductPrices.MinPrice(),
                     MaxPrice = x.ProductPrices.MaxPrice(),
+                    Rating = x.Rating,
                     Image = new PageImage
                     {
                         Name = x.Media.Name,

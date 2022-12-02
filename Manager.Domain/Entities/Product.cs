@@ -13,6 +13,7 @@ namespace Manager.Domain.Entities
         public string UrlName { get; set; } = string.Empty;
         public string? Description { get; set; }
         public string? Hoplink { get; set; }
+        public double Rating { get; set; }
         public int ShippingType { get; set; }
         public RecurringPayment RecurringPayment { get; set; } = null!;
         public DateTime Date { get; set; }
