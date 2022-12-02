@@ -2,13 +2,14 @@
 using Shared.Common.Enums;
 using Shared.Common.Interfaces;
 using Shared.Common.Widgets;
+using Shared.PageBuilder.Classes;
 using Shared.PageBuilder.Widgets;
 using Shared.PageBuilder.Widgets.GridWidget;
 using System.Text.Json;
 
-namespace Shared.PageBuilder.Classes
+namespace Shared.PageBuilder
 {
-    public class PageBuilder
+    public abstract class PageBuilder
     {
         private readonly IRepository _repository;
 

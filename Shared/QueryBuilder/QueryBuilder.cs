@@ -1,11 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Shared.Common.Classes;
+using Shared.Common.Interfaces;
+using Shared.QueryBuilder.Classes;
 using Shared.QueryBuilder.Enums;
+using System.Diagnostics;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Shared.QueryBuilder.Classes
+namespace Shared.QueryBuilder
 {
     public class QueryBuilder
     {
@@ -271,21 +273,27 @@ namespace Shared.QueryBuilder.Classes
                     break;
 
 
+                case QueryType.ProductGroup:
+                    expression = GetProductGroupExpression(new Guid(queryRow.Item?.Id!), parameter);
+                    break;
 
-                //case QueryType.ProductGroup:
-                //    break;
-                //case QueryType.Price:
-                //    break;
 
-                //case QueryType.KeywordGroup:
-                //    break;
+                case QueryType.Price:
+                    expression = GetPriceExpression((double)queryRow.Price!, (ComparisonOperatorType)queryRow.ComparisonOperatorType!, parameter);
+                    break;
+
+                case QueryType.KeywordGroup:
+                    expression = GetKeywordGroupExpression(new Guid(queryRow.Item?.Id!), parameter);
+                    break;
+
+
                 case QueryType.Date:
                     expression = GetDateExpression((DateTime)queryRow.Date!, (ComparisonOperatorType)queryRow.ComparisonOperatorType!, parameter);
                     break;
 
                 // Default
                 default:
-                    expression = Expression.Equal(Expression.Property(parameter, "Id"), Expression.Constant(0));
+                    expression = Expression.Equal(Expression.Property(parameter, "Id"), Expression.Constant("zzzzzzzzzz"));
                     break;
             }
 
@@ -332,6 +340,88 @@ namespace Shared.QueryBuilder.Classes
             MemberExpression ratingProperty = Expression.Property(parameter, "Rating");
             ConstantExpression ratingValue = Expression.Constant(Convert.ToDouble(rating));
             return GetComparisonOperatorExpression(comparisonOperatorType, ratingProperty, ratingValue);
+        }
+
+
+
+
+
+
+
+        // --------------------------------------------------------------------- Get Price Expression ---------------------------------------------------------------------
+        private static Expression GetPriceExpression(double price, ComparisonOperatorType comparisonOperatorType, ParameterExpression parameter)
+        {
+            MemberExpression productPricesProperty = Expression.Property(parameter, "ProductPrices");
+
+
+            // ProductPrice param and its properties
+            ParameterExpression productPriceParameter = Expression.Parameter(typeof(IProductPrice), "z");
+            MemberExpression priceProperty = Expression.Property(productPriceParameter, "Price");
+
+            ConstantExpression priceValue = Expression.Constant(price);
+
+
+            return Expression.Call(
+            typeof(Enumerable),
+            "Any",
+            new Type[] { typeof(IProductPrice) },
+            productPricesProperty,
+            Expression.Lambda<Func<IProductPrice, bool>>(GetComparisonOperatorExpression(comparisonOperatorType, priceProperty, priceValue), productPriceParameter));
+        }
+
+
+
+
+
+
+
+        // ----------------------------------------------------------------- Get Product Group Expression -----------------------------------------------------------------
+        private static Expression GetProductGroupExpression(Guid productGroupId, ParameterExpression parameter)
+        {
+            MemberExpression productsInProductGroupProperty = Expression.Property(parameter, "ProductsInProductGroup");
+
+
+            // ProductPrice param and its properties
+            ParameterExpression productInProductGroupParameter = Expression.Parameter(typeof(IProductInProductGroup), "z");
+            MemberExpression productGroupIdProperty = Expression.Property(productInProductGroupParameter, "ProductGroupId");
+
+            ConstantExpression productGroupIdValue = Expression.Constant(productGroupId);
+
+
+            return Expression.Call(
+            typeof(Enumerable),
+            "Any",
+            new Type[] { typeof(IProductInProductGroup) },
+            productsInProductGroupProperty,
+            Expression.Lambda<Func<IProductInProductGroup, bool>>(Expression.Equal(productGroupIdProperty, productGroupIdValue), productInProductGroupParameter));
+        }
+
+
+
+
+
+
+
+
+        // ----------------------------------------------------------------- Get Keyword Group Expression -----------------------------------------------------------------
+        private static Expression GetKeywordGroupExpression(Guid keywordGroupId, ParameterExpression parameter)
+        {
+            MemberExpression keywordGroupsBelongingToProductProperty = Expression.Property(parameter, "KeywordGroupsBelongingToProduct");
+
+
+            // ProductPrice param and its properties
+            ParameterExpression keywordGroupBelongingToProductParameter = Expression.Parameter(typeof(IKeywordGroupBelongingToProduct), "z");
+            MemberExpression keywordGroupIdProperty = Expression.Property(keywordGroupBelongingToProductParameter, "KeywordGroupId");
+
+            ConstantExpression keywordGroupIdValue = Expression.Constant(keywordGroupId);
+
+
+            return Expression.Call(
+            typeof(Enumerable),
+            "Any",
+            new Type[] { typeof(IKeywordGroupBelongingToProduct) },
+            keywordGroupsBelongingToProductProperty,
+            Expression.Lambda<Func<IKeywordGroupBelongingToProduct, bool>>(Expression.Equal(keywordGroupIdProperty, keywordGroupIdValue), keywordGroupBelongingToProductParameter));
         }
 
 

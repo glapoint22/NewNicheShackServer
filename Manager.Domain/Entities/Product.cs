@@ -24,5 +24,7 @@ namespace Manager.Domain.Entities
 
 
         public ICollection<ProductPrice> ProductPrices { get; private set; } = new HashSet<ProductPrice>();
+        public ICollection<ProductInProductGroup> ProductsInProductGroup { get; private set; } = new HashSet<ProductInProductGroup>();
+        public ICollection<KeywordGroupBelongingToProduct> KeywordGroupsBelongingToProduct { get; private set; } = new HashSet<KeywordGroupBelongingToProduct>();
     }
 }

@@ -5,6 +5,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Shared.Common.Classes;
 using Shared.Common.Dtos;
+using Shared.QueryBuilder;
 using Shared.QueryBuilder.Classes;
 using System.Text.Json;
 
@@ -35,9 +36,7 @@ namespace Manager.Application.QueryBuilders.GetQueryBuilderProducts.Queries
                 .Take(24)
                 .Select(x => new ProductDto
                 {
-                    Id = x.Id,
                     Name = x.Name,
-                    UrlName = x.UrlName,
                     MinPrice = x.ProductPrices.MinPrice(),
                     MaxPrice = x.ProductPrices.MaxPrice(),
                     Image = new PageImage

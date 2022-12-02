@@ -3,7 +3,7 @@ using Manager.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Shared.Common.Classes;
-using Shared.QueryBuilder.Classes;
+using Shared.QueryBuilder;
 
 namespace Manager.Application.Pages.SearchPages.Queries
 {

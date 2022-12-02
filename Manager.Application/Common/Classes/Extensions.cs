@@ -1,5 +1,5 @@
 ﻿using Manager.Domain.Entities;
-using Shared.QueryBuilder.Classes;
+using Shared.QueryBuilder;
 
 namespace Manager.Application.Common.Classes
 {

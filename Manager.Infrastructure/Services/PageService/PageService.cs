@@ -15,7 +15,7 @@ namespace Manager.Infrastructure.Services.PageService
 
         public async Task<WebPage> GetPage(string pageContent)
         {
-            var pageBuilder = new PageBuilder(new Repository(_dbContext));
+            var pageBuilder = new ManagerPageBuilder(new Repository(_dbContext), _dbContext);
 
             return await pageBuilder.BuildPage(pageContent);
         }

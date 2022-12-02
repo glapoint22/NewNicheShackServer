@@ -1,5 +1,6 @@
 ﻿using Shared.Common.Classes;
 using Shared.PageBuilder.Widgets.GridWidget.Classes;
+using Shared.QueryBuilder;
 using Shared.QueryBuilder.Classes;
 using Shared.QueryBuilder.Enums;
 using System.Linq.Expressions;
