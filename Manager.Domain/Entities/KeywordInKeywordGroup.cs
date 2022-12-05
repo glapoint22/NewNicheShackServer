@@ -8,5 +8,7 @@
 
         public KeywordGroup KeywordGroup { get; set; } = null!;
         public Keyword Keyword { get; set; } = null!;
+
+        public ICollection<PageKeyword> PageKeywords { get; private set; } = new HashSet<PageKeyword>();
     }
 }

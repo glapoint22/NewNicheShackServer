@@ -2,7 +2,6 @@
 {
     public sealed class ProductKeyword
     {
-        public Guid Id { get; set; }
         public string ProductId { get; set; } = string.Empty;
         public Guid KeywordId { get; set; }
 

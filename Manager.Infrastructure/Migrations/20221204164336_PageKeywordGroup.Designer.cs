@@ -4,6 +4,7 @@ using Manager.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Manager.Infrastructure.Migrations
 {
     [DbContext(typeof(ManagerDbContext))]
-    partial class ManagerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221204164336_PageKeywordGroup")]
+    partial class PageKeywordGroup
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -111,19 +113,13 @@ namespace Manager.Infrastructure.Migrations
 
             modelBuilder.Entity("Manager.Domain.Entities.KeywordInKeywordGroup", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("KeywordGroupId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("KeywordId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("KeywordGroupId");
+                    b.HasKey("KeywordGroupId", "KeywordId");
 
                     b.HasIndex("KeywordId");
 
@@ -282,21 +278,6 @@ namespace Manager.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Pages");
-                });
-
-            modelBuilder.Entity("Manager.Domain.Entities.PageKeyword", b =>
-                {
-                    b.Property<string>("PageId")
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<Guid>("KeywordInKeywordGroupId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("PageId", "KeywordInKeywordGroupId");
-
-                    b.HasIndex("KeywordInKeywordGroupId");
-
-                    b.ToTable("PageKeywords");
                 });
 
             modelBuilder.Entity("Manager.Domain.Entities.PageKeywordGroup", b =>
@@ -897,7 +878,7 @@ namespace Manager.Infrastructure.Migrations
             modelBuilder.Entity("Manager.Domain.Entities.KeywordInKeywordGroup", b =>
                 {
                     b.HasOne("Manager.Domain.Entities.KeywordGroup", "KeywordGroup")
-                        .WithMany("KeywordsInKeywordGroup")
+                        .WithMany()
                         .HasForeignKey("KeywordGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -922,25 +903,6 @@ namespace Manager.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Manager.Domain.Entities.PageKeyword", b =>
-                {
-                    b.HasOne("Manager.Domain.Entities.KeywordInKeywordGroup", "KeywordInKeywordGroup")
-                        .WithMany("PageKeywords")
-                        .HasForeignKey("KeywordInKeywordGroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Manager.Domain.Entities.Page", "Page")
-                        .WithMany()
-                        .HasForeignKey("PageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("KeywordInKeywordGroup");
-
-                    b.Navigation("Page");
                 });
 
             modelBuilder.Entity("Manager.Domain.Entities.PageKeywordGroup", b =>
@@ -1279,16 +1241,6 @@ namespace Manager.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Manager.Domain.Entities.KeywordGroup", b =>
-                {
-                    b.Navigation("KeywordsInKeywordGroup");
-                });
-
-            modelBuilder.Entity("Manager.Domain.Entities.KeywordInKeywordGroup", b =>
-                {
-                    b.Navigation("PageKeywords");
                 });
 
             modelBuilder.Entity("Manager.Domain.Entities.Media", b =>

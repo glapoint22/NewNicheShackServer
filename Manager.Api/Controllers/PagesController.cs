@@ -1,7 +1,18 @@
-﻿using Manager.Application.Pages.GetPage.Queries;
+﻿using Manager.Application.Pages.AddPageKeywordGroup.Commands;
+using Manager.Application.Pages.AddPageSubniche.Commands;
+using Manager.Application.Pages.DeletePage.Commands;
+using Manager.Application.Pages.DeletePageKeywordGroup.Commands;
+using Manager.Application.Pages.DeletePageSubniche.Commands;
+using Manager.Application.Pages.DuplicatePage.Commands;
+using Manager.Application.Pages.GetPage.Queries;
+using Manager.Application.Pages.GetPageKeywordGroups.Queries;
+using Manager.Application.Pages.GetPageKeywords.Queries;
+using Manager.Application.Pages.GetPageSubniches.Queries;
+using Manager.Application.Pages.NewPage.Commands;
 using Manager.Application.Pages.SearchLinkPages.Queries;
 using Manager.Application.Pages.SearchPages.Queries;
 using Manager.Application.Pages.UpdatePage.Commands;
+using Manager.Application.Pages.UpdatePageKeyword.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,11 +33,133 @@ namespace Manager.Api.Controllers
         }
 
 
+
+        // ------------------------------------------------------------------------- Add Page Keyword Group ----------------------------------------------------------------------
+        [HttpPost]
+        [Route("KeywordGroup")]
+        public async Task<ActionResult> AddPageKeywordGroup(AddPageKeywordGroupCommand addPageKeywordGroup)
+        {
+            return SetResponse(await _mediator.Send(addPageKeywordGroup));
+        }
+
+
+
+
+
+        // --------------------------------------------------------------------------- Add Page Subniche -------------------------------------------------------------------------
+        [HttpPost]
+        [Route("Subniche")]
+        public async Task<ActionResult> AddPageSubniche(AddPageSubnicheCommand addPageSubniche)
+        {
+            return SetResponse(await _mediator.Send(addPageSubniche));
+        }
+
+
+
+
+        // ------------------------------------------------------------------------------- Delete Page ---------------------------------------------------------------------------
+        [HttpDelete]
+        public async Task<ActionResult> DeletePage(string pageId)
+        {
+            return SetResponse(await _mediator.Send(new DeletePageCommand(pageId)));
+        }
+
+
+
+
+
+        // ------------------------------------------------------------------------ Delete Page Keyword Group --------------------------------------------------------------------
+        [HttpDelete]
+        [Route("KeywordGroup")]
+        public async Task<ActionResult> DeletePageKeywordGroup(string pageId, Guid id)
+        {
+            return SetResponse(await _mediator.Send(new DeletePageKeywordGroupCommand(pageId, id)));
+        }
+
+
+
+
+
+
+        // -------------------------------------------------------------------------- Delete Page Subniche -----------------------------------------------------------------------
+        [HttpDelete]
+        [Route("Subniche")]
+        public async Task<ActionResult> DeletePageSubniche(string pageId, string id)
+        {
+            return SetResponse(await _mediator.Send(new DeletePageSubnicheCommand(pageId, id)));
+        }
+
+
+
+
+
+        // ----------------------------------------------------------------------------- Duplicate Page --------------------------------------------------------------------------
+        [HttpPost]
+        [Route("Duplicate")]
+        public async Task<ActionResult> DuplicatePage(DuplicatePageCommand duplicatePage)
+        {
+            return SetResponse(await _mediator.Send(duplicatePage));
+        }
+
+
+
+
+
+
+
         // -------------------------------------------------------------------------------- Get Page -----------------------------------------------------------------------------
         [HttpGet]
         public async Task<ActionResult> GetPage(string id)
         {
             return SetResponse(await _mediator.Send(new GetPageQuery(id)));
+        }
+
+
+
+
+        // ------------------------------------------------------------------------- Get Page Keyword Groups ---------------------------------------------------------------------
+        [HttpGet]
+        [Route("KeywordGroup")]
+        public async Task<ActionResult> GetPageKeywordGroups(string pageId)
+        {
+            return SetResponse(await _mediator.Send(new GetPageKeywordGroupsQuery(pageId)));
+        }
+
+
+
+
+
+
+        // ---------------------------------------------------------------------------- Get Page Keywords ------------------------------------------------------------------------
+        [HttpGet]
+        [Route("Keywords")]
+        public async Task<ActionResult> GetPageKeywords(string pageId, Guid keywordGroupId)
+        {
+            return SetResponse(await _mediator.Send(new GetPageKeywordsQuery(pageId, keywordGroupId)));
+        }
+
+
+
+
+
+
+
+        // ---------------------------------------------------------------------------- Get Page Subniches -----------------------------------------------------------------------
+        [HttpGet]
+        [Route("Subniche")]
+        public async Task<ActionResult> GetPageSubniches(string pageId)
+        {
+            return SetResponse(await _mediator.Send(new GetPageSubnichesQuery(pageId)));
+        }
+
+
+
+
+        // -------------------------------------------------------------------------------- New Page -----------------------------------------------------------------------------
+        [HttpPost]
+        public async Task<ActionResult> NewPage(NewPageCommand newPage)
+        {
+            return SetResponse(await _mediator.Send(newPage));
         }
 
 
@@ -59,9 +192,20 @@ namespace Manager.Api.Controllers
 
         // ------------------------------------------------------------------------------- Update Page ---------------------------------------------------------------------------
         [HttpPut]
-        public async Task<ActionResult> UpdatePage(UpdatePageCommand UpdatePage)
+        public async Task<ActionResult> UpdatePage(UpdatePageCommand updatePage)
         {
-            return SetResponse(await _mediator.Send(UpdatePage));
+            return SetResponse(await _mediator.Send(updatePage));
+        }
+
+
+
+
+        // -------------------------------------------------------------------------- Update Page Keyword ------------------------------------------------------------------------
+        [HttpPut]
+        [Route("Keywords")]
+        public async Task<ActionResult> UpdatePageKeyword(UpdatePageKeywordCommand updatePageKeyword)
+        {
+            return SetResponse(await _mediator.Send(updatePageKeyword));
         }
     }
 }

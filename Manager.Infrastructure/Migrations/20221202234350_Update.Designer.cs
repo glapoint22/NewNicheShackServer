@@ -4,6 +4,7 @@ using Manager.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Manager.Infrastructure.Migrations
 {
     [DbContext(typeof(ManagerDbContext))]
-    partial class ManagerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221202234350_Update")]
+    partial class Update
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -111,19 +113,13 @@ namespace Manager.Infrastructure.Migrations
 
             modelBuilder.Entity("Manager.Domain.Entities.KeywordInKeywordGroup", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid>("KeywordGroupId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("KeywordId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("KeywordGroupId");
+                    b.HasKey("KeywordGroupId", "KeywordId");
 
                     b.HasIndex("KeywordId");
 
@@ -289,29 +285,14 @@ namespace Manager.Infrastructure.Migrations
                     b.Property<string>("PageId")
                         .HasColumnType("nvarchar(10)");
 
-                    b.Property<Guid>("KeywordInKeywordGroupId")
+                    b.Property<Guid>("KeywordId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("PageId", "KeywordInKeywordGroupId");
+                    b.HasKey("PageId", "KeywordId");
 
-                    b.HasIndex("KeywordInKeywordGroupId");
+                    b.HasIndex("KeywordId");
 
                     b.ToTable("PageKeywords");
-                });
-
-            modelBuilder.Entity("Manager.Domain.Entities.PageKeywordGroup", b =>
-                {
-                    b.Property<string>("PageId")
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<Guid>("KeywordGroupId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("PageId", "KeywordGroupId");
-
-                    b.HasIndex("KeywordGroupId");
-
-                    b.ToTable("PageKeywordGroups");
                 });
 
             modelBuilder.Entity("Manager.Domain.Entities.PageSubniche", b =>
@@ -897,7 +878,7 @@ namespace Manager.Infrastructure.Migrations
             modelBuilder.Entity("Manager.Domain.Entities.KeywordInKeywordGroup", b =>
                 {
                     b.HasOne("Manager.Domain.Entities.KeywordGroup", "KeywordGroup")
-                        .WithMany("KeywordsInKeywordGroup")
+                        .WithMany()
                         .HasForeignKey("KeywordGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -926,9 +907,9 @@ namespace Manager.Infrastructure.Migrations
 
             modelBuilder.Entity("Manager.Domain.Entities.PageKeyword", b =>
                 {
-                    b.HasOne("Manager.Domain.Entities.KeywordInKeywordGroup", "KeywordInKeywordGroup")
-                        .WithMany("PageKeywords")
-                        .HasForeignKey("KeywordInKeywordGroupId")
+                    b.HasOne("Manager.Domain.Entities.Keyword", "Keyword")
+                        .WithMany()
+                        .HasForeignKey("KeywordId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -938,26 +919,7 @@ namespace Manager.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("KeywordInKeywordGroup");
-
-                    b.Navigation("Page");
-                });
-
-            modelBuilder.Entity("Manager.Domain.Entities.PageKeywordGroup", b =>
-                {
-                    b.HasOne("Manager.Domain.Entities.KeywordGroup", "KeywordGroup")
-                        .WithMany()
-                        .HasForeignKey("KeywordGroupId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Manager.Domain.Entities.Page", "Page")
-                        .WithMany("PageKeywordGroups")
-                        .HasForeignKey("PageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("KeywordGroup");
+                    b.Navigation("Keyword");
 
                     b.Navigation("Page");
                 });
@@ -965,7 +927,7 @@ namespace Manager.Infrastructure.Migrations
             modelBuilder.Entity("Manager.Domain.Entities.PageSubniche", b =>
                 {
                     b.HasOne("Manager.Domain.Entities.Page", "Page")
-                        .WithMany("PageSubniches")
+                        .WithMany()
                         .HasForeignKey("PageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1281,16 +1243,6 @@ namespace Manager.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Manager.Domain.Entities.KeywordGroup", b =>
-                {
-                    b.Navigation("KeywordsInKeywordGroup");
-                });
-
-            modelBuilder.Entity("Manager.Domain.Entities.KeywordInKeywordGroup", b =>
-                {
-                    b.Navigation("PageKeywords");
-                });
-
             modelBuilder.Entity("Manager.Domain.Entities.Media", b =>
                 {
                     b.Navigation("PricePoints");
@@ -1300,13 +1252,6 @@ namespace Manager.Infrastructure.Migrations
                     b.Navigation("Products");
 
                     b.Navigation("Subproducts");
-                });
-
-            modelBuilder.Entity("Manager.Domain.Entities.Page", b =>
-                {
-                    b.Navigation("PageKeywordGroups");
-
-                    b.Navigation("PageSubniches");
                 });
 
             modelBuilder.Entity("Manager.Domain.Entities.Product", b =>

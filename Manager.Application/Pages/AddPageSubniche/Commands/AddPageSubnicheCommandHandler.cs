@@ -4,26 +4,26 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Shared.Common.Classes;
 
-namespace Manager.Application.Pages.UpdatePage.Commands
+namespace Manager.Application.Pages.AddPageSubniche.Commands
 {
-    public sealed class UpdatePageCommandHandler : IRequestHandler<UpdatePageCommand, Result>
+    public sealed class AddPageSubnicheCommandHandler : IRequestHandler<AddPageSubnicheCommand, Result>
     {
         private readonly IManagerDbContext _dbContext;
 
-        public UpdatePageCommandHandler(IManagerDbContext dbContext)
+        public AddPageSubnicheCommandHandler(IManagerDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public async Task<Result> Handle(UpdatePageCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(AddPageSubnicheCommand request, CancellationToken cancellationToken)
         {
             Page page = await _dbContext.Pages
-                .Where(x => x.Id == request.Id)
+                .Where(x => x.Id == request.PageId)
                 .Include(x => x.PageSubniches)
-                .Include(x => x.PageKeywordGroups)
                 .SingleAsync();
 
-            page.Update(request.Name, request.content, request.PageType);
+            page.AddPageSubniche(request.SubnicheId);
+
             await _dbContext.SaveChangesAsync();
 
             return Result.Succeeded();

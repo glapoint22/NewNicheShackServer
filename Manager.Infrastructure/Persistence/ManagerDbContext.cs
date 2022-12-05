@@ -19,7 +19,10 @@ namespace Manager.Infrastructure.Persistence
         public DbSet<Media> Media => Set<Media>();
         public DbSet<Niche> Niches => Set<Niche>();
         public DbSet<NotificationEmployeeNote> NotificationEmployeeNotes => Set<NotificationEmployeeNote>();
+        public DbSet<PageKeywordGroup> PageKeywordGroups => Set<PageKeywordGroup>();
+        public DbSet<PageKeyword> PageKeywords => Set<PageKeyword>();
         public DbSet<Page> Pages => Set<Page>();
+        public DbSet<PageSubniche> PageSubniches => Set<PageSubniche>();
         public DbSet<PricePoint> PricePoints => Set<PricePoint>();
         public DbSet<ProductFilter> ProductFilters => Set<ProductFilter>();
         public DbSet<ProductGroup> ProductGroups => Set<ProductGroup>();
