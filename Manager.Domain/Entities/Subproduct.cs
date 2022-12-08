@@ -12,5 +12,27 @@
 
         public Media Media { get; set; } = null!;
         public Product Product { get; set; } = null!;
+
+
+        public static Subproduct Create(string productId, int type)
+        {
+            Subproduct subproduct = new()
+            {
+                ProductId = productId,
+                Type = type
+            };
+
+            return subproduct;
+        }
+
+
+
+        public void Update(string? name, string? description, Guid? imageId, double value)
+        {
+            Name = name;
+            Description = description;
+            ImageId = imageId;
+            Value = value;
+        }
     }
 }

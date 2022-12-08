@@ -41,7 +41,7 @@ namespace Manager.Infrastructure.Services.PageService.Classes
                         .Select(x => new ProductDto
                         {
                             Name = x.Name,
-                            MinPrice = x.ProductPrices.MinPrice(),
+                            MinPrice = (double)x.ProductPrices.MinPrice()!,
                             MaxPrice = x.ProductPrices.MaxPrice(),
                             Rating = x.Rating,
                             Image = new PageImage

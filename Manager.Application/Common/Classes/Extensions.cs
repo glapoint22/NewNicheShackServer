@@ -15,7 +15,7 @@ namespace Manager.Application.Common.Classes
 
 
         // ------------------------------------------------------------------------- Min Price --------------------------------------------------------------------------------
-        public static double MinPrice(this IEnumerable<ProductPrice> prices)
+        public static double? MinPrice(this IEnumerable<ProductPrice> prices)
         {
             return prices.Count() > 0 ? prices.Min(x => x.Price) : 0;
         }

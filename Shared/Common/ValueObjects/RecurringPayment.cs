@@ -4,11 +4,11 @@ namespace Shared.Common.ValueObjects
 {
     public sealed class RecurringPayment : ValueObject
     {
-        public int TrialPeriod { get; private set; }
-        public double RecurringPrice { get; private set; }
-        public int RebillFrequency { get; private set; }
-        public int TimeFrameBetweenRebill { get; private set; }
-        public int SubscriptionDuration { get; private set; }
+        public int TrialPeriod { get; set; }
+        public double RecurringPrice { get; set; }
+        public int RebillFrequency { get; set; }
+        public int TimeFrameBetweenRebill { get; set; }
+        public int SubscriptionDuration { get;  set; }
 
         protected override IEnumerable<object> GetEqualityComponents()
         {

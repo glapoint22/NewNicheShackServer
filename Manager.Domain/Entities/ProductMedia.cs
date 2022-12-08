@@ -9,5 +9,27 @@
 
         public Product Product { get; set; } = null!;
         public Media Media { get; set; } = null!;
+
+
+
+        public static ProductMedia Create(string productId, Guid MediaId, int index)
+        {
+            ProductMedia productMedia = new()
+            {
+                Id = Guid.NewGuid(),
+                ProductId = productId,
+                MediaId = MediaId,
+                Index = index
+            };
+
+            return productMedia;
+        }
+
+
+
+        public void SetMedia(Guid mediaId)
+        {
+            MediaId = mediaId;
+        }
     }
 }

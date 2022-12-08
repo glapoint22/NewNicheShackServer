@@ -35,7 +35,7 @@ namespace Manager.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Filters");
+                    b.ToTable("Filters", (string)null);
                 });
 
             modelBuilder.Entity("Manager.Domain.Entities.FilterOption", b =>
@@ -56,7 +56,7 @@ namespace Manager.Infrastructure.Migrations
 
                     b.HasIndex("FilterId");
 
-                    b.ToTable("FilterOptions");
+                    b.ToTable("FilterOptions", (string)null);
                 });
 
             modelBuilder.Entity("Manager.Domain.Entities.Keyword", b =>
@@ -72,7 +72,7 @@ namespace Manager.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Keywords");
+                    b.ToTable("Keywords", (string)null);
                 });
 
             modelBuilder.Entity("Manager.Domain.Entities.KeywordGroup", b =>
@@ -91,7 +91,7 @@ namespace Manager.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("KeywordGroups");
+                    b.ToTable("KeywordGroups", (string)null);
                 });
 
             modelBuilder.Entity("Manager.Domain.Entities.KeywordGroupBelongingToProduct", b =>
@@ -106,7 +106,7 @@ namespace Manager.Infrastructure.Migrations
 
                     b.HasIndex("KeywordGroupId");
 
-                    b.ToTable("KeywordGroupsBelongingToProduct");
+                    b.ToTable("KeywordGroupsBelongingToProduct", (string)null);
                 });
 
             modelBuilder.Entity("Manager.Domain.Entities.KeywordInKeywordGroup", b =>
@@ -127,7 +127,7 @@ namespace Manager.Infrastructure.Migrations
 
                     b.HasIndex("KeywordId");
 
-                    b.ToTable("KeywordsInKeywordGroup");
+                    b.ToTable("KeywordsInKeywordGroup", (string)null);
                 });
 
             modelBuilder.Entity("Manager.Domain.Entities.Media", b =>
@@ -203,7 +203,7 @@ namespace Manager.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Media");
+                    b.ToTable("Media", (string)null);
                 });
 
             modelBuilder.Entity("Manager.Domain.Entities.Niche", b =>
@@ -224,7 +224,7 @@ namespace Manager.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Niches");
+                    b.ToTable("Niches", (string)null);
                 });
 
             modelBuilder.Entity("Manager.Domain.Entities.NotificationEmployeeNote", b =>
@@ -254,7 +254,7 @@ namespace Manager.Infrastructure.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("NotificationEmployeeNotes");
+                    b.ToTable("NotificationEmployeeNotes", (string)null);
                 });
 
             modelBuilder.Entity("Manager.Domain.Entities.Page", b =>
@@ -281,7 +281,7 @@ namespace Manager.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Pages");
+                    b.ToTable("Pages", (string)null);
                 });
 
             modelBuilder.Entity("Manager.Domain.Entities.PageKeyword", b =>
@@ -296,7 +296,7 @@ namespace Manager.Infrastructure.Migrations
 
                     b.HasIndex("KeywordInKeywordGroupId");
 
-                    b.ToTable("PageKeywords");
+                    b.ToTable("PageKeywords", (string)null);
                 });
 
             modelBuilder.Entity("Manager.Domain.Entities.PageKeywordGroup", b =>
@@ -311,7 +311,7 @@ namespace Manager.Infrastructure.Migrations
 
                     b.HasIndex("KeywordGroupId");
 
-                    b.ToTable("PageKeywordGroups");
+                    b.ToTable("PageKeywordGroups", (string)null);
                 });
 
             modelBuilder.Entity("Manager.Domain.Entities.PageSubniche", b =>
@@ -326,7 +326,7 @@ namespace Manager.Infrastructure.Migrations
 
                     b.HasIndex("SubnicheId");
 
-                    b.ToTable("PageSubniches");
+                    b.ToTable("PageSubniches", (string)null);
                 });
 
             modelBuilder.Entity("Manager.Domain.Entities.PricePoint", b =>
@@ -376,7 +376,7 @@ namespace Manager.Infrastructure.Migrations
 
                     b.HasIndex("ProductPriceId");
 
-                    b.ToTable("PricePoints");
+                    b.ToTable("PricePoints", (string)null);
                 });
 
             modelBuilder.Entity("Manager.Domain.Entities.Product", b =>
@@ -433,7 +433,7 @@ namespace Manager.Infrastructure.Migrations
 
                     b.HasIndex("VendorId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("Manager.Domain.Entities.ProductFilter", b =>
@@ -448,7 +448,7 @@ namespace Manager.Infrastructure.Migrations
 
                     b.HasIndex("FilterOptionId");
 
-                    b.ToTable("ProductFilters");
+                    b.ToTable("ProductFilters", (string)null);
                 });
 
             modelBuilder.Entity("Manager.Domain.Entities.ProductGroup", b =>
@@ -464,7 +464,7 @@ namespace Manager.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ProductGroups");
+                    b.ToTable("ProductGroups", (string)null);
                 });
 
             modelBuilder.Entity("Manager.Domain.Entities.ProductInProductGroup", b =>
@@ -479,7 +479,7 @@ namespace Manager.Infrastructure.Migrations
 
                     b.HasIndex("ProductGroupId");
 
-                    b.ToTable("ProductsInProductGroup");
+                    b.ToTable("ProductsInProductGroup", (string)null);
                 });
 
             modelBuilder.Entity("Manager.Domain.Entities.ProductKeyword", b =>
@@ -494,7 +494,7 @@ namespace Manager.Infrastructure.Migrations
 
                     b.HasIndex("KeywordId");
 
-                    b.ToTable("ProductKeywords");
+                    b.ToTable("ProductKeywords", (string)null);
                 });
 
             modelBuilder.Entity("Manager.Domain.Entities.ProductMedia", b =>
@@ -519,7 +519,7 @@ namespace Manager.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductMedia");
+                    b.ToTable("ProductMedia", (string)null);
                 });
 
             modelBuilder.Entity("Manager.Domain.Entities.ProductPrice", b =>
@@ -539,7 +539,7 @@ namespace Manager.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ProductPrices");
+                    b.ToTable("ProductPrices", (string)null);
                 });
 
             modelBuilder.Entity("Manager.Domain.Entities.RefreshToken", b =>
@@ -559,7 +559,7 @@ namespace Manager.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("RefreshTokens");
+                    b.ToTable("RefreshTokens", (string)null);
                 });
 
             modelBuilder.Entity("Manager.Domain.Entities.Subniche", b =>
@@ -586,7 +586,7 @@ namespace Manager.Infrastructure.Migrations
 
                     b.HasIndex("NicheId");
 
-                    b.ToTable("Subniches");
+                    b.ToTable("Subniches", (string)null);
                 });
 
             modelBuilder.Entity("Manager.Domain.Entities.Subproduct", b =>
@@ -621,7 +621,7 @@ namespace Manager.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Subproducts");
+                    b.ToTable("Subproducts", (string)null);
                 });
 
             modelBuilder.Entity("Manager.Domain.Entities.User", b =>
@@ -728,7 +728,7 @@ namespace Manager.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Vendors");
+                    b.ToTable("Vendors", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -1000,7 +1000,7 @@ namespace Manager.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.OwnsOne("Shared.Common.ValueObjects.RecurringPayment", "RecurringPayment", b1 =>
+                    b.OwnsOne("Manager.Domain.Entities.PricePoint.RecurringPayment#Shared.Common.ValueObjects.RecurringPayment", "RecurringPayment", b1 =>
                         {
                             b1.Property<Guid>("PricePointId")
                                 .HasColumnType("uniqueidentifier");
@@ -1027,7 +1027,7 @@ namespace Manager.Infrastructure.Migrations
 
                             b1.HasKey("PricePointId");
 
-                            b1.ToTable("PricePoints");
+                            b1.ToTable("PricePoints", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("PricePointId");
@@ -1061,7 +1061,7 @@ namespace Manager.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("Shared.Common.ValueObjects.RecurringPayment", "RecurringPayment", b1 =>
+                    b.OwnsOne("Manager.Domain.Entities.Product.RecurringPayment#Shared.Common.ValueObjects.RecurringPayment", "RecurringPayment", b1 =>
                         {
                             b1.Property<string>("ProductId")
                                 .HasColumnType("nvarchar(10)");
@@ -1088,7 +1088,7 @@ namespace Manager.Infrastructure.Migrations
 
                             b1.HasKey("ProductId");
 
-                            b1.ToTable("Products");
+                            b1.ToTable("Products", (string)null);
 
                             b1.WithOwner()
                                 .HasForeignKey("ProductId");

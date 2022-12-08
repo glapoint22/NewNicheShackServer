@@ -1,4 +1,5 @@
-﻿using Manager.Application.Subniches.SearchSubniches.Queries;
+﻿using Manager.Application.Subniches.GetSubniches.Queries;
+using Manager.Application.Subniches.SearchSubniches.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +20,17 @@ namespace Manager.Api.Controllers
         }
 
 
-        // ----------------------------------------------------------------------------- Search Subniches ------------------------------------------------------------------------
+
+        // ---------------------------------------------------------------------- Get Subniches --------------------------------------------------------------------------
+        [HttpGet]
+        public async Task<ActionResult> GetSubniches(string parentId)
+        {
+            return SetResponse(await _mediator.Send(new GetSubnichesQuery(parentId)));
+        }
+
+
+
+        // -------------------------------------------------------------------- Search Subniches -------------------------------------------------------------------------
         [HttpGet]
         [Route("Search")]
         public async Task<ActionResult> SearchSubniches(string searchTerm)

@@ -10,5 +10,16 @@ namespace Manager.Domain.Entities
 
         public Product Product { get; set; } = null!;
         public ICollection<PricePoint> PricePoints { get; private set; } = new HashSet<PricePoint>();
+
+        public static ProductPrice Create(string productId, double price)
+        {
+            ProductPrice productPrice = new()
+            {
+                ProductId = productId,
+                Price = price
+            };
+
+            return productPrice;
+        }
     }
 }
