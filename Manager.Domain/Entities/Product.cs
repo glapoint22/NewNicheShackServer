@@ -1,5 +1,6 @@
 ﻿using Manager.Domain.Dtos;
 using MediatR;
+using Shared.Common.Enums;
 using Shared.Common.Interfaces;
 using Shared.Common.ValueObjects;
 
@@ -35,13 +36,22 @@ namespace Manager.Domain.Entities
 
 
 
-
-
-        // ------------------------------------------------------------------------------- Price Points --------------------------------------------------------------------------
         private readonly List<PricePoint> _pricePoints = new();
         public IReadOnlyList<PricePoint> PricePoints => _pricePoints.AsReadOnly();
 
-        // Add Price Point
+
+
+        private readonly List<Subproduct> _subproducts = new();
+        public IReadOnlyList<Subproduct> Subproducts => _subproducts.AsReadOnly();
+
+
+
+        private readonly List<ProductMedia> _productMedia = new();
+        public IReadOnlyList<ProductMedia> ProductMedia => _productMedia.AsReadOnly();
+
+
+
+        // ------------------------------------------------------------------------------ Add Price Point --------------------------------------------------------------------------
         public void AddPricePoint()
         {
             if (_pricePoints.Count == 0)
@@ -56,37 +66,12 @@ namespace Manager.Domain.Entities
 
 
 
-        // Remove Price Point
-        public void RemovePricePoint()
-        {
-            PricePoint pricePoint = _pricePoints[0];
-            _pricePoints.Remove(pricePoint);
-
-            pricePoint.ProductPrice = null!;
-        }
-
-
-
-        // Update Price Point
-        public void UpdatePricePoint(PricePointDto pricePointDto)
-        {
-            PricePoint pricePoint = _pricePoints[0];
-            pricePoint.Update(pricePointDto);
-        }
 
 
 
 
 
-
-
-
-        // ------------------------------------------------------------------------------- Subproducts ---------------------------------------------------------------------------
-        private readonly List<Subproduct> _subproducts = new();
-        public IReadOnlyList<Subproduct> Subproducts => _subproducts.AsReadOnly();
-
-
-        // Add Subproduct
+        // ------------------------------------------------------------------------------- Add Subproduct --------------------------------------------------------------------------
         public void AddSubproduct(int type)
         {
             Subproduct subproduct = Subproduct.Create(Id, type);
@@ -94,23 +79,85 @@ namespace Manager.Domain.Entities
         }
 
 
-        // Remove Subproduct
+
+
+
+
+
+
+        // ----------------------------------------------------------------------------- Remove Price Point ------------------------------------------------------------------------
+        public void RemovePricePoint()
+        {
+            // Remove the price point
+            PricePoint pricePoint = _pricePoints[0];
+            _pricePoints.Remove(pricePoint);
+
+            // Remove the product price
+            _productPrices.Remove(pricePoint.ProductPrice);
+        }
+
+
+
+
+
+
+
+
+        // ---------------------------------------------------------------------------- Remove Product Media -----------------------------------------------------------------------
+        public void RemoveProductMedia(Guid productMediaId)
+        {
+            ProductMedia productMedia = _productMedia.Find(x => x.Id == productMediaId)!;
+            _productMedia.Remove(productMedia);
+
+            // If we have no more product media, set the image to null
+            if (_productMedia.Count == 0)
+            {
+                SetImage(null);
+                return;
+            }
+
+
+            // Reorder the indices so we can reassign them
+            var productMediaList = _productMedia
+                .OrderBy(x => x.Index)
+                .ToList();
+
+            // Reset the indices
+            for (int i = 0; i < productMediaList.Count; i++)
+            {
+                productMediaList[i].Index = i;
+
+
+                // Set the product image
+                if (i == 0)
+                {
+                    if (productMediaList[i].Media.MediaType == (int)MediaType.Image)
+                    {
+                        SetImage(productMediaList[i].MediaId);
+                    }
+                    else
+                    {
+                        SetImage(null);
+                    }
+                }
+
+            }
+        }
+
+
+
+
+
+
+
+
+
+        // ----------------------------------------------------------------------------- Remove Subproduct -------------------------------------------------------------------------
         public void RemoveSubproduct()
         {
             Subproduct subproduct = _subproducts[0];
             _subproducts.Remove(subproduct);
         }
-
-
-        // Update Subproduct
-        public void UpdateSubproduct(string? name, string? description, Guid? imageId, double value)
-        {
-            Subproduct subproduct = _subproducts[0];
-            subproduct.Update(name, description, imageId, value);
-        }
-
-
-
 
 
 
@@ -128,11 +175,20 @@ namespace Manager.Domain.Entities
 
 
 
+
+
+
+
+
         // -------------------------------------------------------------------------------- Set Hoplink --------------------------------------------------------------------------
         public void SetHoplink(string hoplink)
         {
             Hoplink = hoplink;
         }
+
+
+
+
 
 
 
@@ -147,11 +203,140 @@ namespace Manager.Domain.Entities
 
 
 
+
+
+
+
+
+        // --------------------------------------------------------------------------------- Set Name ----------------------------------------------------------------------------
+        public void SetName(string name)
+        {
+            Name = name;
+        }
+
+
+
+
+
+
+
+
+        // --------------------------------------------------------------------------------- Set Price ---------------------------------------------------------------------------
+        public void SetPrice(double price)
+        {
+            if (_productPrices.Count == 0)
+            {
+                // Add the new price
+                ProductPrice productPrice = ProductPrice.Create(Id, price);
+                _productPrices.Add(productPrice);
+            }
+            else
+            {
+                // Update the price
+                _productPrices[0].Price = price;
+            }
+        }
+
+
+
+
+
+
+
+
+
+        // ------------------------------------------------------------------------------- Set Price Point -------------------------------------------------------------------------
+        public void SetPricePoint(PricePointDto pricePointDto)
+        {
+            PricePoint pricePoint = _pricePoints[0];
+            pricePoint.Set(pricePointDto);
+        }
+
+
+
+
+
+
+
+
+        // ------------------------------------------------------------------------------ Set Product Media ------------------------------------------------------------------------
+        public ProductMedia SetProductMedia(Guid? productMediaId, Guid mediaId)
+        {
+            ProductMedia productMedia;
+
+            if (productMediaId != null)
+            {
+                productMedia = _productMedia.Find(x => x.Id == productMediaId)!;
+                productMedia.SetMedia(mediaId);
+            }
+            else
+            {
+                int index = _productMedia.Count;
+
+                productMedia = Entities.ProductMedia.Create(Id, mediaId, index);
+                _productMedia.Add(productMedia);
+
+                if (index == 0)
+                {
+                    SetImage(mediaId);
+                }
+            }
+
+            return productMedia;
+        }
+
+
+
+
+
+
+
+
+        // -------------------------------------------------------------------------- Set Product Media Indices --------------------------------------------------------------------
+        public void SetProductMediaIndices(List<ProductMediaDto> productMediaList)
+        {
+            foreach (ProductMedia productMedia in _productMedia)
+            {
+                productMedia.Index = productMediaList
+                    .Where(x => x.Id == productMedia.Id)
+                    .Select(x => x.Index)
+                    .Single();
+
+                // If index is zero, set the product image
+                if (productMedia.Index == 0)
+                {
+                    Guid? mediaId = null;
+
+                    if (productMedia.Media.MediaType == (int)MediaType.Image)
+                    {
+                        mediaId = productMedia.MediaId;
+                    }
+
+                    SetImage(mediaId);
+                }
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
         // ---------------------------------------------------------------------------- Set Recurring Payment --------------------------------------------------------------------
         public void SetRecurringPayment(RecurringPayment recurringPayment)
         {
             RecurringPayment = recurringPayment;
         }
+
+
+
 
 
 
@@ -166,20 +351,15 @@ namespace Manager.Domain.Entities
 
 
 
-        // -------------------------------------------------------------------------------- Update Name --------------------------------------------------------------------------
-        public void UpdateName(string name)
+
+
+
+
+        // ------------------------------------------------------------------------------- Set Subproduct --------------------------------------------------------------------------
+        public void SetSubproduct(string? name, string? description, Guid? imageId, double value)
         {
-            Name = name;
-        }
-
-
-
-
-
-        // -------------------------------------------------------------------------------- Update Price -------------------------------------------------------------------------
-        public void UpdatePrice(double price)
-        {
-            _productPrices.First().Price = price;
+            Subproduct subproduct = _subproducts[0];
+            subproduct.Set(name, description, imageId, value);
         }
     }
 }

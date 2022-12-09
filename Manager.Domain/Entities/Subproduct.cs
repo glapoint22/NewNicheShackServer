@@ -27,7 +27,7 @@
 
 
 
-        public void Update(string? name, string? description, Guid? imageId, double value)
+        public void Set(string? name, string? description, Guid? imageId, double value)
         {
             Name = name;
             Description = description;

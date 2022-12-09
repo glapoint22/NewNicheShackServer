@@ -35,7 +35,7 @@ namespace Manager.Domain.Entities
 
 
 
-        public void Update(PricePointDto pricePoint)
+        public void Set(PricePointDto pricePoint)
         {
             Header = pricePoint.Header;
             Quantity = pricePoint.Quantity;

@@ -1,22 +1,21 @@
 ﻿using Manager.Application.Products.AddPricePoint.Commands;
 using Manager.Application.Products.AddSubproduct.Commands;
-using Manager.Application.Products.DeletePricePoint.Commands;
-using Manager.Application.Products.DeleteProductMedia.Commands;
 using Manager.Application.Products.GetProduct.Queries;
 using Manager.Application.Products.GetProducts.Queries;
-using Manager.Application.Products.PostPrice.Commands;
+using Manager.Application.Products.RemovePricePoint.Commands;
+using Manager.Application.Products.RemoveProductMedia.Commands;
 using Manager.Application.Products.RemoveSubproduct.Commands;
 using Manager.Application.Products.SearchProducts.Queries;
 using Manager.Application.Products.SetDescription.Commands;
 using Manager.Application.Products.SetHoplink.Commands;
-using Manager.Application.Products.SetMedia.Commands;
+using Manager.Application.Products.SetName.Commands;
+using Manager.Application.Products.SetPrice.Commands;
+using Manager.Application.Products.SetPricePoint.Commands;
+using Manager.Application.Products.SetProductMedia.Commands;
+using Manager.Application.Products.SetProductMediaIndices.Commands;
 using Manager.Application.Products.SetRecurringPayment.Commands;
 using Manager.Application.Products.SetShipping.Commands;
-using Manager.Application.Products.UpdateMediaIndices.Commands;
-using Manager.Application.Products.UpdateName.Commands;
-using Manager.Application.Products.UpdatePrice.Commands;
-using Manager.Application.Products.UpdatePricePoint.Commands;
-using Manager.Application.Products.UpdateSubproduct.Commands;
+using Manager.Application.Products.SetSubproduct.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -64,30 +63,6 @@ namespace Manager.Api.Controllers
 
 
 
-        // ----------------------------------------------------------------------------- Delete Product Media --------------------------------------------------------------------
-        [HttpDelete]
-        [Route("Media")]
-        public async Task<ActionResult> DeleteProductMedia(Guid id)
-        {
-            return SetResponse(await _mediator.Send(new DeleteProductMediaCommand(id)));
-        }
-
-
-
-
-
-
-        // ------------------------------------------------------------------------------ Delete Price Point ---------------------------------------------------------------------
-        [HttpDelete]
-        [Route("PricePoint")]
-        public async Task<ActionResult> DeletePricePoint(string productId, Guid pricePointId)
-        {
-            return SetResponse(await _mediator.Send(new DeletePricePointCommand(productId, pricePointId)));
-        }
-
-
-
-
 
 
 
@@ -116,12 +91,27 @@ namespace Manager.Api.Controllers
 
 
 
-        // --------------------------------------------------------------------------------- Post Price --------------------------------------------------------------------------
-        [HttpPost]
-        [Route("Price")]
-        public async Task<ActionResult> PostPrice(PostPriceCommand postPrice)
+
+
+        // ------------------------------------------------------------------------------ Remove Price Point ---------------------------------------------------------------------
+        [HttpDelete]
+        [Route("PricePoint")]
+        public async Task<ActionResult> RemovePricePoint(string productId, Guid pricePointId)
         {
-            return SetResponse(await _mediator.Send(postPrice));
+            return SetResponse(await _mediator.Send(new RemovePricePointCommand(productId, pricePointId)));
+        }
+
+
+
+
+
+
+        // ----------------------------------------------------------------------------- Remove Product Media --------------------------------------------------------------------
+        [HttpDelete]
+        [Route("Media")]
+        public async Task<ActionResult> RemoveProductMedia(string productId, Guid productMediaId)
+        {
+            return SetResponse(await _mediator.Send(new RemoveProductMediaCommand(productId, productMediaId)));
         }
 
 
@@ -183,13 +173,99 @@ namespace Manager.Api.Controllers
 
 
 
-        // --------------------------------------------------------------------------------- Set Media ---------------------------------------------------------------------------
+
+
+
+
+        // --------------------------------------------------------------------------------- Set Name ----------------------------------------------------------------------------
+        [HttpPut]
+        public async Task<ActionResult> SetName(SetNameCommand setName)
+        {
+            return SetResponse(await _mediator.Send(setName));
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // ---------------------------------------------------------------------------------- Set Price --------------------------------------------------------------------------
+        [HttpPost]
+        [Route("Price")]
+        public async Task<ActionResult> SetPrice(SetPriceCommand setPrice)
+        {
+            return SetResponse(await _mediator.Send(setPrice));
+        }
+
+
+
+
+
+
+
+
+
+        // ------------------------------------------------------------------------------- Set Price Point -----------------------------------------------------------------------
+        [HttpPut]
+        [Route("PricePoint")]
+        public async Task<ActionResult> SetPricePoint(SetPricePointCommand setPricePoint)
+        {
+            return SetResponse(await _mediator.Send(setPricePoint));
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // ----------------------------------------------------------------------------- Set Product Media -----------------------------------------------------------------------
         [HttpPut]
         [Route("Media")]
-        public async Task<ActionResult> SetMedia(SetMediaCommand setMedia)
+        public async Task<ActionResult> SetProductMedia(SetProductMediaCommand setProductMedia)
         {
-            return SetResponse(await _mediator.Send(setMedia));
+            return SetResponse(await _mediator.Send(setProductMedia));
         }
+
+
+
+
+
+
+
+
+
+
+
+
+        // ------------------------------------------------------------------------- Set Product Media Indices -------------------------------------------------------------------
+        [HttpPut]
+        [Route("MediaIndices")]
+        public async Task<ActionResult> SetProductMediaIndices(SetProductMediaIndicesCommand updateMediaIndices)
+        {
+            return SetResponse(await _mediator.Send(updateMediaIndices));
+        }
+
+
+
+
+
+
+
 
 
 
@@ -223,56 +299,16 @@ namespace Manager.Api.Controllers
 
 
 
-        // ---------------------------------------------------------------------------- Update Media Indices ---------------------------------------------------------------------
-        [HttpPut]
-        [Route("MediaIndices")]
-        public async Task<ActionResult> UpdateMediaIndices(UpdateMediaIndicesCommand updateMediaIndices)
-        {
-            return SetResponse(await _mediator.Send(updateMediaIndices));
-        }
 
 
 
 
-        // -------------------------------------------------------------------------------- Update Name --------------------------------------------------------------------------
-        [HttpPut]
-        public async Task<ActionResult> UpdateName(UpdateNameCommand updateName)
-        {
-            return SetResponse(await _mediator.Send(updateName));
-        }
-
-
-
-
-        // -------------------------------------------------------------------------------- Update Price -------------------------------------------------------------------------
-        [HttpPut]
-        [Route("Price")]
-        public async Task<ActionResult> UpdatePrice(UpdatePriceCommand updatePrice)
-        {
-            return SetResponse(await _mediator.Send(updatePrice));
-        }
-
-
-
-
-
-        // ----------------------------------------------------------------------------- Update Price Point ----------------------------------------------------------------------
-        [HttpPut]
-        [Route("PricePoint")]
-        public async Task<ActionResult> UpdatePricePoint(UpdatePricePointCommand updatePricePoint)
-        {
-            return SetResponse(await _mediator.Send(updatePricePoint));
-        }
-
-
-
-
-        // ----------------------------------------------------------------------------- Update Subproduct -----------------------------------------------------------------------
+        // ------------------------------------------------------------------------------- Set Subproduct ------------------------------------------------------------------------
         [HttpPut]
         [Route("Subproduct")]
-        public async Task<ActionResult> UpdateSubproduct(UpdateSubproductCommand updateSubproduct)
+        public async Task<ActionResult> SetSubproduct(SetSubproductCommand setSubproduct)
         {
-            return SetResponse(await _mediator.Send(updateSubproduct));
+            return SetResponse(await _mediator.Send(setSubproduct));
         }
     }
 }

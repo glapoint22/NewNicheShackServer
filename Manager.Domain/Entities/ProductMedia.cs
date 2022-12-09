@@ -16,7 +16,6 @@
         {
             ProductMedia productMedia = new()
             {
-                Id = Guid.NewGuid(),
                 ProductId = productId,
                 MediaId = MediaId,
                 Index = index
