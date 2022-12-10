@@ -10,7 +10,7 @@ namespace Manager.Api.Controllers
     [Route("api/[controller]")]
     [Authorize(Policy = "Account")]
     [ApiController]
-    public class SubnichesController : ApiControllerBase
+    public sealed class SubnichesController : ApiControllerBase
     {
         private readonly ISender _mediator;
 

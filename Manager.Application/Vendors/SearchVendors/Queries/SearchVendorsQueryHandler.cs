@@ -5,23 +5,23 @@ using Microsoft.EntityFrameworkCore;
 using Shared.Common.Classes;
 using Shared.QueryBuilder;
 
-namespace Manager.Application.Pages.SearchPages.Queries
+namespace Manager.Application.Vendors.SearchVendors.Queries
 {
-    public sealed class SearchPagesQueryHandler : IRequestHandler<SearchPagesQuery, Result>
+    public sealed class SearchVendorsQueryHandler : IRequestHandler<SearchVendorsQuery, Result>
     {
         private readonly IManagerDbContext _dbContext;
 
-        public SearchPagesQueryHandler(IManagerDbContext dbContext)
+        public SearchVendorsQueryHandler(IManagerDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public async Task<Result> Handle(SearchPagesQuery request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(SearchVendorsQuery request, CancellationToken cancellationToken)
         {
             QueryBuilder queryBuilder = new();
 
-            var query = queryBuilder.BuildQuery<Page>(request.SearchTerm);
-            var pages = await _dbContext.Pages
+            var query = queryBuilder.BuildQuery<Vendor>(request.SearchTerm);
+            var vendors = await _dbContext.Vendors
                 .Where(query)
                 .Select(x => new
                 {
@@ -29,7 +29,7 @@ namespace Manager.Application.Pages.SearchPages.Queries
                     x.Name
                 }).ToListAsync();
 
-            return Result.Succeeded(pages);
+            return Result.Succeeded(vendors);
         }
     }
 }

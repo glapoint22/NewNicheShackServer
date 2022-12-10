@@ -51,6 +51,11 @@ namespace Manager.Domain.Entities
 
 
 
+        private readonly List<ProductFilter> _productFilters = new();
+        public IReadOnlyList<ProductFilter> ProductFilters => _productFilters.AsReadOnly();
+
+
+
         // ------------------------------------------------------------------------------ Add Price Point --------------------------------------------------------------------------
         public void AddPricePoint()
         {
@@ -259,6 +264,39 @@ namespace Manager.Domain.Entities
 
 
 
+
+
+
+
+        // ----------------------------------------------------------------------------- Set Product Filter ------------------------------------------------------------------------
+        public void SetProductFilter(Guid filterOptionId, bool filterOptionChecked)
+        {
+            ProductFilter productFilter;
+
+            if (filterOptionChecked)
+            {
+                productFilter = ProductFilter.Create(Id, filterOptionId);
+                _productFilters.Add(productFilter);
+            }
+            else
+            {
+                productFilter = _productFilters.Find(x => x.FilterOptionId == filterOptionId)!;
+                _productFilters.Remove(productFilter);
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
         // ------------------------------------------------------------------------------ Set Product Media ------------------------------------------------------------------------
         public ProductMedia SetProductMedia(Guid? productMediaId, Guid mediaId)
         {
@@ -360,6 +398,19 @@ namespace Manager.Domain.Entities
         {
             Subproduct subproduct = _subproducts[0];
             subproduct.Set(name, description, imageId, value);
+        }
+
+
+
+
+
+
+
+
+        // --------------------------------------------------------------------------------- Set Vendor ----------------------------------------------------------------------------
+        public void SetVendor(Guid vendorId)
+        {
+            VendorId = vendorId;
         }
     }
 }

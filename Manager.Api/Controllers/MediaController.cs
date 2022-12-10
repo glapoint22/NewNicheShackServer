@@ -15,7 +15,7 @@ namespace Manager.Api.Controllers
     [Route("api/[controller]")]
     [Authorize(Policy = "Account")]
     [ApiController]
-    public class MediaController : ApiControllerBase
+    public sealed class MediaController : ApiControllerBase
     {
         private readonly ISender _mediator;
 

@@ -11,11 +11,13 @@ using Manager.Application.Products.SetHoplink.Commands;
 using Manager.Application.Products.SetName.Commands;
 using Manager.Application.Products.SetPrice.Commands;
 using Manager.Application.Products.SetPricePoint.Commands;
+using Manager.Application.Products.SetProductFilter.Commands;
 using Manager.Application.Products.SetProductMedia.Commands;
 using Manager.Application.Products.SetProductMediaIndices.Commands;
 using Manager.Application.Products.SetRecurringPayment.Commands;
 using Manager.Application.Products.SetShipping.Commands;
 using Manager.Application.Products.SetSubproduct.Commands;
+using Manager.Application.Products.SetVendor.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -26,7 +28,7 @@ namespace Manager.Api.Controllers
     [Route("api/[controller]")]
     [Authorize(Policy = "Account")]
     [ApiController]
-    public class ProductsController : ApiControllerBase
+    public sealed class ProductsController : ApiControllerBase
     {
         private readonly ISender _mediator;
 
@@ -228,6 +230,27 @@ namespace Manager.Api.Controllers
 
 
 
+        // ----------------------------------------------------------------------------- Set Product Filter ----------------------------------------------------------------------
+        [HttpPut]
+        [Route("Filter")]
+        public async Task<ActionResult> SetProductFilter(SetProductFilterCommand setProductFilter)
+        {
+            return SetResponse(await _mediator.Send(setProductFilter));
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -309,6 +332,22 @@ namespace Manager.Api.Controllers
         public async Task<ActionResult> SetSubproduct(SetSubproductCommand setSubproduct)
         {
             return SetResponse(await _mediator.Send(setSubproduct));
+        }
+
+
+
+
+
+
+
+
+
+        // --------------------------------------------------------------------------------- Set Vendor --------------------------------------------------------------------------
+        [HttpPut]
+        [Route("Vendor")]
+        public async Task<ActionResult> SetVendor(SetVendorCommand setVendor)
+        {
+            return SetResponse(await _mediator.Send(setVendor));
         }
     }
 }

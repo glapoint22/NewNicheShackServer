@@ -10,7 +10,7 @@ namespace Manager.Api.Controllers
     [Route("api/[controller]")]
     [Authorize(Policy = "Account")]
     [ApiController]
-    public class QueryBuilderController : ApiControllerBase
+    public sealed class QueryBuilderController : ApiControllerBase
     {
         private readonly ISender _mediator;
 

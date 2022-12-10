@@ -11,7 +11,7 @@ namespace Manager.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController : ApiControllerBase
+    public sealed class AccountController : ApiControllerBase
     {
         private readonly ISender _mediator;
 

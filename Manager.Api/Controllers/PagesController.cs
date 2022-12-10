@@ -23,7 +23,7 @@ namespace Manager.Api.Controllers
     [Route("api/[controller]")]
     [Authorize(Policy = "Account")]
     [ApiController]
-    public class PagesController : ApiControllerBase
+    public sealed class PagesController : ApiControllerBase
     {
         private readonly ISender _mediator;
 
