@@ -1,7 +1,6 @@
 ﻿using Manager.Application.Common.Interfaces;
 using Manager.Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Shared.Common.Classes;
 
 namespace Manager.Application.Products.SetSubproduct.Commands
@@ -17,13 +16,8 @@ namespace Manager.Application.Products.SetSubproduct.Commands
 
         public async Task<Result> Handle(SetSubproductCommand request, CancellationToken cancellationToken)
         {
-            Product product = await _dbContext.Products
-                .Where(x => x.Id == request.ProductId)
-                .Include(x => x.Subproducts
-                    .Where(z => z.Id == request.SubproductId))
-                .SingleAsync();
-
-            product.SetSubproduct(request.Name, request.Description, request.ImageId, request.Value);
+            Subproduct subproduct = (await _dbContext.Subproducts.FindAsync(request.SubproductId))!;
+            subproduct.Set(request.Name, request.Description, request.ImageId, request.Value);
 
             await _dbContext.SaveChangesAsync();
             return Result.Succeeded();

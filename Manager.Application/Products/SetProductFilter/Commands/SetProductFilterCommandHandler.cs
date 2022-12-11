@@ -17,12 +17,21 @@ namespace Manager.Application.Products.SetProductFilter.Commands
 
         public async Task<Result> Handle(SetProductFilterCommand request, CancellationToken cancellationToken)
         {
-            Product product = await _dbContext.Products
-                .Where(x => x.Id == request.ProductId)
-                .Include(x => x.ProductFilters)
-                .SingleAsync();
+            ProductFilter productFilter;
 
-            product.SetProductFilter(request.FilterOptionId, request.Checked);
+            if (request.Checked)
+            {
+                productFilter = ProductFilter.Create(request.ProductId, request.FilterOptionId);
+                _dbContext.ProductFilters.Add(productFilter);
+            }
+            else
+            {
+                productFilter = await _dbContext.ProductFilters
+                    .Where(x => x.ProductId == request.ProductId && x.FilterOptionId == request.FilterOptionId)
+                    .SingleAsync();
+
+                _dbContext.ProductFilters.Remove(productFilter);
+            }
 
             await _dbContext.SaveChangesAsync();
             return Result.Succeeded();

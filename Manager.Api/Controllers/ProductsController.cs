@@ -124,9 +124,9 @@ namespace Manager.Api.Controllers
         // ------------------------------------------------------------------------------ Remove Subproduct ----------------------------------------------------------------------
         [HttpDelete]
         [Route("Subproduct")]
-        public async Task<ActionResult> RemoveSubproduct(string productId, Guid subproductId)
+        public async Task<ActionResult> RemoveSubproduct(Guid subproductId)
         {
-            return SetResponse(await _mediator.Send(new RemoveSubproductCommand(productId, subproductId)));
+            return SetResponse(await _mediator.Send(new RemoveSubproductCommand(subproductId)));
         }
 
 

@@ -1,7 +1,6 @@
 ﻿using Manager.Application.Common.Interfaces;
 using Manager.Domain.Entities;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Shared.Common.Classes;
 
 namespace Manager.Application.Products.RemoveSubproduct.Commands
@@ -17,13 +16,8 @@ namespace Manager.Application.Products.RemoveSubproduct.Commands
 
         public async Task<Result> Handle(RemoveSubproductCommand request, CancellationToken cancellationToken)
         {
-            Product product = await _dbContext.Products
-                .Where(x => x.Id == request.ProductId)
-                .Include(x => x.Subproducts
-                    .Where(z => z.Id == request.SubproductId))
-                .SingleAsync();
-
-            product.RemoveSubproduct();
+            Subproduct subproduct = (await _dbContext.Subproducts.FindAsync(request.SubproductId))!;
+            _dbContext.Subproducts.Remove(subproduct);
 
             await _dbContext.SaveChangesAsync();
             return Result.Succeeded();

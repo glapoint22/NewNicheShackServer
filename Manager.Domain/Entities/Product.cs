@@ -1,5 +1,4 @@
 ﻿using Manager.Domain.Dtos;
-using MediatR;
 using Shared.Common.Enums;
 using Shared.Common.Interfaces;
 using Shared.Common.ValueObjects;
@@ -41,18 +40,9 @@ namespace Manager.Domain.Entities
 
 
 
-        private readonly List<Subproduct> _subproducts = new();
-        public IReadOnlyList<Subproduct> Subproducts => _subproducts.AsReadOnly();
-
-
-
         private readonly List<ProductMedia> _productMedia = new();
         public IReadOnlyList<ProductMedia> ProductMedia => _productMedia.AsReadOnly();
 
-
-
-        private readonly List<ProductFilter> _productFilters = new();
-        public IReadOnlyList<ProductFilter> ProductFilters => _productFilters.AsReadOnly();
 
 
 
@@ -69,19 +59,6 @@ namespace Manager.Domain.Entities
             _pricePoints.Add(pricePoint);
         }
 
-
-
-
-
-
-
-
-        // ------------------------------------------------------------------------------- Add Subproduct --------------------------------------------------------------------------
-        public void AddSubproduct(int type)
-        {
-            Subproduct subproduct = Subproduct.Create(Id, type);
-            _subproducts.Add(subproduct);
-        }
 
 
 
@@ -147,21 +124,6 @@ namespace Manager.Domain.Entities
                 }
 
             }
-        }
-
-
-
-
-
-
-
-
-
-        // ----------------------------------------------------------------------------- Remove Subproduct -------------------------------------------------------------------------
-        public void RemoveSubproduct()
-        {
-            Subproduct subproduct = _subproducts[0];
-            _subproducts.Remove(subproduct);
         }
 
 
@@ -268,26 +230,6 @@ namespace Manager.Domain.Entities
 
 
 
-        // ----------------------------------------------------------------------------- Set Product Filter ------------------------------------------------------------------------
-        public void SetProductFilter(Guid filterOptionId, bool filterOptionChecked)
-        {
-            ProductFilter productFilter;
-
-            if (filterOptionChecked)
-            {
-                productFilter = ProductFilter.Create(Id, filterOptionId);
-                _productFilters.Add(productFilter);
-            }
-            else
-            {
-                productFilter = _productFilters.Find(x => x.FilterOptionId == filterOptionId)!;
-                _productFilters.Remove(productFilter);
-            }
-        }
-
-
-
-
 
 
 
@@ -384,23 +326,6 @@ namespace Manager.Domain.Entities
         {
             ShippingType = shippingType;
         }
-
-
-
-
-
-
-
-
-
-        // ------------------------------------------------------------------------------- Set Subproduct --------------------------------------------------------------------------
-        public void SetSubproduct(string? name, string? description, Guid? imageId, double value)
-        {
-            Subproduct subproduct = _subproducts[0];
-            subproduct.Set(name, description, imageId, value);
-        }
-
-
 
 
 
