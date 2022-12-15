@@ -12,6 +12,8 @@ using Manager.Application.Products.SetName.Commands;
 using Manager.Application.Products.SetPrice.Commands;
 using Manager.Application.Products.SetPricePoint.Commands;
 using Manager.Application.Products.SetProductFilter.Commands;
+using Manager.Application.Products.SetProductGroup.Commands;
+using Manager.Application.Products.SetProductKeyword.Commands;
 using Manager.Application.Products.SetProductMedia.Commands;
 using Manager.Application.Products.SetProductMediaIndices.Commands;
 using Manager.Application.Products.SetRecurringPayment.Commands;
@@ -246,6 +248,31 @@ namespace Manager.Api.Controllers
 
 
 
+
+
+
+        // ----------------------------------------------------------------------------- Set Product Group -----------------------------------------------------------------------
+        [HttpPut]
+        [Route("ProductGroup")]
+        public async Task<ActionResult> SetProductGroup(SetProductGroupCommand setProductGroup)
+        {
+            return SetResponse(await _mediator.Send(setProductGroup));
+        }
+
+
+
+
+
+
+
+
+        // ----------------------------------------------------------------------------- Set Product Keyword ---------------------------------------------------------------------
+        [HttpPut]
+        [Route("Keyword")]
+        public async Task<ActionResult> SetProductKeyword(SetProductKeywordCommand setProductKeyword)
+        {
+            return SetResponse(await _mediator.Send(setProductKeyword));
+        }
 
 
 

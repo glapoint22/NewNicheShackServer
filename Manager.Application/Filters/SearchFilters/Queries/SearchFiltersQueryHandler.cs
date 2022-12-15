@@ -19,7 +19,7 @@ namespace Manager.Application.Filters.SearchFilters.Queries
 
         public async Task<Result> Handle(SearchFiltersQuery request, CancellationToken cancellationToken)
         {
-            QueryBuilder queryBuilder = new QueryBuilder();
+            QueryBuilder queryBuilder = new();
 
             // Filters
             var filtersQuery = queryBuilder.BuildQuery<Filter>(request.SearchTerm);
@@ -41,12 +41,12 @@ namespace Manager.Application.Filters.SearchFilters.Queries
                     Id = x.Id,
                     Name = x.Name,
                     Type = "Option",
-                    Checked = x.ProductFilters.Any(z => z.ProductId == request.ProductId)
+                    Checked = x.ProductFilters
+                        .Any(z => z.ProductId == request.ProductId)
                 }).ToListAsync();
 
             List<FilterSearchResult> searchResults = filters
                 .Concat(filterOptions)
-                .OrderBy(x => x.Name)
                 .ToList();
 
             return Result.Succeeded(searchResults);

@@ -9,5 +9,16 @@ namespace Manager.Domain.Entities
 
         public Product Product { get; set; } = null!;
         public ProductGroup ProductGroup { get; set; } = null!;
+
+        public static ProductInProductGroup Create(string productId, Guid productGroupId)
+        {
+            ProductInProductGroup productInProductGroup = new()
+            {
+                ProductId = productId,
+                ProductGroupId = productGroupId
+            };
+
+            return productInProductGroup;
+        }
     }
 }

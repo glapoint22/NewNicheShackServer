@@ -26,9 +26,6 @@ namespace Manager.Domain.Entities
         public Media Media { get; set; } = null!;
 
 
-        public ICollection<ProductInProductGroup> ProductsInProductGroup { get; private set; } = new HashSet<ProductInProductGroup>();
-        public ICollection<KeywordGroupBelongingToProduct> KeywordGroupsBelongingToProduct { get; private set; } = new HashSet<KeywordGroupBelongingToProduct>();
-
 
         private readonly List<ProductPrice> _productPrices = new();
         public IReadOnlyList<ProductPrice> ProductPrices => _productPrices.AsReadOnly();
@@ -42,6 +39,15 @@ namespace Manager.Domain.Entities
 
         private readonly List<ProductMedia> _productMedia = new();
         public IReadOnlyList<ProductMedia> ProductMedia => _productMedia.AsReadOnly();
+
+
+
+        public ICollection<ProductKeyword> ProductKeywords { get; private set; } = new HashSet<ProductKeyword>();
+
+
+        // These are used for query builder - DON'T REMOVE!!
+        public ICollection<ProductInProductGroup> ProductsInProductGroup { get; private set; } = new HashSet<ProductInProductGroup>();
+        public ICollection<KeywordGroupBelongingToProduct> KeywordGroupsBelongingToProduct { get; private set; } = new HashSet<KeywordGroupBelongingToProduct>();
 
 
 
