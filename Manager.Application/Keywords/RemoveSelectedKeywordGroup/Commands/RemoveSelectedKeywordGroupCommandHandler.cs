@@ -31,9 +31,9 @@ namespace Manager.Application.Keywords.RemoveSelectedKeywordGroup.Commands
                         // No other keyword groups in this product contains the keywords that are in the selected keyword group
                         !x.Product.KeywordGroupsBelongingToProduct
                             .Any(z => z.KeywordGroup.KeywordsInKeywordGroup
-                            .Where(x => x.KeywordGroupId != request.KeywordGroupId)
-                            .Select(q => q.KeywordId)
-                            .Contains(x.KeywordId)))
+                                .Where(x => x.KeywordGroupId != request.KeywordGroupId)
+                                .Select(q => q.KeywordId)
+                                .Contains(x.KeywordId)))
                 .ToListAsync();
 
 

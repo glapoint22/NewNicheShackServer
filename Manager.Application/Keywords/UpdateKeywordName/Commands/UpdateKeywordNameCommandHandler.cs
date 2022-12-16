@@ -4,18 +4,18 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Shared.Common.Classes;
 
-namespace Manager.Application.Keywords.UpdateAvailableKeywordName.Commands
+namespace Manager.Application.Keywords.UpdateKeywordName.Commands
 {
-    public sealed class UpdateAvailableKeywordNameCommandHandler : IRequestHandler<UpdateAvailableKeywordNameCommand, Result>
+    public sealed class UpdateKeywordNameCommandHandler : IRequestHandler<UpdateKeywordNameCommand, Result>
     {
         private readonly IManagerDbContext _dbContext;
 
-        public UpdateAvailableKeywordNameCommandHandler(IManagerDbContext dbContext)
+        public UpdateKeywordNameCommandHandler(IManagerDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public async Task<Result> Handle(UpdateAvailableKeywordNameCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(UpdateKeywordNameCommand request, CancellationToken cancellationToken)
         {
             Keyword? keyword = await _dbContext.Keywords
                 .Where(x => x.Name == request.Name.Trim().ToLower())
@@ -41,7 +41,9 @@ namespace Manager.Application.Keywords.UpdateAvailableKeywordName.Commands
 
                 // Get all the products the old keyword was part of
                 var productIds = await _dbContext.ProductKeywords
-                    .Where(x => x.KeywordId == oldKeyword.Id)
+                    .Where(x => x.KeywordId == oldKeyword.Id && x.Product.KeywordGroupsBelongingToProduct
+                        .Count(z => z.KeywordGroup.KeywordsInKeywordGroup
+                            .Any(q => q.KeywordId == keyword.Id)) == 0)
                     .Select(x => x.ProductId)
                     .ToListAsync();
 

@@ -12,9 +12,11 @@ using Manager.Application.Keywords.GetSelectedKeywords.Queries;
 using Manager.Application.Keywords.NewSelectedKeywordCommand.Commands;
 using Manager.Application.Keywords.NewSelectedKeywordGroup.Commands;
 using Manager.Application.Keywords.RemoveSelectedKeywordGroup.Commands;
+using Manager.Application.Keywords.SearchAvailableKeywords.Queries;
 using Manager.Application.Keywords.SearchKeywordGroups.Queries;
-using Manager.Application.Keywords.UpdateAvailableKeywordGroupName.Commands;
-using Manager.Application.Keywords.UpdateAvailableKeywordName.Commands;
+using Manager.Application.Keywords.SearchSelectedKeywords.Queries;
+using Manager.Application.Keywords.UpdateKeywordGroupName.Commands;
+using Manager.Application.Keywords.UpdateKeywordName.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -134,9 +136,9 @@ namespace Manager.Api.Controllers
         // ------------------------------------------------------------------------ Delete Selected Keyword ----------------------------------------------------------------------
         [HttpDelete]
         [Route("SelectedKeywords")]
-        public async Task<ActionResult> DeleteSelectedKeyword(Guid id)
+        public async Task<ActionResult> DeleteSelectedKeyword(Guid id, Guid keywordGroupId)
         {
-            return SetResponse(await _mediator.Send(new DeleteSelectedKeywordCommand(id)));
+            return SetResponse(await _mediator.Send(new DeleteSelectedKeywordCommand(id, keywordGroupId)));
         }
 
 
@@ -252,6 +254,17 @@ namespace Manager.Api.Controllers
 
 
 
+        // ----------------------------------------------------------------------- Search available Keywords ---------------------------------------------------------------------
+        [HttpGet]
+        [Route("AvailableKeywords/Groups/Search")]
+        public async Task<ActionResult> SearchAvailableKeywords(string productId, string searchTerm)
+        {
+            return SetResponse(await _mediator.Send(new SearchAvailableKeywordsQuery(productId, searchTerm)));
+        }
+
+
+
+
 
 
 
@@ -269,12 +282,27 @@ namespace Manager.Api.Controllers
 
 
 
-        // ------------------------------------------------------------------- Update Available Keyword Group Name ---------------------------------------------------------------
-        [HttpPut]
-        [Route("AvailableKeywords/Groups")]
-        public async Task<ActionResult> UpdateAvailableKeywordGroupName(UpdateAvailableKeywordGroupNameCommand updateAvailableKeywordGroupName)
+
+
+        // ----------------------------------------------------------------------- Search Selected Keywords ----------------------------------------------------------------------
+        [HttpGet]
+        [Route("SelectedKeywords/Groups/Search")]
+        public async Task<ActionResult> SearchSelectedKeywords(string productId, string searchTerm)
         {
-            return SetResponse(await _mediator.Send(updateAvailableKeywordGroupName));
+            return SetResponse(await _mediator.Send(new SearchSelectedKeywordsQuery(productId, searchTerm)));
+        }
+
+
+
+
+
+
+        // ------------------------------------------------------------------------ Update Keyword Group Name --------------------------------------------------------------------
+        [HttpPut]
+        [Route("Groups")]
+        public async Task<ActionResult> UpdateKeywordGroupName(UpdateKeywordGroupNameCommand updateKeywordGroupName)
+        {
+            return SetResponse(await _mediator.Send(updateKeywordGroupName));
         }
 
 
@@ -284,12 +312,11 @@ namespace Manager.Api.Controllers
 
 
 
-        // ---------------------------------------------------------------------- Update Available Keyword Name ------------------------------------------------------------------
+        // --------------------------------------------------------------------------- Update Keyword Name -----------------------------------------------------------------------
         [HttpPut]
-        [Route("AvailableKeywords")]
-        public async Task<ActionResult> UpdateAvailableKeywordName(UpdateAvailableKeywordNameCommand updateAvailableKeywordName)
+        public async Task<ActionResult> UpdateKeywordName(UpdateKeywordNameCommand updateKeywordName)
         {
-            return SetResponse(await _mediator.Send(updateAvailableKeywordName));
+            return SetResponse(await _mediator.Send(updateKeywordName));
         }
     }
 }

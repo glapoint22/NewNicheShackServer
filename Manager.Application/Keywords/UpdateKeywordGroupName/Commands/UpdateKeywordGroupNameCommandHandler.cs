@@ -3,18 +3,18 @@ using Manager.Domain.Entities;
 using MediatR;
 using Shared.Common.Classes;
 
-namespace Manager.Application.Keywords.UpdateAvailableKeywordGroupName.Commands
+namespace Manager.Application.Keywords.UpdateKeywordGroupName.Commands
 {
-    public sealed class UpdateAvailableKeywordGroupNameCommandHandler : IRequestHandler<UpdateAvailableKeywordGroupNameCommand, Result>
+    public sealed class UpdateKeywordGroupNameCommandHandler : IRequestHandler<UpdateKeywordGroupNameCommand, Result>
     {
         private readonly IManagerDbContext _dbContext;
 
-        public UpdateAvailableKeywordGroupNameCommandHandler(IManagerDbContext dbContext)
+        public UpdateKeywordGroupNameCommandHandler(IManagerDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public async Task<Result> Handle(UpdateAvailableKeywordGroupNameCommand request, CancellationToken cancellationToken)
+        public async Task<Result> Handle(UpdateKeywordGroupNameCommand request, CancellationToken cancellationToken)
         {
             KeywordGroup keywordGroup = (await _dbContext.KeywordGroups.FindAsync(request.Id))!;
             keywordGroup.EditName(request.Name);
