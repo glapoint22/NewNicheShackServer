@@ -7,6 +7,7 @@ using Manager.Application.Keywords.DeleteAvailableKeywordGroup.Commands;
 using Manager.Application.Keywords.DeleteSelectedKeyword.Commands;
 using Manager.Application.Keywords.GetAvailableKeywordGroups.Queries;
 using Manager.Application.Keywords.GetAvailableKeywords.Queries;
+using Manager.Application.Keywords.GetKeywordGroup.Queries;
 using Manager.Application.Keywords.GetSelectedKeywordGroups.Queries;
 using Manager.Application.Keywords.GetSelectedKeywords.Queries;
 using Manager.Application.Keywords.NewSelectedKeywordCommand.Commands;
@@ -175,6 +176,18 @@ namespace Manager.Api.Controllers
         }
 
 
+
+
+
+
+
+        // --------------------------------------------------------------------------- Get Keyword Group -------------------------------------------------------------------------
+        [HttpGet]
+        [Route("Groups")]
+        public async Task<ActionResult> GetKeywordGroup(Guid childId)
+        {
+            return SetResponse(await _mediator.Send(new GetKeywordGroupQuery(childId)));
+        }
 
 
 
