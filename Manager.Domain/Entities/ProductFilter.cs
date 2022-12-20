@@ -2,13 +2,13 @@
 {
     public sealed class ProductFilter
     {
-        public string ProductId { get; set; } = string.Empty;
+        public Guid ProductId { get; set; }
         public Guid FilterOptionId { get; set; }
 
         public FilterOption FilterOption { get; set; } = null!;
         public Product Product { get; set; } = null!;
 
-        public static ProductFilter Create(string productId, Guid filterOptionId)
+        public static ProductFilter Create(Guid productId, Guid filterOptionId)
         {
             ProductFilter productFilter = new()
             {

@@ -3,5 +3,5 @@ using Shared.Common.Classes;
 
 namespace Manager.Application.Products.SetName.Commands
 {
-    public sealed record SetNameCommand(string Id, string Name) : IRequest<Result>;
+    public sealed record SetNameCommand(Guid Id, string Name) : IRequest<Result>;
 }

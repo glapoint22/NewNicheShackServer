@@ -30,7 +30,8 @@ namespace Manager.Infrastructure.Persistence.Configurations
             builder.HasOne(x => x.Vendor)
                 .WithMany(x => x.Products)
                 .HasForeignKey(x => x.VendorId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired(false);
 
 
 

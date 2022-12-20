@@ -17,6 +17,7 @@ namespace Manager.Application.Subniches.GetSubniches.Queries
         public async Task<Result> Handle(GetSubnichesQuery request, CancellationToken cancellationToken)
         {
             var subniches = await _dbContext.Subniches
+                .OrderBy(x => x.Name)
                 .Where(x => x.NicheId == request.ParentId)
                 .Select(x => new
                 {

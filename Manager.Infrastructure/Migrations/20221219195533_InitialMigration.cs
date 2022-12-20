@@ -94,7 +94,7 @@ namespace Manager.Infrastructure.Migrations
                 name: "Niches",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", maxLength: 10, nullable: false),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     UrlName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
@@ -107,7 +107,7 @@ namespace Manager.Infrastructure.Migrations
                 name: "Pages",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", maxLength: 10, nullable: false),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     UrlName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -242,8 +242,8 @@ namespace Manager.Infrastructure.Migrations
                 name: "Subniches",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    NicheId = table.Column<string>(type: "nvarchar(10)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", maxLength: 10, nullable: false),
+                    NicheId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     UrlName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
@@ -254,6 +254,30 @@ namespace Manager.Infrastructure.Migrations
                         name: "FK_Subniches_Niches_NicheId",
                         column: x => x.NicheId,
                         principalTable: "Niches",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PageKeywordGroups",
+                columns: table => new
+                {
+                    PageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    KeywordGroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PageKeywordGroups", x => new { x.PageId, x.KeywordGroupId });
+                    table.ForeignKey(
+                        name: "FK_PageKeywordGroups_KeywordGroups_KeywordGroupId",
+                        column: x => x.KeywordGroupId,
+                        principalTable: "KeywordGroups",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PageKeywordGroups_Pages_PageId",
+                        column: x => x.PageId,
+                        principalTable: "Pages",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -385,17 +409,66 @@ namespace Manager.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PageKeywords",
+                columns: table => new
+                {
+                    PageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    KeywordInKeywordGroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PageKeywords", x => new { x.PageId, x.KeywordInKeywordGroupId });
+                    table.ForeignKey(
+                        name: "FK_PageKeywords_KeywordsInKeywordGroup_KeywordInKeywordGroupId",
+                        column: x => x.KeywordInKeywordGroupId,
+                        principalTable: "KeywordsInKeywordGroup",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PageKeywords_Pages_PageId",
+                        column: x => x.PageId,
+                        principalTable: "Pages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PageSubniches",
+                columns: table => new
+                {
+                    PageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SubnicheId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PageSubniches", x => new { x.PageId, x.SubnicheId });
+                    table.ForeignKey(
+                        name: "FK_PageSubniches_Pages_PageId",
+                        column: x => x.PageId,
+                        principalTable: "Pages",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PageSubniches_Subniches_SubnicheId",
+                        column: x => x.SubnicheId,
+                        principalTable: "Subniches",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Products",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    VendorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SubnicheId = table.Column<string>(type: "nvarchar(10)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", maxLength: 10, nullable: false),
+                    VendorId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    SubnicheId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ImageId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     UrlName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Hoplink = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Rating = table.Column<double>(type: "float", nullable: false),
                     ShippingType = table.Column<int>(type: "int", nullable: false),
                     TrialPeriod = table.Column<int>(type: "int", nullable: false),
                     RecurringPrice = table.Column<double>(type: "float", nullable: false),
@@ -431,7 +504,7 @@ namespace Manager.Infrastructure.Migrations
                 name: "KeywordGroupsBelongingToProduct",
                 columns: table => new
                 {
-                    ProductId = table.Column<string>(type: "nvarchar(10)", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     KeywordGroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -455,7 +528,7 @@ namespace Manager.Infrastructure.Migrations
                 name: "ProductFilters",
                 columns: table => new
                 {
-                    ProductId = table.Column<string>(type: "nvarchar(10)", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FilterOptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -479,13 +552,12 @@ namespace Manager.Infrastructure.Migrations
                 name: "ProductKeywords",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProductId = table.Column<string>(type: "nvarchar(10)", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     KeywordId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductKeywords", x => x.Id);
+                    table.PrimaryKey("PK_ProductKeywords", x => new { x.ProductId, x.KeywordId });
                     table.ForeignKey(
                         name: "FK_ProductKeywords_Keywords_KeywordId",
                         column: x => x.KeywordId,
@@ -505,7 +577,7 @@ namespace Manager.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProductId = table.Column<string>(type: "nvarchar(10)", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     MediaId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Index = table.Column<int>(type: "int", nullable: false)
                 },
@@ -531,7 +603,7 @@ namespace Manager.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProductId = table.Column<string>(type: "nvarchar(10)", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
@@ -549,13 +621,12 @@ namespace Manager.Infrastructure.Migrations
                 name: "ProductsInProductGroup",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProductId = table.Column<string>(type: "nvarchar(10)", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ProductGroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductsInProductGroup", x => x.Id);
+                    table.PrimaryKey("PK_ProductsInProductGroup", x => new { x.ProductId, x.ProductGroupId });
                     table.ForeignKey(
                         name: "FK_ProductsInProductGroup_ProductGroups_ProductGroupId",
                         column: x => x.ProductGroupId,
@@ -575,7 +646,7 @@ namespace Manager.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProductId = table.Column<string>(type: "nvarchar(10)", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ImageId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -605,7 +676,7 @@ namespace Manager.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ProductPriceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProductId = table.Column<string>(type: "nvarchar(10)", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ImageId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Header = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Quantity = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
@@ -694,6 +765,21 @@ namespace Manager.Infrastructure.Migrations
                 column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PageKeywordGroups_KeywordGroupId",
+                table: "PageKeywordGroups",
+                column: "KeywordGroupId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PageKeywords_KeywordInKeywordGroupId",
+                table: "PageKeywords",
+                column: "KeywordInKeywordGroupId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PageSubniches_SubnicheId",
+                table: "PageSubniches",
+                column: "SubnicheId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PricePoints_ImageId",
                 table: "PricePoints",
                 column: "ImageId");
@@ -717,11 +803,6 @@ namespace Manager.Infrastructure.Migrations
                 name: "IX_ProductKeywords_KeywordId",
                 table: "ProductKeywords",
                 column: "KeywordId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProductKeywords_ProductId",
-                table: "ProductKeywords",
-                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductMedia_MediaId",
@@ -757,11 +838,6 @@ namespace Manager.Infrastructure.Migrations
                 name: "IX_ProductsInProductGroup_ProductGroupId",
                 table: "ProductsInProductGroup",
                 column: "ProductGroupId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProductsInProductGroup_ProductId",
-                table: "ProductsInProductGroup",
-                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RefreshTokens_UserId",
@@ -817,13 +893,16 @@ namespace Manager.Infrastructure.Migrations
                 name: "KeywordGroupsBelongingToProduct");
 
             migrationBuilder.DropTable(
-                name: "KeywordsInKeywordGroup");
-
-            migrationBuilder.DropTable(
                 name: "NotificationEmployeeNotes");
 
             migrationBuilder.DropTable(
-                name: "Pages");
+                name: "PageKeywordGroups");
+
+            migrationBuilder.DropTable(
+                name: "PageKeywords");
+
+            migrationBuilder.DropTable(
+                name: "PageSubniches");
 
             migrationBuilder.DropTable(
                 name: "PricePoints");
@@ -850,7 +929,10 @@ namespace Manager.Infrastructure.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "KeywordGroups");
+                name: "KeywordsInKeywordGroup");
+
+            migrationBuilder.DropTable(
+                name: "Pages");
 
             migrationBuilder.DropTable(
                 name: "ProductPrices");
@@ -859,13 +941,16 @@ namespace Manager.Infrastructure.Migrations
                 name: "FilterOptions");
 
             migrationBuilder.DropTable(
-                name: "Keywords");
-
-            migrationBuilder.DropTable(
                 name: "ProductGroups");
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "KeywordGroups");
+
+            migrationBuilder.DropTable(
+                name: "Keywords");
 
             migrationBuilder.DropTable(
                 name: "Products");

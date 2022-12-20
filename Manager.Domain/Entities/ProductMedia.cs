@@ -3,7 +3,7 @@
     public sealed class ProductMedia
     {
         public Guid Id { get; set; }
-        public string ProductId { get; set; } = string.Empty;
+        public Guid ProductId { get; set; }
         public Guid? MediaId { get; set; }
         public int Index { get; set; }
 
@@ -12,7 +12,7 @@
 
 
 
-        public static ProductMedia Create(string productId, Guid MediaId, int index)
+        public static ProductMedia Create(Guid productId, Guid MediaId, int index)
         {
             ProductMedia productMedia = new()
             {

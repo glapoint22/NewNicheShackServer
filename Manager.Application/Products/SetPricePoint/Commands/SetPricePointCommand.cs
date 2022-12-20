@@ -4,5 +4,5 @@ using Shared.Common.Classes;
 
 namespace Manager.Application.Products.SetPricePoint.Commands
 {
-    public sealed record SetPricePointCommand(string ProductId, PricePointDto PricePoint) : IRequest<Result>;
+    public sealed record SetPricePointCommand(Guid ProductId, PricePointDto PricePoint) : IRequest<Result>;
 }

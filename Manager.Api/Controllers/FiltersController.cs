@@ -83,7 +83,7 @@ namespace Manager.Api.Controllers
         // -------------------------------------------------------------------- Get Filter Options -----------------------------------------------------------------------
         [HttpGet]
         [Route("Options")]
-        public async Task<ActionResult> GetFilterOptions(Guid parentId, string productId)
+        public async Task<ActionResult> GetFilterOptions(Guid parentId, Guid productId)
         {
             return SetResponse(await _mediator.Send(new GetFilterOptionsQuery(parentId, productId)));
         }
@@ -113,7 +113,7 @@ namespace Manager.Api.Controllers
         // --------------------------------------------------------------------- Search Filters --------------------------------------------------------------------------
         [HttpGet]
         [Route("Search")]
-        public async Task<ActionResult> SearchFilters(string? productId, string searchTerm)
+        public async Task<ActionResult> SearchFilters(Guid? productId, string searchTerm)
         {
             return SetResponse(await _mediator.Send(new SearchFiltersQuery(productId, searchTerm)));
         }

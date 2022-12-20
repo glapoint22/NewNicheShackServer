@@ -2,7 +2,7 @@
 {
     public interface IProductInProductGroup
     {
-        string ProductId { get; set; }
+        Guid ProductId { get; set; }
         Guid ProductGroupId { get; set; }
     }
 }

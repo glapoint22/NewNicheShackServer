@@ -4,13 +4,13 @@ namespace Manager.Domain.Entities
 {
     public sealed class ProductInProductGroup : IProductInProductGroup
     {
-        public string ProductId { get; set; } = string.Empty;
+        public Guid ProductId { get; set; }
         public Guid ProductGroupId { get; set; }
 
         public Product Product { get; set; } = null!;
         public ProductGroup ProductGroup { get; set; } = null!;
 
-        public static ProductInProductGroup Create(string productId, Guid productGroupId)
+        public static ProductInProductGroup Create(Guid productId, Guid productGroupId)
         {
             ProductInProductGroup productInProductGroup = new()
             {

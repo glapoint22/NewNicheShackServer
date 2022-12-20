@@ -3,5 +3,5 @@ using Shared.Common.Classes;
 
 namespace Manager.Application.Keywords.GetAvailableKeywordGroups.Queries
 {
-    public sealed record GetAvailableKeywordGroupsQuery(string? ProductId) : IRequest<Result>;
+    public sealed record GetAvailableKeywordGroupsQuery(Guid? ProductId) : IRequest<Result>;
 }

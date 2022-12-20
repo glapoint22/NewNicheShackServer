@@ -31,10 +31,7 @@ namespace Manager.Application.Pages.DuplicatePage.Commands
 
             await _dbContext.SaveChangesAsync();
 
-            return Result.Succeeded(new
-            {
-                duplicatePage.Id
-            });
+            return Result.Succeeded(duplicatePage.Id);
         }
     }
 }

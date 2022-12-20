@@ -4,13 +4,13 @@ namespace Manager.Domain.Entities
 {
     public sealed class KeywordGroupBelongingToProduct : IKeywordGroupBelongingToProduct
     {
-        public string ProductId { get; set; } = string.Empty;
+        public Guid ProductId { get; set; }
         public Guid KeywordGroupId { get; set; }
 
         public Product Product { get; set; } = null!;
         public KeywordGroup KeywordGroup { get; set; } = null!;
 
-        public static KeywordGroupBelongingToProduct Create(Guid keywordGroupId, string productId)
+        public static KeywordGroupBelongingToProduct Create(Guid keywordGroupId, Guid productId)
         {
             KeywordGroupBelongingToProduct keywordGroupBelongingToProduct = new()
             {
@@ -23,7 +23,7 @@ namespace Manager.Domain.Entities
 
 
 
-        public static KeywordGroupBelongingToProduct Create(KeywordGroup keywordGroup, string productId)
+        public static KeywordGroupBelongingToProduct Create(KeywordGroup keywordGroup, Guid productId)
         {
             KeywordGroupBelongingToProduct keywordGroupBelongingToProduct = new()
             {

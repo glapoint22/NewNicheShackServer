@@ -7,7 +7,7 @@ namespace Manager.Domain.Entities
     {
         public Guid Id { get; set; }
         public Guid ProductPriceId { get; set; }
-        public string ProductId { get; set; } = string.Empty;
+        public Guid ProductId { get; set; }
         public Guid? ImageId { get; set; }
         public string? Header { get; set; }
         public string? Quantity { get; set; }
@@ -21,7 +21,7 @@ namespace Manager.Domain.Entities
         public Product Product { get; set; } = null!;
         public Media Media { get; set; } = null!;
 
-        public static PricePoint Create(string productId)
+        public static PricePoint Create(Guid productId)
         {
             PricePoint pricePoint = new()
             {

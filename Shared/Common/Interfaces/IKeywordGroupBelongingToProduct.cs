@@ -2,7 +2,7 @@
 {
     public interface IKeywordGroupBelongingToProduct
     {
-        string ProductId { get; set; }
+        Guid ProductId { get; set; }
         Guid KeywordGroupId { get; set; }
     }
 }

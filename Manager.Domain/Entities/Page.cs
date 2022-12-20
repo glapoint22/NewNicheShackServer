@@ -6,7 +6,7 @@ namespace Manager.Domain.Entities
 {
     public sealed class Page : IPage
     {
-        public string Id { get; set; } = string.Empty;
+        public Guid Id { get; set; }
         public string Name { get; set; } = string.Empty;
         public string? UrlName { get; set; } = string.Empty;
         public string Content { get; set; } = string.Empty;
@@ -31,7 +31,6 @@ namespace Manager.Domain.Entities
         {
             Page page = new()
             {
-                Id = Utility.GenerateId(),
                 Name = name,
                 UrlName = Utility.GenerateUrlName(name),
                 Content = content,
@@ -44,7 +43,7 @@ namespace Manager.Domain.Entities
 
 
 
-        public void AddPageSubniche(string subnicheId)
+        public void AddPageSubniche(Guid subnicheId)
         {
             PageSubniche pageSubniche = PageSubniche.Create(Id, subnicheId);
             _pageSubniches.Add(pageSubniche);
@@ -56,7 +55,6 @@ namespace Manager.Domain.Entities
         {
             Page page = new()
             {
-                Id = Utility.GenerateId(),
                 Name = Name + " Copy",
                 Content = Content,
                 UrlName = UrlName,

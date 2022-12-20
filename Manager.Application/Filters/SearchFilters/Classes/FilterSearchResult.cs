@@ -1,10 +1,9 @@
-﻿namespace Manager.Application.Filters.SearchFilters.Classes
+﻿using Manager.Application.Common.Classes;
+
+namespace Manager.Application.Filters.SearchFilters.Classes
 {
-    public sealed class FilterSearchResult
+    public sealed record FilterSearchResult : SearchResult
     {
-        public Guid Id { get; set; }
-        public string Name { get; set; } = string.Empty;
-        public string Type { get; set; } = string.Empty;
         public bool Checked { get; set; }
     }
 }

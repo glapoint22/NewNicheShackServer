@@ -17,6 +17,7 @@ namespace Manager.Application.Niches.GetNiches.Queries
         public async Task<Result> Handle(GetNichesQuery request, CancellationToken cancellationToken)
         {
             var niches = await _dbContext.Niches
+                .OrderBy(x => x.Name)
                 .Select(x => new
                 {
                     x.Id,

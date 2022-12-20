@@ -1,6 +1,9 @@
 ﻿using Manager.Application.Products.AddPricePoint.Commands;
+using Manager.Application.Products.AddProduct.Commands;
 using Manager.Application.Products.AddSubproduct.Commands;
+using Manager.Application.Products.DeleteProduct.Commands;
 using Manager.Application.Products.GetProduct.Queries;
+using Manager.Application.Products.GetProductParent.Queries;
 using Manager.Application.Products.GetProducts.Queries;
 using Manager.Application.Products.RemovePricePoint.Commands;
 using Manager.Application.Products.RemoveProductMedia.Commands;
@@ -42,6 +45,17 @@ namespace Manager.Api.Controllers
 
 
 
+        // --------------------------------------------------------------------------------- Add Product -------------------------------------------------------------------------
+        [HttpPost]
+        public async Task<ActionResult> AddProduct(AddProductCommand addProduct)
+        {
+            return SetResponse(await _mediator.Send(addProduct));
+        }
+
+
+
+
+
         // ------------------------------------------------------------------------------- Add Price Point -----------------------------------------------------------------------
         [HttpPost]
         [Route("PricePoint")]
@@ -69,12 +83,22 @@ namespace Manager.Api.Controllers
 
 
 
+        // ------------------------------------------------------------------------------- Delete Product ------------------------------------------------------------------------
+        [HttpDelete]
+        public async Task<ActionResult> DeleteProduct(Guid id)
+        {
+            return SetResponse(await _mediator.Send(new DeleteProductCommand(id)));
+        }
+
+
+
+
 
 
         // --------------------------------------------------------------------------------- Get Product -------------------------------------------------------------------------
         [HttpGet]
         [Route("Product")]
-        public async Task<ActionResult> GetProduct(string productId)
+        public async Task<ActionResult> GetProduct(Guid productId)
         {
             return SetResponse(await _mediator.Send(new GetProductQuery(productId)));
         }
@@ -85,9 +109,24 @@ namespace Manager.Api.Controllers
 
 
 
+
+        // ------------------------------------------------------------------------------ Get Product Parent ---------------------------------------------------------------------
+        [HttpGet]
+        [Route("Parent")]
+        public async Task<ActionResult> GetProductParent(Guid productId)
+        {
+            return SetResponse(await _mediator.Send(new GetProductParentQuery(productId)));
+        }
+
+
+
+
+
+
+
         // -------------------------------------------------------------------------------- Get Products -------------------------------------------------------------------------
         [HttpGet]
-        public async Task<ActionResult> GetProducts(string parentId)
+        public async Task<ActionResult> GetProducts(Guid parentId)
         {
             return SetResponse(await _mediator.Send(new GetProductsQuery(parentId)));
         }
@@ -100,7 +139,7 @@ namespace Manager.Api.Controllers
         // ------------------------------------------------------------------------------ Remove Price Point ---------------------------------------------------------------------
         [HttpDelete]
         [Route("PricePoint")]
-        public async Task<ActionResult> RemovePricePoint(string productId, Guid pricePointId)
+        public async Task<ActionResult> RemovePricePoint(Guid productId, Guid pricePointId)
         {
             return SetResponse(await _mediator.Send(new RemovePricePointCommand(productId, pricePointId)));
         }
@@ -113,7 +152,7 @@ namespace Manager.Api.Controllers
         // ----------------------------------------------------------------------------- Remove Product Media --------------------------------------------------------------------
         [HttpDelete]
         [Route("Media")]
-        public async Task<ActionResult> RemoveProductMedia(string productId, Guid productMediaId)
+        public async Task<ActionResult> RemoveProductMedia(Guid productId, Guid productMediaId)
         {
             return SetResponse(await _mediator.Send(new RemoveProductMediaCommand(productId, productMediaId)));
         }

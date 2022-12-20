@@ -2,10 +2,10 @@
 {
     public interface IProduct
     {
-        string Id { get; set; }
+        Guid Id { get; set; }
         string Name { get; set; }
         string UrlName { get; set; }
-        string SubnicheId { get; set; }
+        Guid SubnicheId { get; set; }
         DateTime Date { get; set; }
     }
 }

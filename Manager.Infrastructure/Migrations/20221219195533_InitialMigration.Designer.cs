@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Manager.Infrastructure.Migrations
 {
     [DbContext(typeof(ManagerDbContext))]
-    [Migration("20221204164336_PageKeywordGroup")]
-    partial class PageKeywordGroup
+    [Migration("20221219195533_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -98,8 +98,8 @@ namespace Manager.Infrastructure.Migrations
 
             modelBuilder.Entity("Manager.Domain.Entities.KeywordGroupBelongingToProduct", b =>
                 {
-                    b.Property<string>("ProductId")
-                        .HasColumnType("nvarchar(10)");
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("KeywordGroupId")
                         .HasColumnType("uniqueidentifier");
@@ -113,13 +113,19 @@ namespace Manager.Infrastructure.Migrations
 
             modelBuilder.Entity("Manager.Domain.Entities.KeywordInKeywordGroup", b =>
                 {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("KeywordGroupId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("KeywordId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("KeywordGroupId", "KeywordId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("KeywordGroupId");
 
                     b.HasIndex("KeywordId");
 
@@ -204,9 +210,10 @@ namespace Manager.Infrastructure.Migrations
 
             modelBuilder.Entity("Manager.Domain.Entities.Niche", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -255,9 +262,10 @@ namespace Manager.Infrastructure.Migrations
 
             modelBuilder.Entity("Manager.Domain.Entities.Page", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -280,10 +288,25 @@ namespace Manager.Infrastructure.Migrations
                     b.ToTable("Pages");
                 });
 
+            modelBuilder.Entity("Manager.Domain.Entities.PageKeyword", b =>
+                {
+                    b.Property<Guid>("PageId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("KeywordInKeywordGroupId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("PageId", "KeywordInKeywordGroupId");
+
+                    b.HasIndex("KeywordInKeywordGroupId");
+
+                    b.ToTable("PageKeywords");
+                });
+
             modelBuilder.Entity("Manager.Domain.Entities.PageKeywordGroup", b =>
                 {
-                    b.Property<string>("PageId")
-                        .HasColumnType("nvarchar(10)");
+                    b.Property<Guid>("PageId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("KeywordGroupId")
                         .HasColumnType("uniqueidentifier");
@@ -297,11 +320,11 @@ namespace Manager.Infrastructure.Migrations
 
             modelBuilder.Entity("Manager.Domain.Entities.PageSubniche", b =>
                 {
-                    b.Property<string>("PageId")
-                        .HasColumnType("nvarchar(10)");
+                    b.Property<Guid>("PageId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("SubnicheId")
-                        .HasColumnType("nvarchar(10)");
+                    b.Property<Guid>("SubnicheId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("PageId", "SubnicheId");
 
@@ -323,9 +346,8 @@ namespace Manager.Infrastructure.Migrations
                     b.Property<Guid?>("ImageId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ProductId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(10)");
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ProductPriceId")
                         .HasColumnType("uniqueidentifier");
@@ -362,9 +384,10 @@ namespace Manager.Infrastructure.Migrations
 
             modelBuilder.Entity("Manager.Domain.Entities.Product", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -393,9 +416,8 @@ namespace Manager.Infrastructure.Migrations
                     b.Property<int>("ShippingType")
                         .HasColumnType("int");
 
-                    b.Property<string>("SubnicheId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(10)");
+                    b.Property<Guid>("SubnicheId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("UrlName")
                         .IsRequired()
@@ -403,7 +425,6 @@ namespace Manager.Infrastructure.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<Guid?>("VendorId")
-                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -419,8 +440,8 @@ namespace Manager.Infrastructure.Migrations
 
             modelBuilder.Entity("Manager.Domain.Entities.ProductFilter", b =>
                 {
-                    b.Property<string>("ProductId")
-                        .HasColumnType("nvarchar(10)");
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("FilterOptionId")
                         .HasColumnType("uniqueidentifier");
@@ -450,8 +471,8 @@ namespace Manager.Infrastructure.Migrations
 
             modelBuilder.Entity("Manager.Domain.Entities.ProductInProductGroup", b =>
                 {
-                    b.Property<string>("ProductId")
-                        .HasColumnType("nvarchar(10)");
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ProductGroupId")
                         .HasColumnType("uniqueidentifier");
@@ -465,8 +486,8 @@ namespace Manager.Infrastructure.Migrations
 
             modelBuilder.Entity("Manager.Domain.Entities.ProductKeyword", b =>
                 {
-                    b.Property<string>("ProductId")
-                        .HasColumnType("nvarchar(10)");
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("KeywordId")
                         .HasColumnType("uniqueidentifier");
@@ -490,9 +511,8 @@ namespace Manager.Infrastructure.Migrations
                     b.Property<Guid?>("MediaId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ProductId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(10)");
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -512,9 +532,8 @@ namespace Manager.Infrastructure.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<string>("ProductId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(10)");
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -545,18 +564,18 @@ namespace Manager.Infrastructure.Migrations
 
             modelBuilder.Entity("Manager.Domain.Entities.Subniche", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("NicheId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(10)");
+                    b.Property<Guid>("NicheId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("UrlName")
                         .IsRequired()
@@ -586,9 +605,8 @@ namespace Manager.Infrastructure.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("ProductId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(10)");
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Type")
                         .HasColumnType("int");
@@ -859,7 +877,7 @@ namespace Manager.Infrastructure.Migrations
             modelBuilder.Entity("Manager.Domain.Entities.KeywordGroupBelongingToProduct", b =>
                 {
                     b.HasOne("Manager.Domain.Entities.KeywordGroup", "KeywordGroup")
-                        .WithMany()
+                        .WithMany("KeywordGroupsBelongingToProduct")
                         .HasForeignKey("KeywordGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -878,13 +896,13 @@ namespace Manager.Infrastructure.Migrations
             modelBuilder.Entity("Manager.Domain.Entities.KeywordInKeywordGroup", b =>
                 {
                     b.HasOne("Manager.Domain.Entities.KeywordGroup", "KeywordGroup")
-                        .WithMany()
+                        .WithMany("KeywordsInKeywordGroup")
                         .HasForeignKey("KeywordGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Manager.Domain.Entities.Keyword", "Keyword")
-                        .WithMany()
+                        .WithMany("KeywordsInKeywordGroup")
                         .HasForeignKey("KeywordId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -903,6 +921,25 @@ namespace Manager.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Manager.Domain.Entities.PageKeyword", b =>
+                {
+                    b.HasOne("Manager.Domain.Entities.KeywordInKeywordGroup", "KeywordInKeywordGroup")
+                        .WithMany("PageKeywords")
+                        .HasForeignKey("KeywordInKeywordGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Manager.Domain.Entities.Page", "Page")
+                        .WithMany("PageKeywords")
+                        .HasForeignKey("PageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("KeywordInKeywordGroup");
+
+                    b.Navigation("Page");
                 });
 
             modelBuilder.Entity("Manager.Domain.Entities.PageKeywordGroup", b =>
@@ -951,7 +988,7 @@ namespace Manager.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Manager.Domain.Entities.Product", "Product")
-                        .WithMany()
+                        .WithMany("PricePoints")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1020,13 +1057,12 @@ namespace Manager.Infrastructure.Migrations
                     b.HasOne("Manager.Domain.Entities.Vendor", "Vendor")
                         .WithMany("Products")
                         .HasForeignKey("VendorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.OwnsOne("Shared.Common.ValueObjects.RecurringPayment", "RecurringPayment", b1 =>
                         {
-                            b1.Property<string>("ProductId")
-                                .HasColumnType("nvarchar(10)");
+                            b1.Property<Guid>("ProductId")
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<int>("RebillFrequency")
                                 .HasColumnType("int")
@@ -1069,7 +1105,7 @@ namespace Manager.Infrastructure.Migrations
             modelBuilder.Entity("Manager.Domain.Entities.ProductFilter", b =>
                 {
                     b.HasOne("Manager.Domain.Entities.FilterOption", "FilterOption")
-                        .WithMany()
+                        .WithMany("ProductFilters")
                         .HasForeignKey("FilterOptionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1088,7 +1124,7 @@ namespace Manager.Infrastructure.Migrations
             modelBuilder.Entity("Manager.Domain.Entities.ProductInProductGroup", b =>
                 {
                     b.HasOne("Manager.Domain.Entities.ProductGroup", "ProductGroup")
-                        .WithMany()
+                        .WithMany("ProductsInProductGroup")
                         .HasForeignKey("ProductGroupId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1107,13 +1143,13 @@ namespace Manager.Infrastructure.Migrations
             modelBuilder.Entity("Manager.Domain.Entities.ProductKeyword", b =>
                 {
                     b.HasOne("Manager.Domain.Entities.Keyword", "Keyword")
-                        .WithMany()
+                        .WithMany("ProductKeywords")
                         .HasForeignKey("KeywordId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Manager.Domain.Entities.Product", "Product")
-                        .WithMany()
+                        .WithMany("ProductKeywords")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1131,7 +1167,7 @@ namespace Manager.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Manager.Domain.Entities.Product", "Product")
-                        .WithMany()
+                        .WithMany("ProductMedia")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1243,6 +1279,30 @@ namespace Manager.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Manager.Domain.Entities.FilterOption", b =>
+                {
+                    b.Navigation("ProductFilters");
+                });
+
+            modelBuilder.Entity("Manager.Domain.Entities.Keyword", b =>
+                {
+                    b.Navigation("KeywordsInKeywordGroup");
+
+                    b.Navigation("ProductKeywords");
+                });
+
+            modelBuilder.Entity("Manager.Domain.Entities.KeywordGroup", b =>
+                {
+                    b.Navigation("KeywordGroupsBelongingToProduct");
+
+                    b.Navigation("KeywordsInKeywordGroup");
+                });
+
+            modelBuilder.Entity("Manager.Domain.Entities.KeywordInKeywordGroup", b =>
+                {
+                    b.Navigation("PageKeywords");
+                });
+
             modelBuilder.Entity("Manager.Domain.Entities.Media", b =>
                 {
                     b.Navigation("PricePoints");
@@ -1258,6 +1318,8 @@ namespace Manager.Infrastructure.Migrations
                 {
                     b.Navigation("PageKeywordGroups");
 
+                    b.Navigation("PageKeywords");
+
                     b.Navigation("PageSubniches");
                 });
 
@@ -1265,8 +1327,19 @@ namespace Manager.Infrastructure.Migrations
                 {
                     b.Navigation("KeywordGroupsBelongingToProduct");
 
+                    b.Navigation("PricePoints");
+
+                    b.Navigation("ProductKeywords");
+
+                    b.Navigation("ProductMedia");
+
                     b.Navigation("ProductPrices");
 
+                    b.Navigation("ProductsInProductGroup");
+                });
+
+            modelBuilder.Entity("Manager.Domain.Entities.ProductGroup", b =>
+                {
                     b.Navigation("ProductsInProductGroup");
                 });
 

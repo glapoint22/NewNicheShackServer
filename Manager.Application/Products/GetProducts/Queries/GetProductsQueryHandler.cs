@@ -17,6 +17,7 @@ namespace Manager.Application.Products.GetProducts.Queries
         public async Task<Result> Handle(GetProductsQuery request, CancellationToken cancellationToken)
         {
             var products = await _dbContext.Products
+                .OrderBy(x => x.Name)
                 .Where(x => x.SubnicheId == request.ParentId)
                 .Select(x => new
                 {

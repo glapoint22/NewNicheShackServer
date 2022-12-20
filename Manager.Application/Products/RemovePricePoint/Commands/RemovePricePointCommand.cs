@@ -3,5 +3,5 @@ using Shared.Common.Classes;
 
 namespace Manager.Application.Products.RemovePricePoint.Commands
 {
-    public sealed record RemovePricePointCommand(string ProductId, Guid PricePointId) : IRequest<Result>;
+    public sealed record RemovePricePointCommand(Guid ProductId, Guid PricePointId) : IRequest<Result>;
 }

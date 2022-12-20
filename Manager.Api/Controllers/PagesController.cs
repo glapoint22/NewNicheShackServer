@@ -59,7 +59,7 @@ namespace Manager.Api.Controllers
 
         // ------------------------------------------------------------------------------- Delete Page ---------------------------------------------------------------------------
         [HttpDelete]
-        public async Task<ActionResult> DeletePage(string pageId)
+        public async Task<ActionResult> DeletePage(Guid pageId)
         {
             return SetResponse(await _mediator.Send(new DeletePageCommand(pageId)));
         }
@@ -71,7 +71,7 @@ namespace Manager.Api.Controllers
         // ------------------------------------------------------------------------ Delete Page Keyword Group --------------------------------------------------------------------
         [HttpDelete]
         [Route("KeywordGroup")]
-        public async Task<ActionResult> DeletePageKeywordGroup(string pageId, Guid id)
+        public async Task<ActionResult> DeletePageKeywordGroup(Guid pageId, Guid id)
         {
             return SetResponse(await _mediator.Send(new DeletePageKeywordGroupCommand(pageId, id)));
         }
@@ -84,7 +84,7 @@ namespace Manager.Api.Controllers
         // -------------------------------------------------------------------------- Delete Page Subniche -----------------------------------------------------------------------
         [HttpDelete]
         [Route("Subniche")]
-        public async Task<ActionResult> DeletePageSubniche(string pageId, string id)
+        public async Task<ActionResult> DeletePageSubniche(Guid pageId, Guid id)
         {
             return SetResponse(await _mediator.Send(new DeletePageSubnicheCommand(pageId, id)));
         }
@@ -109,7 +109,7 @@ namespace Manager.Api.Controllers
 
         // -------------------------------------------------------------------------------- Get Page -----------------------------------------------------------------------------
         [HttpGet]
-        public async Task<ActionResult> GetPage(string id)
+        public async Task<ActionResult> GetPage(Guid id)
         {
             return SetResponse(await _mediator.Send(new GetPageQuery(id)));
         }
@@ -120,7 +120,7 @@ namespace Manager.Api.Controllers
         // ------------------------------------------------------------------------- Get Page Keyword Groups ---------------------------------------------------------------------
         [HttpGet]
         [Route("KeywordGroup")]
-        public async Task<ActionResult> GetPageKeywordGroups(string pageId)
+        public async Task<ActionResult> GetPageKeywordGroups(Guid pageId)
         {
             return SetResponse(await _mediator.Send(new GetPageKeywordGroupsQuery(pageId)));
         }
@@ -133,7 +133,7 @@ namespace Manager.Api.Controllers
         // ---------------------------------------------------------------------------- Get Page Keywords ------------------------------------------------------------------------
         [HttpGet]
         [Route("Keywords")]
-        public async Task<ActionResult> GetPageKeywords(string pageId, Guid keywordGroupId)
+        public async Task<ActionResult> GetPageKeywords(Guid pageId, Guid keywordGroupId)
         {
             return SetResponse(await _mediator.Send(new GetPageKeywordsQuery(pageId, keywordGroupId)));
         }
@@ -147,7 +147,7 @@ namespace Manager.Api.Controllers
         // ---------------------------------------------------------------------------- Get Page Subniches -----------------------------------------------------------------------
         [HttpGet]
         [Route("Subniche")]
-        public async Task<ActionResult> GetPageSubniches(string pageId)
+        public async Task<ActionResult> GetPageSubniches(Guid pageId)
         {
             return SetResponse(await _mediator.Send(new GetPageSubnichesQuery(pageId)));
         }

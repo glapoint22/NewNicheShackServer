@@ -7,7 +7,7 @@ namespace Shared.Common.Classes
 {
     public sealed class Link
     {
-        public string Id { get; set; } = string.Empty;
+        public Guid Id { get; set; }
         public LinkType LinkType { get; set; }
         public string Url { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;

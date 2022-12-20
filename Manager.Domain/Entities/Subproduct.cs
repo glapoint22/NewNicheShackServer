@@ -3,7 +3,7 @@
     public sealed class Subproduct
     {
         public Guid Id { get; set; }
-        public string ProductId { get; set; } = string.Empty;
+        public Guid ProductId { get; set; }
         public Guid? ImageId { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }
@@ -14,7 +14,7 @@
         public Product Product { get; set; } = null!;
 
 
-        public static Subproduct Create(string productId, int type)
+        public static Subproduct Create(Guid productId, int type)
         {
             Subproduct subproduct = new()
             {

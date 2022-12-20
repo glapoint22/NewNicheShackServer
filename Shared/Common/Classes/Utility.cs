@@ -10,11 +10,5 @@ namespace Shared.Common.Classes
             name = Regex.Replace(name, @"^[\W]|[\W]$", "");
             return Regex.Replace(name, @"[\W_]+", "-");
         }
-
-
-        public static string GenerateId()
-        {
-            return Guid.NewGuid().ToString("N").Substring(0, 10).ToUpper();
-        }
     }
 }

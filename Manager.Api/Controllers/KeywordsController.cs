@@ -153,7 +153,7 @@ namespace Manager.Api.Controllers
         // ---------------------------------------------------------------------- Get Available Keyword Groups -------------------------------------------------------------------
         [HttpGet]
         [Route("AvailableKeywords/Groups")]
-        public async Task<ActionResult> GetAvailableKeywordGroups(string? productId)
+        public async Task<ActionResult> GetAvailableKeywordGroups(Guid? productId)
         {
             return SetResponse(await _mediator.Send(new GetAvailableKeywordGroupsQuery(productId)));
         }
@@ -199,7 +199,7 @@ namespace Manager.Api.Controllers
         // ---------------------------------------------------------------------- Get Selected Keyword Groups --------------------------------------------------------------------
         [HttpGet]
         [Route("SelectedKeywords/Groups")]
-        public async Task<ActionResult> GetSelectedKeywordGroups(string productId)
+        public async Task<ActionResult> GetSelectedKeywordGroups(Guid productId)
         {
             return SetResponse(await _mediator.Send(new GetSelectedKeywordGroupsQuery(productId)));
         }
@@ -213,7 +213,7 @@ namespace Manager.Api.Controllers
         // ------------------------------------------------------------------------- Get Selected Keywords -----------------------------------------------------------------------
         [HttpGet]
         [Route("SelectedKeywords")]
-        public async Task<ActionResult> GetSelectedKeywords(string productId, Guid parentId)
+        public async Task<ActionResult> GetSelectedKeywords(Guid productId, Guid parentId)
         {
             return SetResponse(await _mediator.Send(new GetSelectedKeywordsQuery(productId, parentId)));
         }
@@ -258,7 +258,7 @@ namespace Manager.Api.Controllers
         // --------------------------------------------------------------------- Remove Selected Keyword Group -------------------------------------------------------------------
         [HttpDelete]
         [Route("SelectedKeywords/Groups")]
-        public async Task<ActionResult> RemoveSelectedKeywordGroup(string productId, Guid keywordGroupId)
+        public async Task<ActionResult> RemoveSelectedKeywordGroup(Guid productId, Guid keywordGroupId)
         {
             return SetResponse(await _mediator.Send(new RemoveSelectedKeywordGroupCommand(productId, keywordGroupId)));
         }
@@ -270,7 +270,7 @@ namespace Manager.Api.Controllers
         // ----------------------------------------------------------------------- Search available Keywords ---------------------------------------------------------------------
         [HttpGet]
         [Route("AvailableKeywords/Groups/Search")]
-        public async Task<ActionResult> SearchAvailableKeywords(string productId, string searchTerm)
+        public async Task<ActionResult> SearchAvailableKeywords(Guid productId, string searchTerm)
         {
             return SetResponse(await _mediator.Send(new SearchAvailableKeywordsQuery(productId, searchTerm)));
         }
@@ -300,7 +300,7 @@ namespace Manager.Api.Controllers
         // ----------------------------------------------------------------------- Search Selected Keywords ----------------------------------------------------------------------
         [HttpGet]
         [Route("SelectedKeywords/Groups/Search")]
-        public async Task<ActionResult> SearchSelectedKeywords(string productId, string searchTerm)
+        public async Task<ActionResult> SearchSelectedKeywords(Guid productId, string searchTerm)
         {
             return SetResponse(await _mediator.Send(new SearchSelectedKeywordsQuery(productId, searchTerm)));
         }

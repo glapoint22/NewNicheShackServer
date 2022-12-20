@@ -53,7 +53,7 @@ namespace Manager.Api.Controllers
 
         // -------------------------------------------------------------------- Get Product Groups -----------------------------------------------------------------------
         [HttpGet]
-        public async Task<ActionResult> GetProductGroups(string? productId)
+        public async Task<ActionResult> GetProductGroups(Guid? productId)
         {
             return SetResponse(await _mediator.Send(new GetProductGroupsQuery(productId)));
         }
@@ -65,7 +65,7 @@ namespace Manager.Api.Controllers
         // ----------------------------------------------------------------- Search Product Groups -----------------------------------------------------------------------
         [HttpGet]
         [Route("Search")]
-        public async Task<ActionResult> SearchProductGroups(string? productId, string searchTerm)
+        public async Task<ActionResult> SearchProductGroups(Guid? productId, string searchTerm)
         {
             return SetResponse(await _mediator.Send(new SearchProductGroupsQuery(productId, searchTerm)));
         }

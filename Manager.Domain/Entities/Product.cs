@@ -1,4 +1,5 @@
 ﻿using Manager.Domain.Dtos;
+using Shared.Common.Classes;
 using Shared.Common.Enums;
 using Shared.Common.Interfaces;
 using Shared.Common.ValueObjects;
@@ -7,9 +8,9 @@ namespace Manager.Domain.Entities
 {
     public sealed class Product : IProduct
     {
-        public string Id { get; set; } = string.Empty;
+        public Guid Id { get; set; }
         public Guid? VendorId { get; set; }
-        public string SubnicheId { get; set; } = string.Empty;
+        public Guid SubnicheId { get; set; }
         public Guid? ImageId { get; set; }
         public string Name { get; set; } = string.Empty;
         public string UrlName { get; set; } = string.Empty;
@@ -17,7 +18,7 @@ namespace Manager.Domain.Entities
         public string? Hoplink { get; set; }
         public double Rating { get; set; }
         public int ShippingType { get; set; }
-        public RecurringPayment RecurringPayment { get; set; } = null!;
+        public RecurringPayment RecurringPayment { get; set; } = new RecurringPayment();
         public DateTime Date { get; set; }
         public bool Disabled { get; set; }
 
@@ -66,6 +67,23 @@ namespace Manager.Domain.Entities
         }
 
 
+
+
+
+
+
+        // ----------------------------------------------------------------------------------- Create ------------------------------------------------------------------------------
+        public static Product Create(Guid subnicheId, string name)
+        {
+            Product product = new()
+            {
+                SubnicheId = subnicheId,
+                Name = name,
+                UrlName = Utility.GenerateUrlName(name)
+            };
+
+            return product;
+        }
 
 
 

@@ -21,10 +21,7 @@ namespace Manager.Application.Pages.NewPage.Commands
             _dbContext.Pages.Add(page);
             await _dbContext.SaveChangesAsync();
 
-            return Result.Succeeded(new
-            {
-                page.Id
-            });
+            return Result.Succeeded(page.Id);
         }
     }
 }
