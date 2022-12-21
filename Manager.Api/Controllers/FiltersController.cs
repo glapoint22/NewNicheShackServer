@@ -2,12 +2,12 @@
 using Manager.Application.Filters.AddFilterOption.Commands;
 using Manager.Application.Filters.DeleteFilter.Commands;
 using Manager.Application.Filters.DeleteFilterOption.Commands;
+using Manager.Application.Filters.GetFilterOptionParent.Queries;
 using Manager.Application.Filters.GetFilterOptions.Queries;
 using Manager.Application.Filters.GetFilters.Queries;
 using Manager.Application.Filters.SearchFilters.Queries;
 using Manager.Application.Filters.SetFilterName.Commands;
 using Manager.Application.Filters.SetFilterOptionName.Commands;
-using Manager.Application.Pages.SearchPages.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -73,6 +73,20 @@ namespace Manager.Api.Controllers
         {
             return SetResponse(await _mediator.Send(new DeleteFilterOptionCommand(id)));
         }
+
+
+
+
+
+        // ---------------------------------------------------------------- Get Filter Option Parent ---------------------------------------------------------------------
+        [HttpGet]
+        [Route("Options/Parent")]
+        public async Task<ActionResult> GetFilterOptionParent(Guid childId)
+        {
+            return SetResponse(await _mediator.Send(new GetFilterOptionParentQuery(childId)));
+        }
+
+
 
 
 

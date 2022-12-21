@@ -2,6 +2,7 @@
 using Manager.Application.Niches.DeleteNiche.Commands;
 using Manager.Application.Niches.GetNicheChildren.Queries;
 using Manager.Application.Niches.GetNiches.Queries;
+using Manager.Application.Niches.GetSubnichesProducts.Queries;
 using Manager.Application.Niches.SearchNiches.Queries;
 using Manager.Application.Niches.UpdateNicheName.Commands;
 using MediatR;
@@ -71,6 +72,21 @@ namespace Manager.Api.Controllers
         {
             return SetResponse(await _mediator.Send(new SearchNichesQuery(searchTerm)));
         }
+
+
+
+
+
+        // ----------------------------------------------------------------------------- Get SubnichesProducts -------------------------------------------------------------------
+        [HttpGet]
+        [Route("SubnichesProducts")]
+        public async Task<ActionResult> GetSubnichesProducts(Guid nicheId, Guid subnicheId)
+        {
+            return SetResponse(await _mediator.Send(new GetSubnichesProductsQuery(nicheId, subnicheId)));
+        }
+
+
+
 
 
 
