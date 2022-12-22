@@ -1,4 +1,5 @@
 ﻿using Manager.Application.Vendors.AddVendor.Commands;
+using Manager.Application.Vendors.CheckDuplicateVendor.Queries;
 using Manager.Application.Vendors.DeleteVendor.Commands;
 using Manager.Application.Vendors.GetVendor.Queries;
 using Manager.Application.Vendors.GetVendorProducts.Queries;
@@ -32,6 +33,21 @@ namespace Manager.Api.Controllers
         {
             return SetResponse(await _mediator.Send(addVendor));
         }
+
+
+
+
+
+        // ---------------------------------------------------------------------------- Check Duplicate Vendor -------------------------------------------------------------------
+        [HttpGet]
+        [Route("Duplicate")]
+        public async Task<ActionResult> CheckDuplicateVendor(string vendorName)
+        {
+            return SetResponse(await _mediator.Send(new CheckDuplicateVendorQuery(vendorName)));
+        }
+
+
+
 
 
 

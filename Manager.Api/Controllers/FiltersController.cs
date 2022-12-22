@@ -1,5 +1,6 @@
 ﻿using Manager.Application.Filters.AddFilter.Commands;
 using Manager.Application.Filters.AddFilterOption.Commands;
+using Manager.Application.Filters.CheckDuplicateFilterOption.Queries;
 using Manager.Application.Filters.DeleteFilter.Commands;
 using Manager.Application.Filters.DeleteFilterOption.Commands;
 using Manager.Application.Filters.GetFilterOptionParent.Queries;
@@ -49,6 +50,18 @@ namespace Manager.Api.Controllers
             return SetResponse(await _mediator.Send(addFilterOption));
         }
 
+
+
+
+
+
+        // ------------------------------------------------------------- Check Duplicate Filter Option -------------------------------------------------------------------
+        [HttpGet]
+        [Route("Options/CheckDuplicate")]
+        public async Task<ActionResult> CheckDuplicateFilterOption(Guid childId, string childName)
+        {
+            return SetResponse(await _mediator.Send(new CheckDuplicateFilterOptionQuery(childId, childName)));
+        }
 
 
 

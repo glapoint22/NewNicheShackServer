@@ -1,4 +1,5 @@
 ﻿using Manager.Application.Subniches.AddSubniche.Commands;
+using Manager.Application.Subniches.CheckDuplicateSubniche.Queries;
 using Manager.Application.Subniches.DeleteSubniche.Commands;
 using Manager.Application.Subniches.GetSubnicheParent.Queries;
 using Manager.Application.Subniches.GetSubniches.Queries;
@@ -30,6 +31,21 @@ namespace Manager.Api.Controllers
         {
             return SetResponse(await _mediator.Send(addSubniche));
         }
+
+
+
+
+
+        // --------------------------------------------------------------------------- Check Duplicate Subniche ------------------------------------------------------------------
+        [HttpGet]
+        [Route("CheckDuplicate")]
+        public async Task<ActionResult> CheckDuplicateSubniche(Guid childId, string childName)
+        {
+            return SetResponse(await _mediator.Send(new CheckDuplicateSubnicheQuery(childId, childName)));
+        }
+
+
+
 
 
 
