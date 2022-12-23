@@ -23,7 +23,7 @@ namespace Manager.Application.Pages.UpdatePage.Commands
                 .Include(x => x.PageKeywordGroups)
                 .SingleAsync();
 
-            page.Update(request.Name, request.content, request.PageType);
+            page.Update(request.Name, request.Content, request.PageType);
             await _dbContext.SaveChangesAsync();
 
             return Result.Succeeded();

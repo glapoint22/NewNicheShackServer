@@ -5,6 +5,7 @@ namespace Manager.Application.Common.Interfaces
 {
     public interface IManagerDbContext
     {
+        DbSet<Email> Emails { get; }
         DbSet<FilterOption> FilterOptions { get; }
         DbSet<Filter> Filters { get; }
         DbSet<KeywordGroup> KeywordGroups { get; }

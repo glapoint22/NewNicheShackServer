@@ -4,16 +4,13 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Manager.Infrastructure.Persistence.Configurations
 {
-    public sealed class PageConfiguration : IEntityTypeConfiguration<Page>
+    internal class EmailConfiguration : IEntityTypeConfiguration<Email>
     {
-        public void Configure(EntityTypeBuilder<Page> builder)
+        public void Configure(EntityTypeBuilder<Email> builder)
         {
             builder.Property(x => x.Name)
                 .HasMaxLength(256)
                 .IsRequired();
-
-            builder.Property(x => x.UrlName)
-                .HasMaxLength(256);
         }
     }
 }

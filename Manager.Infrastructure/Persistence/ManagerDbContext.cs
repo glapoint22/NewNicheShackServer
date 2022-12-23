@@ -10,6 +10,8 @@ namespace Manager.Infrastructure.Persistence
     {
         public ManagerDbContext(DbContextOptions<ManagerDbContext> options) : base(options) { }
 
+
+        public DbSet<Email> Emails => Set<Email>();
         public DbSet<FilterOption> FilterOptions => Set<FilterOption>();
         public DbSet<Filter> Filters => Set<Filter>();
         public DbSet<KeywordGroup> KeywordGroups => Set<KeywordGroup>();
