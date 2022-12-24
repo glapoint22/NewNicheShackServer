@@ -11,6 +11,7 @@ namespace Website.Infrastructure.Persistence
         public WebsiteDbContext(DbContextOptions<WebsiteDbContext> options) : base(options) { }
         public DbSet<BlockedNonAccountEmail> BlockedNonAccountEmails => Set<BlockedNonAccountEmail>();
         public DbSet<Collaborator> Collaborators => Set<Collaborator>();
+        public DbSet<Email> Emails => Set<Email>();
         public DbSet<FilterOption> FilterOptions => Set<FilterOption>();
         public DbSet<Filter> Filters => Set<Filter>();
         public DbSet<Keyword> Keywords => Set<Keyword>();

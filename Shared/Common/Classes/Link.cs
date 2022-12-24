@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using HtmlAgilityPack;
+using Microsoft.EntityFrameworkCore;
 using Shared.Common.Enums;
 using Shared.Common.Interfaces;
 using Shared.PageBuilder.Enums;
@@ -72,6 +73,14 @@ namespace Shared.Common.Classes
             }
 
             return value;
+        }
+
+
+
+        public void SetStyle(HtmlNode node)
+        {
+            node.SetAttributeValue("href", LinkType == LinkType.WebAddress ? Url : "{host}/" + Url);
+            node.SetAttributeValue("target", "_blank");
         }
     }
 }

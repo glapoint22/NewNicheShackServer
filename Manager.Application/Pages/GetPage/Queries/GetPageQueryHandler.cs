@@ -24,7 +24,7 @@ namespace Manager.Application.Pages.GetPage.Queries
                 .Where(x => x.Id == request.PageId)
                 .SingleAsync();
 
-            WebPage webPage = await _pageService.GetPage(page.Content);
+            PageContent webPage = await _pageService.GetPage(page.Content);
 
 
             return Result.Succeeded(new

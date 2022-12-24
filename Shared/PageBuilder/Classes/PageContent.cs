@@ -2,7 +2,7 @@
 
 namespace Shared.PageBuilder.Classes
 {
-    public sealed class WebPage
+    public sealed class PageContent
     {
         public Background Background { get; set; } = null!;
         public List<Row> Rows { get; set; } = new List<Row>();

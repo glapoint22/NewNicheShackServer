@@ -91,7 +91,7 @@ namespace Website.Domain.Entities
 
 
 
-        public static Notification CreateReviewComplaintNotification(Guid notificationGroupId, string userId, string productId, Guid reviewId, string text)
+        public static Notification CreateReviewComplaintNotification(Guid notificationGroupId, string userId, string productId, Guid reviewId, string? text)
         {
             Notification notification = new()
             {

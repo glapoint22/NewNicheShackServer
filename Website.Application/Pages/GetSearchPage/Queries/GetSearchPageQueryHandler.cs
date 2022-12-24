@@ -74,7 +74,7 @@ namespace Website.Application.Pages.GetSearchPage.Queries
                     .SingleAsync(cancellationToken: cancellationToken);
 
 
-            WebPage page = await _pageService.GetPage(pageContent, pageParams);
+            PageContent page = await _pageService.GetPage(pageContent, pageParams);
 
             await _dbContext.SaveChangesAsync();
 

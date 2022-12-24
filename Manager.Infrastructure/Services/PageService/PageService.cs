@@ -13,7 +13,7 @@ namespace Manager.Infrastructure.Services.PageService
             _dbContext = dbContext;
         }
 
-        public async Task<WebPage> GetPage(string pageContent)
+        public async Task<PageContent> GetPage(string pageContent)
         {
             var pageBuilder = new ManagerPageBuilder(new Repository(_dbContext), _dbContext);
 

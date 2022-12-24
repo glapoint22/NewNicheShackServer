@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using HtmlAgilityPack;
+using Microsoft.EntityFrameworkCore;
 using Shared.Common.Enums;
 using Shared.Common.Interfaces;
 
@@ -32,6 +33,26 @@ namespace Shared.Common.Classes
                 ImageSizeType == ImageSizeType.Small ? media.ImageSm :
                 ImageSizeType == ImageSizeType.Medium ? media.ImageMd :
                 media.ImageLg)!;
+        }
+
+
+
+        public void SetStyle(HtmlNode node)
+        {
+            if (Name == "Product Placeholder")
+            {
+                Name = "{productName}";
+                Src = "{productImage}";
+            }
+            else if (Name == "Stars Placeholder")
+            {
+                Name = "Product Rating";
+                Src = "{stars}";
+            }
+
+            node.SetAttributeValue("src", "{host}/images/" + Src);
+            node.SetAttributeValue("title", Name);
+            node.SetAttributeValue("alt", Name);
         }
     }
 }

@@ -1,8 +1,8 @@
-﻿using Manager.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Website.Domain.Entities;
 
-namespace Manager.Infrastructure.Persistence.Configurations
+namespace Website.Infrastructure.Persistence.Configurations
 {
     public sealed class EmailConfiguration : IEntityTypeConfiguration<Email>
     {

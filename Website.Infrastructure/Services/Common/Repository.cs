@@ -1,7 +1,7 @@
 ﻿using Shared.Common.Interfaces;
 using System.Linq.Expressions;
 
-namespace Website.Infrastructure.Services.PageService.Classes
+namespace Website.Infrastructure.Services.Common
 {
     public sealed class Repository : IRepository
     {

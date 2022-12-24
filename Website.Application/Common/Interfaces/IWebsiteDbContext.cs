@@ -7,6 +7,7 @@ namespace Website.Application.Common.Interfaces
     {
         DbSet<BlockedNonAccountEmail> BlockedNonAccountEmails { get; }
         DbSet<Collaborator> Collaborators { get; }
+        DbSet<Email> Emails { get; }
         DbSet<FilterOption> FilterOptions { get; }
         DbSet<Filter> Filters { get; }
         DbSet<Keyword> Keywords { get; }

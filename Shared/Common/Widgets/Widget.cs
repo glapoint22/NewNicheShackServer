@@ -1,5 +1,7 @@
-﻿using Shared.Common.Enums;
+﻿using HtmlAgilityPack;
+using Shared.Common.Enums;
 using Shared.Common.Interfaces;
+using Shared.EmailBuilder.Classes;
 using System.Text.Json;
 
 namespace Shared.Common.Widgets
@@ -29,6 +31,25 @@ namespace Shared.Common.Widgets
         public virtual Task SetData(IRepository repository)
         {
             return Task.CompletedTask;
+        }
+
+
+        public virtual HtmlNode GenerateHtml(HtmlNode column)
+        {
+            // Create the table
+            HtmlNode table = Table.GenerateHtml(column, new TableOptions
+            {
+                Width = Width,
+                CreateRow = true
+            });
+
+
+            HtmlNode td = table.SelectSingleNode("tr/td");
+            td.SetAttributeValue("valign", "top");
+
+            column.AppendChild(new HtmlDocument().CreateComment(Table.MicrosoftIf + "</td></tr></table>" + Table.MicrosoftEndIf));
+
+            return table;
         }
     }
 }
