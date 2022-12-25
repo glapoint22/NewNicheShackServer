@@ -2,9 +2,8 @@
 {
     public sealed class PageNiche
     {
-        public int Id { get; set; }
-        public string PageId { get; set; } = string.Empty;
-        public string NicheId { get; set; } = string.Empty;
+        public Guid PageId { get; set; }
+        public Guid NicheId { get; set; }
 
         public Page Page { get; set; } = null!;
         public Niche Niche { get; set; } = null!;

@@ -13,7 +13,7 @@ namespace Website.Infrastructure.Services.SearchSuggestionsService
 
 
         // ------------------------------------------------------------------ Get Search Suggestions ------------------------------------------------------------------
-        public List<SearchSuggestion>? GetSearchSuggestions(string? searchTerm, string? nicheId)
+        public List<SearchSuggestion>? GetSearchSuggestions(string? searchTerm, Guid nicheId)
         {
             if (_rootNode == null || searchTerm == null) return null;
 
@@ -53,8 +53,6 @@ namespace Website.Infrastructure.Services.SearchSuggestionsService
             }
 
 
-            if (nicheId == null) nicheId = "All";
-
             if (!node.Suggestions.ContainsKey(nicheId)) return null;
 
             var suggestions = node.Suggestions[nicheId]
@@ -65,7 +63,7 @@ namespace Website.Infrastructure.Services.SearchSuggestionsService
                 })
                 .ToList();
 
-            if (nicheId == "All" && suggestions[0].Niche != null) suggestions.Insert(0, new SearchSuggestion { Name = suggestions[0].Name });
+            if (nicheId == Guid.Empty && suggestions[0].Niche != null) suggestions.Insert(0, new SearchSuggestion { Name = suggestions[0].Name });
 
             return suggestions;
         }
@@ -76,7 +74,7 @@ namespace Website.Infrastructure.Services.SearchSuggestionsService
 
 
         // ------------------------------------------------------------------ Set Search Suggestions ------------------------------------------------------------------
-        public void SetSearchSuggestions(List<KeywordData> keywords, List<string> nicheIds)
+        public void SetSearchSuggestions(List<KeywordData> keywords, List<Guid> nicheIds)
         {
             List<SearchTerm> searchTerms = GetSearchTerms(keywords);
             List<SplitSearchTerm> splitSearchTerms = GenerateSplitSearchTerms(searchTerms);

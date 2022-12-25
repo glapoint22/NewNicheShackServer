@@ -65,7 +65,7 @@ namespace Website.Domain.Entities
 
 
         // ----------------------------------------------------------------------- Add Product ------------------------------------------------------------------------
-        public bool AddProduct(string productId, Collaborator collaborator)
+        public bool AddProduct(Guid productId, Collaborator collaborator)
         {
             string userId = collaborator.UserId;
 
@@ -87,7 +87,7 @@ namespace Website.Domain.Entities
 
 
         // ---------------------------------------------------------------------- Remove Product ----------------------------------------------------------------------
-        public bool RemoveProduct(string productId, Collaborator collaborator)
+        public bool RemoveProduct(Guid productId, Collaborator collaborator)
         {
             // See if the collaborator has permissions to remove from the list
             if (!collaborator.IsOwner && !collaborator.CanRemoveFromList) return false;

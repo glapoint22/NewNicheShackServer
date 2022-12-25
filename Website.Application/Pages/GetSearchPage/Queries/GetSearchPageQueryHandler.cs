@@ -34,13 +34,13 @@ namespace Website.Application.Pages.GetSearchPage.Queries
                 request.Filters,
                 request.Page);
 
-            int keywordId = await _dbContext.Keywords
+            Guid keywordId = await _dbContext.Keywords
                 .Where(x => x.Name == request.SearchTerm)
                 .Select(x => x.Id)
                 .SingleOrDefaultAsync();
 
 
-            if (keywordId > 0)
+            if (keywordId != Guid.Empty)
             {
                 // Add the keyword to the search volumes
                 _dbContext.KeywordSearchVolumes.Add(new KeywordSearchVolume
@@ -50,12 +50,12 @@ namespace Website.Application.Pages.GetSearchPage.Queries
                 });
 
 
-                var pageId = await _dbContext.PageKeywords
+                Guid pageId = await _dbContext.PageKeywords
                     .Where(x => x.KeywordId == keywordId)
                     .Select(x => x.PageId)
                     .SingleOrDefaultAsync(cancellationToken: cancellationToken);
 
-                if (pageId != null)
+                if (pageId != Guid.Empty)
                 {
                     pageContent = await _dbContext.Pages
                     .Where(x => x.Id == pageId)

@@ -24,7 +24,7 @@ namespace Website.Infrastructure.Persistence
         public DbSet<Notification> Notifications => Set<Notification>();
         public DbSet<OrderProduct> OrderProducts => Set<OrderProduct>();
         public DbSet<PageKeyword> PageKeywords => Set<PageKeyword>();
-        public DbSet<PageNiche> PageNiches => Set<PageNiche>();
+        //public DbSet<PageNiche> PageNiches => Set<PageNiche>();
         public DbSet<Page> Pages => Set<Page>();
         public DbSet<PageSubniche> PageSubniches => Set<PageSubniche>();
         public DbSet<PricePoint> PricePoints => Set<PricePoint>();

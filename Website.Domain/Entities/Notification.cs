@@ -8,7 +8,7 @@ namespace Website.Domain.Entities
         public Guid Id { get; set; }
         public Guid NotificationGroupId { get; set; }
         public string? UserId { get; set; }
-        public string? ProductId { get; set; }
+        public Guid? ProductId { get; set; }
         public string? ListId { get; set; }
         public Guid? ReviewId { get; set; }
         public int Type { get; set; }
@@ -70,7 +70,7 @@ namespace Website.Domain.Entities
 
 
 
-        public static Notification CreateProductNotification(Guid notificationGroupId, string userId, string productId, int type, string? text)
+        public static Notification CreateProductNotification(Guid notificationGroupId, string userId, Guid productId, int type, string? text)
         {
             Notification notification = new()
             {
@@ -91,7 +91,7 @@ namespace Website.Domain.Entities
 
 
 
-        public static Notification CreateReviewComplaintNotification(Guid notificationGroupId, string userId, string productId, Guid reviewId, string? text)
+        public static Notification CreateReviewComplaintNotification(Guid notificationGroupId, string userId, Guid productId, Guid reviewId, string? text)
         {
             Notification notification = new()
             {
@@ -153,7 +153,7 @@ namespace Website.Domain.Entities
 
 
 
-        public static Notification CreateListNotification(Guid notificationGroupId, string listId, string name, string? description, string userId)
+        public static Notification CreateListNotification(Guid notificationGroupId, string listId, string userId)
         {
             Notification notification = new()
             {
@@ -161,8 +161,6 @@ namespace Website.Domain.Entities
                 NotificationGroupId = notificationGroupId,
                 Type = (int)NotificationType.List,
                 ListId = listId,
-                Name = name,
-                Text = description,
                 UserId = userId,
                 CreationDate = DateTime.UtcNow
             };
@@ -175,7 +173,7 @@ namespace Website.Domain.Entities
 
 
 
-        public static Notification CreateReviewNotification(Guid notificationGroupId, string userId, string productId, Guid reviewId)
+        public static Notification CreateReviewNotification(Guid notificationGroupId, string userId, Guid productId, Guid reviewId)
         {
             Notification notification = new()
             {

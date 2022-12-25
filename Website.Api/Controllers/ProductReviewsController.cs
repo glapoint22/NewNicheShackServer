@@ -24,7 +24,7 @@ namespace Website.Api.Controllers
         // ---------------------------------------------------------------------- Get Reviews --------------------------------------------------------------------------
         [HttpGet]
         [Route("GetReviews")]
-        public async Task<ActionResult> GetReviews(string productId, string? sortBy, string? filterBy, int page = 1)
+        public async Task<ActionResult> GetReviews(Guid productId, string? sortBy, string? filterBy, int page = 1)
         {
             return SetResponse(await _mediator.Send(new GetReviewsQuery(productId, page, sortBy, filterBy)));
         }
@@ -37,7 +37,7 @@ namespace Website.Api.Controllers
         // -------------------------------------------------------------- Get Positive Negative Reviews ----------------------------------------------------------------
         [HttpGet]
         [Route("GetPositiveNegativeReviews")]
-        public async Task<ActionResult> GetPositiveNegativeReviews(string productId)
+        public async Task<ActionResult> GetPositiveNegativeReviews(Guid productId)
         {
             return SetResponse(await _mediator.Send(new GetPositiveNegativeReviewsQuery(productId)));
         }

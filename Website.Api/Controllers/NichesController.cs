@@ -34,7 +34,7 @@ namespace Website.Api.Controllers
         // ---------------------------------------------------------------------- Get Subniches ----------------------------------------------------------------------------
         [HttpGet]
         [Route("GetSubniches")]
-        public async Task<ActionResult> GetSubniches(string nicheId)
+        public async Task<ActionResult> GetSubniches(Guid nicheId)
         {
             return SetResponse(await _mediator.Send(new GetSubnichesQuery(nicheId)));
         }

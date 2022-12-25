@@ -55,12 +55,12 @@ namespace Website.Application.ProductOrders.PostOrder.Commands
                 string[] trackingCodes = orderNotification.TrackingCodes.ToArray()[0].Split('_');
 
                 // Get the product id
-                string? productId = await _dbContext.Products
+                Guid productId = await _dbContext.Products
                     .Where(x => x.TrackingCode == trackingCodes[0])
                     .Select(x => x.Id)
                     .SingleOrDefaultAsync();
 
-                if (productId == null) return Result.Failed();
+                if (productId == Guid.Empty) return Result.Failed();
 
 
                 // Get the user id

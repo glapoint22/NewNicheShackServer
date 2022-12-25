@@ -6,14 +6,14 @@ namespace Shared.PageBuilder.Widgets.GridWidget.Classes
     public sealed class PageParams
     {
         public string? SearchTerm { get; set; } = null;
-        public string? NicheId { get; set; }
-        public string? SubnicheId { get; set; }
+        public Guid? NicheId { get; set; }
+        public Guid? SubnicheId { get; set; }
         public string? SortBy { get; set; } = null;
         public List<FilterParam> FilterParams { get; set; } = new List<FilterParam>();
         public int Page { get; set; }
 
 
-        public PageParams(string? searchTerm, string? nicheId, string? subnicheId, string? sortBy, string? filters, int page)
+        public PageParams(string? searchTerm, Guid? nicheId, Guid? subnicheId, string? sortBy, string? filters, int page)
         {
             SearchTerm = searchTerm;
             NicheId = nicheId;
@@ -31,7 +31,7 @@ namespace Shared.PageBuilder.Widgets.GridWidget.Classes
 
 
 
-        public PageParams(string? nicheId, string? subnicheId, string? sortBy, string? filters, int page)
+        public PageParams(Guid? nicheId, Guid? subnicheId, string? sortBy, string? filters, int page)
         {
             NicheId = nicheId;
             SubnicheId = subnicheId;

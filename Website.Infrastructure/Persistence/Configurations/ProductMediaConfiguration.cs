@@ -8,6 +8,8 @@ namespace Website.Infrastructure.Persistence.Configurations
     {
         public void Configure(EntityTypeBuilder<ProductMedia> builder)
         {
+            builder.HasKey(x => new { x.ProductId, x.MediaId });
+
             builder.HasOne(x => x.Media)
                 .WithMany(x => x.ProductMedia)
                 .HasForeignKey(x => x.MediaId)

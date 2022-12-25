@@ -12,8 +12,8 @@ using Website.Infrastructure.Persistence;
 namespace Website.Infrastructure.Migrations
 {
     [DbContext(typeof(WebsiteDbContext))]
-    [Migration("20221224023432_Email")]
-    partial class Email
+    [Migration("20221224211714_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -251,11 +251,9 @@ namespace Website.Infrastructure.Migrations
 
             modelBuilder.Entity("Website.Domain.Entities.Filter", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -269,14 +267,12 @@ namespace Website.Infrastructure.Migrations
 
             modelBuilder.Entity("Website.Domain.Entities.FilterOption", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("FilterId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("FilterId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -292,11 +288,9 @@ namespace Website.Infrastructure.Migrations
 
             modelBuilder.Entity("Website.Domain.Entities.Keyword", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -310,8 +304,8 @@ namespace Website.Infrastructure.Migrations
 
             modelBuilder.Entity("Website.Domain.Entities.KeywordSearchVolume", b =>
                 {
-                    b.Property<int>("KeywordId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("KeywordId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -350,8 +344,8 @@ namespace Website.Infrastructure.Migrations
                     b.Property<string>("ListId")
                         .HasColumnType("nvarchar(10)");
 
-                    b.Property<string>("ProductId")
-                        .HasColumnType("nvarchar(10)");
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
@@ -370,11 +364,9 @@ namespace Website.Infrastructure.Migrations
 
             modelBuilder.Entity("Website.Domain.Entities.Media", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ImageAnySize")
                         .HasMaxLength(256)
@@ -418,9 +410,10 @@ namespace Website.Infrastructure.Migrations
 
             modelBuilder.Entity("Website.Domain.Entities.Niche", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -467,8 +460,8 @@ namespace Website.Infrastructure.Migrations
                     b.Property<Guid>("NotificationGroupId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ProductId")
-                        .HasColumnType("nvarchar(10)");
+                    b.Property<Guid?>("ProductId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("ReviewId")
                         .HasColumnType("uniqueidentifier");
@@ -562,9 +555,10 @@ namespace Website.Infrastructure.Migrations
 
             modelBuilder.Entity("Website.Domain.Entities.Page", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -589,72 +583,28 @@ namespace Website.Infrastructure.Migrations
 
             modelBuilder.Entity("Website.Domain.Entities.PageKeyword", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<Guid>("PageId")
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    b.Property<Guid>("KeywordId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("KeywordId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PageId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(10)");
-
-                    b.HasKey("Id");
+                    b.HasKey("PageId", "KeywordId");
 
                     b.HasIndex("KeywordId");
-
-                    b.HasIndex("PageId");
 
                     b.ToTable("PageKeywords");
                 });
 
-            modelBuilder.Entity("Website.Domain.Entities.PageNiche", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("NicheId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("PageId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(10)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NicheId");
-
-                    b.HasIndex("PageId");
-
-                    b.ToTable("PageNiches");
-                });
-
             modelBuilder.Entity("Website.Domain.Entities.PageSubniche", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<Guid>("PageId")
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    b.Property<Guid>("SubnicheId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("PageId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<string>("SubnicheId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(10)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PageId");
+                    b.HasKey("PageId", "SubnicheId");
 
                     b.HasIndex("SubnicheId");
 
@@ -663,25 +613,22 @@ namespace Website.Infrastructure.Migrations
 
             modelBuilder.Entity("Website.Domain.Entities.PricePoint", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Header")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int?>("ImageId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("ImageId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("ProductId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(10)");
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("ProductPriceId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ProductPriceId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Quantity")
                         .HasMaxLength(50)
@@ -739,9 +686,10 @@ namespace Website.Infrastructure.Migrations
 
             modelBuilder.Entity("Website.Domain.Entities.Product", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
@@ -764,8 +712,8 @@ namespace Website.Infrastructure.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<int>("ImageId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ImageId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -781,9 +729,8 @@ namespace Website.Infrastructure.Migrations
                     b.Property<int>("ShippingType")
                         .HasColumnType("int");
 
-                    b.Property<string>("SubnicheId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(10)");
+                    b.Property<Guid>("SubnicheId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("ThreeStars")
                         .HasColumnType("int");
@@ -815,11 +762,11 @@ namespace Website.Infrastructure.Migrations
 
             modelBuilder.Entity("Website.Domain.Entities.ProductFilter", b =>
                 {
-                    b.Property<string>("ProductId")
-                        .HasColumnType("nvarchar(10)");
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("FilterOptionId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("FilterOptionId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("ProductId", "FilterOptionId");
 
@@ -830,51 +777,33 @@ namespace Website.Infrastructure.Migrations
 
             modelBuilder.Entity("Website.Domain.Entities.ProductKeyword", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    b.Property<Guid>("KeywordId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("KeywordId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ProductId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(10)");
-
-                    b.HasKey("Id");
+                    b.HasKey("ProductId", "KeywordId");
 
                     b.HasIndex("KeywordId");
-
-                    b.HasIndex("ProductId");
 
                     b.ToTable("ProductKeywords");
                 });
 
             modelBuilder.Entity("Website.Domain.Entities.ProductMedia", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    b.Property<Guid>("MediaId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Index")
                         .HasColumnType("int");
 
-                    b.Property<int>("MediaId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ProductId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(10)");
-
-                    b.HasKey("Id");
+                    b.HasKey("ProductId", "MediaId");
 
                     b.HasIndex("MediaId");
-
-                    b.HasIndex("ProductId");
 
                     b.ToTable("ProductMedia");
                 });
@@ -894,9 +823,8 @@ namespace Website.Infrastructure.Migrations
                     b.Property<int>("PaymentMethod")
                         .HasColumnType("int");
 
-                    b.Property<string>("ProductId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(10)");
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<double>("ShippingHandling")
                         .HasColumnType("float");
@@ -925,18 +853,15 @@ namespace Website.Infrastructure.Migrations
 
             modelBuilder.Entity("Website.Domain.Entities.ProductPrice", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<string>("ProductId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(10)");
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -963,9 +888,8 @@ namespace Website.Infrastructure.Migrations
                     b.Property<int>("Likes")
                         .HasColumnType("int");
 
-                    b.Property<string>("ProductId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(10)");
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<double>("Rating")
                         .HasColumnType("float");
@@ -1014,18 +938,18 @@ namespace Website.Infrastructure.Migrations
 
             modelBuilder.Entity("Website.Domain.Entities.Subniche", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("NicheId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(10)");
+                    b.Property<Guid>("NicheId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("UrlName")
                         .IsRequired()
@@ -1041,24 +965,24 @@ namespace Website.Infrastructure.Migrations
 
             modelBuilder.Entity("Website.Domain.Entities.Subproduct", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ImageId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("ImageId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<string>("ProductId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(10)");
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Type")
                         .HasColumnType("int");
@@ -1415,25 +1339,6 @@ namespace Website.Infrastructure.Migrations
                     b.Navigation("Page");
                 });
 
-            modelBuilder.Entity("Website.Domain.Entities.PageNiche", b =>
-                {
-                    b.HasOne("Website.Domain.Entities.Niche", "Niche")
-                        .WithMany()
-                        .HasForeignKey("NicheId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Website.Domain.Entities.Page", "Page")
-                        .WithMany()
-                        .HasForeignKey("PageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Niche");
-
-                    b.Navigation("Page");
-                });
-
             modelBuilder.Entity("Website.Domain.Entities.PageSubniche", b =>
                 {
                     b.HasOne("Website.Domain.Entities.Page", "Page")
@@ -1474,8 +1379,8 @@ namespace Website.Infrastructure.Migrations
 
                     b.OwnsOne("Shared.Common.ValueObjects.RecurringPayment", "RecurringPayment", b1 =>
                         {
-                            b1.Property<int>("PricePointId")
-                                .HasColumnType("int");
+                            b1.Property<Guid>("PricePointId")
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<int>("RebillFrequency")
                                 .HasColumnType("int")
@@ -1531,8 +1436,8 @@ namespace Website.Infrastructure.Migrations
 
                     b.OwnsOne("Shared.Common.ValueObjects.RecurringPayment", "RecurringPayment", b1 =>
                         {
-                            b1.Property<string>("ProductId")
-                                .HasColumnType("nvarchar(10)");
+                            b1.Property<Guid>("ProductId")
+                                .HasColumnType("uniqueidentifier");
 
                             b1.Property<int>("RebillFrequency")
                                 .HasColumnType("int")

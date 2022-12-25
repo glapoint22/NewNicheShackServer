@@ -24,14 +24,14 @@ namespace Website.Infrastructure.Services.PageService
 
         public async Task<PageContent> GetPage(string pageContent)
         {
-            var pageBuilder = new WebsitePageBuilder(_dbContext, new Repository());
+            var pageBuilder = new WebsitePageBuilder(_dbContext, new Repository(_dbContext));
 
             return await pageBuilder.BuildPage(pageContent);
         }
 
         public async Task<PageContent> GetPage(string pageContent, PageParams pageParams)
         {
-            var pageBuilder = new WebsitePageBuilder(_dbContext, new Repository(), pageParams);
+            var pageBuilder = new WebsitePageBuilder(_dbContext, new Repository(_dbContext), pageParams);
 
             return await pageBuilder.BuildPage(pageContent);
         }

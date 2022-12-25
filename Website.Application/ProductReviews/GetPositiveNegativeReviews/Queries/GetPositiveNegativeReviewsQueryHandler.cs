@@ -32,7 +32,7 @@ namespace Website.Application.ProductReviews.GetPositiveNegativeReviews.Queries
 
 
         // ------------------------------------------------------------------ Get Positive Review ----------------------------------------------------------------------
-        private async Task<ProductReviewDto?> GetPositiveReview(string productId)
+        private async Task<ProductReviewDto?> GetPositiveReview(Guid productId)
         {
             return await _dbContext.ProductReviews
                 .OrderByDescending(x => x.Rating)
@@ -46,7 +46,7 @@ namespace Website.Application.ProductReviews.GetPositiveNegativeReviews.Queries
 
 
         // ------------------------------------------------------------------ Get Negative Review ----------------------------------------------------------------------
-        private async Task<ProductReviewDto?> GetNegativeReview(string productId)
+        private async Task<ProductReviewDto?> GetNegativeReview(Guid productId)
         {
             return await _dbContext.ProductReviews
                 .OrderBy(x => x.Rating)

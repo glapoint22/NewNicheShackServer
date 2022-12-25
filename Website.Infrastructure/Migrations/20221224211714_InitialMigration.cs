@@ -38,11 +38,23 @@ namespace Website.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Emails",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Emails", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Filters",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
@@ -54,8 +66,7 @@ namespace Website.Infrastructure.Migrations
                 name: "Keywords",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false)
                 },
                 constraints: table =>
@@ -81,8 +92,7 @@ namespace Website.Infrastructure.Migrations
                 name: "Media",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     Thumbnail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     ImageSm = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -102,7 +112,7 @@ namespace Website.Infrastructure.Migrations
                 name: "Niches",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", maxLength: 10, nullable: false),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     UrlName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
@@ -127,7 +137,7 @@ namespace Website.Infrastructure.Migrations
                 name: "Pages",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", maxLength: 10, nullable: false),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     UrlName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -222,9 +232,8 @@ namespace Website.Infrastructure.Migrations
                 name: "FilterOptions",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FilterId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FilterId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
@@ -242,7 +251,7 @@ namespace Website.Infrastructure.Migrations
                 name: "KeywordSearchVolumes",
                 columns: table => new
                 {
-                    KeywordId = table.Column<int>(type: "int", nullable: false),
+                    KeywordId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -260,8 +269,8 @@ namespace Website.Infrastructure.Migrations
                 name: "Subniches",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    NicheId = table.Column<string>(type: "nvarchar(10)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", maxLength: 10, nullable: false),
+                    NicheId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     UrlName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
@@ -280,14 +289,12 @@ namespace Website.Infrastructure.Migrations
                 name: "PageKeywords",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PageId = table.Column<string>(type: "nvarchar(10)", nullable: false),
-                    KeywordId = table.Column<int>(type: "int", nullable: false)
+                    PageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    KeywordId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PageKeywords", x => x.Id);
+                    table.PrimaryKey("PK_PageKeywords", x => new { x.PageId, x.KeywordId });
                     table.ForeignKey(
                         name: "FK_PageKeywords_Keywords_KeywordId",
                         column: x => x.KeywordId,
@@ -296,32 +303,6 @@ namespace Website.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PageKeywords_Pages_PageId",
-                        column: x => x.PageId,
-                        principalTable: "Pages",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PageNiches",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PageId = table.Column<string>(type: "nvarchar(10)", nullable: false),
-                    NicheId = table.Column<string>(type: "nvarchar(10)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PageNiches", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PageNiches_Niches_NicheId",
-                        column: x => x.NicheId,
-                        principalTable: "Niches",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PageNiches_Pages_PageId",
                         column: x => x.PageId,
                         principalTable: "Pages",
                         principalColumn: "Id",
@@ -470,14 +451,12 @@ namespace Website.Infrastructure.Migrations
                 name: "PageSubniches",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PageId = table.Column<string>(type: "nvarchar(10)", nullable: false),
-                    SubnicheId = table.Column<string>(type: "nvarchar(10)", nullable: false)
+                    PageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SubnicheId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PageSubniches", x => x.Id);
+                    table.PrimaryKey("PK_PageSubniches", x => new { x.PageId, x.SubnicheId });
                     table.ForeignKey(
                         name: "FK_PageSubniches_Pages_PageId",
                         column: x => x.PageId,
@@ -496,9 +475,9 @@ namespace Website.Infrastructure.Migrations
                 name: "Products",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    SubnicheId = table.Column<string>(type: "nvarchar(10)", nullable: false),
-                    ImageId = table.Column<int>(type: "int", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", maxLength: 10, nullable: false),
+                    SubnicheId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ImageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     UrlName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -542,7 +521,7 @@ namespace Website.Infrastructure.Migrations
                 columns: table => new
                 {
                     ListId = table.Column<string>(type: "nvarchar(10)", nullable: false),
-                    ProductId = table.Column<string>(type: "nvarchar(10)", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     DateAdded = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -573,8 +552,8 @@ namespace Website.Infrastructure.Migrations
                 name: "ProductFilters",
                 columns: table => new
                 {
-                    ProductId = table.Column<string>(type: "nvarchar(10)", nullable: false),
-                    FilterOptionId = table.Column<int>(type: "int", nullable: false)
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FilterOptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -597,14 +576,12 @@ namespace Website.Infrastructure.Migrations
                 name: "ProductKeywords",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ProductId = table.Column<string>(type: "nvarchar(10)", nullable: false),
-                    KeywordId = table.Column<int>(type: "int", nullable: false)
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    KeywordId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductKeywords", x => x.Id);
+                    table.PrimaryKey("PK_ProductKeywords", x => new { x.ProductId, x.KeywordId });
                     table.ForeignKey(
                         name: "FK_ProductKeywords_Keywords_KeywordId",
                         column: x => x.KeywordId,
@@ -623,15 +600,13 @@ namespace Website.Infrastructure.Migrations
                 name: "ProductMedia",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ProductId = table.Column<string>(type: "nvarchar(10)", nullable: false),
-                    MediaId = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    MediaId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Index = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductMedia", x => x.Id);
+                    table.PrimaryKey("PK_ProductMedia", x => new { x.ProductId, x.MediaId });
                     table.ForeignKey(
                         name: "FK_ProductMedia_Media_MediaId",
                         column: x => x.MediaId,
@@ -652,7 +627,7 @@ namespace Website.Infrastructure.Migrations
                 {
                     Id = table.Column<string>(type: "nvarchar(21)", maxLength: 21, nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProductId = table.Column<string>(type: "nvarchar(10)", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PaymentMethod = table.Column<int>(type: "int", nullable: false),
                     Subtotal = table.Column<double>(type: "float", nullable: false),
@@ -682,9 +657,8 @@ namespace Website.Infrastructure.Migrations
                 name: "ProductPrices",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ProductId = table.Column<string>(type: "nvarchar(10)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
@@ -703,7 +677,7 @@ namespace Website.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ProductId = table.Column<string>(type: "nvarchar(10)", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     Rating = table.Column<double>(type: "float", nullable: false),
@@ -734,11 +708,11 @@ namespace Website.Infrastructure.Migrations
                 name: "Subproducts",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProductId = table.Column<string>(type: "nvarchar(10)", nullable: false),
-                    ImageId = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ImageId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Value = table.Column<double>(type: "float", nullable: false),
                     Type = table.Column<int>(type: "int", nullable: false)
                 },
@@ -789,11 +763,10 @@ namespace Website.Infrastructure.Migrations
                 name: "PricePoints",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ProductPriceId = table.Column<int>(type: "int", nullable: false),
-                    ProductId = table.Column<string>(type: "nvarchar(10)", nullable: false),
-                    ImageId = table.Column<int>(type: "int", nullable: true),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductPriceId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ImageId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Header = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Quantity = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     UnitPrice = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
@@ -835,7 +808,7 @@ namespace Website.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     NotificationGroupId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ProductId = table.Column<string>(type: "nvarchar(10)", nullable: true),
+                    ProductId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     ListId = table.Column<string>(type: "nvarchar(10)", nullable: true),
                     ReviewId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     Type = table.Column<int>(type: "int", nullable: false),
@@ -966,26 +939,6 @@ namespace Website.Infrastructure.Migrations
                 column: "KeywordId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PageKeywords_PageId",
-                table: "PageKeywords",
-                column: "PageId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PageNiches_NicheId",
-                table: "PageNiches",
-                column: "NicheId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PageNiches_PageId",
-                table: "PageNiches",
-                column: "PageId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PageSubniches_PageId",
-                table: "PageSubniches",
-                column: "PageId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_PageSubniches_SubnicheId",
                 table: "PageSubniches",
                 column: "SubnicheId");
@@ -1016,19 +969,9 @@ namespace Website.Infrastructure.Migrations
                 column: "KeywordId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductKeywords_ProductId",
-                table: "ProductKeywords",
-                column: "ProductId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ProductMedia_MediaId",
                 table: "ProductMedia",
                 column: "MediaId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProductMedia_ProductId",
-                table: "ProductMedia",
-                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductOrders_ProductId",
@@ -1122,6 +1065,9 @@ namespace Website.Infrastructure.Migrations
                 name: "Collaborators");
 
             migrationBuilder.DropTable(
+                name: "Emails");
+
+            migrationBuilder.DropTable(
                 name: "KeywordSearchVolumes");
 
             migrationBuilder.DropTable(
@@ -1135,9 +1081,6 @@ namespace Website.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "PageKeywords");
-
-            migrationBuilder.DropTable(
-                name: "PageNiches");
 
             migrationBuilder.DropTable(
                 name: "PageSubniches");

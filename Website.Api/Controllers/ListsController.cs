@@ -226,7 +226,7 @@ namespace Website.Api.Controllers
         [HttpDelete]
         [Route("RemoveProduct")]
         [Authorize(Policy = "Account")]
-        public async Task<ActionResult> RemoveProduct(string productId, string listId)
+        public async Task<ActionResult> RemoveProduct(Guid productId, string listId)
         {
             return SetResponse(await _mediator.Send(new RemoveProductCommand(productId, listId)));
         }

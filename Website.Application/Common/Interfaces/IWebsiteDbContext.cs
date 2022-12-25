@@ -20,7 +20,7 @@ namespace Website.Application.Common.Interfaces
         DbSet<Notification> Notifications { get; }
         DbSet<OrderProduct> OrderProducts { get; }
         DbSet<PageKeyword> PageKeywords { get; }
-        DbSet<PageNiche> PageNiches { get; }
+        //DbSet<PageNiche> PageNiches { get; }
         DbSet<Page> Pages { get; }
         DbSet<PageSubniche> PageSubniches { get; }
         DbSet<PricePoint> PricePoints { get; }
