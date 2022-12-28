@@ -23,15 +23,19 @@ namespace Website.Application.Account.SignUp.EventHandlers
         public async Task Handle(UserCreatedEvent notification, CancellationToken cancellationToken)
         {
             User user = await _userService.GetUserByIdAsync(notification.UserId);
-            string token = await _userService.GenerateEmailConfirmationTokenAsync(user);
+            string otp = await _userService.GenerateEmailConfirmationTokenAsync(user);
+
+            // Get the email from the database
             string emailContent = await _dbContext.Emails
                 .Where(x => x.Name == "Account Activation")
                 .Select(x => x.Content)
                 .SingleAsync();
 
+
+            // Create the email message
             EmailMessage emailMessage = new()
             {
-                EmailContent = emailContent,
+                EmailBody = emailContent,
                 EmailAddress = user.Email,
                 Subject = "Activate Account",
                 EmailProperties = new()
@@ -41,10 +45,11 @@ namespace Website.Application.Account.SignUp.EventHandlers
                         FirstName = user.FirstName,
                         LastName = user.LastName
                     },
-                    Var1 = token
+                    Var1 = otp
                 }
             };
 
+            // Send the email
             await _emailService.SendEmail(emailMessage);
         }
     }

@@ -8,8 +8,9 @@
         public Person Person { get; set; } = null!;
         public string Var1 { get; set; } = string.Empty;
         public string Var2 { get; set; } = string.Empty;
-        public string Stars { get; set; } = string.Empty;
-        public EmailProduct Product { get; set; } = null!;
+        public string Var3 { get; set; } = string.Empty;
+        public string ImageName { get; set; } = string.Empty;
+        public string ImageSrc { get; set; } = string.Empty;
 
         public string SetEmailBody(string emailBody)
         {
@@ -20,12 +21,11 @@
                 .Replace("{link}", Link)
                 .Replace("{var1}", Var1)
                 .Replace("{var2}", Var2)
-                .Replace("{productName}", Product != null ? Product.Name : null)
-                .Replace("{productImage}", Product != null ? Product.Image : null)
-                .Replace("{productUrl}", Product != null ? Product.Url : null)
-                .Replace("{personFirstName}", Person != null ? Person.FirstName : null)
-                .Replace("{personLastName}", Person != null ? Person.LastName : null)
-                .Replace("{stars}", Stars);
+                .Replace("{var3}", Var3)
+                .Replace("{imageName}", ImageName)
+                .Replace("{imageSrc}", ImageSrc)
+                .Replace("{personFirstName}", Person?.FirstName)
+                .Replace("{personLastName}", Person?.LastName);
         }
     }
 }

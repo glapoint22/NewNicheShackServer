@@ -5,15 +5,15 @@ using Website.Application.Common.Interfaces;
 using Website.Domain.Entities;
 using Website.Domain.Events;
 
-namespace Website.Application.Account.ChangePassword.EventHandlers
+namespace Website.Application.Account.CreateChangeEmailOTP.EventHandlers
 {
-    public sealed class UserChangedPasswordEventHandler : INotificationHandler<UserChangedPasswordEvent>
+    public sealed class UserChangedEmailOtpEventHandler : INotificationHandler<UserChangedEmailOtpEvent>
     {
         private readonly IUserService _userService;
         private readonly IWebsiteDbContext _dbContext;
         private readonly IEmailService _emailService;
 
-        public UserChangedPasswordEventHandler(IUserService userService, IWebsiteDbContext dbContext, IEmailService emailService)
+        public UserChangedEmailOtpEventHandler(IUserService userService, IWebsiteDbContext dbContext, IEmailService emailService)
         {
             _userService = userService;
             _dbContext = dbContext;
@@ -21,13 +21,14 @@ namespace Website.Application.Account.ChangePassword.EventHandlers
         }
 
 
-        public async Task Handle(UserChangedPasswordEvent notification, CancellationToken cancellationToken)
+        public async Task Handle(UserChangedEmailOtpEvent notification, CancellationToken cancellationToken)
         {
             User user = await _userService.GetUserByIdAsync(notification.UserId);
+            string otp = await _userService.GenerateChangeEmailTokenAsync(user, notification.Email);
 
             // Get the email from the database
             string emailContent = await _dbContext.Emails
-                .Where(x => x.Name == "Password Change")
+                .Where(x => x.Name == "Email One Time Password")
                 .Select(x => x.Content)
                 .SingleAsync();
 
@@ -36,14 +37,15 @@ namespace Website.Application.Account.ChangePassword.EventHandlers
             {
                 EmailBody = emailContent,
                 EmailAddress = user.Email,
-                Subject = "Password change confirmation",
+                Subject = "Change Email - One-time Password",
                 EmailProperties = new()
                 {
                     Recipient = new()
                     {
                         FirstName = user.FirstName,
                         LastName = user.LastName
-                    }
+                    },
+                    Var1 = otp
                 }
             };
 

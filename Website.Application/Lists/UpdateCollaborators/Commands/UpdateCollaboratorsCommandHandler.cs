@@ -12,14 +12,18 @@ namespace Website.Application.Lists.UpdateCollaborators.Commands
     public sealed class UpdateCollaboratorsCommandHandler : IRequestHandler<UpdateCollaboratorsCommand, Result>
     {
         private readonly IWebsiteDbContext _dbContext;
+        private readonly IAuthService _authService;
 
-        public UpdateCollaboratorsCommandHandler(IWebsiteDbContext dbContext)
+        public UpdateCollaboratorsCommandHandler(IWebsiteDbContext dbContext, IAuthService authService)
         {
             _dbContext = dbContext;
+            _authService = authService;
         }
 
         public async Task<Result> Handle(UpdateCollaboratorsCommand request, CancellationToken cancellationToken)
         {
+            string userId = _authService.GetUserIdFromClaims();
+
             // Grab the collaborators from the database
             List<Collaborator> collaborators = await _dbContext.Collaborators
                 .Where(x => request.UpdatedCollaborators
@@ -40,7 +44,7 @@ namespace Website.Application.Lists.UpdateCollaborators.Commands
                         _dbContext.Collaborators.Remove(collaborator);
 
                         // Add the event
-                        collaborator.AddDomainEvent(new CollaboratorUpdatedEvent(collaborator.UserId, request.ListId, true));
+                        collaborator.AddDomainEvent(new CollaboratorRemovedEvent(userId, collaborator.UserId, request.ListId));
                     }
                     else
                     {
@@ -51,9 +55,6 @@ namespace Website.Application.Lists.UpdateCollaborators.Commands
                         collaborator.CanInviteCollaborators = updatedCollaborator.ListPermissions.CanInviteCollaborators;
                         collaborator.CanManageCollaborators = updatedCollaborator.ListPermissions.CanManageCollaborators;
                         collaborator.CanRemoveFromList = updatedCollaborator.ListPermissions.CanRemoveFromList;
-
-                        // add the event
-                        collaborator.AddDomainEvent(new CollaboratorUpdatedEvent(collaborator.UserId, request.ListId));
                     }
                 }
 

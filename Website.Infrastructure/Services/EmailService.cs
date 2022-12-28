@@ -15,30 +15,38 @@ namespace Website.Infrastructure.Services
     public sealed class EmailService : IEmailService
     {
         private readonly IConfiguration _configuration;
-        private readonly IWebsiteDbContext _dbContext;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly EmailBuilder _emailBuilder;
 
         public EmailService(IConfiguration configuration, IWebsiteDbContext dbContext, IWebHostEnvironment webHostEnvironment)
         {
             _configuration = configuration;
-            _dbContext = dbContext;
             _webHostEnvironment = webHostEnvironment;
+            _emailBuilder = new(new Repository(dbContext));
         }
 
+
+
+        // ---------------------------------------------------------------------------- Get Email Body ---------------------------------------------------------------------------
+        public async Task<string> GetEmailBody(string emailContent)
+        {
+            return await _emailBuilder.BuildEmail(emailContent);
+        }
+
+
+
+
+
+
+
+        // ------------------------------------------------------------------------------ Send Email -----------------------------------------------------------------------------
         public async Task SendEmail(EmailMessage emailMessage)
         {
-            EmailBuilder emailBuilder = new(new Repository(_dbContext));
-            string emailBody = await emailBuilder.BuildEmail(emailMessage.EmailContent);
-
-            emailMessage.EmailProperties.Host = GetHost();
-
-            emailBody = emailMessage.EmailProperties.SetEmailBody(emailBody);
-
             MimeMessage email = new()
             {
                 Sender = MailboxAddress.Parse(_configuration["Email:Sender"]),
                 Subject = emailMessage.Subject,
-                Body = new TextPart(TextFormat.Html) { Text = emailBody }
+                Body = new TextPart(TextFormat.Html) { Text = emailMessage.EmailBody }
             };
             email.To.Add(MailboxAddress.Parse(emailMessage.EmailAddress));
 
@@ -54,7 +62,12 @@ namespace Website.Infrastructure.Services
 
 
 
-        private string GetHost()
+
+
+
+
+        // ------------------------------------------------------------------------------- Get Host ------------------------------------------------------------------------------
+        public string GetHost()
         {
             if (_webHostEnvironment.IsDevelopment())
             {

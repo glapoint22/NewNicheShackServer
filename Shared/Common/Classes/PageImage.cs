@@ -24,8 +24,7 @@ namespace Shared.Common.Classes
                     x.ImageSm,
                     x.ImageMd,
                     x.ImageLg
-                })
-                .SingleAsync();
+                }).SingleAsync();
 
             Name = media.Name;
             Src = (ImageSizeType == ImageSizeType.AnySize ? media.ImageAnySize :
@@ -39,15 +38,10 @@ namespace Shared.Common.Classes
 
         public void SetStyle(HtmlNode node)
         {
-            if (Name == "Product Placeholder")
+            if (Name == "Image Placeholder")
             {
-                Name = "{productName}";
-                Src = "{productImage}";
-            }
-            else if (Name == "Stars Placeholder")
-            {
-                Name = "Product Rating";
-                Src = "{stars}";
+                Name = "{imageName}";
+                Src = "{imageSrc}";
             }
 
             node.SetAttributeValue("src", "{host}/images/" + Src);
