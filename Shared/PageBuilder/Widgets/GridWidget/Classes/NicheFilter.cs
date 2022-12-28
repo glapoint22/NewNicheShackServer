@@ -4,7 +4,7 @@ namespace Shared.PageBuilder.Widgets.GridWidget.Classes
 {
     public sealed class NicheFilter
     {
-        public string Id { get; set; } = null!;
+        public Guid Id { get; set; }
         public string Name { get; set; } = null!;
         public string UrlName { get; set; } = null!;
         public SubnicheFilters SubnicheFilters { get; set; } = null!;

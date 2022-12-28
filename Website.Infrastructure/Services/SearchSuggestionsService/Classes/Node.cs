@@ -4,7 +4,7 @@
     {
         public char Char { get; }
         public Dictionary<char, Node> Children = new Dictionary<char, Node>();
-        public Dictionary<string, List<SearchWordSuggestion>> Suggestions = new Dictionary<string, List<SearchWordSuggestion>>();
+        public Dictionary<Guid, List<SearchWordSuggestion>> Suggestions = new Dictionary<Guid, List<SearchWordSuggestion>>();
 
         public Node(char c)
         {
@@ -12,7 +12,7 @@
         }
 
 
-        public Node(List<SplitSearchTerm> splitSearchTerms, List<string> nicheIds)
+        public Node(List<SplitSearchTerm> splitSearchTerms, List<Guid> nicheIds)
         {
             Node rootNode = this;
 
@@ -75,7 +75,7 @@
                             {
                                 for (int l = 0; l < nicheIds.Count; l++)
                                 {
-                                    string nicheId = nicheIds[l];
+                                    Guid nicheId = nicheIds[l];
 
 
                                     if (l == 0 || currentPhrase.Niches!.Select(x => x.Id).Contains(nicheId))

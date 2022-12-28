@@ -1,4 +1,6 @@
-﻿namespace Shared.Common.Classes
+﻿using HtmlAgilityPack;
+
+namespace Shared.Common.Classes
 {
     public sealed class Row
     {
@@ -11,5 +13,52 @@
         public VerticalAlignment VerticalAlignment { get; set; } = null!;
         public List<Column> Columns { get; set; } = null!;
         public float RelativeTop { get; set; }
+
+
+        public HtmlNode GenerateHtml(HtmlNode table)
+        {
+            // Insert a row for spacing
+            if (RelativeTop > 0)
+            {
+                HtmlNode blankRow = table.AppendChild(HtmlNode.CreateNode("<tr>"));
+                HtmlNode blankColumn = blankRow.AppendChild(HtmlNode.CreateNode("<td>"));
+                blankColumn.SetAttributeValue("height", RelativeTop.ToString());
+            }
+
+            // Create the row
+            HtmlNode row = table.AppendChild(HtmlNode.CreateNode("<tr>"));
+
+            // Set the styles
+            Background?.SetStyle(row);
+            Border?.SetStyle(row);
+            Corners?.SetStyle(row);
+            Shadow?.SetStyle(row);
+            Padding?.SetStyle(row);
+
+            string valign = "top";
+
+            if (VerticalAlignment != null && VerticalAlignment.Values.Count > 0)
+            {
+                switch (VerticalAlignment.Values[0].VerticalAlignmentType)
+                {
+                    case 1:
+                        valign = "middle";
+                        break;
+
+                    case 2:
+                        valign = "bottom";
+                        break;
+
+                    default:
+                        valign = "top";
+                        break;
+                }
+            }
+
+            row.SetAttributeValue("valign", valign);
+            row.SetAttributeValue("align", "center");
+
+            return row;
+        }
     }
 }

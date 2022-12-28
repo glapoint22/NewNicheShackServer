@@ -19,16 +19,21 @@ namespace Shared.PageBuilder
         }
 
         // ------------------------------------------------------------------------ Build Page ------------------------------------------------------------------------
-        public async Task<WebPage> BuildPage(string pageContent)
+        public async Task<PageContent> BuildPage(string pageContent)
         {
-            return await GetPage(pageContent);
+            PageContent webPage = Deserialize(pageContent);
+
+            await SetData(webPage);
+            return webPage;
         }
 
 
 
-        public async Task<WebPage> GetPage(string pageContent)
+
+        // ------------------------------------------------------------------------ Deserialize -----------------------------------------------------------------------
+        protected static PageContent Deserialize(string pageContent)
         {
-            WebPage webPage = JsonSerializer.Deserialize<WebPage>(pageContent, new JsonSerializerOptions
+            return JsonSerializer.Deserialize<PageContent>(pageContent, new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true,
                 Converters =
@@ -36,17 +41,13 @@ namespace Shared.PageBuilder
                     new WidgetJsonConverter()
                 }
             })!;
-
-            await SetData(webPage);
-
-            return webPage;
         }
 
 
 
 
         // ------------------------------------------------------------------------- Set Data -------------------------------------------------------------------------
-        protected async Task SetData(WebPage page)
+        protected async Task SetData(PageContent page)
         {
             // If the page background has an image
             if (page.Background != null && page.Background.Image != null)

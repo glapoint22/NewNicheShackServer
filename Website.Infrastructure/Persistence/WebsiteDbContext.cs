@@ -11,6 +11,7 @@ namespace Website.Infrastructure.Persistence
         public WebsiteDbContext(DbContextOptions<WebsiteDbContext> options) : base(options) { }
         public DbSet<BlockedNonAccountEmail> BlockedNonAccountEmails => Set<BlockedNonAccountEmail>();
         public DbSet<Collaborator> Collaborators => Set<Collaborator>();
+        public DbSet<Email> Emails => Set<Email>();
         public DbSet<FilterOption> FilterOptions => Set<FilterOption>();
         public DbSet<Filter> Filters => Set<Filter>();
         public DbSet<Keyword> Keywords => Set<Keyword>();
@@ -23,7 +24,7 @@ namespace Website.Infrastructure.Persistence
         public DbSet<Notification> Notifications => Set<Notification>();
         public DbSet<OrderProduct> OrderProducts => Set<OrderProduct>();
         public DbSet<PageKeyword> PageKeywords => Set<PageKeyword>();
-        public DbSet<PageNiche> PageNiches => Set<PageNiche>();
+        //public DbSet<PageNiche> PageNiches => Set<PageNiche>();
         public DbSet<Page> Pages => Set<Page>();
         public DbSet<PageSubniche> PageSubniches => Set<PageSubniche>();
         public DbSet<PricePoint> PricePoints => Set<PricePoint>();

@@ -209,7 +209,7 @@ namespace Website.Infrastructure.Services.PageService.Classes
 
 
         // -------------------------------------------------------------------- Get Niche Filters ------------------------------------------------------------------------
-        private async Task<NicheFilters> GetNicheFilters(List<string> subnicheIds)
+        private async Task<NicheFilters> GetNicheFilters(List<Guid> subnicheIds)
         {
             var subniches = await _dbContext.Subniches
                 .Where(x => subnicheIds.Contains(x.Id))
@@ -251,7 +251,7 @@ namespace Website.Infrastructure.Services.PageService.Classes
 
 
         // -------------------------------------------------------------------- Get Custom Filters -----------------------------------------------------------------------
-        private async Task<List<QueryFilter>> GetCustomFilters(List<string> productIds, Expression<Func<ProductFilter, bool>> whereExpression)
+        private async Task<List<QueryFilter>> GetCustomFilters(List<Guid> productIds, Expression<Func<ProductFilter, bool>> whereExpression)
         {
             var filters = await _dbContext.ProductFilters
                 .Where(x => productIds
@@ -290,38 +290,38 @@ namespace Website.Infrastructure.Services.PageService.Classes
 
 
         // --------------------------------------------------------------------- Get Rating Filter -----------------------------------------------------------------------
-        private QueryFilter GetRatingFilter(List<double> ratings)
+        private static QueryFilter GetRatingFilter(List<double> ratings)
         {
-            List<QueryFilterOption> ratingOptions = new List<QueryFilterOption>();
+            List<QueryFilterOption> ratingOptions = new();
 
             // Rating 4 and up
-            if (ratings.Count(rating => rating >= 4) > 0)
+            if (ratings.Any(rating => rating >= 4))
             {
                 ratingOptions.Add(new QueryFilterOption
                 {
-                    Id = 4
+                    Value = 4
                 });
             }
 
 
 
             // Rating 3 and up
-            if (ratings.Count(rating => rating >= 3 && rating < 4) > 0)
+            if (ratings.Any(rating => rating >= 3 && rating < 4))
             {
                 ratingOptions.Add(new QueryFilterOption
                 {
-                    Id = 3
+                    Value = 3
                 });
             }
 
 
 
             // Rating 2 and up
-            if (ratings.Count(rating => rating >= 2 && rating < 3) > 0)
+            if (ratings.Any(rating => rating >= 2 && rating < 3))
             {
                 ratingOptions.Add(new QueryFilterOption
                 {
-                    Id = 2
+                    Value = 2
                 });
             }
 
@@ -329,11 +329,11 @@ namespace Website.Infrastructure.Services.PageService.Classes
 
 
             // Rating 1 and up
-            if (ratings.Count(rating => rating >= 1 && rating < 2) > 0)
+            if (ratings.Any(rating => rating >= 1 && rating < 2))
             {
                 ratingOptions.Add(new QueryFilterOption
                 {
-                    Id = 1
+                    Value = 1
                 });
             }
 

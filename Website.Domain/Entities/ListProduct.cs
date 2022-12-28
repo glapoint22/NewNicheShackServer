@@ -3,7 +3,7 @@
     public sealed class ListProduct
     {
         public string ListId { get; set; } = string.Empty;
-        public string ProductId { get; set; } = string.Empty;
+        public Guid ProductId { get; set; }
         public string UserId { get; set; } = string.Empty;
         public DateTime DateAdded { get; set; }
 
@@ -13,7 +13,7 @@
 
 
         // ------------------------------------------------------------------------- Create ---------------------------------------------------------------------------
-        public static ListProduct Create(string listId, string productId, string userId)
+        public static ListProduct Create(string listId, Guid productId, string userId)
         {
             ListProduct listProduct = new()
             {

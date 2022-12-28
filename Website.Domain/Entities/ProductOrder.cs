@@ -4,7 +4,7 @@
     {
         public string Id { get; set; } = string.Empty;
         public string UserId { get; set; } = string.Empty;
-        public string ProductId { get; set; } = string.Empty;
+        public Guid ProductId { get; set; }
         public DateTime Date { get; set; }
         public int PaymentMethod { get; set; }
         public double Subtotal { get; set; }

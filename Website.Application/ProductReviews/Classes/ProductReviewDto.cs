@@ -14,6 +14,6 @@ namespace Website.Application.ProductReviews.Classes
         public string Text { get; set; } = string.Empty;
         public int Likes { get; set; }
         public int Dislikes { get; set; }
-        public string ProductId { get; set; } = string.Empty;
+        public Guid ProductId { get; set; }
     }
 }

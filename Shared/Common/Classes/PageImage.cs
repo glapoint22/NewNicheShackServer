@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using HtmlAgilityPack;
+using Microsoft.EntityFrameworkCore;
 using Shared.Common.Enums;
 using Shared.Common.Interfaces;
 
@@ -23,8 +24,7 @@ namespace Shared.Common.Classes
                     x.ImageSm,
                     x.ImageMd,
                     x.ImageLg
-                })
-                .SingleAsync();
+                }).SingleAsync();
 
             Name = media.Name;
             Src = (ImageSizeType == ImageSizeType.AnySize ? media.ImageAnySize :
@@ -32,6 +32,21 @@ namespace Shared.Common.Classes
                 ImageSizeType == ImageSizeType.Small ? media.ImageSm :
                 ImageSizeType == ImageSizeType.Medium ? media.ImageMd :
                 media.ImageLg)!;
+        }
+
+
+
+        public void SetStyle(HtmlNode node)
+        {
+            if (Name == "Image Placeholder")
+            {
+                Name = "{imageName}";
+                Src = "{imageSrc}";
+            }
+
+            node.SetAttributeValue("src", "{host}/images/" + Src);
+            node.SetAttributeValue("title", Name);
+            node.SetAttributeValue("alt", Name);
         }
     }
 }

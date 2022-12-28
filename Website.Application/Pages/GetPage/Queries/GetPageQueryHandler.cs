@@ -27,7 +27,7 @@ namespace Website.Application.Pages.GetPage.Queries
 
             if (pageContent == null) return Result.Failed("404");
 
-            WebPage page = await _pageService.GetPage(pageContent);
+            PageContent page = await _pageService.GetPage(pageContent);
             return Result.Succeeded(page);
         }
     }

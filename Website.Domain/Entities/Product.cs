@@ -1,13 +1,14 @@
-﻿using Shared.Common.ValueObjects;
+﻿using Shared.Common.Interfaces;
+using Shared.Common.ValueObjects;
 using Website.Domain.Classes;
 
 namespace Website.Domain.Entities
 {
-    public sealed class Product : Entity
+    public sealed class Product : Entity, IProduct
     {
-        public string Id { get; set; } = string.Empty;
-        public string SubnicheId { get; set; } = string.Empty;
-        public int ImageId { get; set; }
+        public Guid Id { get; set; }
+        public Guid SubnicheId { get; set; }
+        public Guid ImageId { get; set; }
         public string Name { get; set; } = string.Empty;
         public string UrlName { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;

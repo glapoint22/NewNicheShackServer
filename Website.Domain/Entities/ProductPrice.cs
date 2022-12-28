@@ -2,8 +2,8 @@
 {
     public sealed class ProductPrice
     {
-        public int Id { get; set; }
-        public string ProductId { get; set; } = string.Empty;
+        public Guid Id { get; set; }
+        public Guid ProductId { get; set; }
         public double Price { get; set; }
 
         public Product Product { get; set; } = null!;

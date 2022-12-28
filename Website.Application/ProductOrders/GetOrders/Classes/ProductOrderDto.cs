@@ -11,7 +11,7 @@
         public double Discount { get; set; }
         public double Tax { get; set; }
         public double Total { get; set; }
-        public string ProductId { get; set; } = string.Empty;
+        public Guid ProductId { get; set; }
         public string Hoplink { get; set; } = string.Empty;
         public List<ProductOrderProduct> Products { get; set; } = new List<ProductOrderProduct>();
     }

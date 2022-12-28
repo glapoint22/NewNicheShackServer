@@ -24,7 +24,7 @@ namespace Manager.Application.Emails.GetEmail.Queries
                 .Where(x => x.Id == request.EmailId)
                 .SingleAsync();
 
-            WebPage webPage = await _pageService.GetPage(email.Content);
+            PageContent webPage = await _pageService.GetPage(email.Content);
 
             return Result.Succeeded(new
             {

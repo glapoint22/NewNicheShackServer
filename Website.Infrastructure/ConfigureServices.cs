@@ -106,6 +106,7 @@ namespace Website.Infrastructure
             services.AddSingleton<ISearchSuggestionsService, SearchSuggestionsService>();
             services.AddHttpContextAccessor();
             services.AddScoped<IPageService, PageService>();
+            services.AddScoped<IEmailService, EmailService>();
 
             return services;
         }

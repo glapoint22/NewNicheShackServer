@@ -1,4 +1,5 @@
-﻿using Shared.Common.Classes;
+﻿using HtmlAgilityPack;
+using Shared.Common.Classes;
 using System.Text.Json;
 
 namespace Shared.Common.Widgets
@@ -23,6 +24,35 @@ namespace Shared.Common.Widgets
                     Shadow = (Shadow?)JsonSerializer.Deserialize(ref reader, typeof(Shadow), options);
                     break;
             }
+        }
+
+
+
+
+        public override HtmlNode GenerateHtml(HtmlNode column)
+        {
+            // Call the base
+            HtmlNode widget = base.GenerateHtml(column);
+
+
+            // Td
+            HtmlNode td = widget.SelectSingleNode("tr/td");
+
+
+            td.SetAttributeValue("style", "border-bottom: " + Border?.Width + "px " + Border?.Style + " " + Border?.Color + ";");
+            Shadow?.SetStyle(td);
+
+
+            HtmlNode blankRow = widget.InsertBefore(HtmlNode.CreateNode("<tr>"), widget.SelectSingleNode("tr"));
+            HtmlNode blankColumn = blankRow.AppendChild(HtmlNode.CreateNode("<td>"));
+            blankColumn.SetAttributeValue("height", "10");
+
+
+            blankRow = widget.AppendChild(HtmlNode.CreateNode("<tr>"));
+            blankColumn = blankRow.AppendChild(HtmlNode.CreateNode("<td>"));
+            blankColumn.SetAttributeValue("height", "10");
+
+            return widget;
         }
     }
 }

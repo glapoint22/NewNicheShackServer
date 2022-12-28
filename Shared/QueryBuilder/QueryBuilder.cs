@@ -253,12 +253,12 @@ namespace Shared.QueryBuilder
             {
                 // Niche
                 case QueryType.Niche:
-                    expression = GetNicheExpression(queryRow.Item?.Id!, parameter);
+                    expression = GetNicheExpression((Guid)queryRow.Item?.Id!, parameter);
                     break;
 
                 // Subniche
                 case QueryType.Subniche:
-                    expression = GetSubnicheExpression(queryRow.Item?.Id!, parameter);
+                    expression = GetSubnicheExpression((Guid)queryRow.Item?.Id!, parameter);
                     break;
 
                 // Price Range
@@ -274,7 +274,7 @@ namespace Shared.QueryBuilder
 
 
                 case QueryType.ProductGroup:
-                    expression = GetProductGroupExpression(new Guid(queryRow.Item?.Id!), parameter);
+                    expression = GetProductGroupExpression((Guid)queryRow.Item?.Id!, parameter);
                     break;
 
 
@@ -283,7 +283,7 @@ namespace Shared.QueryBuilder
                     break;
 
                 case QueryType.KeywordGroup:
-                    expression = GetKeywordGroupExpression(new Guid(queryRow.Item?.Id!), parameter);
+                    expression = GetKeywordGroupExpression((Guid)queryRow.Item?.Id!, parameter);
                     break;
 
 
@@ -441,7 +441,7 @@ namespace Shared.QueryBuilder
 
 
         // --------------------------------------------------------------------- Get Niche Expression ---------------------------------------------------------------------
-        private static Expression GetNicheExpression(string nicheId, ParameterExpression parameter)
+        private static Expression GetNicheExpression(Guid nicheId, ParameterExpression parameter)
         {
             MemberExpression subnicheProperty = Expression.Property(parameter, "Subniche");
             MemberExpression nicheIdProperty = Expression.Property(subnicheProperty, "NicheId");
@@ -454,7 +454,7 @@ namespace Shared.QueryBuilder
 
 
         // ------------------------------------------------------------------- Get Subniche Expression --------------------------------------------------------------------
-        private static Expression GetSubnicheExpression(string subnicheId, ParameterExpression parameter)
+        private static Expression GetSubnicheExpression(Guid subnicheId, ParameterExpression parameter)
         {
             MemberExpression subnicheIdProperty = Expression.Property(parameter, "SubnicheId");
             ConstantExpression subnicheIdExpression = Expression.Constant(subnicheId);

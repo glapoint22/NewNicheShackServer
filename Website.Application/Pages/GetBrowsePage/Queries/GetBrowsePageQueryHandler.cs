@@ -35,22 +35,22 @@ namespace Website.Application.Pages.GetBrowsePage.Queries
                 request.Page);
 
             // See if we have a custom browse page from a subniche
-            string? pageId = await _dbContext.PageSubniches
+            Guid pageId = await _dbContext.PageSubniches
                 .Where(x => x.SubnicheId == request.SubnicheId)
                 .Select(x => x.PageId)
                 .SingleOrDefaultAsync(cancellationToken: cancellationToken);
 
 
-            // See if we have a custom browse page from a niche
-            if (pageId == null)
-            {
-                pageId = await _dbContext.PageNiches
-                .Where(x => x.NicheId == request.NicheId)
-                .Select(x => x.PageId)
-                .SingleOrDefaultAsync(cancellationToken: cancellationToken);
-            }
+            //// See if we have a custom browse page from a niche
+            //if (pageId == Guid.Empty)
+            //{
+            //    pageId = await _dbContext.PageNiches
+            //    .Where(x => x.NicheId == request.NicheId)
+            //    .Select(x => x.PageId)
+            //    .SingleOrDefaultAsync(cancellationToken: cancellationToken);
+            //}
 
-            if (pageId != null)
+            if (pageId != Guid.Empty)
             {
                 // Get the page content for the custom browse page
                 pageContent = await _dbContext.Pages
@@ -67,7 +67,7 @@ namespace Website.Application.Pages.GetBrowsePage.Queries
                         .SingleAsync(cancellationToken: cancellationToken);
             }
 
-            WebPage page = await _pageService.GetPage(pageContent, pageParams);
+            PageContent page = await _pageService.GetPage(pageContent, pageParams);
             return Result.Succeeded(page);
         }
     }

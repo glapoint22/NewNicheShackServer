@@ -4,10 +4,10 @@ namespace Website.Domain.Entities
 {
     public sealed class PricePoint
     {
-        public int Id { get; set; }
-        public int ProductPriceId { get; set; }
-        public string ProductId { get; set; } = string.Empty;
-        public int? ImageId { get; set; }
+        public Guid Id { get; set; }
+        public Guid ProductPriceId { get; set; }
+        public Guid ProductId { get; set; }
+        public Guid? ImageId { get; set; }
         public string? Header { get; set; } = string.Empty;
         public string? Quantity { get; set; } = string.Empty;
         public string? UnitPrice { get; set; } = string.Empty;

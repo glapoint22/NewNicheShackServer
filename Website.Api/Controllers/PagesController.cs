@@ -33,7 +33,7 @@ namespace Website.Api.Controllers
 
         // ------------------------------------------------------------------------- Get Page --------------------------------------------------------------------------
         [HttpGet("PageId")]
-        public async Task<ActionResult> GetPage(string id)
+        public async Task<ActionResult> GetPage(Guid id)
         {
             return SetResponse(await _mediator.Send(new GetPageQuery(Id: id)));
         }
@@ -46,7 +46,7 @@ namespace Website.Api.Controllers
         // ---------------------------------------------------------------------- Get Search Page ----------------------------------------------------------------------
         [HttpGet]
         [Route("GetSearchPage")]
-        public async Task<ActionResult> GetSearchPage(string searchTerm, string? nicheId, string? subnicheId, string? filters, string? sortBy, int page = 1)
+        public async Task<ActionResult> GetSearchPage(string searchTerm, Guid? nicheId, Guid? subnicheId, string? filters, string? sortBy, int page = 1)
         {
 
             return SetResponse(await _mediator.Send(new GetSearchPageQuery(searchTerm, nicheId, subnicheId, filters, page, sortBy)));
@@ -59,7 +59,7 @@ namespace Website.Api.Controllers
         // ---------------------------------------------------------------------- Get Browse Page ----------------------------------------------------------------------
         [HttpGet]
         [Route("GetBrowsePage")]
-        public async Task<ActionResult> GetBrowsePage(string? nicheId, string? subnicheId, string? filters, string? sortBy, int page = 1)
+        public async Task<ActionResult> GetBrowsePage(Guid? nicheId, Guid? subnicheId, string? filters, string? sortBy, int page = 1)
         {
 
             return SetResponse(await _mediator.Send(new GetBrowsePageQuery(nicheId, subnicheId, filters, page, sortBy)));
@@ -72,7 +72,7 @@ namespace Website.Api.Controllers
         // ----------------------------------------------------------------------- Get Grid Data -----------------------------------------------------------------------
         [HttpGet]
         [Route("GetGridData")]
-        public async Task<ActionResult> GetGridData(string? searchTerm, string? nicheId, string? subnicheId, string? filters, string? sortBy, int page = 1)
+        public async Task<ActionResult> GetGridData(string? searchTerm, Guid? nicheId, Guid? subnicheId, string? filters, string? sortBy, int page = 1)
         {
 
             return SetResponse(await _mediator.Send(new GetGridDataQuery(searchTerm, nicheId, subnicheId, filters, page, sortBy)));

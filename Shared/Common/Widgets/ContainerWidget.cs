@@ -1,5 +1,7 @@
-﻿using Shared.Common.Classes;
+﻿using HtmlAgilityPack;
+using Shared.Common.Classes;
 using Shared.Common.Interfaces;
+using Shared.EmailBuilder.Classes;
 using System.Text.Json;
 
 namespace Shared.Common.Widgets
@@ -49,6 +51,30 @@ namespace Shared.Common.Widgets
             {
                 await Background.Image.SetData(repository);
             }
+        }
+
+
+
+
+        public override HtmlNode GenerateHtml(HtmlNode column)
+        {
+            // Call the base
+            HtmlNode widget = base.GenerateHtml(column);
+
+            // Td
+            HtmlNode td = widget.SelectSingleNode("tr/td");
+            td.SetAttributeValue("height", Height.ToString());
+            td.SetAttributeValue("style", "height: " + Height + "px;");
+
+            // Set the styles
+            Background?.SetStyle(td);
+            Border?.SetStyle(td);
+            Corners?.SetStyle(td);
+            Shadow?.SetStyle(td);
+
+            HtmlNode container = Table.GenerateHtml(td);
+
+            return container;
         }
     }
 }

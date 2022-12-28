@@ -29,6 +29,17 @@ namespace Website.Infrastructure.Persistence.Configurations
 
             builder.Property(x => x.VideoId)
                 .HasMaxLength(256);
+
+            builder.Ignore(x => x.ThumbnailWidth);
+            builder.Ignore(x => x.ThumbnailHeight);
+            builder.Ignore(x => x.ImageSmWidth);
+            builder.Ignore(x => x.ImageSmHeight);
+            builder.Ignore(x => x.ImageMdWidth);
+            builder.Ignore(x => x.ImageMdHeight);
+            builder.Ignore(x => x.ImageLgWidth);
+            builder.Ignore(x => x.ImageLgHeight);
+            builder.Ignore(x => x.ImageAnySizeWidth);
+            builder.Ignore(x => x.ImageAnySizeHeight);
         }
     }
 }

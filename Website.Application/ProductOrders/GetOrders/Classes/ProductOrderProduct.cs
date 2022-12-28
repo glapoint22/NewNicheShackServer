@@ -12,6 +12,6 @@ namespace Website.Application.ProductOrders.GetOrders.Classes
         public double RebillAmount { get; set; }
         public int PaymentsRemaining { get; set; }
         public string UrlName { get; set; } = string.Empty;
-        public string ProductId { get; set; } = string.Empty;
+        public Guid ProductId { get; set; }
     }
 }

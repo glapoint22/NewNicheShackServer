@@ -1,6 +1,7 @@
 ﻿using Shared.PageBuilder.Classes;
 using Shared.PageBuilder.Widgets.GridWidget.Classes;
 using Website.Application.Common.Interfaces;
+using Website.Infrastructure.Services.Common;
 using Website.Infrastructure.Services.PageService.Classes;
 
 namespace Website.Infrastructure.Services.PageService
@@ -21,16 +22,16 @@ namespace Website.Infrastructure.Services.PageService
             return gridData.GetData(pageParams);
         }
 
-        public async Task<WebPage> GetPage(string pageContent)
+        public async Task<PageContent> GetPage(string pageContent)
         {
-            var pageBuilder = new WebsitePageBuilder(_dbContext, new Repository());
+            var pageBuilder = new WebsitePageBuilder(_dbContext, new Repository(_dbContext));
 
             return await pageBuilder.BuildPage(pageContent);
         }
 
-        public async Task<WebPage> GetPage(string pageContent, PageParams pageParams)
+        public async Task<PageContent> GetPage(string pageContent, PageParams pageParams)
         {
-            var pageBuilder = new WebsitePageBuilder(_dbContext, new Repository(), pageParams);
+            var pageBuilder = new WebsitePageBuilder(_dbContext, new Repository(_dbContext), pageParams);
 
             return await pageBuilder.BuildPage(pageContent);
         }

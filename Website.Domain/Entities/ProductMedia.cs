@@ -2,9 +2,8 @@
 {
     public sealed class ProductMedia
     {
-        public int Id { get; set; }
-        public string ProductId { get; set; } = string.Empty;
-        public int MediaId { get; set; }
+        public Guid ProductId { get; set; }
+        public Guid MediaId { get; set; }
         public int Index { get; set; }
 
         public Product Product { get; set; } = null!;

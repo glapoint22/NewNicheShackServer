@@ -1,5 +1,7 @@
-﻿using Shared.Common.Classes;
+﻿using HtmlAgilityPack;
+using Shared.Common.Classes;
 using Shared.Common.Interfaces;
+using Shared.EmailBuilder.Classes;
 using System.Text.Json;
 
 namespace Shared.Common.Widgets
@@ -80,6 +82,80 @@ namespace Shared.Common.Widgets
                     break;
             }
         }
+
+
+
+
+        public override HtmlNode GenerateHtml(HtmlNode column)
+        {
+            float height = (float)(Height > 0 ? Height : 40);
+
+
+            // Call the base
+            HtmlNode widget = base.GenerateHtml(column);
+
+            // Td
+            HtmlNode td = widget.SelectSingleNode("tr/td");
+
+
+            // Set the styles
+            Background ??= new Background { Color = "#808080" };
+
+            Background.SetStyle(td);
+            Border?.SetStyle(td);
+            Corners?.SetStyle(td);
+            Shadow?.SetStyle(td);
+
+            // Anchor
+            HtmlNode anchorNode = HtmlNode.CreateNode("<a>");
+
+            string styles = "display: block;text-align: center;" +
+                (Caption?.TextDecoration == null ? "text-decoration: none;" : "");
+
+
+
+            var fontSize = Caption?.FontSize.Value != null ? int.Parse(Caption.FontSize.Key) : 14;
+            var padding = Math.Max(0, ((height - fontSize) / 2) - 1);
+
+            int paddingTop = Padding != null ? Padding.Values.Where(x => x.PaddingType == 0).Select(x => x.Padding).SingleOrDefault() : 0;
+            int paddingRight = Padding != null ? Padding.Values.Where(x => x.PaddingType == 1).Select(x => x.Padding).SingleOrDefault() : 0;
+            int paddingBottom = Padding != null ? Padding.Values.Where(x => x.PaddingType == 2).Select(x => x.Padding).SingleOrDefault() : 0;
+            int paddingLeft = Padding != null ? Padding.Values.Where(x => x.PaddingType == 3).Select(x => x.Padding).SingleOrDefault() : 0;
+
+
+            styles += "padding-top: " + (padding + paddingTop) + "px;";
+            styles += "padding-bottom: " + (padding + paddingBottom) + "px;";
+            styles += "padding-right: " + paddingRight + "px;";
+            styles += "padding-left: " + paddingLeft + "px;";
+
+
+            anchorNode.SetAttributeValue("style", styles);
+
+            // Caption
+            Caption?.SetStyle(anchorNode);
+
+            // Link
+            Link?.SetStyle(anchorNode);
+
+
+            td.AppendChild(new HtmlDocument().CreateComment(Table.MicrosoftIf +
+                "<table cellpadding=\"0\" cellspacing=\"0\" border=\"0\" align=\"center\" style=\"padding-top: " +
+                (padding + paddingTop) + "px;padding-bottom: " +
+                (padding + paddingBottom) +
+                "px;text-align: center;\"><tr><td>" +
+                Table.MicrosoftEndIf));
+
+
+
+            td.AppendChild(anchorNode);
+
+            td.AppendChild(new HtmlDocument().CreateComment(Table.MicrosoftIf + "</td></tr></table>" + Table.MicrosoftEndIf));
+
+            return anchorNode;
+        }
+
+
+
 
 
         public async override Task SetData(IRepository repository)

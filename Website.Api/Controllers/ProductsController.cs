@@ -23,7 +23,7 @@ namespace Website.Api.Controllers
         // ---------------------------------------------------------------------- Get Product --------------------------------------------------------------------------
         [HttpGet]
         [Route("GetProduct")]
-        public async Task<ActionResult> GetProduct(string productId)
+        public async Task<ActionResult> GetProduct(Guid productId)
         {
             return SetResponse(await _mediator.Send(new GetProductQuery(productId)));
         }
@@ -34,7 +34,7 @@ namespace Website.Api.Controllers
         // --------------------------------------------------------------------- Get Properties ------------------------------------------------------------------------
         [HttpGet]
         [Route("GetProperties")]
-        public async Task<ActionResult> GetProperties(string productId)
+        public async Task<ActionResult> GetProperties(Guid productId)
         {
             return SetResponse(await _mediator.Send(new GetPropertiesQuery(productId)));
         }
@@ -43,7 +43,7 @@ namespace Website.Api.Controllers
         // ---------------------------------------------------------------- Get Search Suggestions ---------------------------------------------------------------------
         [HttpGet]
         [Route("GetSearchSuggestions")]
-        public ActionResult GetSearchSuggestions(string searchTerm, string? nicheId)
+        public ActionResult GetSearchSuggestions(string searchTerm, Guid nicheId)
         {
             return Ok(_searchSuggestionsService.GetSearchSuggestions(searchTerm, nicheId));
         }

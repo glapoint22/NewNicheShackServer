@@ -8,7 +8,7 @@ namespace Shared.Common.Classes
         {
             name = name.Replace("'", "");
             name = Regex.Replace(name, @"^[\W]|[\W]$", "");
-            return Regex.Replace(name, @"[\W_]+", "-");
+            return Regex.Replace(name, @"[\W_]+", "-").ToLower();
         }
     }
 }

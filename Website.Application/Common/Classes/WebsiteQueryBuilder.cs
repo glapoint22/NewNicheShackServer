@@ -195,7 +195,7 @@ namespace Website.Application.Common.Classes
                 // Build a query row for the niche id
                 QueryElement nicheQueryRow = BuildQueryRow(QueryType.Niche, new Item
                 {
-                    Id = pageParams.NicheId
+                    Id = (Guid)pageParams.NicheId
                 });
                 query.Elements.Add(nicheQueryRow);
             }
@@ -215,7 +215,7 @@ namespace Website.Application.Common.Classes
                 // Build a query row for the subniche id
                 QueryElement subnicheIdQueryRow = BuildQueryRow(QueryType.Subniche, new Item
                 {
-                    Id = pageParams.SubnicheId
+                    Id = (Guid)pageParams.SubnicheId
                 });
                 query.Elements.Add(subnicheIdQueryRow);
             }

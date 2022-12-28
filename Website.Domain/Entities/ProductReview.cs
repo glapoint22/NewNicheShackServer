@@ -3,7 +3,7 @@
     public sealed class ProductReview
     {
         public Guid Id { get; set; }
-        public string ProductId { get; set; } = string.Empty;
+        public Guid ProductId { get; set; }
         public string UserId { get; set; } = string.Empty;
         public string Title { get; set; } = string.Empty;
         public double Rating { get; set; }
@@ -18,7 +18,7 @@
         public ICollection<Notification> Notifications { get; private set; } = new HashSet<Notification>();
 
 
-        public static ProductReview Create(string productId, string userId, string title, double rating, string text)
+        public static ProductReview Create(Guid productId, string userId, string title, double rating, string text)
         {
             return new()
             {

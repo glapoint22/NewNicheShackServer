@@ -31,7 +31,7 @@ namespace Website.Application.Lists.Common
 
 
             // Create the notification
-            Notification ListNotification = Notification.CreateListNotification(notificationGroupId, notification.ListId, notification.Name, notification.Description, notification.UserId);
+            Notification ListNotification = Notification.CreateListNotification(notificationGroupId, notification.ListId, notification.UserId);
             _dbContext.Notifications.Add(ListNotification);
 
             await _dbContext.SaveChangesAsync();

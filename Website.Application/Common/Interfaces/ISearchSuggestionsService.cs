@@ -4,7 +4,7 @@ namespace Website.Application.Common.Interfaces
 {
     public interface ISearchSuggestionsService
     {
-        List<SearchSuggestion>? GetSearchSuggestions(string searchTerm, string? nicheId);
-        void SetSearchSuggestions(List<KeywordData> keywords, List<string> nicheIds);
+        List<SearchSuggestion>? GetSearchSuggestions(string searchTerm, Guid nicheId);
+        void SetSearchSuggestions(List<KeywordData> keywords, List<Guid> nicheIds);
     }
 }

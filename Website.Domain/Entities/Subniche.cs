@@ -2,8 +2,8 @@
 {
     public sealed class Subniche
     {
-        public string Id { get; set; } = string.Empty;
-        public string NicheId { get; set; } = string.Empty;
+        public Guid Id { get; set; }
+        public Guid NicheId { get; set; }
         public string Name { get; set; } = string.Empty;
         public string UrlName { get; set; } = string.Empty;
 

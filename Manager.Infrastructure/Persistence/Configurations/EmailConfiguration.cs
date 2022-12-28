@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Manager.Infrastructure.Persistence.Configurations
 {
-    internal class EmailConfiguration : IEntityTypeConfiguration<Email>
+    public sealed class EmailConfiguration : IEntityTypeConfiguration<Email>
     {
         public void Configure(EntityTypeBuilder<Email> builder)
         {
