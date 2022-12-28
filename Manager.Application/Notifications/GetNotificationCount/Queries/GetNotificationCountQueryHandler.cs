@@ -27,6 +27,8 @@ namespace Manager.Application.Notifications.GetNotificationCount.Queries
             // archive group and that notification has (NOT) been archived, then count that one too
             (x.Type == (int)NotificationType.UserName ||
             x.Type == (int)NotificationType.UserImage ||
+            x.Type == (int)NotificationType.List ||
+            x.Type == (int)NotificationType.Review ||
             x.Type == (int)NotificationType.Message) &&
             !x.IsArchived);
         }

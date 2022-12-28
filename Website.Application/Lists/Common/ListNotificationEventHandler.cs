@@ -25,7 +25,7 @@ namespace Website.Application.Lists.Common
 
             // First, check to see if a notification group for this type of notification already exists
             Guid notificationGroupId = await _dbContext.Notifications
-                .Where(x => x.Type == (int)NotificationType.List && x.UserId == notification.UserId && x.ListId == notification.ListId)
+                .Where(x => x.Type == (int)NotificationType.List && x.UserId == notification.UserId)
                 .Select(x => x.NotificationGroupId)
                 .FirstOrDefaultAsync();
 

@@ -4,6 +4,8 @@
     {
         UserName,
         UserImage,
+        List,
+        Review,
         Message,
         ReviewComplaint,
         ProductNameDoesNotMatchWithProductDescription,
@@ -27,8 +29,6 @@
         ProductInactive,
         ProductSiteNolongerInService,
         MissingProductOther,
-        Error,
-        List,
-        Review
+        Error
     }
 }
