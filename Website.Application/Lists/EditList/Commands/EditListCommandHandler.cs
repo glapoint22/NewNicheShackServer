@@ -31,9 +31,12 @@ namespace Website.Application.Lists.EditList.Commands
 
             if (list == null) return Result.Failed();
 
+            string previousName = list.Name;
+            string? previousDescription = list.Description;
+
             // Edit
             list.Edit(request.Name, request.Description);
-            list.AddDomainEvent(new ListEditedEvent(userId, list.Id, list.Name, list.Description, request.Name, request.Description));
+            list.AddDomainEvent(new ListEditedEvent(userId, list.Id, previousName, previousDescription, request.Name, request.Description));
 
             // Save the changes
             await _dbContext.SaveChangesAsync();

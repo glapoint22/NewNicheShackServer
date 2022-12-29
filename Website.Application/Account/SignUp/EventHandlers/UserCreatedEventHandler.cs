@@ -32,22 +32,20 @@ namespace Website.Application.Account.SignUp.EventHandlers
                 .SingleAsync();
 
 
+            // Get the email body
+            string emailBody = await _emailService.GetEmailBody(emailContent);
+
+
             // Create the email message
-            EmailMessage emailMessage = new()
+            EmailMessage emailMessage = new(emailBody, user.Email, "Activate Account", new()
             {
-                EmailBody = emailContent,
-                EmailAddress = user.Email,
-                Subject = "Activate Account",
-                EmailProperties = new()
+                Recipient = new()
                 {
-                    Recipient = new()
-                    {
-                        FirstName = user.FirstName,
-                        LastName = user.LastName
-                    },
-                    Var1 = otp
-                }
-            };
+                    FirstName = user.FirstName,
+                    LastName = user.LastName
+                },
+                Var1 = otp
+            });
 
             // Send the email
             await _emailService.SendEmail(emailMessage);

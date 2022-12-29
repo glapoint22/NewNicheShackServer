@@ -50,11 +50,11 @@ namespace Website.Application.Account.ActivateAccount.Commands
                 _cookieService.SetCookie("user", userData, expiration);
 
                 _dbContext.RefreshTokens.Add(refreshToken);
-                await _dbContext.SaveChangesAsync();
-
 
                 // Add the domain event
                 user.AddDomainEvent(new UserActivatedAccountEvent(user.Id));
+
+                await _dbContext.SaveChangesAsync();
             }
 
             return Result.Succeeded();

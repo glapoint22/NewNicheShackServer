@@ -42,6 +42,9 @@ namespace Website.Infrastructure.Services
         // ------------------------------------------------------------------------------ Send Email -----------------------------------------------------------------------------
         public async Task SendEmail(EmailMessage emailMessage)
         {
+            emailMessage.EmailProperties.Host = GetHost();
+            emailMessage.EmailBody = emailMessage.EmailProperties.SetEmailBody(emailMessage.EmailBody);
+
             MimeMessage email = new()
             {
                 Sender = MailboxAddress.Parse(_configuration["Email:Sender"]),
@@ -67,7 +70,7 @@ namespace Website.Infrastructure.Services
 
 
         // ------------------------------------------------------------------------------- Get Host ------------------------------------------------------------------------------
-        public string GetHost()
+        private string GetHost()
         {
             if (_webHostEnvironment.IsDevelopment())
             {
