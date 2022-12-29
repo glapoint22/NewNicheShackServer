@@ -26,6 +26,8 @@ namespace Manager.Application.Notifications.GetNewNotifications.Queries
             // archive group and that notification has (NOT) been archived, then count that one too
             (x.Type == (int)NotificationType.UserName ||
             x.Type == (int)NotificationType.UserImage ||
+            x.Type == (int)NotificationType.List ||
+            x.Type == (int)NotificationType.Review ||
             x.Type == (int)NotificationType.Message) &&
             !x.IsArchived)
                 .Select(x => new
@@ -45,7 +47,11 @@ namespace Manager.Application.Notifications.GetNewNotifications.Queries
                     x.CreationDate,
                     x.NotificationGroup.ArchiveDate,
                     Count =
-                        x.Type == (int)NotificationType.UserName || x.Type == (int)NotificationType.UserImage || x.Type == (int)NotificationType.Message ?
+                        x.Type == (int)NotificationType.UserName ||
+                        x.Type == (int)NotificationType.UserImage ||
+                        x.Type == (int)NotificationType.List ||
+                        x.Type == (int)NotificationType.Review ||
+                        x.Type == (int)NotificationType.Message ?
                             x.NotificationGroup.Notifications.Where(y => !y.IsArchived).Count() :
                             x.NotificationGroup.Notifications.Count()
                 }).ToListAsync();
@@ -76,7 +82,7 @@ namespace Manager.Application.Notifications.GetNewNotifications.Queries
 
             return Result.Succeeded(new
             {
-                notifications.Count,
+                allNotifications.Count,
                 notifications
             });
         }

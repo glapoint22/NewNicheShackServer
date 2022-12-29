@@ -24,7 +24,7 @@ namespace Website.Application.ProductReviews.PostReview.EventHandlers
 
             // First, check to see if a notification group for this type of notification already exists
             Guid notificationGroupId = await _dbContext.Notifications
-                .Where(x => x.Type == (int)NotificationType.Review && x.UserId == notification.UserId && x.ProductId == notification.ProductId)
+                .Where(x => x.Type == (int)NotificationType.Review && x.UserId == notification.UserId)
                 .Select(x => x.NotificationGroupId)
                 .FirstOrDefaultAsync();
 

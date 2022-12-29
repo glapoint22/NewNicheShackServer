@@ -17,10 +17,12 @@ namespace Manager.Application.Notifications.GetArchivedNotifications.Queries
 
         public async Task<Result> Handle(GetArchivedNotificationsQuery request, CancellationToken cancellationToken)
         {
-            var allNotifications = await _dbContext.Notifications.Where(x => 
+            var allNotifications = await _dbContext.Notifications.Where(x =>
             // Get all the notifications that (DO) belong to an archived group
             x.Type != (int)NotificationType.UserName &&
             x.Type != (int)NotificationType.UserImage &&
+            x.Type != (int)NotificationType.List &&
+            x.Type != (int)NotificationType.Review &&
             x.Type != (int)NotificationType.Message &&
             x.NotificationGroup.ArchiveDate != null ||
 
@@ -46,7 +48,11 @@ namespace Manager.Application.Notifications.GetArchivedNotifications.Queries
                     x.CreationDate,
                     x.NotificationGroup.ArchiveDate,
                     Count =
-                        x.Type == (int)NotificationType.UserName || x.Type == (int)NotificationType.UserImage || x.Type == (int)NotificationType.Message ?
+                        x.Type == (int)NotificationType.UserName ||
+                        x.Type == (int)NotificationType.UserImage ||
+                        x.Type == (int)NotificationType.List ||
+                        x.Type == (int)NotificationType.Review ||
+                        x.Type == (int)NotificationType.Message ?
                             x.NotificationGroup.Notifications.Where(y => y.IsArchived).Count() :
                             x.NotificationGroup.Notifications.Count()
                 }).ToListAsync();

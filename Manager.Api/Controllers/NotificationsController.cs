@@ -1,14 +1,17 @@
-﻿using Manager.Application.Notifications.AddNoncompliantStrikeUserImage.Commands;
+﻿using Manager.Application.Notifications.AddNoncompliantStrikeList.Commands;
+using Manager.Application.Notifications.AddNoncompliantStrikeUserImage.Commands;
 using Manager.Application.Notifications.AddNoncompliantStrikeUserName.Commands;
 using Manager.Application.Notifications.Archive.Commands;
 using Manager.Application.Notifications.DeleteNotifications.Commands;
 using Manager.Application.Notifications.GetArchivedNotifications.Queries;
 using Manager.Application.Notifications.GetErrorNotification.Queries;
+using Manager.Application.Notifications.GetListNotification.Queries;
 using Manager.Application.Notifications.GetMessageNotification.Queries;
 using Manager.Application.Notifications.GetNewNotifications.Queries;
 using Manager.Application.Notifications.GetNotificationCount.Queries;
 using Manager.Application.Notifications.GetProductNotification.Queries;
 using Manager.Application.Notifications.GetReviewComplaintNotification.Queries;
+using Manager.Application.Notifications.GetReviewNotification.Queries;
 using Manager.Application.Notifications.GetUserImageNotification.Queries;
 using Manager.Application.Notifications.GetUserNameNotification.Queries;
 using Manager.Application.Notifications.PostNote.Commands;
@@ -31,6 +34,19 @@ namespace Manager.Api.Controllers
         {
             _mediator = mediator;
         }
+
+
+
+
+        // ---------------------------------------------------------------------- Add Noncompliant Strike List -------------------------------------------------------------------
+        [HttpPut]
+        [Route("AddNoncompliantStrikeList")]
+        public async Task<ActionResult> AddNoncompliantStrikeList(AddNoncompliantStrikeListCommand addNoncompliantStrikeList)
+        {
+            return SetResponse(await _mediator.Send(addNoncompliantStrikeList));
+        }
+
+
 
 
 
@@ -120,6 +136,19 @@ namespace Manager.Api.Controllers
 
 
 
+        // ------------------------------------------------------------------------- Get List Notification -----------------------------------------------------------------------
+        [HttpGet]
+        [Route("GetListNotification")]
+        public async Task<ActionResult> GetListNotification(Guid notificationGroupId, bool isNew)
+        {
+            return SetResponse(await _mediator.Send(new GetListNotificationQuery(notificationGroupId, isNew)));
+        }
+
+
+
+
+
+
 
         // ------------------------------------------------------------------------ Get Message Notification ---------------------------------------------------------------------
         [HttpGet]
@@ -179,6 +208,18 @@ namespace Manager.Api.Controllers
             return SetResponse(await _mediator.Send(new GetReviewComplaintNotificationQuery(notificationGroupId)));
         }
 
+
+
+
+
+
+        // ------------------------------------------------------------------------ Get Review Notification ----------------------------------------------------------------------
+        [HttpGet]
+        [Route("GetReviewNotification")]
+        public async Task<ActionResult> GetReviewNotification(Guid notificationGroupId, bool isNew)
+        {
+            return SetResponse(await _mediator.Send(new GetReviewNotificationQuery(notificationGroupId, isNew)));
+        }
 
 
 
