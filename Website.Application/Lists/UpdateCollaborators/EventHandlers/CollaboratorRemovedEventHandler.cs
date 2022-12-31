@@ -25,7 +25,9 @@ namespace Website.Application.Lists.UpdateCollaborators.EventHandlers
                 .Select(x => new
                 {
                     x.FirstName,
-                    x.LastName
+                    x.LastName,
+                    x.Email,
+                    x.EmailOnUserRemovedCollaborator
                 }).SingleAsync();
 
             // Get the list name
@@ -41,24 +43,31 @@ namespace Website.Application.Lists.UpdateCollaborators.EventHandlers
                 {
                     x.FirstName,
                     x.LastName,
-                    x.Email
+                    x.Email,
+                    x.EmailOnUserRemovedFromList
                 }).SingleAsync();
 
 
-            // Get the email from the database
-            string emailContent = await _dbContext.Emails
-                .Where(x => x.Name == "Removed Collaborator")
-                .Select(x => x.Content)
-                .SingleAsync();
-
-
-            // Create the email message
-            EmailMessage emailMessage = new()
+            // Send an email to the collaborator that got removed
+            if (removedCollaborator.EmailOnUserRemovedFromList == true)
             {
-                EmailBody = emailContent,
-                EmailAddress = removedCollaborator.Email,
-                Subject = "Removed from list",
-                EmailProperties = new()
+                // Get the email from the database
+                var email = await _dbContext.Emails
+                    .Where(x => x.Type == EmailType.UserRemovedFromList)
+                    .Select(x => new
+                    {
+                        x.Name,
+                        x.Content
+                    }).SingleAsync();
+
+
+
+                // Get the email body
+                string emailBody = await _emailService.GetEmailBody(email.Content);
+
+
+                // Create the email message
+                EmailMessage emailMessage = new(emailBody, removedCollaborator.Email, email.Name, new()
                 {
                     Recipient = new()
                     {
@@ -75,20 +84,24 @@ namespace Website.Application.Lists.UpdateCollaborators.EventHandlers
 
                     // List name
                     Var1 = listName
-                }
-            };
+                });
 
 
-            // Send the email
-            await _emailService.SendEmail(emailMessage);
+
+                // Send the email
+                await _emailService.SendEmail(emailMessage);
+            }
+
+
+
 
 
             // Get all other collaborators that are collaborating on this list
             var collaborators = await _dbContext.Collaborators
-                .Where(x => x.ListId == notification.ListId && 
+                .Where(x => x.ListId == notification.ListId &&
                     x.UserId != notification.UserId &&
                     x.UserId != notification.CollaboratorUserId &&
-                    x.User.EmailOnRemovedCollaborator == true)
+                    x.User.EmailOnCollaboratorRemovedFromList == true)
                 .Select(x => new
                 {
                     x.User.FirstName,
@@ -97,23 +110,27 @@ namespace Website.Application.Lists.UpdateCollaborators.EventHandlers
                 }).ToListAsync();
 
 
-            // Get the email from the database
-            emailContent = await _dbContext.Emails
-                .Where(x => x.Name == "Collaborator Removed")
-                .Select(x => x.Content)
-                .SingleAsync();
-
-
-            // Send an email to the other collaborators
-            foreach (var collaborator in collaborators)
+            if (collaborators.Count > 0)
             {
-                // Create the email message
-                emailMessage = new()
+                // Get the email from the database
+                var email = await _dbContext.Emails
+                    .Where(x => x.Type == EmailType.CollaboratorRemovedFromList)
+                    .Select(x => new
+                    {
+                        x.Name,
+                        x.Content
+                    }).SingleAsync();
+
+
+                // Get the email body
+                string emailBody = await _emailService.GetEmailBody(email.Content);
+
+
+                // Send an email to the other collaborators
+                foreach (var collaborator in collaborators)
                 {
-                    EmailBody = emailContent,
-                    EmailAddress = collaborator.Email,
-                    Subject = "Collaborator has been removed from your list",
-                    EmailProperties = new()
+                    // Create the email message
+                    EmailMessage emailMessage = new(emailBody, collaborator.Email, email.Name, new()
                     {
                         Recipient = new()
                         {
@@ -130,8 +147,56 @@ namespace Website.Application.Lists.UpdateCollaborators.EventHandlers
 
                         // List name
                         Var1 = listName
-                    }
-                };
+                    });
+
+
+                    // Send the email
+                    await _emailService.SendEmail(emailMessage);
+                }
+            }
+
+
+
+
+
+
+            // Set up the email for the user that removed the collaborator
+            if (user.EmailOnUserRemovedCollaborator == true)
+            {
+                // Get the email from the database
+                var email = await _dbContext.Emails
+                    .Where(x => x.Type == EmailType.UserRemovedCollaborator)
+                    .Select(x => new
+                    {
+                        x.Name,
+                        x.Content
+                    }).SingleAsync();
+
+
+
+                // Get the email body
+                string emailBody = await _emailService.GetEmailBody(email.Content);
+
+
+                // Create the email message
+                EmailMessage emailMessage = new(emailBody, user.Email, email.Name, new()
+                {
+                    Recipient = new()
+                    {
+                        FirstName = user.FirstName,
+                        LastName = user.LastName
+                    },
+
+                    // Collaborator that has been removed
+                    Person = new()
+                    {
+                        FirstName = removedCollaborator.FirstName,
+                        LastName = removedCollaborator.LastName
+                    },
+
+                    // List name
+                    Var1 = listName
+                });
 
                 // Send the email
                 await _emailService.SendEmail(emailMessage);

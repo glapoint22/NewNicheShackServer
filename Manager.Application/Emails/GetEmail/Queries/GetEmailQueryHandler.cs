@@ -29,6 +29,7 @@ namespace Manager.Application.Emails.GetEmail.Queries
             return Result.Succeeded(new
             {
                 Id = request.EmailId,
+                EmailType = email.Type,
                 email.Name,
                 Content = webPage
             });

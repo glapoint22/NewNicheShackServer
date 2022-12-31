@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Shared.Common.Classes;
 using Shared.QueryBuilder;
+using System.Text.RegularExpressions;
 
 namespace Manager.Application.Emails.SearchEmails.Queries
 {

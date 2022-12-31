@@ -24,18 +24,26 @@ namespace Website.Application.EmailPreferences.Queries
                 .Where(x => x.Id == userId)
                 .Select(x => new Preferences
                 {
-                    NameChange = x.EmailOnNameChange,
-                    EmailChange = x.EmailOnEmailChange,
-                    PasswordChange = x.EmailOnPasswordChange,
-                    ProfileImageChange = x.EmailOnProfileImageChange,
-                    NewCollaborator = x.EmailOnNewCollaborator,
-                    RemovedCollaborator = x.EmailOnRemovedCollaborator,
-                    RemovedListItem = x.EmailOnRemovedListItem,
-                    MovedListItem = x.EmailOnMovedListItem,
-                    AddedListItem = x.EmailOnAddedListItem,
-                    EditedList = x.EmailOnEditedList,
-                    DeletedList = x.EmailOnDeletedList,
-                    Review = x.EmailOnReview
+                    NameUpdated = x.EmailOnNameUpdated,
+                    EmailUpdated = x.EmailOnEmailUpdated,
+                    PasswordUpdated = x.EmailOnPasswordUpdated,
+                    ProfileImageUpdated = x.EmailOnProfileImageUpdated,
+                    CollaboratorJoinedList = x.EmailOnCollaboratorJoinedList,
+                    UserJoinedList = x.EmailOnUserJoinedList,
+                    UserRemovedFromList = x.EmailOnUserRemovedFromList,
+                    CollaboratorRemovedFromList = x.EmailOnCollaboratorRemovedFromList,
+                    UserRemovedCollaborator = x.EmailOnUserRemovedCollaborator,
+                    CollaboratorAddedListItem = x.EmailOnCollaboratorAddedListItem,
+                    UserAddedListItem = x.EmailOnUserAddedListItem,
+                    CollaboratorRemovedListItem = x.EmailOnCollaboratorRemovedListItem,
+                    UserRemovedListItem = x.EmailOnUserRemovedListItem,
+                    CollaboratorMovedListItem = x.EmailOnCollaboratorMovedListItem,
+                    UserMovedListItem = x.EmailOnUserMovedListItem,
+                    CollaboratorUpdatedList = x.EmailOnCollaboratorUpdatedList,
+                    UserUpdatedList = x.EmailOnUserUpdatedList,
+                    CollaboratorDeletedList = x.EmailOnCollaboratorDeletedList,
+                    UserDeletedList = x.EmailOnUserDeletedList,
+                    ItemReviewed = x.EmailOnItemReviewed
                 })
                 .SingleAsync();
 

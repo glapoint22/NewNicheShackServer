@@ -4,11 +4,15 @@
     {
         public string PreviousName { get; init; }
         public string? PreviousDescription { get; init; }
+        public string NewName { get; init; }
+        public string? NewDescription { get; init; }
 
-        public ListEditedEvent(string UserId, string ListId, string PreviousName, string? PreviousDescription, string NewName, string? NewDescription) : base(UserId, ListId, NewName, NewDescription)
+        public ListEditedEvent(string userId, string listId, string previousName, string? previousDescription, string newName, string? newDescription) : base(userId, listId, newName, newDescription)
         {
-            this.PreviousName = PreviousName;
-            this.PreviousDescription = PreviousDescription;
+            PreviousName = previousName;
+            PreviousDescription = previousDescription;
+            NewName = newName;
+            NewDescription = newDescription;
         }
     }
 }

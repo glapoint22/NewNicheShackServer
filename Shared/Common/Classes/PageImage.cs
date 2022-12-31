@@ -43,6 +43,11 @@ namespace Shared.Common.Classes
                 Name = "{imageName}";
                 Src = "{imageSrc}";
             }
+            else if (Name == "Stars Placeholder")
+            {
+                Name = "Product Rating";
+                Src = "{stars}";
+            }
 
             node.SetAttributeValue("src", "{host}/images/" + Src);
             node.SetAttributeValue("title", Name);

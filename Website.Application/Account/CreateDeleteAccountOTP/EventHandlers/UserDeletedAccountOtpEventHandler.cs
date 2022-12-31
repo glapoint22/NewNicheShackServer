@@ -5,35 +5,36 @@ using Website.Application.Common.Interfaces;
 using Website.Domain.Entities;
 using Website.Domain.Events;
 
-namespace Website.Application.Account.SignUp.EventHandlers
+namespace Website.Application.Account.CreateDeleteAccountOTP.EventHandlers
 {
-    public sealed class UserCreatedEventHandler : INotificationHandler<UserCreatedEvent>
+    public sealed class UserDeletedAccountOtpEventHandler : INotificationHandler<UserDeletedAccountOtpEvent>
     {
         private readonly IUserService _userService;
-        private readonly IEmailService _emailService;
         private readonly IWebsiteDbContext _dbContext;
+        private readonly IEmailService _emailService;
 
-        public UserCreatedEventHandler(IUserService userService, IEmailService emailService, IWebsiteDbContext dbContext)
+        public UserDeletedAccountOtpEventHandler(IUserService userService, IWebsiteDbContext dbContext, IEmailService emailService)
         {
             _userService = userService;
-            _emailService = emailService;
             _dbContext = dbContext;
+            _emailService = emailService;
         }
 
-        public async Task Handle(UserCreatedEvent notification, CancellationToken cancellationToken)
+
+        public async Task Handle(UserDeletedAccountOtpEvent notification, CancellationToken cancellationToken)
         {
             User user = await _userService.GetUserByIdAsync(notification.UserId);
-            string otp = await _userService.GenerateEmailConfirmationTokenAsync(user);
+            string otp = await _userService.GenerateDeleteAccountTokenAsync(user);
+
 
             // Get the email from the database
             var email = await _dbContext.Emails
-                .Where(x => x.Type == EmailType.ActivateAccountOneTimePassword)
+                .Where(x => x.Type == EmailType.DeleteAccountOneTimePassword)
                 .Select(x => new
                 {
                     x.Name,
                     x.Content
                 }).SingleAsync();
-
 
             // Get the email body
             string emailBody = await _emailService.GetEmailBody(email.Content);
@@ -49,6 +50,7 @@ namespace Website.Application.Account.SignUp.EventHandlers
                 },
                 Var1 = otp
             });
+
 
             // Send the email
             await _emailService.SendEmail(emailMessage);

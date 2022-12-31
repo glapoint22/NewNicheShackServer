@@ -21,7 +21,7 @@ namespace Manager.Application.Emails.UpdateEmail.Commands
                 .Where(x => x.Id == request.Id)
                 .SingleAsync();
 
-            email.Update(request.Name, request.Content);
+            email.Update(request.Type, request.Name, request.Content);
             await _dbContext.SaveChangesAsync();
 
             return Result.Succeeded();

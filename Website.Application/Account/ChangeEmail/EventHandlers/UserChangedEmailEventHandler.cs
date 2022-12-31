@@ -2,20 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Shared.EmailBuilder.Classes;
 using Website.Application.Common.Interfaces;
-using Website.Domain.Entities;
 using Website.Domain.Events;
 
 namespace Website.Application.Account.ChangeEmail.EventHandlers
 {
     public sealed class UserChangedEmailEventHandler : INotificationHandler<UserChangedEmailEvent>
     {
-        private readonly IUserService _userService;
         private readonly IWebsiteDbContext _dbContext;
         private readonly IEmailService _emailService;
 
-        public UserChangedEmailEventHandler(IUserService userService, IWebsiteDbContext dbContext, IEmailService emailService)
+        public UserChangedEmailEventHandler(IWebsiteDbContext dbContext, IEmailService emailService)
         {
-            _userService = userService;
             _dbContext = dbContext;
             _emailService = emailService;
         }
@@ -23,29 +20,43 @@ namespace Website.Application.Account.ChangeEmail.EventHandlers
 
         public async Task Handle(UserChangedEmailEvent notification, CancellationToken cancellationToken)
         {
-            User user = await _userService.GetUserByIdAsync(notification.UserId);
+            var user = await _dbContext.Users
+                .Where(x => x.Id == notification.UserId)
+                .Select(x => new
+                {
+                    x.FirstName,
+                    x.LastName,
+                    x.Email,
+                    x.EmailOnEmailUpdated
+                }).SingleAsync();
+
+
+            if (user.EmailOnEmailUpdated == false) return;
+
 
             // Get the email from the database
-            string emailContent = await _dbContext.Emails
-                .Where(x => x.Name == "Email Change")
-                .Select(x => x.Content)
-                .SingleAsync();
+            var email = await _dbContext.Emails
+                .Where(x => x.Type == EmailType.EmailUpdated)
+                .Select(x => new
+                {
+                    x.Name,
+                    x.Content
+                }).SingleAsync();
+
+
+            // Get the email body
+            string emailBody = await _emailService.GetEmailBody(email.Content);
+
 
             // Create the email message
-            EmailMessage emailMessage = new()
+            EmailMessage emailMessage = new(emailBody, user.Email, email.Name, new()
             {
-                EmailBody = emailContent,
-                EmailAddress = user.Email,
-                Subject = "Email change confirmation",
-                EmailProperties = new()
+                Recipient = new()
                 {
-                    Recipient = new()
-                    {
-                        FirstName = user.FirstName,
-                        LastName = user.LastName
-                    }
+                    FirstName = user.FirstName,
+                    LastName = user.LastName
                 }
-            };
+            });
 
             // Send the email
             await _emailService.SendEmail(emailMessage);

@@ -52,7 +52,7 @@ namespace Website.Application.Account.DeleteAccount.Commands
             _dbContext.Lists.RemoveRange(lists);
             _dbContext.Users.Remove(user);
 
-            user.AddDomainEvent(new UserDeletedEvent(user.Id));
+            user.AddDomainEvent(new UserDeletedEvent(user.FirstName, user.LastName, user.Email));
             await _dbContext.SaveChangesAsync();
 
             return Result.Succeeded();

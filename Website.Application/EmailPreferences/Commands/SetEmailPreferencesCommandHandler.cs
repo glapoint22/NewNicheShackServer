@@ -21,18 +21,26 @@ namespace Website.Application.EmailPreferences.Commands
 
             var emailPreferences = request.Preferences;
 
-            user.EmailOnNameChange = emailPreferences.NameChange;
-            user.EmailOnEmailChange = emailPreferences.EmailChange;
-            user.EmailOnPasswordChange = emailPreferences.PasswordChange;
-            user.EmailOnProfileImageChange = emailPreferences.ProfileImageChange;
-            user.EmailOnNewCollaborator = emailPreferences.NewCollaborator;
-            user.EmailOnRemovedCollaborator = emailPreferences.RemovedCollaborator;
-            user.EmailOnRemovedListItem = emailPreferences.RemovedListItem;
-            user.EmailOnMovedListItem = emailPreferences.MovedListItem;
-            user.EmailOnAddedListItem = emailPreferences.AddedListItem;
-            user.EmailOnEditedList = emailPreferences.EditedList;
-            user.EmailOnDeletedList = emailPreferences.DeletedList;
-            user.EmailOnReview = emailPreferences.Review;
+            user.EmailOnNameUpdated = emailPreferences.NameUpdated;
+            user.EmailOnEmailUpdated = emailPreferences.EmailUpdated;
+            user.EmailOnPasswordUpdated = emailPreferences.PasswordUpdated;
+            user.EmailOnProfileImageUpdated = emailPreferences.ProfileImageUpdated;
+            user.EmailOnCollaboratorJoinedList = emailPreferences.CollaboratorJoinedList;
+            user.EmailOnUserJoinedList = emailPreferences.UserJoinedList;
+            user.EmailOnUserRemovedFromList = emailPreferences.UserRemovedFromList;
+            user.EmailOnCollaboratorRemovedFromList = emailPreferences.CollaboratorRemovedFromList;
+            user.EmailOnUserRemovedCollaborator = emailPreferences.UserRemovedCollaborator;
+            user.EmailOnCollaboratorAddedListItem = emailPreferences.CollaboratorAddedListItem;
+            user.EmailOnUserAddedListItem = emailPreferences.UserAddedListItem;
+            user.EmailOnCollaboratorRemovedListItem = emailPreferences.CollaboratorRemovedListItem;
+            user.EmailOnUserRemovedListItem = emailPreferences.UserRemovedListItem;
+            user.EmailOnCollaboratorMovedListItem = emailPreferences.CollaboratorMovedListItem;
+            user.EmailOnUserMovedListItem = emailPreferences.UserMovedListItem;
+            user.EmailOnCollaboratorUpdatedList = emailPreferences.CollaboratorUpdatedList;
+            user.EmailOnUserUpdatedList = emailPreferences.UserUpdatedList;
+            user.EmailOnCollaboratorDeletedList = emailPreferences.CollaboratorDeletedList;
+            user.EmailOnUserDeletedList = emailPreferences.UserDeletedList;
+            user.EmailOnItemReviewed = emailPreferences.ItemReviewed;
 
             await _userService.UpdateAsync(user);
 

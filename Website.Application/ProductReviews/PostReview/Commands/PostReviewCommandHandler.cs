@@ -33,7 +33,7 @@ namespace Website.Application.ProductReviews.PostReview.Commands
             product.SetRating(request.Rating);
 
 
-            product.AddDomainEvent(new PostedReviewEvent(userId, request.ProductId, productReview.Id, request.Rating, request.Title, request.Text));
+            product.AddDomainEvent(new PostedReviewEvent(userId, request.ProductId, productReview.Id));
             await _dbContext.SaveChangesAsync();
 
             return Result.Succeeded();

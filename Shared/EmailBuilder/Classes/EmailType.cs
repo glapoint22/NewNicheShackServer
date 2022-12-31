@@ -1,0 +1,33 @@
+﻿namespace Shared.EmailBuilder.Classes
+{
+    public enum EmailType
+    {
+        None,
+        ActivateAccountOneTimePassword,
+        ForgotPasswordOneTimePassword,
+        NameUpdated,
+        UpdateEmailOneTimePassword,
+        EmailUpdated,
+        PasswordUpdated,
+        ProfileImageUpdated,
+        CollaboratorJoinedList,
+        UserJoinedList,
+        UserRemovedFromList,
+        CollaboratorRemovedFromList,
+        UserRemovedCollaborator,
+        CollaboratorAddedListItem,
+        UserAddedListItem,
+        CollaboratorRemovedListItem,
+        UserRemovedListItem,
+        CollaboratorMovedListItem,
+        UserMovedListItem,
+        CollaboratorUpdatedList,
+        UserUpdatedList,
+        CollaboratorDeletedList,
+        UserDeletedList,
+        ItemReviewed,
+        DeleteAccountOneTimePassword,
+        AccountDeleted,
+        WelcomeToNicheShack
+    }
+}

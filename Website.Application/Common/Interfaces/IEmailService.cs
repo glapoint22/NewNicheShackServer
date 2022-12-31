@@ -6,6 +6,5 @@ namespace Website.Application.Common.Interfaces
     {
         Task<string> GetEmailBody(string emailContent);
         Task SendEmail(EmailMessage emailMessage);
-        string GetHost();
     }
 }

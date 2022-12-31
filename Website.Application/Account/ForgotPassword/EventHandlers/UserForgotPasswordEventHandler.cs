@@ -26,27 +26,28 @@ namespace Website.Application.Account.ForgotPassword.EventHandlers
             string otp = await _userService.GeneratePasswordResetTokenAsync(user);
 
             // Get the email from the database
-            string emailContent = await _dbContext.Emails
-                .Where(x => x.Name == "Forgot Password")
-                .Select(x => x.Content)
-                .SingleAsync();
+            var email = await _dbContext.Emails
+                .Where(x => x.Type == EmailType.ForgotPasswordOneTimePassword)
+                .Select(x => new
+                {
+                    x.Name,
+                    x.Content
+                }).SingleAsync();
+
+            // Get the email body
+            string emailBody = await _emailService.GetEmailBody(email.Content);
+
 
             // Create the email message
-            EmailMessage emailMessage = new()
+            EmailMessage emailMessage = new(emailBody, user.Email, email.Name, new()
             {
-                EmailBody = emailContent,
-                EmailAddress = user.Email,
-                Subject = "Forgot Password",
-                EmailProperties = new()
+                Recipient = new()
                 {
-                    Recipient = new()
-                    {
-                        FirstName = user.FirstName,
-                        LastName = user.LastName
-                    },
-                    Var1 = otp
-                }
-            };
+                    FirstName = user.FirstName,
+                    LastName = user.LastName
+                },
+                Var1 = otp
+            });
 
             // Send the email
             await _emailService.SendEmail(emailMessage);

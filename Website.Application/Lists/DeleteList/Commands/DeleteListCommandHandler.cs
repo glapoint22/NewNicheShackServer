@@ -28,7 +28,7 @@ namespace Website.Application.Lists.DeleteList.Commands
                 .Where(x => x.Id == request.Id && x.Collaborators
                     .Any(z => z.UserId == userId && (z.IsOwner || z.CanDeleteList)))
                 .Include(x => x.Collaborators
-                    .Where(x => x.UserId != userId && x.User.EmailOnDeletedList == true))
+                    .Where(x => x.UserId != userId && x.User.EmailOnCollaboratorDeletedList == true))
                 .SingleOrDefaultAsync();
 
             if (list == null) return Result.Failed();
@@ -45,11 +45,8 @@ namespace Website.Application.Lists.DeleteList.Commands
             }
 
 
-            // Add the list deleted event
-            if (list.Collaborators.Count > 0)
-            {
-                list.AddDomainEvent(new ListDeletedEvent(list.Name, userId, list.Collaborators.Select(x => x.UserId).ToList()));
-            }
+            list.AddDomainEvent(new ListDeletedEvent(list.Name, userId, list.Collaborators.Select(x => x.UserId).ToList()));
+
 
             // Delete and save
             _dbContext.Lists.Remove(list);
