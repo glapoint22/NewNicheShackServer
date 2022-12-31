@@ -153,7 +153,7 @@ namespace Website.Domain.Entities
 
 
 
-        public static Notification CreateListNotification(Guid notificationGroupId, string listId, string userId)
+        public static Notification CreateListNotification(Guid notificationGroupId, string listId, string userId, string name, string? description)
         {
             Notification notification = new()
             {
@@ -162,7 +162,9 @@ namespace Website.Domain.Entities
                 Type = (int)NotificationType.List,
                 ListId = listId,
                 UserId = userId,
-                CreationDate = DateTime.UtcNow
+                CreationDate = DateTime.UtcNow,
+                Name = name,
+                Text = description
             };
 
             SetNotificationGroupId(notification);

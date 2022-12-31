@@ -29,9 +29,17 @@ namespace Website.Application.Lists.Common
                 .Select(x => x.NotificationGroupId)
                 .FirstOrDefaultAsync();
 
+            var list = await _dbContext.Lists
+                .Where(x => x.Id == notification.ListId)
+                .Select(x => new
+                {
+                    x.Name,
+                    x.Description
+                }).SingleAsync();
+
 
             // Create the notification
-            Notification ListNotification = Notification.CreateListNotification(notificationGroupId, notification.ListId, notification.UserId);
+            Notification ListNotification = Notification.CreateListNotification(notificationGroupId, notification.ListId, notification.UserId, list.Name, list.Description);
             _dbContext.Notifications.Add(ListNotification);
 
             await _dbContext.SaveChangesAsync();
