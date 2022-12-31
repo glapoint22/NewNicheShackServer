@@ -10,18 +10,26 @@ namespace Website.Domain.Entities
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public string? Image { get; set; }
-        public bool? EmailOnNameChange { get; set; }
-        public bool? EmailOnEmailChange { get; set; }
-        public bool? EmailOnPasswordChange { get; set; }
-        public bool? EmailOnProfileImageChange { get; set; }
-        public bool? EmailOnNewCollaborator { get; set; }
-        public bool? EmailOnRemovedCollaborator { get; set; }
-        public bool? EmailOnRemovedListItem { get; set; }
-        public bool? EmailOnMovedListItem { get; set; }
-        public bool? EmailOnAddedListItem { get; set; }
-        public bool? EmailOnEditedList { get; set; }
-        public bool? EmailOnDeletedList { get; set; }
-        public bool? EmailOnReview { get; set; }
+        public bool? EmailOnNameUpdated { get; set; }
+        public bool? EmailOnEmailUpdated { get; set; }
+        public bool? EmailOnPasswordUpdated { get; set; }
+        public bool? EmailOnProfileImageUpdated { get; set; }
+        public bool? EmailOnCollaboratorJoinedList { get; set; }
+        public bool? EmailOnUserJoinedList { get; set; }
+        public bool? EmailOnUserRemovedFromList { get; set; }
+        public bool? EmailOnCollaboratorRemovedFromList { get; set; }
+        public bool? EmailOnUserRemovedCollaborator { get; set; }
+        public bool? EmailOnCollaboratorAddedListItem { get; set; }
+        public bool? EmailOnUserAddedListItem { get; set; }
+        public bool? EmailOnCollaboratorRemovedListItem { get; set; }
+        public bool? EmailOnUserRemovedListItem { get; set; }
+        public bool? EmailOnCollaboratorMovedListItem { get; set; }
+        public bool? EmailOnUserMovedListItem { get; set; }
+        public bool? EmailOnCollaboratorUpdatedList { get; set; }
+        public bool? EmailOnUserUpdatedList { get; set; }
+        public bool? EmailOnCollaboratorDeletedList { get; set; }
+        public bool? EmailOnUserDeletedList { get; set; }
+        public bool? EmailOnItemReviewed { get; set; }
         public string TrackingCode { get; set; } = string.Empty;
         public bool BlockNotificationSending { get; set; }
         public int NoncompliantStrikes { get; set; }

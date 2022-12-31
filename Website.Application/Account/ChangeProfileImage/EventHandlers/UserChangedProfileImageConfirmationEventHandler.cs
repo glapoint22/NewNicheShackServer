@@ -26,27 +26,30 @@ namespace Website.Application.Account.ChangeProfileImage.EventHandlers
                     x.FirstName,
                     x.LastName,
                     x.Email,
-                    x.EmailOnProfileImageChange,
+                    x.EmailOnProfileImageUpdated,
                     x.Image
                 }).SingleAsync();
 
 
-            if (user.EmailOnProfileImageChange == false) return;
+            if (user.EmailOnProfileImageUpdated == false) return;
 
 
             // Get the email from the database
-            string emailContent = await _dbContext.Emails
-                .Where(x => x.Name == "Profile Image Change")
-                .Select(x => x.Content)
-                .SingleAsync();
+            var email = await _dbContext.Emails
+                .Where(x => x.Type == EmailType.ProfileImageUpdated)
+                .Select(x => new
+                {
+                    x.Name,
+                    x.Content
+                }).SingleAsync();
 
 
             // Get the email body
-            string emailBody = await _emailService.GetEmailBody(emailContent);
+            string emailBody = await _emailService.GetEmailBody(email.Content);
 
 
             // Create the email message
-            EmailMessage emailMessage = new(emailBody, user.Email, "Profile Image change confirmation", new()
+            EmailMessage emailMessage = new(emailBody, user.Email, email.Name, new()
             {
                 Recipient = new()
                 {

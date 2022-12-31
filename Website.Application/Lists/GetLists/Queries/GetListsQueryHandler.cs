@@ -25,6 +25,7 @@ namespace Website.Application.Lists.GetLists.Queries
             User user = await _userService.GetUserFromClaimsAsync();
 
             List<ListDto> lists = await _dbContext.Lists
+                .OrderBy(x => x.CreationDate)
                 .Where(x => x.Collaborators
                     .Where(y => y.UserId == user.Id)
                     .Any())

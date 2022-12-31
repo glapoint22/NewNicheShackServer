@@ -20,8 +20,6 @@ namespace Website.Application.Lists.RemoveProduct.EventHandlers
 
         public async Task Handle(ProductRemovedFromListEvent notification, CancellationToken cancellationToken)
         {
-            EmailMessage emailMessage;
-
             // Get the user that removed the item
             var user = await _dbContext.Users
                 .Where(x => x.Id == notification.UserId)
@@ -29,20 +27,11 @@ namespace Website.Application.Lists.RemoveProduct.EventHandlers
                 {
                     x.FirstName,
                     x.LastName,
-                    x.Email
+                    x.Email,
+                    x.EmailOnUserRemovedListItem
                 }).SingleAsync();
 
-            // Get all recipients from this list except the user that removed the item
-            List<Recipient> recipients = await _dbContext.Collaborators
-                .Where(x => x.ListId == notification.ListId &&
-                    x.UserId != notification.UserId &&
-                    x.User.EmailOnAddedListItem == true)
-                .Select(x => new Recipient
-                {
-                    FirstName = x.User.FirstName,
-                    LastName = x.User.LastName,
-                    Email = x.User.Email
-                }).ToListAsync();
+
 
 
 
@@ -65,32 +54,104 @@ namespace Website.Application.Lists.RemoveProduct.EventHandlers
                 }).SingleAsync();
 
 
-            // Get the email content from the database
-            string emailContent = await _dbContext.Emails
-                .Where(x => x.Name == "Collaborator Removed List Item")
-                .Select(x => x.Content)
-                .SingleAsync();
 
 
-            // Get the email body
-            string emailBody = await _emailService.GetEmailBody(emailContent);
+            // Get all recipients from this list except the user that removed the item
+            List<Recipient> recipients = await _dbContext.Collaborators
+                .Where(x => x.ListId == notification.ListId &&
+                    x.UserId != notification.UserId &&
+                    x.User.EmailOnCollaboratorRemovedListItem == true)
+                .Select(x => new Recipient
+                {
+                    FirstName = x.User.FirstName,
+                    LastName = x.User.LastName,
+                    Email = x.User.Email
+                }).ToListAsync();
 
 
-            // Send the emails
-            foreach (Recipient recipient in recipients)
+
+            if (recipients.Count > 0)
             {
+                // Get the email content from the database
+                var email = await _dbContext.Emails
+                    .Where(x => x.Type == EmailType.CollaboratorRemovedListItem)
+                    .Select(x => new
+                    {
+                        x.Name,
+                        x.Content
+                    }).SingleAsync();
+
+
+                // Get the email body
+                string emailBody = await _emailService.GetEmailBody(email.Content);
+
+
+                // Send the emails
+                foreach (Recipient recipient in recipients)
+                {
+                    // Create the email message
+                    EmailMessage emailMessage = new(emailBody, recipient.Email, email.Name, new()
+                    {
+                        // Recipient
+                        Recipient = new()
+                        {
+                            FirstName = recipient.FirstName,
+                            LastName = recipient.LastName
+                        },
+
+                        // User that removed the item
+                        Person = new()
+                        {
+                            FirstName = user.FirstName,
+                            LastName = user.LastName
+                        },
+
+                        // Product name
+                        Var1 = product.Name,
+
+                        // List name
+                        Var2 = listName,
+
+                        // Product link
+                        Link = product.UrlName + "/" + product.Id,
+
+                        // Product image
+                        ImageName = product.Name,
+                        ImageSrc = product.Image!
+                    });
+
+                    // Send the email
+                    await _emailService.SendEmail(emailMessage);
+                }
+            }
+
+
+
+
+            // Set up the email for the user that removed the list item
+            if (user.EmailOnUserRemovedListItem == true)
+            {
+                // Get the email content from the database
+                var email = await _dbContext.Emails
+                    .Where(x => x.Type == EmailType.UserRemovedListItem)
+                    .Select(x => new
+                    {
+                        x.Name,
+                        x.Content
+                    }).SingleAsync();
+
+
+                // Get the email body
+                string emailBody = await _emailService.GetEmailBody(email.Content);
+
+
+
+
                 // Create the email message
-                emailMessage = new(emailBody, recipient.Email, "Item removed from list", new()
+                EmailMessage emailMessage = new(emailBody, user.Email, email.Name, new()
                 {
                     // Recipient
                     Recipient = new()
-                    {
-                        FirstName = recipient.FirstName,
-                        LastName = recipient.LastName
-                    },
-
-                    // User that removed the item
-                    Person = new()
                     {
                         FirstName = user.FirstName,
                         LastName = user.LastName
@@ -107,56 +168,12 @@ namespace Website.Application.Lists.RemoveProduct.EventHandlers
 
                     // Product image
                     ImageName = product.Name,
-                    ImageSrc = product.Image!
+                    ImageSrc = product.Image!,
                 });
 
                 // Send the email
                 await _emailService.SendEmail(emailMessage);
             }
-
-
-
-            // Set up the email for the user that removed the list item
-
-            // Get the email content from the database
-            emailContent = await _dbContext.Emails
-                .Where(x => x.Name == "User Removed List Item")
-                .Select(x => x.Content)
-                .SingleAsync();
-
-
-            // Get the email body
-            emailBody = await _emailService.GetEmailBody(emailContent);
-
-
-
-
-            // Create the email message
-            emailMessage = new(emailBody, user.Email, "Item removed from list", new()
-            {
-                // Recipient
-                Recipient = new()
-                {
-                    FirstName = user.FirstName,
-                    LastName = user.LastName
-                },
-
-                // Product name
-                Var1 = product.Name,
-
-                // List name
-                Var2 = listName,
-
-                // Product link
-                Link = product.UrlName + "/" + product.Id,
-
-                // Product image
-                ImageName = product.Name,
-                ImageSrc = product.Image!,
-            });
-
-            // Send the email
-            await _emailService.SendEmail(emailMessage);
         }
     }
 }

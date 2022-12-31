@@ -26,18 +26,21 @@ namespace Website.Application.Account.SignUp.EventHandlers
             string otp = await _userService.GenerateEmailConfirmationTokenAsync(user);
 
             // Get the email from the database
-            string emailContent = await _dbContext.Emails
-                .Where(x => x.Name == "Account Activation")
-                .Select(x => x.Content)
-                .SingleAsync();
+            var email = await _dbContext.Emails
+                .Where(x => x.Type == EmailType.ActivateAccountOneTimePassword)
+                .Select(x => new
+                {
+                    x.Name,
+                    x.Content
+                }).SingleAsync();
 
 
             // Get the email body
-            string emailBody = await _emailService.GetEmailBody(emailContent);
+            string emailBody = await _emailService.GetEmailBody(email.Content);
 
 
             // Create the email message
-            EmailMessage emailMessage = new(emailBody, user.Email, "Activate Account", new()
+            EmailMessage emailMessage = new(emailBody, user.Email, email.Name, new()
             {
                 Recipient = new()
                 {

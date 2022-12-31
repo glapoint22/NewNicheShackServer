@@ -1,8 +1,11 @@
-﻿namespace Manager.Domain.Entities
+﻿using Shared.EmailBuilder.Classes;
+
+namespace Manager.Domain.Entities
 {
     public sealed class Email
     {
         public Guid Id { get; set; }
+        public EmailType Type { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Content { get; set; } = string.Empty;
 
@@ -10,6 +13,7 @@
         {
             Email email = new()
             {
+                Type = EmailType.None,
                 Name = name,
                 Content = content
             };
@@ -21,15 +25,17 @@
         {
             Email email = new()
             {
-                Name = Name,
-                Content = Content
+                Type = Type,
+                Content = Content,
+                Name = Name
             };
 
             return email;
         }
 
-        public void Update(string name, string content)
+        public void Update(EmailType type, string name, string content)
         {
+            Type = type;
             Name = name;
             Content = content;
         }

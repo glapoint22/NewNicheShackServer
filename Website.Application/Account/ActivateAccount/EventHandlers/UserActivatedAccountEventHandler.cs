@@ -22,25 +22,29 @@ namespace Website.Application.Account.ActivateAccount.EventHandlers
         {
             var user = await _dbContext.Users
                 .Where(x => x.Id == notification.UserId)
-                .Select(x => new { 
+                .Select(x => new
+                {
                     x.FirstName,
                     x.LastName,
                     x.Email
                 }).SingleAsync();
 
             // Get the email from the database
-            string emailContent = await _dbContext.Emails
-                .Where(x => x.Name == "Welcome To Niche Shack")
-                .Select(x => x.Content)
-                .SingleAsync();
+            var email = await _dbContext.Emails
+                .Where(x => x.Type == EmailType.WelcomeToNicheShack)
+                .Select(x => new
+                {
+                    x.Name,
+                    x.Content
+                }).SingleAsync();
 
 
             // Get the email body
-            string emailBody = await _emailService.GetEmailBody(emailContent);
+            string emailBody = await _emailService.GetEmailBody(email.Content);
 
 
             // Create the email message
-            EmailMessage emailMessage = new(emailBody, user.Email, "Welcome To Niche Shack", new()
+            EmailMessage emailMessage = new(emailBody, user.Email, email.Name, new()
             {
                 Recipient = new()
                 {

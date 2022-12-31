@@ -23,27 +23,30 @@ namespace Website.Application.Account.ChangeName.EventHandlers
                 .Where(x => x.Id == notification.UserId)
                 .Select(x => new
                 {
-                    x.EmailOnNameChange,
+                    x.EmailOnNameUpdated,
                     x.FirstName,
                     x.LastName,
                     x.Email
                 }).SingleAsync();
 
-            if (user.EmailOnNameChange == false) return;
+            if (user.EmailOnNameUpdated == false) return;
 
             // Get the email from the database
-            string emailContent = await _dbContext.Emails
-                .Where(x => x.Name == "Name Change")
-                .Select(x => x.Content)
-                .SingleAsync();
+            var email = await _dbContext.Emails
+                .Where(x => x.Type == EmailType.NameUpdated)
+                .Select(x => new
+                {
+                    x.Name,
+                    x.Content
+                }).SingleAsync();
 
 
             // Get the email body
-            string emailBody = await _emailService.GetEmailBody(emailContent);
+            string emailBody = await _emailService.GetEmailBody(email.Content);
 
 
             // Create the email message
-            EmailMessage emailMessage = new(emailBody, user.Email, "Name change confirmation", new()
+            EmailMessage emailMessage = new(emailBody, user.Email, email.Name, new()
             {
                 Recipient = new()
                 {

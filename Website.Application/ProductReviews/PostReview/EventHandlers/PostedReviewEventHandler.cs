@@ -27,78 +27,84 @@ namespace Website.Application.ProductReviews.PostReview.EventHandlers
                 {
                     x.FirstName,
                     x.LastName,
-                    x.Email
+                    x.Email,
+                    x.EmailOnItemReviewed
                 }).SingleAsync();
 
-
-            // Get the product
-            var product = await _dbContext.Products
-                .Where(x => x.Id == notification.ProductId)
-                .Select(x => new
-                {
-                    x.Id,
-                    x.Name,
-                    x.UrlName,
-                    Image = x.Media.ImageSm
-                }).SingleAsync();
-
-
-            // Get the review
-            var review = await _dbContext.ProductReviews
-                .Where(x => x.Id == notification.ReviewId)
-                .Select(x => new
-                {
-                    x.Title,
-                    x.Text,
-                    x.Rating
-                }).SingleAsync();
-
-
-
-            // Get the email content from the database
-            string emailContent = await _dbContext.Emails
-                .Where(x => x.Name == "Review")
-                .Select(x => x.Content)
-                .SingleAsync();
-
-
-            // Get the email body
-            string emailBody = await _emailService.GetEmailBody(emailContent);
-
-            // Get the stars image
-            string stars = await GetStarsImage(review.Rating);
-
-            // Create the email message
-            EmailMessage emailMessage = new(emailBody, user.Email, "Review", new()
+            if (user.EmailOnItemReviewed == true)
             {
-                // Recipient
-                Recipient = new()
+                // Get the product
+                var product = await _dbContext.Products
+                    .Where(x => x.Id == notification.ProductId)
+                    .Select(x => new
+                    {
+                        x.Id,
+                        x.Name,
+                        x.UrlName,
+                        Image = x.Media.ImageSm
+                    }).SingleAsync();
+
+
+                // Get the review
+                var review = await _dbContext.ProductReviews
+                    .Where(x => x.Id == notification.ReviewId)
+                    .Select(x => new
+                    {
+                        x.Title,
+                        x.Text,
+                        x.Rating
+                    }).SingleAsync();
+
+
+
+                // Get the email from the database
+                var email = await _dbContext.Emails
+                    .Where(x => x.Type == EmailType.ItemReviewed)
+                    .Select(x => new
+                    {
+                        x.Name,
+                        x.Content
+                    }).SingleAsync();
+
+
+                // Get the email body
+                string emailBody = await _emailService.GetEmailBody(email.Content);
+
+                // Get the stars image
+                string stars = await GetStarsImage(review.Rating);
+
+                // Create the email message
+                EmailMessage emailMessage = new(emailBody, user.Email, email.Name, new()
                 {
-                    FirstName = user.FirstName,
-                    LastName = user.LastName
-                },
+                    // Recipient
+                    Recipient = new()
+                    {
+                        FirstName = user.FirstName,
+                        LastName = user.LastName
+                    },
 
-                // Product name
-                Var1 = product.Name,
+                    // Product name
+                    Var1 = product.Name,
 
-                // Review title
-                Var2 = review.Title,
+                    // Review title
+                    Var2 = review.Title,
 
-                // Review text
-                Var3 = review.Text,
+                    // Review text
+                    Var3 = review.Text,
 
-                // Product link
-                Link = product.UrlName + "/" + product.Id,
+                    // Product link
+                    Link = product.UrlName + "/" + product.Id,
 
-                // Product image
-                ImageName = product.Name,
-                ImageSrc = product.Image!,
+                    // Product image
+                    ImageName = product.Name,
+                    ImageSrc = product.Image!,
 
-                Stars = stars
-            });
+                    Stars = stars
+                });
 
-            // Send the email
-            await _emailService.SendEmail(emailMessage);
+                // Send the email
+                await _emailService.SendEmail(emailMessage);
+            }
         }
 
 

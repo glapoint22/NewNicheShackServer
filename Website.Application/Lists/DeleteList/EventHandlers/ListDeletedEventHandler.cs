@@ -21,7 +21,6 @@ namespace Website.Application.Lists.DeleteList.EventHandlers
         public async Task Handle(ListDeletedEvent notification, CancellationToken cancellationToken)
         {
             EmailMessage emailMessage;
-            string emailContent;
             string emailBody;
 
             // Get the user that deleted the list
@@ -32,7 +31,7 @@ namespace Website.Application.Lists.DeleteList.EventHandlers
                     x.FirstName,
                     x.LastName,
                     x.Email,
-                    x.EmailOnDeletedList
+                    x.EmailOnUserDeletedList
                 }).SingleAsync();
 
 
@@ -51,22 +50,25 @@ namespace Website.Application.Lists.DeleteList.EventHandlers
 
 
 
-                // Get the email content from the database
-                emailContent = await _dbContext.Emails
-                    .Where(x => x.Name == "Collaborator Deleted List")
-                    .Select(x => x.Content)
-                    .SingleAsync();
+                // Get the email from the database
+                var email = await _dbContext.Emails
+                    .Where(x => x.Type == EmailType.CollaboratorDeletedList)
+                    .Select(x => new
+                    {
+                        x.Name,
+                        x.Content
+                    }).SingleAsync();
 
 
                 // Get the email body
-                emailBody = await _emailService.GetEmailBody(emailContent);
+                emailBody = await _emailService.GetEmailBody(email.Content);
 
 
                 // Send the emails
                 foreach (Recipient recipient in recipients)
                 {
                     // Create the email message
-                    emailMessage = new(emailBody, recipient.Email, "List has been deleted", new()
+                    emailMessage = new(emailBody, recipient.Email, email.Name, new()
                     {
                         // Recipient
                         Recipient = new()
@@ -98,22 +100,25 @@ namespace Website.Application.Lists.DeleteList.EventHandlers
 
 
             // Set up the email for the user that deleted the list
-            if (user.EmailOnDeletedList == true)
+            if (user.EmailOnUserDeletedList == true)
             {
                 // Get the email content from the database
-                emailContent = await _dbContext.Emails
-                    .Where(x => x.Name == "User Deleted List")
-                    .Select(x => x.Content)
-                    .SingleAsync();
+                var email = await _dbContext.Emails
+                    .Where(x => x.Type == EmailType.UserDeletedList)
+                    .Select(x => new
+                    {
+                        x.Name,
+                        x.Content
+                    }).SingleAsync();
 
 
                 // Get the email body
-                emailBody = await _emailService.GetEmailBody(emailContent);
+                emailBody = await _emailService.GetEmailBody(email.Content);
 
 
 
                 // Create the email message
-                emailMessage = new(emailBody, user.Email, "List has been deleted", new()
+                emailMessage = new(emailBody, user.Email, email.Name, new()
                 {
                     // Recipient
                     Recipient = new()

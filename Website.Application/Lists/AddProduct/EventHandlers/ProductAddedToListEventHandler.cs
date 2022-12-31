@@ -19,8 +19,6 @@ namespace Website.Application.Lists.AddProduct.EventHandlers
 
         public async Task Handle(ProductAddedToListEvent notification, CancellationToken cancellationToken)
         {
-            EmailMessage emailMessage;
-
             // Get the user that added the item
             var user = await _dbContext.Users
                 .Where(x => x.Id == notification.UserId)
@@ -28,20 +26,11 @@ namespace Website.Application.Lists.AddProduct.EventHandlers
                 {
                     x.FirstName,
                     x.LastName,
-                    x.Email
+                    x.Email,
+                    x.EmailOnUserAddedListItem
                 }).SingleAsync();
 
-            // Get all recipients from this list except the user that added the item
-            List<Recipient> recipients = await _dbContext.Collaborators
-                .Where(x => x.ListId == notification.ListId &&
-                    x.UserId != notification.UserId &&
-                    x.User.EmailOnAddedListItem == true)
-                .Select(x => new Recipient
-                {
-                    FirstName = x.User.FirstName,
-                    LastName = x.User.LastName,
-                    Email = x.User.Email
-                }).ToListAsync();
+
 
 
 
@@ -64,32 +53,103 @@ namespace Website.Application.Lists.AddProduct.EventHandlers
                 }).SingleAsync();
 
 
-            // Get the email content from the database
-            string emailContent = await _dbContext.Emails
-                .Where(x => x.Name == "Collaborator Added List Item")
-                .Select(x => x.Content)
-                .SingleAsync();
 
 
-            // Get the email body
-            string emailBody = await _emailService.GetEmailBody(emailContent);
+            // Get all recipients from this list except the user that added the item
+            List<Recipient> recipients = await _dbContext.Collaborators
+                .Where(x => x.ListId == notification.ListId &&
+                    x.UserId != notification.UserId &&
+                    x.User.EmailOnCollaboratorAddedListItem == true)
+                .Select(x => new Recipient
+                {
+                    FirstName = x.User.FirstName,
+                    LastName = x.User.LastName,
+                    Email = x.User.Email
+                }).ToListAsync();
 
 
-            // Send the emails
-            foreach (Recipient recipient in recipients)
+            // If we have recipients
+            if (recipients.Count > 0)
             {
+                // Get the email content from the database
+                var email = await _dbContext.Emails
+                    .Where(x => x.Type == EmailType.CollaboratorAddedListItem)
+                    .Select(x => new
+                    {
+                        x.Name,
+                        x.Content
+                    }).SingleAsync();
+
+
+                // Get the email body
+                string emailBody = await _emailService.GetEmailBody(email.Content);
+
+
+                // Send the emails
+                foreach (Recipient recipient in recipients)
+                {
+                    // Create the email message
+                    EmailMessage emailMessage = new(emailBody, recipient.Email, email.Name, new()
+                    {
+                        // Recipient
+                        Recipient = new()
+                        {
+                            FirstName = recipient.FirstName,
+                            LastName = recipient.LastName
+                        },
+
+                        // User that added the item
+                        Person = new()
+                        {
+                            FirstName = user.FirstName,
+                            LastName = user.LastName
+                        },
+
+                        // Product name
+                        Var1 = product.Name,
+
+                        // List name
+                        Var2 = listName,
+
+                        // Product link
+                        Link = product.UrlName + "/" + product.Id,
+
+                        // Product image
+                        ImageName = product.Name,
+                        ImageSrc = product.Image!,
+                    });
+
+                    // Send the email
+                    await _emailService.SendEmail(emailMessage);
+                }
+            }
+
+
+
+
+            // Set up the email for the user that added the list item
+            if (user.EmailOnUserAddedListItem == true)
+            {
+                // Get the email content from the database
+                var email = await _dbContext.Emails
+                    .Where(x => x.Type == EmailType.UserAddedListItem)
+                    .Select(x => new
+                    {
+                        x.Name,
+                        x.Content
+                    }).SingleAsync();
+
+
+                // Get the email body
+                string emailBody = await _emailService.GetEmailBody(email.Content);
+
+
+
                 // Create the email message
-                emailMessage = new(emailBody, recipient.Email, "Item added to list", new()
+                EmailMessage emailMessage = new(emailBody, user.Email, email.Name, new()
                 {
                     // Recipient
                     Recipient = new()
-                    {
-                        FirstName = recipient.FirstName,
-                        LastName = recipient.LastName
-                    },
-
-                    // User that added the item
-                    Person = new()
                     {
                         FirstName = user.FirstName,
                         LastName = user.LastName
@@ -112,50 +172,6 @@ namespace Website.Application.Lists.AddProduct.EventHandlers
                 // Send the email
                 await _emailService.SendEmail(emailMessage);
             }
-
-
-
-            // Set up the email for the user that added the list item
-
-            // Get the email content from the database
-            emailContent = await _dbContext.Emails
-                .Where(x => x.Name == "User Added List Item")
-                .Select(x => x.Content)
-                .SingleAsync();
-
-
-            // Get the email body
-            emailBody = await _emailService.GetEmailBody(emailContent);
-
-
-
-
-            // Create the email message
-            emailMessage = new(emailBody, user.Email, "Item added to list", new()
-            {
-                // Recipient
-                Recipient = new()
-                {
-                    FirstName = user.FirstName,
-                    LastName = user.LastName
-                },
-
-                // Product name
-                Var1 = product.Name,
-
-                // List name
-                Var2 = listName,
-
-                // Product link
-                Link = product.UrlName + "/" + product.Id,
-
-                // Product image
-                ImageName = product.Name,
-                ImageSrc = product.Image!,
-            });
-
-            // Send the email
-            await _emailService.SendEmail(emailMessage);
         }
     }
 }

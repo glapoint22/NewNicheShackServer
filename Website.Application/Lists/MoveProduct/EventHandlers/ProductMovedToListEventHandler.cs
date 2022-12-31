@@ -22,7 +22,6 @@ namespace Website.Application.Lists.MoveProduct.EventHandlers
         {
             List<Recipient> recipients;
             List<string> userIds;
-            string emailContent;
             string emailBody;
             EmailMessage emailMessage;
 
@@ -33,7 +32,8 @@ namespace Website.Application.Lists.MoveProduct.EventHandlers
                 {
                     x.FirstName,
                     x.LastName,
-                    x.Email
+                    x.Email,
+                    x.EmailOnUserMovedListItem
                 }).SingleAsync();
 
 
@@ -73,8 +73,7 @@ namespace Website.Application.Lists.MoveProduct.EventHandlers
                 {
                     UserId = z.Select(x => x.UserId).First(),
                     Count = z.Count()
-                })
-                .ToListAsync();
+                }).ToListAsync();
 
             // If we have collaborators collaborating on both lists
             if (collaborators.Any(x => x.Count == 2))
@@ -87,7 +86,7 @@ namespace Website.Application.Lists.MoveProduct.EventHandlers
                 recipients = await _dbContext.Collaborators
                     .Where(x => userIds
                         .Contains(x.UserId) &&
-                        x.User.EmailOnMovedListItem == true)
+                        x.User.EmailOnCollaboratorMovedListItem == true)
                     .Select(x => new Recipient
                     {
                         FirstName = x.User.FirstName,
@@ -101,22 +100,25 @@ namespace Website.Application.Lists.MoveProduct.EventHandlers
                 // If we have recipients
                 if (recipients.Count > 0)
                 {
-                    // Get the email content from the database
-                    emailContent = await _dbContext.Emails
-                        .Where(x => x.Name == "Collaborator Moved List Item")
-                        .Select(x => x.Content)
-                        .SingleAsync();
+                    // Get the email from the database
+                    var email = await _dbContext.Emails
+                        .Where(x => x.Type == EmailType.CollaboratorMovedListItem)
+                        .Select(x => new
+                        {
+                            x.Name,
+                            x.Content
+                        }).SingleAsync();
 
 
                     // Get the email body
-                    emailBody = await _emailService.GetEmailBody(emailContent);
+                    emailBody = await _emailService.GetEmailBody(email.Content);
 
 
                     // Send the emails
                     foreach (Recipient recipient in recipients)
                     {
                         // Create the email message
-                        emailMessage = new(emailBody, recipient.Email, "An item has been moved to another list", new()
+                        emailMessage = new(emailBody, recipient.Email, email.Name, new()
                         {
                             // Recipient
                             Recipient = new()
@@ -170,7 +172,7 @@ namespace Website.Application.Lists.MoveProduct.EventHandlers
                 .Where(x => userIds
                     .Contains(x.UserId) &&
                     x.ListId == notification.SourceListId &&
-                    x.User.EmailOnRemovedListItem == true)
+                    x.User.EmailOnCollaboratorRemovedListItem == true)
                 .Select(x => new Recipient
                 {
                     FirstName = x.User.FirstName,
@@ -183,21 +185,24 @@ namespace Website.Application.Lists.MoveProduct.EventHandlers
             if (recipients.Count > 0)
             {
                 // Get the email content from the database
-                emailContent = await _dbContext.Emails
-                    .Where(x => x.Name == "Collaborator Removed List Item")
-                    .Select(x => x.Content)
-                    .SingleAsync();
+                var email = await _dbContext.Emails
+                    .Where(x => x.Type == EmailType.CollaboratorRemovedListItem)
+                    .Select(x => new
+                    {
+                        x.Name,
+                        x.Content
+                    }).SingleAsync();
 
 
                 // Get the email body
-                emailBody = await _emailService.GetEmailBody(emailContent);
+                emailBody = await _emailService.GetEmailBody(email.Content);
 
 
                 // Send the emails
                 foreach (Recipient recipient in recipients)
                 {
                     // Create the email message
-                    emailMessage = new(emailBody, recipient.Email, "Item removed from list", new()
+                    emailMessage = new(emailBody, recipient.Email, email.Name, new()
                     {
                         // Recipient
                         Recipient = new()
@@ -239,7 +244,7 @@ namespace Website.Application.Lists.MoveProduct.EventHandlers
                 .Where(x => userIds
                     .Contains(x.UserId) &&
                     x.ListId == notification.DestinationListId &&
-                    x.User.EmailOnAddedListItem == true)
+                    x.User.EmailOnCollaboratorAddedListItem == true)
                 .Select(x => new Recipient
                 {
                     FirstName = x.User.FirstName,
@@ -253,21 +258,24 @@ namespace Website.Application.Lists.MoveProduct.EventHandlers
             if (recipients.Count > 0)
             {
                 // Get the email content from the database
-                emailContent = await _dbContext.Emails
-                    .Where(x => x.Name == "Collaborator Added List Item")
-                    .Select(x => x.Content)
-                    .SingleAsync();
+                var email = await _dbContext.Emails
+                    .Where(x => x.Type == EmailType.CollaboratorAddedListItem)
+                    .Select(x => new
+                    {
+                        x.Name,
+                        x.Content
+                    }).SingleAsync();
 
 
                 // Get the email body
-                emailBody = await _emailService.GetEmailBody(emailContent);
+                emailBody = await _emailService.GetEmailBody(email.Content);
 
 
                 // Send the emails
                 foreach (Recipient recipient in recipients)
                 {
                     // Create the email message
-                    emailMessage = new(emailBody, recipient.Email, "Item added to list", new()
+                    emailMessage = new(emailBody, recipient.Email, email.Name, new()
                     {
                         // Recipient
                         Recipient = new()
@@ -306,48 +314,53 @@ namespace Website.Application.Lists.MoveProduct.EventHandlers
 
 
             // Set up the email for the user that moved the list item
-
-            // Get the email content from the database
-            emailContent = await _dbContext.Emails
-                .Where(x => x.Name == "User Moved List Item")
-                .Select(x => x.Content)
-                .SingleAsync();
-
-
-            // Get the email body
-            emailBody = await _emailService.GetEmailBody(emailContent);
-
-
-
-            // Create the email message
-            emailMessage = new(emailBody, user.Email, "An item has been moved to another list", new()
+            if (user.EmailOnUserMovedListItem == true)
             {
-                // Recipient
-                Recipient = new()
+                // Get the email content from the database
+                var email = await _dbContext.Emails
+                    .Where(x => x.Type == EmailType.UserMovedListItem)
+                    .Select(x => new
+                    {
+                        x.Name,
+                        x.Content
+                    }).SingleAsync();
+
+
+                // Get the email body
+                emailBody = await _emailService.GetEmailBody(email.Content);
+
+
+
+                // Create the email message
+                emailMessage = new(emailBody, user.Email, email.Name, new()
                 {
-                    FirstName = user.FirstName,
-                    LastName = user.LastName
-                },
+                    // Recipient
+                    Recipient = new()
+                    {
+                        FirstName = user.FirstName,
+                        LastName = user.LastName
+                    },
 
-                // Product name
-                Var1 = product.Name,
+                    // Product name
+                    Var1 = product.Name,
 
-                // source List name
-                Var2 = sourceListName,
+                    // source List name
+                    Var2 = sourceListName,
 
-                // destination List name
-                Var3 = destinationListName,
+                    // destination List name
+                    Var3 = destinationListName,
 
-                // Product link
-                Link = product.UrlName + "/" + product.Id,
+                    // Product link
+                    Link = product.UrlName + "/" + product.Id,
 
-                // Product image
-                ImageName = product.Name,
-                ImageSrc = product.Image!
-            });
+                    // Product image
+                    ImageName = product.Name,
+                    ImageSrc = product.Image!
+                });
 
-            // Send the email
-            await _emailService.SendEmail(emailMessage);
+                // Send the email
+                await _emailService.SendEmail(emailMessage);
+            }
         }
     }
 }

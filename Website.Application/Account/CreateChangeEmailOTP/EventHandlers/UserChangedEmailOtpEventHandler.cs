@@ -28,18 +28,21 @@ namespace Website.Application.Account.CreateChangeEmailOTP.EventHandlers
 
 
             // Get the email from the database
-            string emailContent = await _dbContext.Emails
-                .Where(x => x.Name == "Email One Time Password")
-                .Select(x => x.Content)
-                .SingleAsync();
+            var email = await _dbContext.Emails
+                .Where(x => x.Type == EmailType.UpdateEmailOneTimePassword)
+                .Select(x => new
+                {
+                    x.Name,
+                    x.Content
+                }).SingleAsync();
 
 
             // Get the email body
-            string emailBody = await _emailService.GetEmailBody(emailContent);
+            string emailBody = await _emailService.GetEmailBody(email.Content);
 
 
             // Create the email message
-            EmailMessage emailMessage = new(emailBody, user.Email, "Change Email - One-time Password", new()
+            EmailMessage emailMessage = new(emailBody, user.Email, email.Name, new()
             {
                 Recipient = new()
                 {

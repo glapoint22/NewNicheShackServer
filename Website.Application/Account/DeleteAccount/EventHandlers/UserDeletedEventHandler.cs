@@ -21,18 +21,21 @@ namespace Website.Application.Account.DeleteAccount.EventHandlers
         public async Task Handle(UserDeletedEvent notification, CancellationToken cancellationToken)
         {
             // Get the email from the database
-            string emailContent = await _dbContext.Emails
-                .Where(x => x.Name == "Delete Account")
-                .Select(x => x.Content)
-                .SingleAsync();
+            var email = await _dbContext.Emails
+                .Where(x => x.Type == EmailType.AccountDeleted)
+                .Select(x => new
+                {
+                    x.Name,
+                    x.Content
+                }).SingleAsync();
 
 
             // Get the email body
-            string emailBody = await _emailService.GetEmailBody(emailContent);
+            string emailBody = await _emailService.GetEmailBody(email.Content);
 
 
             // Create the email message
-            EmailMessage emailMessage = new(emailBody, notification.Email, "Account Deleted", new()
+            EmailMessage emailMessage = new(emailBody, notification.Email, email.Name, new()
             {
                 Recipient = new()
                 {

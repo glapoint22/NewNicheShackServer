@@ -28,7 +28,7 @@ namespace Website.Application.Lists.DeleteList.Commands
                 .Where(x => x.Id == request.Id && x.Collaborators
                     .Any(z => z.UserId == userId && (z.IsOwner || z.CanDeleteList)))
                 .Include(x => x.Collaborators
-                    .Where(x => x.UserId != userId && x.User.EmailOnDeletedList == true))
+                    .Where(x => x.UserId != userId && x.User.EmailOnCollaboratorDeletedList == true))
                 .SingleOrDefaultAsync();
 
             if (list == null) return Result.Failed();

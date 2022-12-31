@@ -27,26 +27,29 @@ namespace Website.Application.Account.ChangeEmail.EventHandlers
                     x.FirstName,
                     x.LastName,
                     x.Email,
-                    x.EmailOnEmailChange
+                    x.EmailOnEmailUpdated
                 }).SingleAsync();
 
 
-            if (user.EmailOnEmailChange == false) return;
+            if (user.EmailOnEmailUpdated == false) return;
 
 
             // Get the email from the database
-            string emailContent = await _dbContext.Emails
-                .Where(x => x.Name == "Email Change")
-                .Select(x => x.Content)
-                .SingleAsync();
+            var email = await _dbContext.Emails
+                .Where(x => x.Type == EmailType.EmailUpdated)
+                .Select(x => new
+                {
+                    x.Name,
+                    x.Content
+                }).SingleAsync();
 
 
             // Get the email body
-            string emailBody = await _emailService.GetEmailBody(emailContent);
+            string emailBody = await _emailService.GetEmailBody(email.Content);
 
 
             // Create the email message
-            EmailMessage emailMessage = new(emailBody, user.Email, "Email change confirmation", new()
+            EmailMessage emailMessage = new(emailBody, user.Email, email.Name, new()
             {
                 Recipient = new()
                 {
@@ -54,7 +57,6 @@ namespace Website.Application.Account.ChangeEmail.EventHandlers
                     LastName = user.LastName
                 }
             });
-
 
             // Send the email
             await _emailService.SendEmail(emailMessage);

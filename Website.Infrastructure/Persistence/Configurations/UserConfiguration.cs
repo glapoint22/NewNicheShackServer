@@ -21,40 +21,64 @@ namespace Website.Infrastructure.Persistence.Configurations
             builder.Property(x => x.Image)
                 .HasMaxLength(50);
 
-            builder.Property(x => x.EmailOnNameChange)
+            builder.Property(x => x.EmailOnNameUpdated)
                 .HasDefaultValue(true);
 
-            builder.Property(x => x.EmailOnEmailChange)
+            builder.Property(x => x.EmailOnEmailUpdated)
                 .HasDefaultValue(true);
 
-            builder.Property(x => x.EmailOnPasswordChange)
+            builder.Property(x => x.EmailOnPasswordUpdated)
                 .HasDefaultValue(true);
 
-            builder.Property(x => x.EmailOnProfileImageChange)
+            builder.Property(x => x.EmailOnProfileImageUpdated)
                 .HasDefaultValue(true);
 
-            builder.Property(x => x.EmailOnNewCollaborator)
+            builder.Property(x => x.EmailOnCollaboratorJoinedList)
                 .HasDefaultValue(true);
 
-            builder.Property(x => x.EmailOnRemovedCollaborator)
+            builder.Property(x => x.EmailOnUserJoinedList)
                 .HasDefaultValue(true);
 
-            builder.Property(x => x.EmailOnRemovedListItem)
+            builder.Property(x => x.EmailOnUserRemovedFromList)
                 .HasDefaultValue(true);
 
-            builder.Property(x => x.EmailOnMovedListItem)
+            builder.Property(x => x.EmailOnCollaboratorRemovedFromList)
                 .HasDefaultValue(true);
 
-            builder.Property(x => x.EmailOnAddedListItem)
+            builder.Property(x => x.EmailOnUserRemovedCollaborator)
                 .HasDefaultValue(true);
 
-            builder.Property(x => x.EmailOnEditedList)
+            builder.Property(x => x.EmailOnCollaboratorAddedListItem)
                 .HasDefaultValue(true);
 
-            builder.Property(x => x.EmailOnDeletedList)
+            builder.Property(x => x.EmailOnUserAddedListItem)
                 .HasDefaultValue(true);
 
-            builder.Property(x => x.EmailOnReview)
+            builder.Property(x => x.EmailOnCollaboratorRemovedListItem)
+                .HasDefaultValue(true);
+
+            builder.Property(x => x.EmailOnUserRemovedListItem)
+                .HasDefaultValue(true);
+
+            builder.Property(x => x.EmailOnCollaboratorMovedListItem)
+                .HasDefaultValue(true);
+
+            builder.Property(x => x.EmailOnUserMovedListItem)
+                .HasDefaultValue(true);
+
+            builder.Property(x => x.EmailOnCollaboratorUpdatedList)
+                .HasDefaultValue(true);
+
+            builder.Property(x => x.EmailOnUserUpdatedList)
+                .HasDefaultValue(true);
+
+            builder.Property(x => x.EmailOnCollaboratorDeletedList)
+                .HasDefaultValue(true);
+
+            builder.Property(x => x.EmailOnUserDeletedList)
+                .HasDefaultValue(true);
+
+            builder.Property(x => x.EmailOnItemReviewed)
                 .HasDefaultValue(true);
 
             builder.Property(x => x.TrackingCode)

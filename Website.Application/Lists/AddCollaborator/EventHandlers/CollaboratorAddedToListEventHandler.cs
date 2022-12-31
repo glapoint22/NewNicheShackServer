@@ -29,7 +29,7 @@ namespace Website.Application.Lists.AddCollaborator.EventHandlers
                     x.FirstName,
                     x.LastName,
                     x.Email,
-                    x.EmailOnNewCollaborator
+                    x.EmailOnUserJoinedList
                 }).SingleAsync();
 
 
@@ -47,7 +47,7 @@ namespace Website.Application.Lists.AddCollaborator.EventHandlers
             var collaborators = await _dbContext.Collaborators
                 .Where(x => x.ListId == notification.ListId &&
                     x.UserId != notification.UserId &&
-                    x.User.EmailOnNewCollaborator == true)
+                    x.User.EmailOnCollaboratorJoinedList == true)
                 .Select(x => new
                 {
                     x.User.FirstName,
@@ -60,23 +60,26 @@ namespace Website.Application.Lists.AddCollaborator.EventHandlers
             if (collaborators.Count > 0)
             {
                 // Get the email from the database
-                string emailContent = await _dbContext.Emails
-                    .Where(x => x.Name == "Collaborator Added To List")
-                    .Select(x => x.Content)
-                    .SingleAsync();
+                var email = await _dbContext.Emails
+                    .Where(x => x.Type == EmailType.CollaboratorJoinedList)
+                    .Select(x => new
+                    {
+                        x.Name,
+                        x.Content
+                    }).SingleAsync();
 
 
 
 
                 // Get the email body
-                string emailBody = await _emailService.GetEmailBody(emailContent);
+                string emailBody = await _emailService.GetEmailBody(email.Content);
 
 
                 // Send an email to the other collaborators
                 foreach (var collaborator in collaborators)
                 {
                     // Create the email message
-                    EmailMessage emailMessage = new(emailBody, collaborator.Email, "Collaborator has joined your list", new()
+                    EmailMessage emailMessage = new(emailBody, collaborator.Email, email.Name, new()
                     {
                         Recipient = new()
                         {
@@ -104,23 +107,24 @@ namespace Website.Application.Lists.AddCollaborator.EventHandlers
 
 
             // Set up the email for the user that joined the list
-            if (user.EmailOnNewCollaborator == true)
+            if (user.EmailOnUserJoinedList == true)
             {
                 // Get the email from the database
-                string emailContent = await _dbContext.Emails
-                    .Where(x => x.Name == "User Added To List")
-                    .Select(x => x.Content)
-                    .SingleAsync();
-
-
+                var email = await _dbContext.Emails
+                    .Where(x => x.Type == EmailType.UserJoinedList)
+                    .Select(x => new
+                    {
+                        x.Name,
+                        x.Content
+                    }).SingleAsync();
 
 
                 // Get the email body
-                string emailBody = await _emailService.GetEmailBody(emailContent);
+                string emailBody = await _emailService.GetEmailBody(email.Content);
 
 
                 // Create the email message
-                EmailMessage emailMessage = new(emailBody, user.Email, "You are collaborating on a list", new()
+                EmailMessage emailMessage = new(emailBody, user.Email, email.Name, new()
                 {
                     Recipient = new()
                     {
@@ -136,8 +140,6 @@ namespace Website.Application.Lists.AddCollaborator.EventHandlers
                 // Send the email
                 await _emailService.SendEmail(emailMessage);
             }
-
-
         }
     }
 }

@@ -8,6 +8,8 @@ namespace Website.Domain.Entities
         public string Name { get; set; } = string.Empty;
         public string? Description { get; set; }
         public string CollaborateId { get; set; } = string.Empty;
+        public DateTime CreationDate { get; set; }
+
 
         private readonly List<Collaborator> _collaborators = new();
         public IReadOnlyList<Collaborator> Collaborators => _collaborators.AsReadOnly();
@@ -40,7 +42,8 @@ namespace Website.Domain.Entities
                 Id = Guid.NewGuid().ToString("N").Substring(0, 10).ToUpper(),
                 Name = name,
                 Description = description,
-                CollaborateId = Guid.NewGuid().ToString("N").Substring(0, 10).ToUpper()
+                CollaborateId = Guid.NewGuid().ToString("N").Substring(0, 10).ToUpper(),
+                CreationDate = DateTime.UtcNow,
             };
 
 
