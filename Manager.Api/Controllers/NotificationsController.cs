@@ -3,6 +3,7 @@ using Manager.Application.Notifications.AddNoncompliantStrikeReview.Commands;
 using Manager.Application.Notifications.AddNoncompliantStrikeUserImage.Commands;
 using Manager.Application.Notifications.AddNoncompliantStrikeUserName.Commands;
 using Manager.Application.Notifications.Archive.Commands;
+using Manager.Application.Notifications.ArchiveAll.Commands;
 using Manager.Application.Notifications.DeleteNotifications.Commands;
 using Manager.Application.Notifications.GetArchivedNotifications.Queries;
 using Manager.Application.Notifications.GetBlockedUsers.Queries;
@@ -19,6 +20,8 @@ using Manager.Application.Notifications.GetUserImageNotification.Queries;
 using Manager.Application.Notifications.GetUserNameNotification.Queries;
 using Manager.Application.Notifications.PostNote.Commands;
 using Manager.Application.Notifications.RemoveReview.Commands;
+using Manager.Application.Notifications.Restore.Commands;
+using Manager.Application.Notifications.RestoreAll.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -97,6 +100,20 @@ namespace Manager.Api.Controllers
         {
             return SetResponse(await _mediator.Send(archive));
         }
+
+
+
+
+
+
+        // ------------------------------------------------------------------------------ Archive All ----------------------------------------------------------------------------
+        [HttpPut]
+        [Route("ArchiveAll")]
+        public async Task<ActionResult> ArchiveAll(ArchiveAllCommand archiveAll)
+        {
+            return SetResponse(await _mediator.Send(archiveAll));
+        }
+
 
 
 
@@ -324,6 +341,36 @@ namespace Manager.Api.Controllers
         public async Task<ActionResult> RemoveReview(RemoveReviewCommand RemoveReview)
         {
             return SetResponse(await _mediator.Send(RemoveReview));
+        }
+
+
+
+
+
+
+
+
+
+        // -------------------------------------------------------------------------------- Restore ------------------------------------------------------------------------------
+        [HttpPut]
+        [Route("Restore")]
+        public async Task<ActionResult> Restore(RestoreCommand restore)
+        {
+            return SetResponse(await _mediator.Send(restore));
+        }
+
+
+
+
+
+
+
+        // ------------------------------------------------------------------------------ Restore All ----------------------------------------------------------------------------
+        [HttpPut]
+        [Route("RestoreAll")]
+        public async Task<ActionResult> RestoreAll(RestoreAllCommand restoreAll)
+        {
+            return SetResponse(await _mediator.Send(restoreAll));
         }
     }
 }
