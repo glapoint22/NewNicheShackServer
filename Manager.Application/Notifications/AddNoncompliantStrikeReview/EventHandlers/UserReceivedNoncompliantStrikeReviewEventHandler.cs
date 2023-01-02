@@ -4,24 +4,24 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Shared.EmailBuilder.Classes;
 
-namespace Manager.Application.Notifications.AddNoncompliantStrikeList.EventHandlers
+namespace Manager.Application.Notifications.AddNoncompliantStrikeReview.EventHandlers
 {
-    public sealed class UserReceivedNoncompliantStrikeListEventHandler : INotificationHandler<UserReceivedNoncompliantStrikeListEvent>
+    public sealed class UserReceivedNoncompliantStrikeReviewEventHandler : INotificationHandler<UserReceivedNoncompliantStrikeReviewEvent>
     {
         private readonly IManagerDbContext _dbContext;
         private readonly IEmailService _emailService;
 
-        public UserReceivedNoncompliantStrikeListEventHandler(IEmailService emailService, IManagerDbContext managerDbContext)
+        public UserReceivedNoncompliantStrikeReviewEventHandler(IManagerDbContext dbContext, IEmailService emailService)
         {
+            _dbContext = dbContext;
             _emailService = emailService;
-            _dbContext = managerDbContext;
         }
 
-        public async Task Handle(UserReceivedNoncompliantStrikeListEvent notification, CancellationToken cancellationToken)
+        public async Task Handle(UserReceivedNoncompliantStrikeReviewEvent notification, CancellationToken cancellationToken)
         {
             // Get the email from the database
             var email = await _dbContext.Emails
-                .Where(x => x.Type == EmailType.NoncompliantStrikeList)
+                .Where(x => x.Type == EmailType.NoncompliantStrikeReview)
                 .Select(x => new
                 {
                     x.Name,
@@ -43,11 +43,11 @@ namespace Manager.Application.Notifications.AddNoncompliantStrikeList.EventHandl
                     LastName = notification.LastName
                 },
 
-                // List name
-                Var1 = notification.ListName,
+                // Review title
+                Var1 = notification.Title,
 
-                // List description
-                Var2 = notification.ListDescription!
+                // Review text
+                Var2 = notification.Text
             });
 
             // Send the email

@@ -1,6 +1,8 @@
-﻿using MediatR;
+﻿using Manager.Domain.Events;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Shared.Common.Classes;
+using Shared.Common.Interceptors;
 using Website.Application.Common.Interfaces;
 using Website.Domain.Entities;
 
@@ -23,10 +25,24 @@ namespace Manager.Application.Notifications.AddNoncompliantStrikeReview.Commands
                     .Where(z => z.Id == request.ReviewId))
                 .SingleOrDefaultAsync();
 
+            
+
             if (user != null)
             {
-                if (request.AddStrike) user.NoncompliantStrikes++;
-                user.ProductReviews.First().Deleted = true;
+                ProductReview productReview = user.ProductReviews.First();
+
+                if (request.AddStrike)
+                {
+                    user.NoncompliantStrikes++;
+                    DomainEventsInterceptor.AddDomainEvent(new UserReceivedNoncompliantStrikeReviewEvent(
+                        user.FirstName,
+                        user.LastName,
+                        user.Email,
+                        productReview.Title,
+                        productReview.Text));
+                }
+
+                productReview.Deleted = true;
 
                 await _dbContext.SaveChangesAsync();
                 return Result.Succeeded(true);

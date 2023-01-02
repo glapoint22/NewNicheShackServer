@@ -35,7 +35,7 @@ namespace Manager.Application.Notifications.AddNoncompliantStrikeList.Commands
             if (notification.Name == notification.List.Name && notification.Text == notification.List.Description && user != null)
             {
                 user.NoncompliantStrikes++;
-                DomainEventsInterceptor.AddDomainEvent(new UserReceivedNoncompliantStrikeListEvent(user.Id, notification.List.Name, notification.List.Description));
+                DomainEventsInterceptor.AddDomainEvent(new UserReceivedNoncompliantStrikeListEvent(user.FirstName, user.LastName, user.Email, notification.List.Name, notification.List.Description));
 
 
                 switch (request.Option)

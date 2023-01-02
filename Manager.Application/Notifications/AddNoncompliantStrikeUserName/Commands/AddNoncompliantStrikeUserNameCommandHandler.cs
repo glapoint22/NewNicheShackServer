@@ -1,6 +1,8 @@
-﻿using MediatR;
+﻿using Manager.Domain.Events;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Shared.Common.Classes;
+using Shared.Common.Interceptors;
 using Website.Application.Common.Interfaces;
 using User = Website.Domain.Entities.User;
 
@@ -23,10 +25,10 @@ namespace Manager.Application.Notifications.AddNoncompliantStrikeUserName.Comman
 
             if (user != null && user.FirstName + " " + user.LastName == request.UserName)
             {
+                DomainEventsInterceptor.AddDomainEvent(new UserReceivedNoncompliantStrikeUserNameEvent(user.FirstName, user.LastName, user.Email));
+
                 user.NoncompliantStrikes++;
                 user.ChangeName("NicheShack", "User");
-
-                //user.AddDomainEvent(new UserReceivedNoncompliantStrikeUserNameEvent(user.Id));
 
                 await _dbContext.SaveChangesAsync();
                 return Result.Succeeded(true);

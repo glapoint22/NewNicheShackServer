@@ -25,7 +25,7 @@ namespace Manager.Application.Notifications.AddNoncompliantStrikeUserImage.Comma
 
             if (user != null && user.Image == request.UserImage)
             {
-                DomainEventsInterceptor.AddDomainEvent(new UserReceivedNoncompliantStrikeUserImageEvent(user.Id, user.Image));
+                DomainEventsInterceptor.AddDomainEvent(new UserReceivedNoncompliantStrikeUserImageEvent(user.FirstName, user.LastName, user.Email, user.Image));
 
                 user.NoncompliantStrikes++;
                 user.Image = null;
