@@ -37,6 +37,7 @@ namespace Website.Domain.Entities
 
         public ICollection<Collaborator> Collaborators { get; private set; } = new HashSet<Collaborator>();
         public ICollection<Notification> Notifications { get; private set; } = new HashSet<Notification>();
+        public ICollection<ProductReview> ProductReviews { get; private set; } = new HashSet<ProductReview>();
 
 
 
