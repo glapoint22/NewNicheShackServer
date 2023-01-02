@@ -5,10 +5,12 @@ using Manager.Application.Notifications.AddNoncompliantStrikeUserName.Commands;
 using Manager.Application.Notifications.Archive.Commands;
 using Manager.Application.Notifications.DeleteNotifications.Commands;
 using Manager.Application.Notifications.GetArchivedNotifications.Queries;
+using Manager.Application.Notifications.GetBlockedUsers.Queries;
 using Manager.Application.Notifications.GetErrorNotification.Queries;
 using Manager.Application.Notifications.GetListNotification.Queries;
 using Manager.Application.Notifications.GetMessageNotification.Queries;
 using Manager.Application.Notifications.GetNewNotifications.Queries;
+using Manager.Application.Notifications.GetNoncompliantUsers.Queries;
 using Manager.Application.Notifications.GetNotificationCount.Queries;
 using Manager.Application.Notifications.GetProductNotification.Queries;
 using Manager.Application.Notifications.GetReviewComplaintNotification.Queries;
@@ -130,6 +132,21 @@ namespace Manager.Api.Controllers
 
 
 
+        // ---------------------------------------------------------------------------- Get Blocked Users ------------------------------------------------------------------------
+        [HttpGet]
+        [Route("BlockedUsers")]
+        public async Task<ActionResult> GetBlockedUsers()
+        {
+            return SetResponse(await _mediator.Send(new GetBlockedUsersQuery()));
+        }
+
+
+
+
+
+
+
+
         // ------------------------------------------------------------------------- Get Error Notification ----------------------------------------------------------------------
         [HttpGet]
         [Route("GetErrorNotification")]
@@ -186,6 +203,21 @@ namespace Manager.Api.Controllers
             }
 
             return Ok();
+        }
+
+
+
+
+
+
+
+
+        // ------------------------------------------------------------------------- Get Noncompliant Users ----------------------------------------------------------------------
+        [HttpGet]
+        [Route("NoncompliantUsers")]
+        public async Task<ActionResult> GetNoncompliantUsers()
+        {
+            return SetResponse(await _mediator.Send(new GetNoncompliantUsersQuery()));
         }
 
 
