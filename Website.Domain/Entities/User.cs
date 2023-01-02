@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Shared.Common.Interfaces;
 using System.ComponentModel.DataAnnotations.Schema;
-using Website.Domain.Interfaces;
 
 namespace Website.Domain.Entities
 {

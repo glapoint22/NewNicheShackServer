@@ -10,7 +10,7 @@ namespace Shared.Common.Classes
         public bool Enabled { get; set; }
 
 
-        public void SetStyle(HtmlNode node)
+        public void GenerateHtml(HtmlNode node)
         {
             string styles = node.GetAttributeValue("style", "");
 

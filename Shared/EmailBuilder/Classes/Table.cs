@@ -40,7 +40,7 @@ namespace Shared.EmailBuilder.Classes
             // Background
             if (tableOptions.Background != null)
             {
-                tableOptions.Background.SetStyle(table);
+                tableOptions.Background.GenerateHtml(table);
             }
 
             string styles = table.GetAttributeValue("style", "");

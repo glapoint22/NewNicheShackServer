@@ -1,5 +1,6 @@
 ﻿using Manager.Application.Common.Interfaces;
 using Manager.Domain.Entities;
+using Manager.Infrastructure.BackgroundJobs;
 using Manager.Infrastructure.Persistence;
 using Manager.Infrastructure.Services;
 using Manager.Infrastructure.Services.PageService;
@@ -9,9 +10,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using Quartz;
+using Shared.Common.Interceptors;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
-using Website.Infrastructure.Services;
 
 namespace Manager.Infrastructure
 {
@@ -19,10 +21,35 @@ namespace Manager.Infrastructure
     {
         public static IServiceCollection InfrastructureServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<ManagerDbContext>((options) =>
+            services.AddSingleton<DomainEventsInterceptor>();
+
+            services.AddDbContext<ManagerDbContext>((sp, options) =>
             {
-                options.UseSqlServer(configuration.GetConnectionString("DBConnection"));
+                var interceptor = sp.GetService<DomainEventsInterceptor>();
+                options.UseSqlServer(configuration.GetConnectionString("DBConnection"))
+                    .AddInterceptors(interceptor!);
             });
+
+
+
+            services.AddQuartz(configure =>
+            {
+                JobKey processDomainEventsJobKey = new(nameof(ProcessDomainEventsJob));
+
+                configure
+                    .AddJob<ProcessDomainEventsJob>(processDomainEventsJobKey)
+                    .AddTrigger(trigger => trigger.ForJob(processDomainEventsJobKey)
+                        .WithSimpleSchedule(schedule => schedule.WithIntervalInSeconds(10)
+                            .RepeatForever()));
+
+
+                configure.UseMicrosoftDependencyInjectionJobFactory();
+            });
+
+            services.AddQuartzHostedService();
+
+
+
 
 
             services.AddIdentity<User, IdentityRole>(options =>
@@ -75,6 +102,7 @@ namespace Manager.Infrastructure
             services.AddScoped<IPageService, PageService>();
             services.AddScoped<IMediaService, ManagerMediaService>();
             services.AddHttpContextAccessor();
+            services.AddScoped<IEmailService, ManagerEmailService>();
 
             return services;
         }

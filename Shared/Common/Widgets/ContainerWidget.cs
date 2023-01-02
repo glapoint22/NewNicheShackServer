@@ -67,10 +67,10 @@ namespace Shared.Common.Widgets
             td.SetAttributeValue("style", "height: " + Height + "px;");
 
             // Set the styles
-            Background?.SetStyle(td);
-            Border?.SetStyle(td);
-            Corners?.SetStyle(td);
-            Shadow?.SetStyle(td);
+            Background?.GenerateHtml(td);
+            Border?.GenerateHtml(td);
+            Corners?.GenerateHtml(td);
+            Shadow?.GenerateHtml(td);
 
             HtmlNode container = Table.GenerateHtml(td);
 

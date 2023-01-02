@@ -28,6 +28,8 @@
         ItemReviewed,
         DeleteAccountOneTimePassword,
         AccountDeleted,
-        WelcomeToNicheShack
+        WelcomeToNicheShack,
+        NoncompliantStrikeList,
+        NoncompliantStrikeUserImage
     }
 }

@@ -5,13 +5,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Quartz;
+using Shared.Common.Interceptors;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Website.Application.Common.Interfaces;
 using Website.Domain.Entities;
 using Website.Infrastructure.BackgroundJobs;
 using Website.Infrastructure.Persistence;
-using Website.Infrastructure.Persistence.Interceptors;
 using Website.Infrastructure.Services;
 using Website.Infrastructure.Services.PageService;
 using Website.Infrastructure.Services.SearchSuggestionsService;
@@ -106,7 +106,7 @@ namespace Website.Infrastructure
             services.AddSingleton<ISearchSuggestionsService, SearchSuggestionsService>();
             services.AddHttpContextAccessor();
             services.AddScoped<IPageService, PageService>();
-            services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IEmailService, WebsiteEmailService>();
 
             return services;
         }

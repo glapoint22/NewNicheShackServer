@@ -77,7 +77,7 @@ namespace Shared.Common.Classes
 
 
 
-        public void SetStyle(HtmlNode node)
+        public void GenerateHtml(HtmlNode node)
         {
             node.SetAttributeValue("href", LinkType == LinkType.WebAddress ? Url : "{host}/" + Url);
             node.SetAttributeValue("target", "_blank");

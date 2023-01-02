@@ -40,7 +40,7 @@ namespace Shared.Common.Widgets
 
 
             td.SetAttributeValue("style", "border-bottom: " + Border?.Width + "px " + Border?.Style + " " + Border?.Color + ";");
-            Shadow?.SetStyle(td);
+            Shadow?.GenerateHtml(td);
 
 
             HtmlNode blankRow = widget.InsertBefore(HtmlNode.CreateNode("<tr>"), widget.SelectSingleNode("tr"));

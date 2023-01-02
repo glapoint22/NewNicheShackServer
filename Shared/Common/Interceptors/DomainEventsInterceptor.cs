@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using Website.Domain.Interfaces;
+using Shared.Common.Interfaces;
 
-namespace Website.Infrastructure.Persistence.Interceptors
+namespace Shared.Common.Interceptors
 {
     public sealed class DomainEventsInterceptor : SaveChangesInterceptor
     {
@@ -49,6 +49,12 @@ namespace Website.Infrastructure.Persistence.Interceptors
 
             return domainEvents;
 
+        }
+
+
+        public static void AddDomainEvent(INotification domainEvent)
+        {
+            _domainEvents.Add(domainEvent);
         }
     }
 }

@@ -1,6 +1,8 @@
-﻿using MediatR;
+﻿using Manager.Domain.Events;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Shared.Common.Classes;
+using Shared.Common.Interceptors;
 using Website.Application.Common.Interfaces;
 using Website.Domain.Entities;
 
@@ -23,14 +25,19 @@ namespace Manager.Application.Notifications.AddNoncompliantStrikeList.Commands
 
 
 
+            Notification notification = await _dbContext.Notifications
+                 .Where(x => x.ListId == request.ListId && x.UserId == request.UserId && !x.IsArchived)
+                 .Include(x => x.List)
+                 .SingleAsync();
 
-           Notification notification = await _dbContext.Notifications
-                .Where(x => x.ListId == request.ListId && x.UserId == request.UserId && !x.IsArchived)
-                .Include(x => x.List)
-                .SingleAsync();
 
-            if (notification.Name == notification.List.Name && notification.Text == notification.List.Description)
+
+            if (notification.Name == notification.List.Name && notification.Text == notification.List.Description && user != null)
             {
+                user.NoncompliantStrikes++;
+                DomainEventsInterceptor.AddDomainEvent(new UserReceivedNoncompliantStrikeListEvent(user.Id, notification.List.Name, notification.List.Description));
+
+
                 switch (request.Option)
                 {
                     case 0:
@@ -46,8 +53,6 @@ namespace Manager.Application.Notifications.AddNoncompliantStrikeList.Commands
                         notification.List.Description = string.Empty;
                         break;
                 }
-
-                if (user != null) user.NoncompliantStrikes++;
 
                 await _dbContext.SaveChangesAsync();
                 return Result.Succeeded(true);

@@ -36,7 +36,7 @@ namespace Shared.Common.Classes
 
 
 
-        public void SetStyle(HtmlNode node)
+        public void GenerateHtml(HtmlNode node)
         {
             if (Name == "Image Placeholder")
             {

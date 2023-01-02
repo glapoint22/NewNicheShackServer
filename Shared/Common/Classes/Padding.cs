@@ -7,7 +7,7 @@ namespace Shared.Common.Classes
     {
         public List<PaddingValue> Values { get; set; } = new List<PaddingValue>();
 
-        public void SetStyle(HtmlNode node)
+        public void GenerateHtml(HtmlNode node)
         {
             string styles = node.GetAttributeValue("style", "");
 

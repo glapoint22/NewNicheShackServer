@@ -9,7 +9,7 @@ namespace Shared.Common.Classes
         public int BottomRight { get; set; }
         public int BottomLeft { get; set; }
 
-        public void SetStyle(HtmlNode node)
+        public void GenerateHtml(HtmlNode node)
         {
             string styles = node.GetAttributeValue("style", "");
 

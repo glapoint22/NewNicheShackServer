@@ -20,7 +20,7 @@
                 .Replace("{host}", Host)
                 .Replace("{recipientFirstName}", Recipient.FirstName)
                 .Replace("{recipientLastName}", Recipient.LastName)
-                .Replace("{link}", Link)
+                .Replace("{link}", Host + "/" + Link)
                 .Replace("{var1}", Var1)
                 .Replace("{var2}", Var2)
                 .Replace("{var3}", Var3)

@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using Quartz;
+using Shared.Common.Interceptors;
 using Website.Application.Common.Interfaces;
 using Website.Domain.Entities;
-using Website.Infrastructure.Persistence.Interceptors;
 
 namespace Website.Infrastructure.BackgroundJobs
 {

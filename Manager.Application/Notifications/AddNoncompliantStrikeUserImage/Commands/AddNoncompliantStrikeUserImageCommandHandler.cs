@@ -1,6 +1,8 @@
-﻿using MediatR;
+﻿using Manager.Domain.Events;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Shared.Common.Classes;
+using Shared.Common.Interceptors;
 using Website.Application.Common.Interfaces;
 using Website.Domain.Entities;
 
@@ -23,10 +25,10 @@ namespace Manager.Application.Notifications.AddNoncompliantStrikeUserImage.Comma
 
             if (user != null && user.Image == request.UserImage)
             {
+                DomainEventsInterceptor.AddDomainEvent(new UserReceivedNoncompliantStrikeUserImageEvent(user.Id, user.Image));
+
                 user.NoncompliantStrikes++;
                 user.Image = null;
-
-                //user.AddDomainEvent(new UserReceivedNoncompliantStrikeUserImageEvent(user.Id));
 
                 await _dbContext.SaveChangesAsync();
                 return Result.Succeeded(true);

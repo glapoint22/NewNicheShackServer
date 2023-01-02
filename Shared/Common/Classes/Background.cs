@@ -9,7 +9,7 @@ namespace Shared.Common.Classes
         public bool Enabled { get; set; }
 
 
-        public void SetStyle(HtmlNode node)
+        public void GenerateHtml(HtmlNode node)
         {
             string styles = node.GetAttributeValue("style", "");
 
@@ -25,7 +25,7 @@ namespace Shared.Common.Classes
             {
                 node.SetAttributeValue("background", "{host}/images/" + Image.Src);
                 styles += "background-image: url({host}/images/" + Image.Src + ");";
-                Image.SetStyle(ref styles);
+                Image.GenerateHtml(ref styles);
             }
 
 

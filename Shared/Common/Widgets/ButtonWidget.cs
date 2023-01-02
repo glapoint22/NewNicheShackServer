@@ -101,10 +101,10 @@ namespace Shared.Common.Widgets
             // Set the styles
             Background ??= new Background { Color = "#808080" };
 
-            Background.SetStyle(td);
-            Border?.SetStyle(td);
-            Corners?.SetStyle(td);
-            Shadow?.SetStyle(td);
+            Background.GenerateHtml(td);
+            Border?.GenerateHtml(td);
+            Corners?.GenerateHtml(td);
+            Shadow?.GenerateHtml(td);
 
             // Anchor
             HtmlNode anchorNode = HtmlNode.CreateNode("<a>");
@@ -132,10 +132,10 @@ namespace Shared.Common.Widgets
             anchorNode.SetAttributeValue("style", styles);
 
             // Caption
-            Caption?.SetStyle(anchorNode);
+            Caption?.GenerateHtml(anchorNode);
 
             // Link
-            Link?.SetStyle(anchorNode);
+            Link?.GenerateHtml(anchorNode);
 
 
             td.AppendChild(new HtmlDocument().CreateComment(Table.MicrosoftIf +

@@ -1,4 +1,4 @@
-﻿using Website.Domain.Classes;
+﻿using Shared.Common.Classes;
 
 namespace Website.Domain.Entities
 {

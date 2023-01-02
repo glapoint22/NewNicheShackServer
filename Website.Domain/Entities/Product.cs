@@ -1,6 +1,6 @@
-﻿using Shared.Common.Interfaces;
+﻿using Shared.Common.Classes;
+using Shared.Common.Interfaces;
 using Shared.Common.ValueObjects;
-using Website.Domain.Classes;
 
 namespace Website.Domain.Entities
 {

@@ -29,11 +29,11 @@ namespace Shared.Common.Classes
             HtmlNode row = table.AppendChild(HtmlNode.CreateNode("<tr>"));
 
             // Set the styles
-            Background?.SetStyle(row);
-            Border?.SetStyle(row);
-            Corners?.SetStyle(row);
-            Shadow?.SetStyle(row);
-            Padding?.SetStyle(row);
+            Background?.GenerateHtml(row);
+            Border?.GenerateHtml(row);
+            Corners?.GenerateHtml(row);
+            Shadow?.GenerateHtml(row);
+            Padding?.GenerateHtml(row);
 
             string valign = "top";
 

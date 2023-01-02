@@ -76,18 +76,18 @@ namespace Shared.Common.Widgets
 
 
             // Set the styles
-            Border?.SetStyle(img);
-            Corners?.SetStyle(img);
-            Shadow?.SetStyle(img);
+            Border?.GenerateHtml(img);
+            Corners?.GenerateHtml(img);
+            Shadow?.GenerateHtml(img);
 
 
-            Image?.SetStyle(img);
+            Image?.GenerateHtml(img);
 
             if (Link != null && Link.Url != null)
             {
                 // Anchor
                 HtmlNode anchorNode = HtmlNode.CreateNode("<a>");
-                Link.SetStyle(anchorNode);
+                Link.GenerateHtml(anchorNode);
 
                 anchorNode.AppendChild(img);
 

@@ -28,11 +28,11 @@ namespace Shared.Common.Classes
 
 
             // Set the styles
-            Background?.SetStyle(column);
-            Border?.SetStyle(column);
-            Corners?.SetStyle(column);
-            Shadow?.SetStyle(column);
-            Padding?.SetStyle(column);
+            Background?.GenerateHtml(column);
+            Border?.GenerateHtml(column);
+            Corners?.GenerateHtml(column);
+            Shadow?.GenerateHtml(column);
+            Padding?.GenerateHtml(column);
 
             string align = "left";
 

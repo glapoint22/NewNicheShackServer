@@ -1,8 +1,8 @@
 ﻿using MediatR;
+using Shared.Common.Interfaces;
 using System.ComponentModel.DataAnnotations.Schema;
-using Website.Domain.Interfaces;
 
-namespace Website.Domain.Classes
+namespace Shared.Common.Classes
 {
     public class Entity : IEntity
     {

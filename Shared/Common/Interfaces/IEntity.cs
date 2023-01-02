@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Website.Domain.Interfaces
+namespace Shared.Common.Interfaces
 {
     public interface IEntity
     {
