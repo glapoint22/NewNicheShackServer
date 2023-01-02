@@ -26,6 +26,7 @@ namespace Manager.Application.Notifications.GetReviewNotification.Queries
                 .Select(x => new
                 {
                     NotificationId = x.Id,
+                    x.ReviewId,
                     x.UserId,
                     x.User.FirstName,
                     x.User.LastName,
@@ -59,6 +60,7 @@ namespace Manager.Application.Notifications.GetReviewNotification.Queries
                 .GroupJoin(employeeNotes, x => x.NotificationId, x => x.NotificationId, (x, y) => new
                 {
                     x.NotificationId,
+                    x.ReviewId,
                     x.UserId,
                     x.FirstName,
                     x.LastName,

@@ -1,4 +1,5 @@
 ﻿using Manager.Application.Notifications.AddNoncompliantStrikeList.Commands;
+using Manager.Application.Notifications.AddNoncompliantStrikeReview.Commands;
 using Manager.Application.Notifications.AddNoncompliantStrikeUserImage.Commands;
 using Manager.Application.Notifications.AddNoncompliantStrikeUserName.Commands;
 using Manager.Application.Notifications.Archive.Commands;
@@ -48,6 +49,13 @@ namespace Manager.Api.Controllers
 
 
 
+        // ---------------------------------------------------------------------- Add Noncompliant Strike Review -------------------------------------------------------------------
+        [HttpPut]
+        [Route("AddNoncompliantStrikeReview")]
+        public async Task<ActionResult> AddNoncompliantStrikeReview(AddNoncompliantStrikeReviewCommand addNoncompliantStrikeReview)
+        {
+            return SetResponse(await _mediator.Send(addNoncompliantStrikeReview));
+        }
 
 
 
