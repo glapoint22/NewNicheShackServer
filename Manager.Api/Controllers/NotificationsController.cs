@@ -1,10 +1,8 @@
-﻿using Manager.Application.Notifications.AddNoncompliantStrikeList.Commands;
-using Manager.Application.Notifications.AddNoncompliantStrikeReview.Commands;
-using Manager.Application.Notifications.AddNoncompliantStrikeUserImage.Commands;
-using Manager.Application.Notifications.AddNoncompliantStrikeUserName.Commands;
-using Manager.Application.Notifications.Archive.Commands;
-using Manager.Application.Notifications.ArchiveAll.Commands;
+﻿using Manager.Application.Notifications.ArchiveAllNotifications.Commands;
+using Manager.Application.Notifications.ArchiveGroup.Commands;
+using Manager.Application.Notifications.ArchiveNotification.Commands;
 using Manager.Application.Notifications.DeleteNotifications.Commands;
+using Manager.Application.Notifications.DisableEnableProduct.Commands;
 using Manager.Application.Notifications.GetArchivedNotifications.Queries;
 using Manager.Application.Notifications.GetBlockedUsers.Queries;
 using Manager.Application.Notifications.GetErrorNotification.Queries;
@@ -19,9 +17,13 @@ using Manager.Application.Notifications.GetReviewNotification.Queries;
 using Manager.Application.Notifications.GetUserImageNotification.Queries;
 using Manager.Application.Notifications.GetUserNameNotification.Queries;
 using Manager.Application.Notifications.PostNote.Commands;
+using Manager.Application.Notifications.ReformList.Commands;
 using Manager.Application.Notifications.RemoveReview.Commands;
-using Manager.Application.Notifications.Restore.Commands;
-using Manager.Application.Notifications.RestoreAll.Commands;
+using Manager.Application.Notifications.RemoveUserImage.Commands;
+using Manager.Application.Notifications.ReplaceUserName.Commands;
+using Manager.Application.Notifications.RestoreAllNotifications.Commands;
+using Manager.Application.Notifications.RestoreGroup.Commands;
+using Manager.Application.Notifications.RestoreNotification.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -43,77 +45,34 @@ namespace Manager.Api.Controllers
 
 
 
-
-        // ---------------------------------------------------------------------- Add Noncompliant Strike List -------------------------------------------------------------------
+        // ----------------------------------------------------------------------- Archive All Notifications ---------------------------------------------------------------------
         [HttpPut]
-        [Route("AddNoncompliantStrikeList")]
-        public async Task<ActionResult> AddNoncompliantStrikeList(AddNoncompliantStrikeListCommand addNoncompliantStrikeList)
+        [Route("ArchiveAllNotifications")]
+        public async Task<ActionResult> ArchiveAllNotifications(ArchiveAllNotificationsCommand archiveAllNotifications)
         {
-            return SetResponse(await _mediator.Send(addNoncompliantStrikeList));
+            return SetResponse(await _mediator.Send(archiveAllNotifications));
         }
 
 
 
-        // ---------------------------------------------------------------------- Add Noncompliant Strike Review -------------------------------------------------------------------
+        // ----------------------------------------------------------------------------- Archive Group ---------------------------------------------------------------------------
         [HttpPut]
-        [Route("AddNoncompliantStrikeReview")]
-        public async Task<ActionResult> AddNoncompliantStrikeReview(AddNoncompliantStrikeReviewCommand addNoncompliantStrikeReview)
+        [Route("ArchiveGroup")]
+        public async Task<ActionResult> ArchiveGroup(ArchiveGroupCommand archiveGroup)
         {
-            return SetResponse(await _mediator.Send(addNoncompliantStrikeReview));
-        }
-
-
-
-        // -------------------------------------------------------------------- Add Noncompliant Strike User Image ---------------------------------------------------------------
-        [HttpPut]
-        [Route("AddNoncompliantStrikeUserImage")]
-        public async Task<ActionResult> AddNoncompliantStrikeUserImage(AddNoncompliantStrikeUserImageCommand addNoncompliantStrikeUserImage)
-        {
-            return SetResponse(await _mediator.Send(addNoncompliantStrikeUserImage));
+            return SetResponse(await _mediator.Send(archiveGroup));
         }
 
 
 
 
-
-
-
-
-        // --------------------------------------------------------------------- Add Noncompliant Strike User Name ---------------------------------------------------------------
+        // ------------------------------------------------------------------------- Archive Notification ------------------------------------------------------------------------
         [HttpPut]
-        [Route("AddNoncompliantStrikeUserName")]
-        public async Task<ActionResult> AddNoncompliantStrikeUserName(AddNoncompliantStrikeUserNameCommand addNoncompliantStrikeUserName)
+        [Route("ArchiveNotification")]
+        public async Task<ActionResult> ArchiveNotification(ArchiveNotificationCommand archiveNotification)
         {
-            return SetResponse(await _mediator.Send(addNoncompliantStrikeUserName));
+            return SetResponse(await _mediator.Send(archiveNotification));
         }
-
-
-
-
-
-
-
-        // -------------------------------------------------------------------------------- Archive ------------------------------------------------------------------------------
-        [HttpPut]
-        [Route("Archive")]
-        public async Task<ActionResult> Archive(ArchiveCommand archive)
-        {
-            return SetResponse(await _mediator.Send(archive));
-        }
-
-
-
-
-
-
-        // ------------------------------------------------------------------------------ Archive All ----------------------------------------------------------------------------
-        [HttpPut]
-        [Route("ArchiveAll")]
-        public async Task<ActionResult> ArchiveAll(ArchiveAllCommand archiveAll)
-        {
-            return SetResponse(await _mediator.Send(archiveAll));
-        }
-
 
 
 
@@ -127,6 +86,20 @@ namespace Manager.Api.Controllers
             return SetResponse(await _mediator.Send(new DeleteNotificationsCommand(notificationGroupId, notificationIds)));
         }
 
+
+
+
+
+
+
+
+        // -------------------------------------------------------------------------- Disable Enable Product ---------------------------------------------------------------------
+        [HttpPut]
+        [Route("DisableEnableProduct")]
+        public async Task<ActionResult> DisableEnableProduct(DisableEnableProductCommand disableEnableProduct)
+        {
+            return SetResponse(await _mediator.Send(disableEnableProduct));
+        }
 
 
 
@@ -325,52 +298,85 @@ namespace Manager.Api.Controllers
             return SetResponse(await _mediator.Send(postNote));
         }
 
-        
 
 
 
 
-        
+        // ------------------------------------------------------------------------------ Reform List ----------------------------------------------------------------------------
+        [HttpPut]
+        [Route("ReformList")]
+        public async Task<ActionResult> ReformList(ReformListCommand reformList)
+        {
+            return SetResponse(await _mediator.Send(reformList));
+        }
 
 
 
 
-        // ----------------------------------------------------------------------------- Remove Review ---------------------------------------------------------------------------
+
+        // ------------------------------------------------------------------------------- Remove Review ---------------------------------------------------------------------------
         [HttpPut]
         [Route("RemoveReview")]
-        public async Task<ActionResult> RemoveReview(RemoveReviewCommand RemoveReview)
+        public async Task<ActionResult> RemoveReview(RemoveReviewCommand removeReview)
         {
-            return SetResponse(await _mediator.Send(RemoveReview));
+            return SetResponse(await _mediator.Send(removeReview));
         }
 
 
 
 
 
-
-
-
-
-        // -------------------------------------------------------------------------------- Restore ------------------------------------------------------------------------------
+        // ----------------------------------------------------------------------------- Remove User Image -----------------------------------------------------------------------
         [HttpPut]
-        [Route("Restore")]
-        public async Task<ActionResult> Restore(RestoreCommand restore)
+        [Route("RemoveUserImage")]
+        public async Task<ActionResult> RemoveUserImage(RemoveUserImageCommand removeUserImage)
         {
-            return SetResponse(await _mediator.Send(restore));
+            return SetResponse(await _mediator.Send(removeUserImage));
+        }
+
+
+
+
+        // ----------------------------------------------------------------------------- Replace User Name -----------------------------------------------------------------------
+        [HttpPut]
+        [Route("ReplaceUserName")]
+        public async Task<ActionResult> ReplaceUserName(ReplaceUserNameCommand replaceUserName)
+        {
+            return SetResponse(await _mediator.Send(replaceUserName));
+        }
+
+
+
+
+        // ----------------------------------------------------------------------- Restore All Notifications ---------------------------------------------------------------------
+        [HttpPut]
+        [Route("RestoreAllNotifications")]
+        public async Task<ActionResult> RestoreAllNotifications(RestoreAllNotificationsCommand restoreAllNotifications)
+        {
+            return SetResponse(await _mediator.Send(restoreAllNotifications));
+        }
+
+
+
+
+        // ----------------------------------------------------------------------------- Restore Group ---------------------------------------------------------------------------
+        [HttpPut]
+        [Route("RestoreGroup")]
+        public async Task<ActionResult> RestoreGroup(RestoreGroupCommand restoreGroup)
+        {
+            return SetResponse(await _mediator.Send(restoreGroup));
         }
 
 
 
 
 
-
-
-        // ------------------------------------------------------------------------------ Restore All ----------------------------------------------------------------------------
+        // ------------------------------------------------------------------------- Restore Notification ------------------------------------------------------------------------
         [HttpPut]
-        [Route("RestoreAll")]
-        public async Task<ActionResult> RestoreAll(RestoreAllCommand restoreAll)
+        [Route("RestoreNotification")]
+        public async Task<ActionResult> RestoreNotification(RestoreNotificationCommand restoreNotification)
         {
-            return SetResponse(await _mediator.Send(restoreAll));
+            return SetResponse(await _mediator.Send(restoreNotification));
         }
     }
 }

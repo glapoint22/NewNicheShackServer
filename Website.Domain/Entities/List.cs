@@ -88,6 +88,28 @@ namespace Website.Domain.Entities
 
 
 
+        public void ReformList(int option)
+        {
+            switch (option)
+            {
+                case 0:
+                    Name = "My List";
+                    break;
+
+                case 1:
+                    Description = string.Empty;
+                    break;
+
+                case 2:
+                    Name = "My List";
+                    Description = string.Empty;
+                    break;
+            }
+        }
+
+
+
+
 
         // ---------------------------------------------------------------------- Remove Product ----------------------------------------------------------------------
         public bool RemoveProduct(Guid productId, Collaborator collaborator)

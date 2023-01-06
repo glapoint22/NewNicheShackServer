@@ -13,8 +13,8 @@
 
 
 
-        // -------------------------------------------------------------------------------- Archive ------------------------------------------------------------------------------
-        public void Archive()
+        // ------------------------------------------------------------------------- Archive Notification ------------------------------------------------------------------------
+        public void ArchiveNotification()
         {
             // Archive the group
             ArchiveDate = DateTime.UtcNow;
@@ -32,8 +32,8 @@
 
 
 
-        // ------------------------------------------------------------------------------ Archive All ----------------------------------------------------------------------------
-        public void ArchiveAll()
+        // ----------------------------------------------------------------------- Archive All Notifications ---------------------------------------------------------------------
+        public void ArchiveAllNotifications()
         {
             // Archive the group
             ArchiveDate = DateTime.UtcNow;
@@ -43,6 +43,17 @@
             {
                 _notifications.ForEach(notification => notification.IsArchived = true);
             }
+        }
+
+
+
+
+
+        // ----------------------------------------------------------------------------- Archive Group ---------------------------------------------------------------------------
+        public void ArchiveGroup()
+        {
+            // Archive the group
+            ArchiveDate = DateTime.UtcNow;
         }
 
 
@@ -79,19 +90,16 @@
 
 
 
-        // -------------------------------------------------------------------------------- Restore ------------------------------------------------------------------------------
-        public void Restore(Guid notificationId)
+        // ------------------------------------------------------------------------- Restore Notification ------------------------------------------------------------------------
+        public void RestoreNotification(Guid notificationId)
         {
-            if (_notifications.Count > 0)
-            {
-                if (_notifications.Count == 1) ArchiveDate = null;
+            if (_notifications.Count(x => x.IsArchived) == 1) ArchiveDate = null;
 
-                Notification notification = _notifications
-                    .Where(x => x.Id == notificationId)
-                    .Single();
+            Notification notification = _notifications
+                .Where(x => x.Id == notificationId)
+                .Single();
 
-                notification.IsArchived = false;
-            }
+            notification.IsArchived = false;
         }
 
 
@@ -100,17 +108,27 @@
 
 
 
-        // ------------------------------------------------------------------------------ Restore All ----------------------------------------------------------------------------
-        public void RestoreAll()
+        // ----------------------------------------------------------------------- Restore All Notifications ---------------------------------------------------------------------
+        public void RestoreAllNotifications()
         {
             // Restore the group
             ArchiveDate = null;
 
-            // Archaive the notification
+            // Archaive the notifications
             if (_notifications.Count > 0)
             {
                 _notifications.ForEach(notification => notification.IsArchived = false);
             }
+        }
+
+
+
+
+        // ----------------------------------------------------------------------------- Restore Group ---------------------------------------------------------------------------
+        public void RestoreGroup()
+        {
+            // Restore the group
+            ArchiveDate = null;
         }
     }
 }

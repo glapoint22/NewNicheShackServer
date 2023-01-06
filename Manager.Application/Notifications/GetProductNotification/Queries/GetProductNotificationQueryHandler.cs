@@ -20,13 +20,25 @@ namespace Manager.Application.Notifications.GetProductNotification.Queries
 
         public async Task<Result> Handle(GetProductNotificationQuery request, CancellationToken cancellationToken)
         {
+
+
+
+
+
+
+
+
+
             var product = await _websiteDbContext.Notifications
                 .Where(x => x.NotificationGroupId == request.NotificationGroupId)
                 .Select(x => new
                 {
                     x.Product.Hoplink,
                     x.Product.Disabled
-                }).SingleAsync();
+                }).FirstAsync();
+
+
+
 
             var users = await _websiteDbContext.Notifications
                 .Where(x => x.NotificationGroupId == request.NotificationGroupId)

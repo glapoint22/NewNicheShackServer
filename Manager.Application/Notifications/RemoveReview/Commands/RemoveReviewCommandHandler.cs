@@ -1,5 +1,8 @@
-﻿using MediatR;
+﻿using Manager.Domain.Events;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Shared.Common.Classes;
+using Shared.Common.Interceptors;
 using Website.Application.Common.Interfaces;
 using Website.Domain.Entities;
 
@@ -9,21 +12,41 @@ namespace Manager.Application.Notifications.RemoveReview.Commands
     {
         private readonly IWebsiteDbContext _dbContext;
 
-        public RemoveReviewCommandHandler(IWebsiteDbContext websiteDbContext)
+        public RemoveReviewCommandHandler(IWebsiteDbContext dbContext)
         {
-            _dbContext = websiteDbContext;
+            _dbContext = dbContext;
         }
 
         public async Task<Result> Handle(RemoveReviewCommand request, CancellationToken cancellationToken)
         {
-            ProductReview? review = await _dbContext.ProductReviews.FindAsync(request.ReviewId);
+            User? user = await _dbContext.Users
+                .Where(x => x.Id == request.UserId)
+                .Include(x => x.ProductReviews
+                    .Where(z => z.Id == request.ReviewId))
+                .SingleOrDefaultAsync();
 
-            if (review != null)
+
+
+            if (user != null)
             {
-                review.Deleted = true;
-            }
+                ProductReview productReview = user.ProductReviews.First();
 
-            await _dbContext.SaveChangesAsync();
+                if (request.AddStrike)
+                {
+                    user.AddStrike();
+                    DomainEventsInterceptor.AddDomainEvent(new UserReceivedNoncompliantStrikeReviewEvent(
+                        user.FirstName,
+                        user.LastName,
+                        user.Email,
+                        productReview.Title,
+                        productReview.Text));
+                }
+
+                productReview.RemoveRestore();
+
+                await _dbContext.SaveChangesAsync();
+                return Result.Succeeded(true);
+            }
 
             return Result.Succeeded();
         }

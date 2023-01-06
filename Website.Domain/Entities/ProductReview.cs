@@ -39,5 +39,11 @@
             Likes += likes;
             Dislikes += dislikes;
         }
+
+
+        public void RemoveRestore()
+        {
+            Deleted = !Deleted;
+        }
     }
 }

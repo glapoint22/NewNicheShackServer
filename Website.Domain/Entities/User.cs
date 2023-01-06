@@ -49,6 +49,17 @@ namespace Website.Domain.Entities
 
 
 
+
+
+        // ------------------------------------------------------------------------- Add Strike ------------------------------------------------------------------------
+        public void AddStrike()
+        {
+            NoncompliantStrikes++;
+        }
+
+
+
+
         // -------------------------------------------------------------------------- Create ---------------------------------------------------------------------------
         public static User Create(string firstName, string lastName, string email)
         {
@@ -118,6 +129,15 @@ namespace Website.Domain.Entities
         public void ClearDomainEvents()
         {
             _domainEvents.Clear();
+        }
+
+
+
+
+        // ------------------------------------------------------------------------ Remove Image -----------------------------------------------------------------------
+        public void RemoveImage()
+        {
+            Image = null;
         }
     }
 }
