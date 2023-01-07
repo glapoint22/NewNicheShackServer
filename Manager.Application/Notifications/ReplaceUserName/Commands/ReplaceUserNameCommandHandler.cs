@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Shared.Common.Classes;
 using Shared.Common.Interceptors;
 using Website.Application.Common.Interfaces;
+using Website.Domain.Entities;
 using User = Website.Domain.Entities.User;
 
 namespace Manager.Application.Notifications.ReplaceUserName.Commands
@@ -27,6 +28,16 @@ namespace Manager.Application.Notifications.ReplaceUserName.Commands
             {
                 user.AddStrike();
                 user.ChangeName("NicheShack", "User");
+
+
+                NotificationGroup? notificationGroup = await _dbContext.NotificationGroups
+                .Where(x => x.Id == request.NotificationGroupId)
+                .Include(x => x.Notifications
+                    .Where(z => z.Id == request.NotificationId))
+                .SingleOrDefaultAsync();
+
+                notificationGroup?.ArchiveNotification();
+
 
                 await _dbContext.SaveChangesAsync();
                 DomainEventsInterceptor.AddDomainEvent(new UserReceivedNoncompliantStrikeUserNameEvent(user.FirstName, user.LastName, user.Email));

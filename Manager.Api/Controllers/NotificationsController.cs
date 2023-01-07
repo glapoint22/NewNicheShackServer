@@ -18,6 +18,7 @@ using Manager.Application.Notifications.GetUserImageNotification.Queries;
 using Manager.Application.Notifications.GetUserNameNotification.Queries;
 using Manager.Application.Notifications.PostNote.Commands;
 using Manager.Application.Notifications.ReformList.Commands;
+using Manager.Application.Notifications.RemoveRestoreReview.Commands;
 using Manager.Application.Notifications.RemoveReview.Commands;
 using Manager.Application.Notifications.RemoveUserImage.Commands;
 using Manager.Application.Notifications.ReplaceUserName.Commands;
@@ -308,6 +309,17 @@ namespace Manager.Api.Controllers
         public async Task<ActionResult> ReformList(ReformListCommand reformList)
         {
             return SetResponse(await _mediator.Send(reformList));
+        }
+
+
+
+
+        // --------------------------------------------------------------------------- Remove Restore Review -----------------------------------------------------------------------
+        [HttpPut]
+        [Route("RemoveRestoreReview")]
+        public async Task<ActionResult> RemoveRestoreReview(RemoveRestoreReviewCommand removeRestoreReview)
+        {
+            return SetResponse(await _mediator.Send(removeRestoreReview));
         }
 
 

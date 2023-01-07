@@ -97,12 +97,12 @@ namespace Website.Domain.Entities
                     break;
 
                 case 1:
-                    Description = string.Empty;
+                    Description = null;
                     break;
 
                 case 2:
                     Name = "My List";
-                    Description = string.Empty;
+                    Description = null;
                     break;
             }
         }
