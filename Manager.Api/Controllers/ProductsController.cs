@@ -5,6 +5,7 @@ using Manager.Application.Products.DeleteProduct.Commands;
 using Manager.Application.Products.GetProduct.Queries;
 using Manager.Application.Products.GetProductParent.Queries;
 using Manager.Application.Products.GetProducts.Queries;
+using Manager.Application.Products.PublishProduct.Commands;
 using Manager.Application.Products.RemovePricePoint.Commands;
 using Manager.Application.Products.RemoveProductMedia.Commands;
 using Manager.Application.Products.RemoveSubproduct.Commands;
@@ -129,6 +130,17 @@ namespace Manager.Api.Controllers
         public async Task<ActionResult> GetProducts(Guid parentId)
         {
             return SetResponse(await _mediator.Send(new GetProductsQuery(parentId)));
+        }
+
+
+
+
+        // -------------------------------------------------------------------------------- Publish Product ----------------------------------------------------------------------
+        [HttpPost]
+        [Route("Publish")]
+        public async Task<ActionResult> PublishProduct(PublishProductCommand publishProduct)
+        {
+            return SetResponse(await _mediator.Send(publishProduct));
         }
 
 

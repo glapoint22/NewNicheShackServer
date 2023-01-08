@@ -779,6 +779,19 @@ namespace Website.Infrastructure.Migrations
                     b.ToTable("ProductFilters");
                 });
 
+            modelBuilder.Entity("Website.Domain.Entities.ProductInProductGroup", b =>
+                {
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductGroupId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("ProductId", "ProductGroupId");
+
+                    b.ToTable("ProductsInProductGroup");
+                });
+
             modelBuilder.Entity("Website.Domain.Entities.ProductKeyword", b =>
                 {
                     b.Property<Guid>("ProductId")
@@ -1536,6 +1549,17 @@ namespace Website.Infrastructure.Migrations
                     b.Navigation("FilterOption");
                 });
 
+            modelBuilder.Entity("Website.Domain.Entities.ProductInProductGroup", b =>
+                {
+                    b.HasOne("Website.Domain.Entities.Product", "Product")
+                        .WithMany("ProductsInProductGroup")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Website.Domain.Entities.ProductKeyword", b =>
                 {
                     b.HasOne("Website.Domain.Entities.Keyword", "Keyword")
@@ -1613,7 +1637,7 @@ namespace Website.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("Website.Domain.Entities.User", "User")
-                        .WithMany()
+                        .WithMany("ProductReviews")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1710,6 +1734,8 @@ namespace Website.Infrastructure.Migrations
                     b.Navigation("ProductOrders");
 
                     b.Navigation("ProductPrices");
+
+                    b.Navigation("ProductsInProductGroup");
                 });
 
             modelBuilder.Entity("Website.Domain.Entities.ProductOrder", b =>
@@ -1732,6 +1758,8 @@ namespace Website.Infrastructure.Migrations
                     b.Navigation("Collaborators");
 
                     b.Navigation("Notifications");
+
+                    b.Navigation("ProductReviews");
                 });
 #pragma warning restore 612, 618
         }

@@ -30,6 +30,7 @@ namespace Website.Application.Common.Interfaces
         DbSet<ProductMedia> ProductMedia { get; }
         DbSet<ProductOrder> ProductOrders { get; }
         DbSet<ProductPrice> ProductPrices { get; }
+        DbSet<ProductInProductGroup> ProductsInProductGroup { get; }
         DbSet<ProductReview> ProductReviews { get; }
         DbSet<Product> Products { get; }
         DbSet<RefreshToken> RefreshTokens { get; }

@@ -1,13 +1,16 @@
-﻿using Shared.EmailBuilder.Classes;
+﻿using Shared.Common.Classes;
+using Shared.EmailBuilder.Classes;
 
 namespace Manager.Domain.Entities
 {
-    public sealed class Email
+    public sealed class Email : Entity
     {
         public Guid Id { get; set; }
         public EmailType Type { get; set; }
         public string Name { get; set; } = string.Empty;
         public string Content { get; set; } = string.Empty;
+
+        public ICollection<Publish> Publishes { get; private set; } = new HashSet<Publish>();
 
         public static Email Create(string name, string content)
         {

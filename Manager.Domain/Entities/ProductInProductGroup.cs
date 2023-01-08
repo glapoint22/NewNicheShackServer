@@ -1,8 +1,9 @@
-﻿using Shared.Common.Interfaces;
+﻿using Shared.Common.Classes;
+using Shared.Common.Interfaces;
 
 namespace Manager.Domain.Entities
 {
-    public sealed class ProductInProductGroup : IProductInProductGroup
+    public sealed class ProductInProductGroup : Entity, IProductInProductGroup
     {
         public Guid ProductId { get; set; }
         public Guid ProductGroupId { get; set; }

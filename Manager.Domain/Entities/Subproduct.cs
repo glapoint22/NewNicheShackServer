@@ -1,6 +1,8 @@
-﻿namespace Manager.Domain.Entities
+﻿using Shared.Common.Classes;
+
+namespace Manager.Domain.Entities
 {
-    public sealed class Subproduct
+    public sealed class Subproduct : Entity
     {
         public Guid Id { get; set; }
         public Guid ProductId { get; set; }

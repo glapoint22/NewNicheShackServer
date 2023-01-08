@@ -1,6 +1,8 @@
-﻿namespace Manager.Domain.Entities
+﻿using Shared.Common.Classes;
+
+namespace Manager.Domain.Entities
 {
-    public sealed class ProductFilter
+    public sealed class ProductFilter : Entity
     {
         public Guid ProductId { get; set; }
         public Guid FilterOptionId { get; set; }

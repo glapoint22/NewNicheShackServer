@@ -1,10 +1,9 @@
-﻿using MediatR;
-using Shared.Common.Classes;
+﻿using Shared.Common.Classes;
 using Shared.Common.Interfaces;
 
 namespace Manager.Domain.Entities
 {
-    public sealed class Page : IPage
+    public sealed class Page : Entity, IPage
     {
         public Guid Id { get; set; }
         public string Name { get; set; } = string.Empty;
@@ -26,11 +25,15 @@ namespace Manager.Domain.Entities
         public IReadOnlyList<PageKeyword> PageKeywords => _pageKeywords.AsReadOnly();
 
 
+        public ICollection<Publish> Publishes { get; private set; } = new HashSet<Publish>();
+
+
 
         public static Page Create(string name, string content, int pageType)
         {
             Page page = new()
             {
+                Id = Guid.NewGuid(),
                 Name = name,
                 UrlName = Utility.GenerateUrlName(name),
                 Content = content,
@@ -55,6 +58,7 @@ namespace Manager.Domain.Entities
         {
             Page page = new()
             {
+                Id = Guid.NewGuid(),
                 Name = Name + " Copy",
                 Content = Content,
                 UrlName = UrlName,

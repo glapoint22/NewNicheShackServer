@@ -6,7 +6,7 @@ using Shared.Common.ValueObjects;
 
 namespace Manager.Domain.Entities
 {
-    public sealed class Product : IProduct
+    public sealed class Product : Entity, IProduct
     {
         public Guid Id { get; set; }
         public Guid? VendorId { get; set; }
@@ -44,9 +44,9 @@ namespace Manager.Domain.Entities
 
 
         public ICollection<ProductKeyword> ProductKeywords { get; private set; } = new HashSet<ProductKeyword>();
-
-
-        // These are used for query builder - DON'T REMOVE!!
+        public ICollection<Publish> Publishes { get; private set; } = new HashSet<Publish>();
+        public ICollection<ProductFilter> ProductFilters { get; private set; } = new HashSet<ProductFilter>();
+        public ICollection<Subproduct> Subproducts { get; private set; } = new HashSet<Subproduct>();
         public ICollection<ProductInProductGroup> ProductsInProductGroup { get; private set; } = new HashSet<ProductInProductGroup>();
         public ICollection<KeywordGroupBelongingToProduct> KeywordGroupsBelongingToProduct { get; private set; } = new HashSet<KeywordGroupBelongingToProduct>();
 
@@ -77,6 +77,7 @@ namespace Manager.Domain.Entities
         {
             Product product = new()
             {
+                Id = Guid.NewGuid(),
                 SubnicheId = subnicheId,
                 Name = name,
                 UrlName = Utility.GenerateUrlName(name)

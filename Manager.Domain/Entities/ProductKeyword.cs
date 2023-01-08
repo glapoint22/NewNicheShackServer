@@ -1,6 +1,8 @@
-﻿namespace Manager.Domain.Entities
+﻿using Shared.Common.Classes;
+
+namespace Manager.Domain.Entities
 {
-    public sealed class ProductKeyword
+    public sealed class ProductKeyword : Entity
     {
         public Guid ProductId { get; set; }
         public Guid KeywordId { get; set; }

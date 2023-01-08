@@ -34,6 +34,7 @@ namespace Website.Infrastructure.Persistence
         public DbSet<ProductMedia> ProductMedia => Set<ProductMedia>();
         public DbSet<ProductOrder> ProductOrders => Set<ProductOrder>();
         public DbSet<ProductPrice> ProductPrices => Set<ProductPrice>();
+        public DbSet<ProductInProductGroup> ProductsInProductGroup => Set<ProductInProductGroup>();
         public DbSet<ProductReview> ProductReviews => Set<ProductReview>();
         public DbSet<Product> Products => Set<Product>();
         public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();

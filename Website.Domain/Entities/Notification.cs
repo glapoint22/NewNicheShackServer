@@ -1,6 +1,4 @@
-﻿using MediatR;
-using Org.BouncyCastle.Asn1.Ocsp;
-using Shared.Common.Enums;
+﻿using Shared.Common.Enums;
 using System.Text.Json;
 
 namespace Website.Domain.Entities

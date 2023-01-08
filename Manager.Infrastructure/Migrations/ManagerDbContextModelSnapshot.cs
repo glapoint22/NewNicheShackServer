@@ -560,6 +560,44 @@ namespace Manager.Infrastructure.Migrations
                     b.ToTable("ProductPrices");
                 });
 
+            modelBuilder.Entity("Manager.Domain.Entities.Publish", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("EmailId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("PageId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("PublishStatus")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PublishType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmailId");
+
+                    b.HasIndex("PageId");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Publishes");
+                });
+
             modelBuilder.Entity("Manager.Domain.Entities.RefreshToken", b =>
                 {
                     b.Property<string>("Id")
@@ -1205,6 +1243,38 @@ namespace Manager.Infrastructure.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("Manager.Domain.Entities.Publish", b =>
+                {
+                    b.HasOne("Manager.Domain.Entities.Email", "Email")
+                        .WithMany("Publishes")
+                        .HasForeignKey("EmailId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Manager.Domain.Entities.Page", "Page")
+                        .WithMany("Publishes")
+                        .HasForeignKey("PageId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Manager.Domain.Entities.Product", "Product")
+                        .WithMany("Publishes")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Manager.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Email");
+
+                    b.Navigation("Page");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Manager.Domain.Entities.RefreshToken", b =>
                 {
                     b.HasOne("Manager.Domain.Entities.User", "User")
@@ -1296,6 +1366,11 @@ namespace Manager.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Manager.Domain.Entities.Email", b =>
+                {
+                    b.Navigation("Publishes");
+                });
+
             modelBuilder.Entity("Manager.Domain.Entities.FilterOption", b =>
                 {
                     b.Navigation("ProductFilters");
@@ -1338,6 +1413,8 @@ namespace Manager.Infrastructure.Migrations
                     b.Navigation("PageKeywords");
 
                     b.Navigation("PageSubniches");
+
+                    b.Navigation("Publishes");
                 });
 
             modelBuilder.Entity("Manager.Domain.Entities.Product", b =>
@@ -1353,6 +1430,8 @@ namespace Manager.Infrastructure.Migrations
                     b.Navigation("ProductPrices");
 
                     b.Navigation("ProductsInProductGroup");
+
+                    b.Navigation("Publishes");
                 });
 
             modelBuilder.Entity("Manager.Domain.Entities.ProductGroup", b =>

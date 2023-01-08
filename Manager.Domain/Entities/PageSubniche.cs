@@ -1,6 +1,8 @@
-﻿namespace Manager.Domain.Entities
+﻿using Shared.Common.Classes;
+
+namespace Manager.Domain.Entities
 {
-    public sealed class PageSubniche
+    public sealed class PageSubniche : Entity
     {
         public Guid PageId { get; set; }
         public Guid SubnicheId { get; set; }

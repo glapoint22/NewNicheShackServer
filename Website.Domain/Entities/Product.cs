@@ -34,6 +34,7 @@ namespace Website.Domain.Entities
         public ICollection<ProductKeyword> ProductKeywords { get; private set; } = new HashSet<ProductKeyword>();
         public ICollection<ProductOrder> ProductOrders { get; private set; } = new HashSet<ProductOrder>();
         public ICollection<ProductMedia> ProductMedia { get; private set; } = new HashSet<ProductMedia>();
+        public ICollection<ProductInProductGroup> ProductsInProductGroup { get; private set; } = new HashSet<ProductInProductGroup>();
         public ICollection<Notification> Notifications { get; private set; } = new HashSet<Notification>();
 
 
