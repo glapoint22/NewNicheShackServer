@@ -31,24 +31,30 @@ namespace Manager.Application.Notifications.RemoveReview.Commands
             {
                 ProductReview productReview = user.ProductReviews.First();
 
-                if (request.AddStrike)
-                {
-                    user.AddStrike();
-                    DomainEventsInterceptor.AddDomainEvent(new UserReceivedNoncompliantStrikeReviewEvent(
-                        user.FirstName,
-                        user.LastName,
-                        user.Email,
-                        productReview.Title,
-                        productReview.Text));
-                }
+                user.AddStrike();
+                DomainEventsInterceptor.AddDomainEvent(new UserReceivedNoncompliantStrikeReviewEvent(
+                    user.FirstName,
+                    user.LastName,
+                    user.Email,
+                    productReview.Title,
+                    productReview.Text));
 
                 productReview.RemoveRestore();
-
-                await _dbContext.SaveChangesAsync();
-                return Result.Succeeded(true);
             }
 
-            return Result.Succeeded();
+            NotificationGroup? notificationGroup = await _dbContext.NotificationGroups
+            .Where(x => x.Id == request.NotificationGroupId)
+            .Include(x => x.Notifications
+                .Where(z => z.Id == request.NotificationId))
+            .SingleOrDefaultAsync();
+
+            notificationGroup?.ArchiveNotification();
+
+
+            await _dbContext.SaveChangesAsync();
+
+
+            return Result.Succeeded(true);
         }
     }
 }
