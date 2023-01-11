@@ -20,5 +20,7 @@ namespace Manager.Application.Common.Interfaces
         Task<string?> GetVideoThumbnail(IMedia media);
 
         void DeleteMedia(IMedia media);
+
+        Task<HttpResponseMessage> PostImages(List<string> images, string requestUri, string authToken);
     }
 }

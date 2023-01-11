@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Net;
+using System.Net.Http.Headers;
 using System.Text.Json;
 
 namespace Shared.Services.MediaService
@@ -175,6 +176,45 @@ namespace Shared.Services.MediaService
 
             return image;
         }
+
+
+
+
+
+
+
+
+        // ------------------------------------------------------------------------- Post Images -----------------------------------------------------------------------
+        public async Task<HttpResponseMessage> PostImages(List<string> images, string requestUri, string authToken)
+        {
+            string imagesFolder = GetImagesFolder();
+
+            using (HttpClient httpClient = new())
+            {
+                using (HttpRequestMessage request = new(HttpMethod.Post, requestUri))
+                {
+                    using (MultipartFormDataContent content = new())
+                    {
+                        foreach (var image in images)
+                        {
+                            string imagePath = Path.Combine(imagesFolder, image);
+                            FileStream stream = File.OpenRead(imagePath);
+                            content.Add(new StreamContent(stream), image, image);
+                        }
+
+                        request.Content = content;
+                        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", authToken);
+
+                        return await httpClient.SendAsync(request);
+                    }
+                }
+            }
+        }
+
+
+
+
+
 
 
 
@@ -626,12 +666,25 @@ namespace Shared.Services.MediaService
 
 
             // Save the image to the images folder
-            Bitmap bitmap = new Bitmap(image);
-            bitmap.Save(filePath);
+            SaveImage(image, filePath);
 
             return imageFile;
         }
 
+
+
+
+
+
+
+
+
+        // ------------------------------------------------------------------------- Save Image ------------------------------------------------------------------------
+        public void SaveImage(Image image, string path)
+        {
+            Bitmap bitmap= new(image);
+            bitmap.Save(path);
+        }
 
 
 
@@ -646,7 +699,7 @@ namespace Shared.Services.MediaService
             int scaledHeight = (int)Math.Round(image.Height * multiplier);
 
             //Scale
-            Bitmap scaledBitmap = new Bitmap(scaledWidth, scaledHeight);
+            Bitmap scaledBitmap = new(scaledWidth, scaledHeight);
             Graphics graphics = Graphics.FromImage(scaledBitmap);
             graphics.InterpolationMode = InterpolationMode.High;
             graphics.DrawImage(image, 0, 0, scaledWidth, scaledHeight);
@@ -751,7 +804,8 @@ namespace Shared.Services.MediaService
                                     string imagesFolder = GetImagesFolder();
                                     string filePath = Path.Combine(imagesFolder, thumbnailName);
 
-                                    thumbnailImage.Save(filePath);
+                                    SaveImage(thumbnailImage, filePath);
+
                                     return thumbnailName;
                                 }
                             }

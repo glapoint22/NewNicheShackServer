@@ -107,6 +107,7 @@ namespace Website.Infrastructure
             services.AddHttpContextAccessor();
             services.AddScoped<IPageService, PageService>();
             services.AddScoped<IEmailService, WebsiteEmailService>();
+            services.AddScoped<IMediaService, WebsiteMediaService>();
 
             return services;
         }
