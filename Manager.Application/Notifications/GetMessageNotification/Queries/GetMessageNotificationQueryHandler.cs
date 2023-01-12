@@ -36,7 +36,7 @@ namespace Manager.Application.Notifications.GetMessageNotification.Queries
                     x.Text,
                     Date = x.CreationDate,
                     NoncompliantStrikes = x.User != null ? x.User.NoncompliantStrikes : 0,
-                    BlockNotificationSending = x.User != null ? x.User.BlockNotificationSending : _websiteDbContext.BlockedNonAccountEmails
+                    BlockNotificationSending = x.User != null ? x.User.BlockNotificationSending : _websiteDbContext.BlockedNonAccountUsers
                         .Any(z => z.Email == x.NonAccountEmail)
                 }).ToListAsync();
 

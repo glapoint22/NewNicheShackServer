@@ -20,7 +20,7 @@ namespace Website.Application.Notifications.PostNonAccountMessageNotification.Co
         public async Task<Result> Handle(PostNonAccountMessageNotificationCommand request, CancellationToken cancellationToken)
         {
             // Check to see if the email of the non-account user is on the block list
-            if (await _dbContext.BlockedNonAccountEmails
+            if (await _dbContext.BlockedNonAccountUsers
                 .AnyAsync(x => x.Email == request.Email)) return Result.Succeeded();
 
 

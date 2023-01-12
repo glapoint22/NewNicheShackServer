@@ -1,6 +1,8 @@
 ﻿using Manager.Application.Notifications.ArchiveAllNotifications.Commands;
 using Manager.Application.Notifications.ArchiveGroup.Commands;
 using Manager.Application.Notifications.ArchiveNotification.Commands;
+using Manager.Application.Notifications.BlockNonAccountUser.Commands;
+using Manager.Application.Notifications.BlockUnblockUser.Commands;
 using Manager.Application.Notifications.DeleteNotifications.Commands;
 using Manager.Application.Notifications.DisableEnableProduct.Commands;
 using Manager.Application.Notifications.GetArchivedNotifications.Queries;
@@ -25,6 +27,7 @@ using Manager.Application.Notifications.ReplaceUserName.Commands;
 using Manager.Application.Notifications.RestoreAllNotifications.Commands;
 using Manager.Application.Notifications.RestoreGroup.Commands;
 using Manager.Application.Notifications.RestoreNotification.Commands;
+using Manager.Application.Notifications.UnblockNonAccountUser.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -73,6 +76,28 @@ namespace Manager.Api.Controllers
         public async Task<ActionResult> ArchiveNotification(ArchiveNotificationCommand archiveNotification)
         {
             return SetResponse(await _mediator.Send(archiveNotification));
+        }
+
+
+
+
+        // ------------------------------------------------------------------------ Block Non-Account User -----------------------------------------------------------------------
+        [HttpPost]
+        [Route("BlockNonAccountUser")]
+        public async Task<ActionResult> BlockNonAccountUser(BlockNonAccountUserCommand BlockNonAccountUser)
+        {
+            return SetResponse(await _mediator.Send(BlockNonAccountUser));
+        }
+
+
+
+
+        // ------------------------------------------------------------------------------ Block User -----------------------------------------------------------------------------
+        [HttpPut]
+        [Route("BlockUnblockUser")]
+        public async Task<ActionResult> BlockUnblockUser(BlockUnblockUserCommand BlockUnblockUser)
+        {
+            return SetResponse(await _mediator.Send(BlockUnblockUser));
         }
 
 
@@ -389,6 +414,17 @@ namespace Manager.Api.Controllers
         public async Task<ActionResult> RestoreNotification(RestoreNotificationCommand restoreNotification)
         {
             return SetResponse(await _mediator.Send(restoreNotification));
+        }
+
+
+
+
+        // ------------------------------------------------------------------------- Unblock Non-Account User --------------------------------------------------------------------
+        [HttpDelete]
+        [Route("UnblockNonAccountUser")]
+        public async Task<ActionResult> UnblockNonAccountUser(string blockedUserEmail)
+        {
+            return SetResponse(await _mediator.Send(new UnblockNonAccountUserCommand(blockedUserEmail)));
         }
     }
 }

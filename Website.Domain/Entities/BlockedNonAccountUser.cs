@@ -1,6 +1,6 @@
 ﻿namespace Website.Domain.Entities
 {
-    public sealed class BlockedNonAccountEmail
+    public sealed class BlockedNonAccountUser
     {
         public int Id { get; set; }
         public string Email { get; set; } = string.Empty;

@@ -2,6 +2,8 @@
 using Manager.Application.Products.AddProduct.Commands;
 using Manager.Application.Products.AddSubproduct.Commands;
 using Manager.Application.Products.DeleteProduct.Commands;
+using Manager.Application.Products.DisableEnableProduct.Commands;
+using Manager.Application.Products.GetDisabledProducts.Queries;
 using Manager.Application.Products.GetProduct.Queries;
 using Manager.Application.Products.GetProductParent.Queries;
 using Manager.Application.Products.GetProducts.Queries;
@@ -89,6 +91,29 @@ namespace Manager.Api.Controllers
         public async Task<ActionResult> DeleteProduct(Guid id)
         {
             return SetResponse(await _mediator.Send(new DeleteProductCommand(id)));
+        }
+
+
+
+
+        // -------------------------------------------------------------------------- Disable Enable Product ---------------------------------------------------------------------
+        [HttpPut]
+        [Route("DisableEnableProduct")]
+        public async Task<ActionResult> DisableEnableProduct(DisableEnableProductCommand disableEnableProductCommand)
+        {
+            return SetResponse(await _mediator.Send(disableEnableProductCommand));
+        }
+
+
+
+
+
+        // ---------------------------------------------------------------------------- Get Disabled Products --------------------------------------------------------------------
+        [HttpGet]
+        [Route("DisabledProducts")]
+        public async Task<ActionResult> GetDisabledProducts()
+        {
+            return SetResponse(await _mediator.Send(new GetDisabledProductsQuery()));
         }
 
 
@@ -211,8 +236,7 @@ namespace Manager.Api.Controllers
 
 
 
-
-
+        
 
         // -------------------------------------------------------------------------------- Set Hoplink --------------------------------------------------------------------------
         [HttpPut]

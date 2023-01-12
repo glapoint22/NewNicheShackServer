@@ -25,7 +25,7 @@ namespace Manager.Application.Notifications.GetBlockedUsers.Queries
                     Name = x.FirstName + " " + x.LastName
                 }).ToListAsync();
 
-            var blockedNonAccountEmails = await _dbContext.BlockedNonAccountEmails
+            var blockedNonAccountEmails = await _dbContext.BlockedNonAccountUsers
                 .Select(x => new
                 {
                     UserId = "",
