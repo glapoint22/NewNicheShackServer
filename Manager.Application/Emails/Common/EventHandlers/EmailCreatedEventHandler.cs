@@ -17,9 +17,9 @@ namespace Manager.Application.Emails.Common.EventHandlers
 
         public async Task Handle(EmailCreatedEvent notification, CancellationToken cancellationToken)
         {
-            Publish publish = Publish.AddEmail(notification.EmailId, notification.UserId, PublishStatus.New);
+            PublishItem publishItem = PublishItem.AddEmail(notification.EmailId, notification.UserId, PublishStatus.New);
 
-            _dbContext.Publishes.Add(publish);
+            _dbContext.PublishItems.Add(publishItem);
             await _dbContext.SaveChangesAsync();
         }
     }

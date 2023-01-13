@@ -17,9 +17,9 @@ namespace Manager.Application.Pages.Common.EventHandlers
 
         public async Task Handle(PageCreatedEvent notification, CancellationToken cancellationToken)
         {
-            Publish publish = Publish.AddPage(notification.PageId, notification.UserId, PublishStatus.New);
+            PublishItem publishItem = PublishItem.AddPage(notification.PageId, notification.UserId, PublishStatus.New);
 
-            _dbContext.Publishes.Add(publish);
+            _dbContext.PublishItems.Add(publishItem);
             await _dbContext.SaveChangesAsync();
         }
     }

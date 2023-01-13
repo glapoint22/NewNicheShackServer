@@ -39,7 +39,7 @@ namespace Manager.Infrastructure
                 configure
                     .AddJob<ProcessDomainEventsJob>(processDomainEventsJobKey)
                     .AddTrigger(trigger => trigger.ForJob(processDomainEventsJobKey)
-                        .WithSimpleSchedule(schedule => schedule.WithIntervalInSeconds(10)
+                        .WithSimpleSchedule(schedule => schedule.WithIntervalInSeconds(5)
                             .RepeatForever()));
 
 

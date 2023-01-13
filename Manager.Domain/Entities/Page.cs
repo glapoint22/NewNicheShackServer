@@ -25,7 +25,7 @@ namespace Manager.Domain.Entities
         public IReadOnlyList<PageKeyword> PageKeywords => _pageKeywords.AsReadOnly();
 
 
-        public ICollection<Publish> Publishes { get; private set; } = new HashSet<Publish>();
+        public ICollection<PublishItem> PublishItems { get; private set; } = new HashSet<PublishItem>();
 
 
 

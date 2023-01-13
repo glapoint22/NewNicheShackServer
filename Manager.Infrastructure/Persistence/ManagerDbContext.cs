@@ -33,7 +33,7 @@ namespace Manager.Infrastructure.Persistence
         public DbSet<ProductPrice> ProductPrices => Set<ProductPrice>();
         public DbSet<ProductInProductGroup> ProductsInProductGroup => Set<ProductInProductGroup>();
         public DbSet<Product> Products => Set<Product>();
-        public DbSet<Publish> Publishes => Set<Publish>();
+        public DbSet<PublishItem> PublishItems => Set<PublishItem>();
         public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
         public DbSet<Subniche> Subniches => Set<Subniche>();
         public DbSet<Subproduct> Subproducts => Set<Subproduct>();

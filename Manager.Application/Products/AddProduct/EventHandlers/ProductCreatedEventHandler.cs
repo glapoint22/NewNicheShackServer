@@ -17,9 +17,9 @@ namespace Manager.Application.Products.AddProduct.EventHandlers
 
         public async Task Handle(ProductCreatedEvent notification, CancellationToken cancellationToken)
         {
-            Publish publish = Publish.AddProduct(notification.ProductId, notification.UserId, PublishStatus.New);
+            PublishItem publishItem = PublishItem.AddProduct(notification.ProductId, notification.UserId, PublishStatus.New);
 
-            _dbContext.Publishes.Add(publish);
+            _dbContext.PublishItems.Add(publishItem);
             await _dbContext.SaveChangesAsync();
         }
     }

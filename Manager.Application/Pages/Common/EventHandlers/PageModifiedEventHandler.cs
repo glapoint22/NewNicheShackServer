@@ -18,11 +18,11 @@ namespace Manager.Application.Pages.Common.EventHandlers
 
         public async Task Handle(PageModifiedEvent notification, CancellationToken cancellationToken)
         {
-            if (!await _dbContext.Publishes.AnyAsync(x => x.PageId == notification.PageId))
+            if (!await _dbContext.PublishItems.AnyAsync(x => x.PageId == notification.PageId))
             {
-                Publish publish = Publish.AddPage(notification.PageId, notification.UserId, PublishStatus.Modified);
+                PublishItem publishItem = PublishItem.AddPage(notification.PageId, notification.UserId, PublishStatus.Modified);
 
-                _dbContext.Publishes.Add(publish);
+                _dbContext.PublishItems.Add(publishItem);
                 await _dbContext.SaveChangesAsync();
             }
         }

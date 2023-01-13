@@ -2,7 +2,7 @@
 
 namespace Manager.Domain.Entities
 {
-    public sealed class Publish
+    public sealed class PublishItem
     {
         public Guid Id { get; set; }
         public Guid? ProductId { get; set; }
@@ -17,9 +17,9 @@ namespace Manager.Domain.Entities
         public Email Email { get; set; } = null!;
         public User User { get; set; } = null!;
 
-        public static Publish AddProduct(Guid productId, string userId, PublishStatus publishStatus)
+        public static PublishItem AddProduct(Guid productId, string userId, PublishStatus publishStatus)
         {
-            Publish publish = new()
+            PublishItem publishItem = new()
             {
                 ProductId = productId,
                 UserId = userId,
@@ -27,14 +27,14 @@ namespace Manager.Domain.Entities
                 PublishStatus = publishStatus
             };
 
-            return publish;
+            return publishItem;
         }
 
 
 
-        public static Publish AddPage(Guid pageId, string userId, PublishStatus publishStatus)
+        public static PublishItem AddPage(Guid pageId, string userId, PublishStatus publishStatus)
         {
-            Publish publish = new()
+            PublishItem publishItem = new()
             {
                 PageId = pageId,
                 UserId = userId,
@@ -42,15 +42,15 @@ namespace Manager.Domain.Entities
                 PublishStatus = publishStatus
             };
 
-            return publish;
+            return publishItem;
         }
 
 
 
 
-        public static Publish AddEmail(Guid emailId, string userId, PublishStatus publishStatus)
+        public static PublishItem AddEmail(Guid emailId, string userId, PublishStatus publishStatus)
         {
-            Publish publish = new()
+            PublishItem publishItem = new()
             {
                 PageId = emailId,
                 UserId = userId,
@@ -58,7 +58,7 @@ namespace Manager.Domain.Entities
                 PublishStatus = publishStatus
             };
 
-            return publish;
+            return publishItem;
         }
     }
 }

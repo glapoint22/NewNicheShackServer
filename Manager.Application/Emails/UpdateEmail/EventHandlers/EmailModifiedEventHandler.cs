@@ -18,11 +18,11 @@ namespace Manager.Application.Emails.UpdateEmail.EventHandlers
 
         public async Task Handle(EmailModifiedEvent notification, CancellationToken cancellationToken)
         {
-            if (!await _dbContext.Publishes.AnyAsync(x => x.EmailId == notification.EmailId))
+            if (!await _dbContext.PublishItems.AnyAsync(x => x.EmailId == notification.EmailId))
             {
-                Publish publish = Publish.AddEmail(notification.EmailId, notification.UserId, PublishStatus.Modified);
+                PublishItem publishItem = PublishItem.AddEmail(notification.EmailId, notification.UserId, PublishStatus.Modified);
 
-                _dbContext.Publishes.Add(publish);
+                _dbContext.PublishItems.Add(publishItem);
                 await _dbContext.SaveChangesAsync();
             }
         }

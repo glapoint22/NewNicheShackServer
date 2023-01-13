@@ -18,11 +18,11 @@ namespace Manager.Application.Products.Common.EventHandlers
 
         public async Task Handle(ProductModifiedEvent notification, CancellationToken cancellationToken)
         {
-            if (!await _dbContext.Publishes.AnyAsync(x => x.ProductId == notification.ProductId))
+            if (!await _dbContext.PublishItems.AnyAsync(x => x.ProductId == notification.ProductId))
             {
-                Publish publish = Publish.AddProduct(notification.ProductId, notification.UserId, PublishStatus.Modified);
+                PublishItem publishItem = PublishItem.AddProduct(notification.ProductId, notification.UserId, PublishStatus.Modified);
 
-                _dbContext.Publishes.Add(publish);
+                _dbContext.PublishItems.Add(publishItem);
                 await _dbContext.SaveChangesAsync();
             }
         }

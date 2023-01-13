@@ -4,7 +4,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Shared.Common.Classes;
 
-namespace Manager.Application.PublishItems.GetPublishItems.Queries
+namespace Manager.Application._Publish.GetPublishItems.Queries
 {
     public sealed class GetPublishItemsQueryHandler : IRequestHandler<GetPublishItemsQuery, Result>
     {
@@ -17,7 +17,7 @@ namespace Manager.Application.PublishItems.GetPublishItems.Queries
 
         public async Task<Result> Handle(GetPublishItemsQuery request, CancellationToken cancellationToken)
         {
-            var publishItems = await _dbContext.Publishes.Select(x => new
+            var publishItems = await _dbContext.PublishItems.Select(x => new
             {
                 x.Id,
                 x.ProductId,

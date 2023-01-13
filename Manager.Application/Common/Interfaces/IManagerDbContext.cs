@@ -27,7 +27,7 @@ namespace Manager.Application.Common.Interfaces
         DbSet<ProductPrice> ProductPrices { get; }
         DbSet<ProductInProductGroup> ProductsInProductGroup { get; }
         DbSet<Product> Products { get; }
-        DbSet<Publish> Publishes { get; }
+        DbSet<PublishItem> PublishItems { get; }
         DbSet<RefreshToken> RefreshTokens { get; }
         DbSet<Subniche> Subniches { get; }
         DbSet<Subproduct> Subproducts { get; }

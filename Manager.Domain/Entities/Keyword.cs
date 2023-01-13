@@ -1,6 +1,8 @@
-﻿namespace Manager.Domain.Entities
+﻿using Shared.Common.Classes;
+
+namespace Manager.Domain.Entities
 {
-    public sealed class Keyword
+    public sealed class Keyword : Entity
     {
         public Guid Id { get; set; }
         public string Name { get; set; } = string.Empty;

@@ -10,7 +10,7 @@ namespace Manager.Domain.Entities
         public string Name { get; set; } = string.Empty;
         public string Content { get; set; } = string.Empty;
 
-        public ICollection<Publish> Publishes { get; private set; } = new HashSet<Publish>();
+        public ICollection<PublishItem> PublishItems { get; private set; } = new HashSet<PublishItem>();
 
         public static Email Create(string name, string content)
         {

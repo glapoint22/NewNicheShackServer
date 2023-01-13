@@ -10,7 +10,7 @@ using Manager.Application.Keywords.GetAvailableKeywords.Queries;
 using Manager.Application.Keywords.GetKeywordGroup.Queries;
 using Manager.Application.Keywords.GetSelectedKeywordGroups.Queries;
 using Manager.Application.Keywords.GetSelectedKeywords.Queries;
-using Manager.Application.Keywords.NewSelectedKeywordCommand.Commands;
+using Manager.Application.Keywords.NewSelectedKeyword.Commands;
 using Manager.Application.Keywords.NewSelectedKeywordGroup.Commands;
 using Manager.Application.Keywords.RemoveSelectedKeywordGroup.Commands;
 using Manager.Application.Keywords.SearchAvailableKeywords.Queries;
@@ -137,9 +137,9 @@ namespace Manager.Api.Controllers
         // ------------------------------------------------------------------------ Delete Selected Keyword ----------------------------------------------------------------------
         [HttpDelete]
         [Route("SelectedKeywords")]
-        public async Task<ActionResult> DeleteSelectedKeyword(Guid id, Guid keywordGroupId)
+        public async Task<ActionResult> DeleteSelectedKeyword(Guid keywordId, Guid keywordGroupId, Guid productId)
         {
-            return SetResponse(await _mediator.Send(new DeleteSelectedKeywordCommand(id, keywordGroupId)));
+            return SetResponse(await _mediator.Send(new DeleteSelectedKeywordCommand(keywordId, keywordGroupId, productId)));
         }
 
 

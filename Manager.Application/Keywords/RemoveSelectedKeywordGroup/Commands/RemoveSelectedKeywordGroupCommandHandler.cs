@@ -1,5 +1,6 @@
 ﻿using Manager.Application.Common.Interfaces;
 using Manager.Domain.Entities;
+using Manager.Domain.Events;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Shared.Common.Classes;
@@ -9,10 +10,12 @@ namespace Manager.Application.Keywords.RemoveSelectedKeywordGroup.Commands
     public sealed class RemoveSelectedKeywordGroupCommandHandler : IRequestHandler<RemoveSelectedKeywordGroupCommand, Result>
     {
         private readonly IManagerDbContext _dbContext;
+        private readonly IAuthService _authService;
 
-        public RemoveSelectedKeywordGroupCommandHandler(IManagerDbContext dbContext)
+        public RemoveSelectedKeywordGroupCommandHandler(IManagerDbContext dbContext, IAuthService authService)
         {
             _dbContext = dbContext;
+            _authService = authService;
         }
 
         public async Task<Result> Handle(RemoveSelectedKeywordGroupCommand request, CancellationToken cancellationToken)
@@ -48,8 +51,17 @@ namespace Manager.Application.Keywords.RemoveSelectedKeywordGroup.Commands
                 .ToListAsync();
 
             _dbContext.KeywordGroupsBelongingToProduct.Remove(keywordGroupBelongingToProduct);
-            _dbContext.ProductKeywords.RemoveRange(productKeywords);
-            _dbContext.Keywords.RemoveRange(keywords);
+
+
+            if (productKeywords.Count > 0 && keywords.Count > 0)
+            {
+                _dbContext.ProductKeywords.RemoveRange(productKeywords);
+                _dbContext.Keywords.RemoveRange(keywords);
+
+                string userId = _authService.GetUserIdFromClaims();
+                productKeywords[0].AddDomainEvent(new ProductModifiedEvent(request.ProductId, userId));
+            }
+
 
             // Only delete if it is a custom keyword group
             if (keywordGroupBelongingToProduct.KeywordGroup.ForProduct)

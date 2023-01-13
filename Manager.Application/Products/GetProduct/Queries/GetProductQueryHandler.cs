@@ -96,6 +96,7 @@ namespace Manager.Application.Products.GetProduct.Queries
                     x.Description,
                     Image = new
                     {
+                        x.Media.Id,
                         x.Media.Name,
                         Src = x.Media.ImageSm
                     },

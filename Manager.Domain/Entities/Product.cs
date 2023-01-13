@@ -44,7 +44,7 @@ namespace Manager.Domain.Entities
 
 
         public ICollection<ProductKeyword> ProductKeywords { get; private set; } = new HashSet<ProductKeyword>();
-        public ICollection<Publish> Publishes { get; private set; } = new HashSet<Publish>();
+        public ICollection<PublishItem> PublishItems { get; private set; } = new HashSet<PublishItem>();
         public ICollection<ProductFilter> ProductFilters { get; private set; } = new HashSet<ProductFilter>();
         public ICollection<Subproduct> Subproducts { get; private set; } = new HashSet<Subproduct>();
         public ICollection<ProductInProductGroup> ProductsInProductGroup { get; private set; } = new HashSet<ProductInProductGroup>();
