@@ -5,7 +5,7 @@ namespace Website.Application.Common.Interfaces
 {
     public interface IWebsiteDbContext
     {
-        DbSet<BlockedNonAccountEmail> BlockedNonAccountEmails { get; }
+        DbSet<BlockedNonAccountUser> BlockedNonAccountUsers { get; }
         DbSet<Collaborator> Collaborators { get; }
         DbSet<Email> Emails { get; }
         DbSet<FilterOption> FilterOptions { get; }

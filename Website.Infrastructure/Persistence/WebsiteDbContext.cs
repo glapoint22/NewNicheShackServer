@@ -9,7 +9,7 @@ namespace Website.Infrastructure.Persistence
     public sealed class WebsiteDbContext : IdentityDbContext<User>, IWebsiteDbContext
     {
         public WebsiteDbContext(DbContextOptions<WebsiteDbContext> options) : base(options) { }
-        public DbSet<BlockedNonAccountEmail> BlockedNonAccountEmails => Set<BlockedNonAccountEmail>();
+        public DbSet<BlockedNonAccountUser> BlockedNonAccountUsers => Set<BlockedNonAccountUser>();
         public DbSet<Collaborator> Collaborators => Set<Collaborator>();
         public DbSet<Email> Emails => Set<Email>();
         public DbSet<FilterOption> FilterOptions => Set<FilterOption>();
