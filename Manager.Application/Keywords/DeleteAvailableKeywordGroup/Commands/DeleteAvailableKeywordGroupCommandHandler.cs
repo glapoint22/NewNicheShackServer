@@ -1,34 +1,36 @@
 ﻿using Manager.Application.Common.Interfaces;
-using Manager.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Shared.Common.Classes;
+using Website.Application.Common.Interfaces;
 
 namespace Manager.Application.Keywords.DeleteAvailableKeywordGroup.Commands
 {
     public sealed class DeleteAvailableKeywordGroupCommandHandler : IRequestHandler<DeleteAvailableKeywordGroupCommand, Result>
     {
-        private readonly IManagerDbContext _dbContext;
+        private readonly IManagerDbContext _managerDbContext;
+        private readonly IWebsiteDbContext _websiteDbContext;
 
-        public DeleteAvailableKeywordGroupCommandHandler(IManagerDbContext dbContext)
+        public DeleteAvailableKeywordGroupCommandHandler(IManagerDbContext dbContext, IWebsiteDbContext websiteDbContext)
         {
-            _dbContext = dbContext;
+            _managerDbContext = dbContext;
+            _websiteDbContext = websiteDbContext;
         }
 
         public async Task<Result> Handle(DeleteAvailableKeywordGroupCommand request, CancellationToken cancellationToken)
         {
-            KeywordGroup keywordGroup = await _dbContext.KeywordGroups
+            Domain.Entities.KeywordGroup keywordGroup = await _managerDbContext.KeywordGroups
                 .Where(x => x.Id == request.KeywordGroupId)
                 .Include(x => x.KeywordsInKeywordGroup)
                 .SingleAsync();
 
-            List<Keyword> keywords = await _dbContext.Keywords
+            List<Domain.Entities.Keyword> keywords = await _managerDbContext.Keywords
                 .Where(x => keywordGroup.KeywordsInKeywordGroup
                     .Select(z => z.KeywordId)
                     .Contains(x.Id) && x.KeywordsInKeywordGroup.Count == 1)
                 .ToListAsync();
 
-            List<ProductKeyword> productKeywords = await _dbContext.ProductKeywords
+            List<Domain.Entities.ProductKeyword> productKeywords = await _managerDbContext.ProductKeywords
                 .Where(x => keywordGroup.KeywordsInKeywordGroup
                     .Select(z => z.KeywordId)
                     .Contains(x.KeywordId) && 
@@ -36,11 +38,37 @@ namespace Manager.Application.Keywords.DeleteAvailableKeywordGroup.Commands
                         x.Product.KeywordGroupsBelongingToProduct.Count == 1)
                 .ToListAsync();
 
-            _dbContext.Keywords.RemoveRange(keywords);
-            _dbContext.ProductKeywords.RemoveRange(productKeywords);
-            _dbContext.KeywordGroups.Remove(keywordGroup);
+            _managerDbContext.Keywords.RemoveRange(keywords);
+            _managerDbContext.ProductKeywords.RemoveRange(productKeywords);
+            _managerDbContext.KeywordGroups.Remove(keywordGroup);
 
-            await _dbContext.SaveChangesAsync();
+
+
+
+            List<Website.Domain.Entities.Keyword> websiteKeywords = await _websiteDbContext.Keywords
+                .Where(x => keywords
+                    .Select(x => x.Id)
+                    .Contains(x.Id))
+                .ToListAsync();
+
+            _websiteDbContext.Keywords.RemoveRange(websiteKeywords);
+
+
+
+            List<Website.Domain.Entities.ProductKeyword> websiteProductKeywords = await _websiteDbContext.ProductKeywords
+                    .Where(x => productKeywords
+                        .Select(z => z.KeywordId)
+                        .Contains(x.KeywordId) &&
+                            productKeywords
+                                .Select(z => z.ProductId)
+                                .Contains(x.ProductId))
+                    .ToListAsync();
+
+            _websiteDbContext.ProductKeywords.RemoveRange(websiteProductKeywords);
+
+
+            await _websiteDbContext.SaveChangesAsync();
+            await _managerDbContext.SaveChangesAsync();
 
             return Result.Succeeded();
         }

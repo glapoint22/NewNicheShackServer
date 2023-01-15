@@ -1,9 +1,8 @@
 ﻿using FluentValidation;
 using MediatR;
 using Shared.Common.Classes;
-using Website.Application.Common.Classes;
 
-namespace Website.Application.Common.Behaviors
+namespace Shared.Common.Behaviors
 {
     public sealed class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
         where TRequest : IRequest<TResponse>

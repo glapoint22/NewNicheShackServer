@@ -24,11 +24,14 @@ namespace Manager.Application.Products.DeleteProduct.Commands
             await _managerDbContext.SaveChangesAsync();
 
 
+            Website.Domain.Entities.Product? websiteProduct = await _websiteDbContext.Products.FindAsync(request.Id);
 
-            Website.Domain.Entities.Product websiteProduct = (await _websiteDbContext.Products.FindAsync(request.Id))!;
+            if (websiteProduct != null)
+            {
+                _websiteDbContext.Products.Remove(websiteProduct);
+                await _websiteDbContext.SaveChangesAsync();
+            }
 
-            _websiteDbContext.Products.Remove(websiteProduct);
-            await _websiteDbContext.SaveChangesAsync();
 
             return Result.Succeeded();
         }

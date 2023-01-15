@@ -4,18 +4,21 @@ using Manager.Domain.Events;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Shared.Common.Classes;
+using Website.Application.Common.Interfaces;
 
 namespace Manager.Application.Keywords.RemoveSelectedKeywordGroup.Commands
 {
     public sealed class RemoveSelectedKeywordGroupCommandHandler : IRequestHandler<RemoveSelectedKeywordGroupCommand, Result>
     {
         private readonly IManagerDbContext _dbContext;
-        private readonly IAuthService _authService;
+        private readonly Application.Common.Interfaces.IAuthService _authService;
+        private readonly IWebsiteDbContext _websiteDbContext;
 
-        public RemoveSelectedKeywordGroupCommandHandler(IManagerDbContext dbContext, IAuthService authService)
+        public RemoveSelectedKeywordGroupCommandHandler(IManagerDbContext dbContext, Application.Common.Interfaces.IAuthService authService, IWebsiteDbContext websiteDbContext)
         {
             _dbContext = dbContext;
             _authService = authService;
+            _websiteDbContext = websiteDbContext;
         }
 
         public async Task<Result> Handle(RemoveSelectedKeywordGroupCommand request, CancellationToken cancellationToken)
@@ -60,6 +63,33 @@ namespace Manager.Application.Keywords.RemoveSelectedKeywordGroup.Commands
 
                 string userId = _authService.GetUserIdFromClaims();
                 productKeywords[0].AddDomainEvent(new ProductModifiedEvent(request.ProductId, userId));
+
+
+
+
+
+                List<Website.Domain.Entities.Keyword> websiteKeywords = await _websiteDbContext.Keywords
+                .Where(x => keywords
+                    .Select(x => x.Id)
+                    .Contains(x.Id))
+                .ToListAsync();
+
+                _websiteDbContext.Keywords.RemoveRange(websiteKeywords);
+
+
+
+                List<Website.Domain.Entities.ProductKeyword> websiteProductKeywords = await _websiteDbContext.ProductKeywords
+                        .Where(x => productKeywords
+                            .Select(z => z.KeywordId)
+                            .Contains(x.KeywordId) &&
+                                productKeywords
+                                    .Select(z => z.ProductId)
+                                    .Contains(x.ProductId))
+                        .ToListAsync();
+
+                _websiteDbContext.ProductKeywords.RemoveRange(websiteProductKeywords);
+
+                await _websiteDbContext.SaveChangesAsync();
             }
 
 
