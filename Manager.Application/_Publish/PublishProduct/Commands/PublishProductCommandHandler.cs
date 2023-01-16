@@ -1,35 +1,25 @@
-﻿using Manager.Application.Common.Interfaces;
+﻿using Manager.Application._Publish.Common.Classes;
+using Manager.Application.Common.Interfaces;
 using Manager.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Shared.Common.Classes;
 using Website.Application.Common.Interfaces;
-using IAuthService = Manager.Application.Common.Interfaces.IAuthService;
-using IMediaService = Manager.Application.Common.Interfaces.IMediaService;
 
 namespace Manager.Application._Publish.PublishProduct.Commands
 {
-    public sealed class PublishProductCommandHandler : IRequestHandler<PublishProductCommand, Result>
+    public sealed class PublishProductCommandHandler : Publish, IRequestHandler<PublishProductCommand, Result>
     {
-        private readonly IManagerDbContext _managerDbContext;
-        private readonly IWebsiteDbContext _websiteDbContext;
-        private readonly IMediaService _mediaService;
-        private readonly IAuthService _authService;
-        private readonly IConfiguration _configuration;
-
-        public PublishProductCommandHandler(IManagerDbContext managerDbContext, IWebsiteDbContext websiteDbContext, IMediaService mediaService, IAuthService authService, IConfiguration configuration)
+        public PublishProductCommandHandler(
+            IWebsiteDbContext websiteDbContext,
+            IManagerDbContext managerDbContext,
+            Application.Common.Interfaces.IMediaService mediaService,
+            Application.Common.Interfaces.IAuthService authService,
+            IConfiguration configuration) : base(websiteDbContext, managerDbContext, mediaService, authService, configuration)
         {
-            _managerDbContext = managerDbContext;
-            _websiteDbContext = websiteDbContext;
-            _mediaService = mediaService;
-            _authService = authService;
-            _configuration = configuration;
         }
 
-
-
-        
 
 
 
@@ -295,38 +285,7 @@ namespace Manager.Application._Publish.PublishProduct.Commands
             // If we have media ids from manager that website does not have
             if (managerMediaIds.Count > 0)
             {
-                // Get media from manager and add it to website
-                List<Website.Domain.Entities.Media> media = await _managerDbContext.Media
-                .Where(x => managerMediaIds.Contains(x.Id))
-                .Select(x => new Website.Domain.Entities.Media
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                    Thumbnail = x.Thumbnail,
-                    ImageSm = x.ImageSm,
-                    ImageMd = x.ImageMd,
-                    ImageLg = x.ImageLg,
-                    ImageAnySize = x.ImageAnySize,
-                    VideoId = x.VideoId,
-                    MediaType = x.MediaType,
-                    VideoType = x.VideoType
-                }).ToListAsync();
-
-                _websiteDbContext.Media.AddRange(media);
-
-
-                List<string> images = new();
-
-                foreach (var m in media)
-                {
-                    if (m.Thumbnail != null && !images.Contains(m.Thumbnail)) images.Add(m.Thumbnail);
-                    if (m.ImageSm != null && !images.Contains(m.ImageSm)) images.Add(m.ImageSm);
-                    if (m.ImageMd != null && !images.Contains(m.ImageMd)) images.Add(m.ImageMd);
-                    if (m.ImageLg != null && !images.Contains(m.ImageLg)) images.Add(m.ImageLg);
-                    if (m.ImageAnySize != null && !images.Contains(m.ImageAnySize)) images.Add(m.ImageAnySize);
-                }
-
-                HttpResponseMessage result = await _mediaService.PostImages(images, _configuration["Website:Images"], _authService.GetAccessTokenFromHeader()!);
+                await PostImages(managerMediaIds);
             }
         }
 

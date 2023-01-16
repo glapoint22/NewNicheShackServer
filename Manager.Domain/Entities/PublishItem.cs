@@ -52,7 +52,7 @@ namespace Manager.Domain.Entities
         {
             PublishItem publishItem = new()
             {
-                PageId = emailId,
+                EmailId = emailId,
                 UserId = userId,
                 PublishType = PublishType.Email,
                 PublishStatus = publishStatus

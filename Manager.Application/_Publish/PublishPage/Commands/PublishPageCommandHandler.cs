@@ -1,22 +1,25 @@
-﻿using Manager.Application.Common.Interfaces;
+﻿using Manager.Application._Publish.Common.Classes;
+using Manager.Application.Common.Interfaces;
 using Manager.Domain.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Shared.Common.Classes;
 using Website.Application.Common.Interfaces;
 
 namespace Manager.Application._Publish.PublishPage.Commands
 {
-    public sealed class PublishPageCommandHandler : IRequestHandler<PublishPageCommand, Result>
+    public sealed class PublishPageCommandHandler : Publish, IRequestHandler<PublishPageCommand, Result>
     {
-        private readonly IManagerDbContext _managerDbContext;
-        private readonly IWebsiteDbContext _websiteDbContext;
-
-        public PublishPageCommandHandler(IManagerDbContext managerDbContext, IWebsiteDbContext websiteDbContext)
+        public PublishPageCommandHandler(
+            IWebsiteDbContext websiteDbContext,
+            IManagerDbContext managerDbContext,
+            Application.Common.Interfaces.IMediaService mediaService,
+            Application.Common.Interfaces.IAuthService authService,
+            IConfiguration configuration) : base(websiteDbContext, managerDbContext, mediaService, authService, configuration)
         {
-            _managerDbContext = managerDbContext;
-            _websiteDbContext = websiteDbContext;
         }
+
 
 
         // ---------------------------------------------------------------------------------- Handle -------------------------------------------------------------------------------
@@ -35,6 +38,9 @@ namespace Manager.Application._Publish.PublishPage.Commands
                 .Include(x => x.PageSubniches)
                     .ThenInclude(x => x.Subniche)
                 .SingleAsync();
+
+
+                await PublishMedia(page);
 
 
                 if (publishItem.PublishStatus == PublishStatus.New)
@@ -101,6 +107,50 @@ namespace Manager.Application._Publish.PublishPage.Commands
                 _websiteDbContext.Keywords.AddRange(keywords);
             }
         }
+
+
+
+
+
+
+
+        // ------------------------------------------------------------------------------ Publish Media ---------------------------------------------------------------------------
+        private async Task PublishMedia(Domain.Entities.Page page)
+        {
+            // Get the media ids from website that this page is using
+            List<Guid> websiteMediaIds = new();
+
+
+            Website.Domain.Entities.Page? websitePage = await _websiteDbContext.Pages
+                .Where(x => x.Id == page.Id)
+                .SingleOrDefaultAsync();
+
+            if (websitePage != null)
+            {
+                websiteMediaIds = GetMediaIds(websitePage.Content);
+            }
+
+
+            // Get the media ids from manager that website does not have
+            List<Guid> managerMediaIds = GetMediaIds(page.Content)
+                .Where(x => !websiteMediaIds
+                    .Contains(x))
+                .ToList();
+
+
+
+            // If we have media ids from manager that website does not have
+            if (managerMediaIds.Count > 0)
+            {
+                await PostImages(managerMediaIds);
+            }
+        }
+
+
+
+
+
+
 
 
 
@@ -306,7 +356,7 @@ namespace Manager.Application._Publish.PublishPage.Commands
 
 
 
-        
+
 
 
 

@@ -1,4 +1,5 @@
 ﻿using Manager.Application._Publish.GetPublishItems.Queries;
+using Manager.Application._Publish.PublishEmail.Commands;
 using Manager.Application._Publish.PublishPage.Commands;
 using Manager.Application._Publish.PublishProduct.Commands;
 using Manager.Application.Common.Interfaces;
@@ -33,6 +34,27 @@ namespace Manager.Api.Controllers
         {
             return SetResponse(await _mediator.Send(new GetPublishItemsQuery()));
         }
+
+
+
+
+
+
+
+        // ------------------------------------------------------------------------------- Publish Email -------------------------------------------------------------------------
+        [HttpGet]
+        [Route("PublishEmail")]
+        public async Task<ActionResult> PublishEmail(Guid emailId)
+        {
+            return SetResponse(await _mediator.Send(new PublishEmailCommand(emailId)));
+        }
+
+
+
+
+
+
+
 
 
 
