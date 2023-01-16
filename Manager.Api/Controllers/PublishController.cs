@@ -1,8 +1,8 @@
 ﻿using Manager.Application._Publish.GetPublishItems.Queries;
+using Manager.Application._Publish.PublishPage.Commands;
 using Manager.Application._Publish.PublishProduct.Commands;
 using Manager.Application.Common.Interfaces;
 using Manager.Domain.Entities;
-using Manager.Infrastructure.Persistence;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -33,6 +33,25 @@ namespace Manager.Api.Controllers
         {
             return SetResponse(await _mediator.Send(new GetPublishItemsQuery()));
         }
+
+
+
+
+
+
+
+
+        // -------------------------------------------------------------------------------- Publish Page -------------------------------------------------------------------------
+        [HttpGet]
+        [Route("PublishPage")]
+        public async Task<ActionResult> PublishPage(Guid pageId)
+        {
+            return SetResponse(await _mediator.Send(new PublishPageCommand(pageId)));
+        }
+
+
+
+
 
 
 

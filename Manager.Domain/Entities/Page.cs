@@ -102,9 +102,15 @@ namespace Manager.Domain.Entities
                 UrlName = null;
             }
 
-            // Remove any page subniches or page keyword groups
-            _pageSubniches.Clear();
-            _pageKeywordGroups.Clear();
+
+            if (PageType != (int)Shared.PageBuilder.Enums.PageType.Browse)
+            {
+                _pageSubniches.Clear();
+            }
+            else if (PageType != (int)Shared.PageBuilder.Enums.PageType.Search)
+            {
+                _pageKeywordGroups.Clear();
+            }
         }
 
 
