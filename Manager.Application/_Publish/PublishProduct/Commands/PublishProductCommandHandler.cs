@@ -29,29 +29,7 @@ namespace Manager.Application._Publish.PublishProduct.Commands
 
 
 
-        // ------------------------------------------------------------------------------- Get Product ----------------------------------------------------------------------------
-        private async Task<Domain.Entities.Product> GetProduct(Guid productId)
-        {
-            return await _managerDbContext.Products
-                .AsSplitQuery()
-                .Where(x => x.Id == productId)
-                .Include(x => x.Subniche)
-                    .ThenInclude(x => x.Niche)
-                .Include(x => x.ProductFilters)
-                    .ThenInclude(x => x.FilterOption)
-                .Include(x => x.ProductKeywords)
-                .Include(x => x.ProductMedia)
-                .Include(x => x.ProductPrices)
-                .Include(x => x.ProductsInProductGroup)
-                .Include(x => x.PricePoints)
-                    .ThenInclude(x => x.ProductPrice)
-                .Include(x => x.Subproducts)
-                .SingleAsync();
-        }
-
-
-
-
+        
 
 
 
@@ -60,26 +38,24 @@ namespace Manager.Application._Publish.PublishProduct.Commands
         public async Task<Result> Handle(PublishProductCommand request, CancellationToken cancellationToken)
         {
             Domain.Entities.PublishItem? publishItem = await _managerDbContext.PublishItems
-                .Where(x => x.ProductId == request.ProductId)
+                .Where(x => x.ProductId == request.Product.Id)
                 .SingleOrDefaultAsync();
 
             if (publishItem != null)
             {
                 if (publishItem.PublishStatus == PublishStatus.New)
                 {
-                    await PostProduct(request.ProductId);
+                    await PostProduct(request.Product);
                 }
                 else
                 {
-                    await UpdateProduct(request.ProductId);
+                    await SetProduct(request.Product);
                 }
 
                 // Remove the publish item
                 _managerDbContext.PublishItems.Remove(publishItem);
                 await _managerDbContext.SaveChangesAsync();
             }
-
-
 
             return Result.Succeeded();
         }
@@ -93,11 +69,8 @@ namespace Manager.Application._Publish.PublishProduct.Commands
 
 
         // ------------------------------------------------------------------------------- Post Product ---------------------------------------------------------------------------
-        private async Task PostProduct(Guid productId)
+        private async Task PostProduct(Domain.Entities.Product product)
         {
-            // Get the product from manager
-            Domain.Entities.Product product = await GetProduct(productId);
-
             // Media
             await PublishMedia(product);
 
@@ -114,7 +87,7 @@ namespace Manager.Application._Publish.PublishProduct.Commands
             await PublishKeywords(product);
 
             // Product
-            PuslishProduct(product);
+            PublishProduct(product);
 
             // Product Prices
             PublishProductPrices(product);
@@ -540,8 +513,8 @@ namespace Manager.Application._Publish.PublishProduct.Commands
 
 
 
-        // ---------------------------------------------------------------------------- Puslish Product ---------------------------------------------------------------------------
-        private void PuslishProduct(Domain.Entities.Product product)
+        // ---------------------------------------------------------------------------- Publish Product ---------------------------------------------------------------------------
+        private void PublishProduct(Domain.Entities.Product product)
         {
             Website.Domain.Entities.Product websiteProduct = new()
             {
@@ -559,6 +532,44 @@ namespace Manager.Application._Publish.PublishProduct.Commands
             };
 
             _websiteDbContext.Products.Add(websiteProduct);
+        }
+
+
+
+
+
+
+
+
+
+
+        // ----------------------------------------------------------------------------- Update Product ---------------------------------------------------------------------------
+        private async Task UpdateProduct(Domain.Entities.Product product)
+        {
+            Website.Domain.Entities.Product websiteProduct = await _websiteDbContext.Products
+                .Where(x => x.Id == product.Id)
+                .Include(x => x.ProductPrices)
+                .SingleAsync();
+
+            websiteProduct.ImageId = (Guid)product.ImageId!;
+            websiteProduct.Name = product.Name;
+            websiteProduct.UrlName = product.UrlName;
+            websiteProduct.Description = product.Description!;
+            websiteProduct.Hoplink = product.Hoplink!;
+            websiteProduct.ShippingType = product.ShippingType;
+            websiteProduct.RecurringPayment = product.RecurringPayment;
+
+            foreach (var productPrice in product.ProductPrices)
+            {
+                var websiteProductPrice = websiteProduct.ProductPrices
+                    .Where(x => x.Id == productPrice.Id)
+                    .SingleOrDefault();
+
+                if (websiteProductPrice != null)
+                {
+                    websiteProductPrice.Price = productPrice.Price;
+                }
+            }
         }
 
 
@@ -625,13 +636,9 @@ namespace Manager.Application._Publish.PublishProduct.Commands
 
 
 
-        // ----------------------------------------------------------------------------- Update Product ---------------------------------------------------------------------------
-        private async Task UpdateProduct(Guid productId)
+        // ------------------------------------------------------------------------------- Set Product ----------------------------------------------------------------------------
+        private async Task SetProduct(Domain.Entities.Product product)
         {
-            // Get the product from manager
-            Domain.Entities.Product product = await GetProduct(productId);
-
-            // Media
             await PublishMedia(product);
 
             // Niche
@@ -663,6 +670,9 @@ namespace Manager.Application._Publish.PublishProduct.Commands
 
             // Subproducts
             await UpdateSubproducts(product);
+
+            // Product
+            await UpdateProduct(product);
 
             await _websiteDbContext.SaveChangesAsync();
         }
@@ -999,6 +1009,16 @@ namespace Manager.Application._Publish.PublishProduct.Commands
                 {
                     _websiteDbContext.PricePoints.Remove(pp);
                     _websiteDbContext.ProductPrices.Remove(pp.ProductPrice);
+                }
+
+                if (managerPricePointIds.Count == 0)
+                {
+                    _websiteDbContext.ProductPrices.Add(new Website.Domain.Entities.ProductPrice
+                    {
+                        Id = product.ProductPrices[0].Id,
+                        ProductId = product.Id,
+                        Price = product.ProductPrices[0].Price
+                    });
                 }
             }
 

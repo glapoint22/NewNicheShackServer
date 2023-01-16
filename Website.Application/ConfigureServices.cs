@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using Shared.Common.Behaviors;
 using System.Reflection;
 using Website.Application.Common.Behaviors;
 
