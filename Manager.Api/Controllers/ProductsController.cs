@@ -7,6 +7,7 @@ using Manager.Application.Products.GetDisabledProducts.Queries;
 using Manager.Application.Products.GetProduct.Queries;
 using Manager.Application.Products.GetProductParent.Queries;
 using Manager.Application.Products.GetProducts.Queries;
+using Manager.Application.Products.MoveProduct.Commands;
 using Manager.Application.Products.RemovePricePoint.Commands;
 using Manager.Application.Products.RemoveProductMedia.Commands;
 using Manager.Application.Products.RemoveSubproduct.Commands;
@@ -157,6 +158,15 @@ namespace Manager.Api.Controllers
         }
 
 
+
+
+        // -------------------------------------------------------------------------------- Move Product -------------------------------------------------------------------------
+        [HttpPut]
+        [Route("Move")]
+        public async Task<ActionResult> MoveProduct(MoveProductCommand MoveProduct)
+        {
+            return SetResponse(await _mediator.Send(MoveProduct));
+        }
 
 
 

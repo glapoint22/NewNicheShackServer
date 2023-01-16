@@ -1,8 +1,10 @@
 ﻿using Manager.Application.Subniches.AddSubniche.Commands;
 using Manager.Application.Subniches.CheckDuplicateSubniche.Queries;
 using Manager.Application.Subniches.DeleteSubniche.Commands;
+using Manager.Application.Subniches.GetAllSubniches.Queries;
 using Manager.Application.Subniches.GetSubnicheParent.Queries;
 using Manager.Application.Subniches.GetSubniches.Queries;
+using Manager.Application.Subniches.MoveSubniche.Commands;
 using Manager.Application.Subniches.SearchSubniches.Queries;
 using Manager.Application.Subniches.UpdateSubnicheName.Commands;
 using MediatR;
@@ -60,6 +62,17 @@ namespace Manager.Api.Controllers
 
 
 
+        // ------------------------------------------------------------------------------ Get All Subniches ----------------------------------------------------------------------
+        [HttpGet]
+        [Route("All")]
+        public async Task<ActionResult> GetAllSubniches()
+        {
+            return SetResponse(await _mediator.Send(new GetAllSubnichesQuery()));
+        }
+
+
+
+
 
         // ----------------------------------------------------------------------------- Get Subniche Parent ---------------------------------------------------------------------
         [HttpGet]
@@ -81,6 +94,21 @@ namespace Manager.Api.Controllers
         {
             return SetResponse(await _mediator.Send(new GetSubnichesQuery(parentId)));
         }
+
+
+
+
+
+        // -------------------------------------------------------------------------------- Move Subniche ------------------------------------------------------------------------
+        [HttpPut]
+        [Route("Move")]
+        public async Task<ActionResult> MoveSubniche(MoveSubnicheCommand MoveSubniche)
+        {
+            return SetResponse(await _mediator.Send(MoveSubniche));
+        }
+
+
+
 
 
         // ------------------------------------------------------------------------------ Search Subniches -----------------------------------------------------------------------
