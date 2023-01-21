@@ -487,7 +487,6 @@ namespace Manager.Application._Publish.PublishProduct.Commands
                 ShippingType = product.ShippingType,
                 RecurringPayment = product.RecurringPayment,
                 Date = product.Date,
-                Disabled = product.Disabled
             };
 
             _websiteDbContext.Products.Add(websiteProduct);

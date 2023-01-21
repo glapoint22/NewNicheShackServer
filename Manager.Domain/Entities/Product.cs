@@ -20,7 +20,6 @@ namespace Manager.Domain.Entities
         public int ShippingType { get; set; }
         public RecurringPayment RecurringPayment { get; set; } = new RecurringPayment();
         public DateTime Date { get; set; }
-        public bool Disabled { get; set; }
 
         public Vendor Vendor { get; set; } = null!;
         public Subniche Subniche { get; set; } = null!;
