@@ -1,5 +1,6 @@
 ﻿using Manager.Application.Keywords.AddAvailableKeyword.Commands;
 using Manager.Application.Keywords.AddAvailableKeywordGroup.Commands;
+using Manager.Application.Keywords.AddAvailableKeywords.Commands;
 using Manager.Application.Keywords.AddSelectedKeywordFromKeywordGroup.Commands;
 using Manager.Application.Keywords.AddSelectedKeywordGroup.Commands;
 using Manager.Application.Keywords.DeleteAvailableKeyword.Commands;
@@ -45,6 +46,20 @@ namespace Manager.Api.Controllers
         public async Task<ActionResult> AddAvailableKeyword(AddAvailableKeywordCommand addAvailableKeyword)
         {
             return SetResponse(await _mediator.Send(addAvailableKeyword));
+        }
+
+
+
+
+
+
+
+        // ------------------------------------------------------------------------ Add Available Keywords -----------------------------------------------------------------------
+        [HttpPost]
+        [Route("AvailableKeywords/List")]
+        public async Task<ActionResult> AddAvailableKeywords(AddAvailableKeywordsCommand addAvailableKeywords)
+        {
+            return SetResponse(await _mediator.Send(addAvailableKeywords));
         }
 
 
