@@ -2,7 +2,7 @@
 
 namespace Manager.Domain.Entities
 {
-    public sealed class Subniche
+    public sealed class Subniche : Entity
     {
         public Guid Id { get; set; }
         public Guid NicheId { get; set; }

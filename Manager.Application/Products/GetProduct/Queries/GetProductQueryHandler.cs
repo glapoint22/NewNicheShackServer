@@ -43,7 +43,10 @@ namespace Manager.Application.Products.GetProduct.Queries
                     Vendor = new
                     {
                         Id = x.VendorId,
-                        x.Vendor.Name
+                        x.Vendor.Name,
+                        x.Vendor.PrimaryFirstName,
+                        x.Vendor.PrimaryLastName,
+                        x.Vendor.PrimaryEmail
                     }
                 })
                 .SingleAsync();

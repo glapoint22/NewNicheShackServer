@@ -76,7 +76,6 @@ namespace Manager.Domain.Entities
         {
             Product product = new()
             {
-                Id = Guid.NewGuid(),
                 SubnicheId = subnicheId,
                 Name = name,
                 UrlName = Utility.GenerateUrlName(name)

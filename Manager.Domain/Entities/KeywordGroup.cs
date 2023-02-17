@@ -15,7 +15,7 @@ namespace Manager.Domain.Entities
         {
             KeywordGroup keywordGroup = new()
             {
-                Name = name,
+                Name = name.Trim(),
                 ForProduct = forProduct
             };
 

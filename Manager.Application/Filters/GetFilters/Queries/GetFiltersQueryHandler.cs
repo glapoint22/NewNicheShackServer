@@ -17,6 +17,7 @@ namespace Manager.Application.Filters.GetFilters.Queries
         public async Task<Result> Handle(GetFiltersQuery request, CancellationToken cancellationToken)
         {
             var filters = await _dbContext.Filters
+                .OrderBy(x => x.Name)
                 .Select(x => new
                 {
                     x.Id,

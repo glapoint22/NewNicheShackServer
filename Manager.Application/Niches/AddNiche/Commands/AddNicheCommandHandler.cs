@@ -1,5 +1,6 @@
 ﻿using Manager.Application.Common.Interfaces;
 using Manager.Domain.Entities;
+using Manager.Domain.Events;
 using MediatR;
 using Shared.Common.Classes;
 
@@ -19,6 +20,8 @@ namespace Manager.Application.Niches.AddNiche.Commands
             Niche niche = Niche.Create(request.Name);
 
             _dbContext.Niches.Add(niche);
+
+            niche.AddDomainEvent(new HierarchyItemCreatedEvent(request.Name));
             await _dbContext.SaveChangesAsync();
 
             return Result.Succeeded(niche.Id);

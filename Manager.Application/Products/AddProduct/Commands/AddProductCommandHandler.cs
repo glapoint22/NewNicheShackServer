@@ -23,7 +23,8 @@ namespace Manager.Application.Products.AddProduct.Commands
 
             string userId = _authService.GetUserIdFromClaims();
 
-            product.AddDomainEvent(new ProductCreatedEvent(product.Id, userId));
+            product.AddDomainEvent(new ProductCreatedEvent(request.Name, product.Id, userId));
+
             await _dbContext.SaveChangesAsync();
 
             return Result.Succeeded(product.Id);
