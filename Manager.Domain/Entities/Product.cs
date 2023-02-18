@@ -78,7 +78,8 @@ namespace Manager.Domain.Entities
             {
                 SubnicheId = subnicheId,
                 Name = name,
-                UrlName = Utility.GenerateUrlName(name)
+                UrlName = Utility.GenerateUrlName(name),
+                Date = DateTime.UtcNow
             };
 
             return product;

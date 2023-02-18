@@ -13,6 +13,13 @@ namespace Manager.Application._Publish.PublishProduct.Validators
                 .NotEmpty()
                 .WithMessage("Name cannot be empty");
 
+
+            // Vendor
+            RuleFor(x => x.Product.Vendor)
+                .Must(x => x != null)
+                .WithMessage("Vendor cannot be empty");
+
+
             // Price
             RuleFor(x => x.Product.ProductPrices)
                 .Must(x => x.Count > 0)
