@@ -257,20 +257,20 @@ namespace Manager.Application._Publish.PublishProduct.Commands
 
             // Get the media ids from manager that website does not have
             List<Guid> managerMediaIds = product.ProductMedia
-                .Where(x => !websiteMediaIds
-                    .Contains((Guid)x.MediaId!))
+                .Where(x => x.MediaId != null && !websiteMediaIds
+                    .Contains((Guid)x.MediaId))
                 .Select(x => (Guid)x.MediaId!)
                 .ToList();
 
             List<Guid> pricePointImageids = product.PricePoints
-                 .Where(x => !websiteMediaIds
-                     .Contains((Guid)x.ImageId!))
+                 .Where(x => x.ImageId != null && !websiteMediaIds
+                     .Contains((Guid)x.ImageId))
                  .Select(x => (Guid)x.ImageId!)
                  .ToList();
 
             List<Guid> subproductImageIds = product.Subproducts
-                 .Where(x => !websiteMediaIds
-                     .Contains((Guid)x.ImageId!))
+                 .Where(x => x.ImageId != null && !websiteMediaIds
+                     .Contains((Guid)x.ImageId))
                  .Select(x => (Guid)x.ImageId!)
                  .ToList();
 
