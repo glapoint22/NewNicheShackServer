@@ -56,7 +56,7 @@ namespace Manager.Application.Keywords.RemoveSelectedKeywordGroup.Commands
             _dbContext.KeywordGroupsBelongingToProduct.Remove(keywordGroupBelongingToProduct);
 
 
-            if (productKeywords.Count > 0 && keywords.Count > 0)
+            if (productKeywords.Count > 0 || keywords.Count > 0)
             {
                 _dbContext.ProductKeywords.RemoveRange(productKeywords);
                 _dbContext.Keywords.RemoveRange(keywords);

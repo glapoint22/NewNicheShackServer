@@ -106,7 +106,6 @@ namespace Manager.Api.Controllers
 
         // --------------------------------------------------------------------------- Delete Notifications ----------------------------------------------------------------------
         [HttpDelete]
-        [Route("DeleteNotifications")]
         public async Task<ActionResult> DeleteNotifications(Guid notificationGroupId, [FromQuery] List<Guid> notificationIds)
         {
             return SetResponse(await _mediator.Send(new DeleteNotificationsCommand(notificationGroupId, notificationIds)));

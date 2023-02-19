@@ -15,7 +15,7 @@ namespace Manager.Application._Publish.PublishProduct.Validators
 
 
             // Vendor
-            RuleFor(x => x.Product.Vendor)
+            RuleFor(x => x.Product.VendorId)
                 .Must(x => x != null)
                 .WithMessage("Vendor cannot be empty");
 
