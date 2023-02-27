@@ -39,7 +39,7 @@ namespace Manager.Application.Products.AddProduct.EventHandlers
             // Add the keyword to the product
             await AddKeywordToProduct(notification.ProductId, keyword);
 
-
+            await _dbContext.SaveChangesAsync();
 
             // Add the niche keyword and group to the product
             string nicheName = await _dbContext.Products
@@ -50,7 +50,7 @@ namespace Manager.Application.Products.AddProduct.EventHandlers
             await AddHierarchyItemToProduct(nicheName, notification.ProductId);
 
 
-
+            await _dbContext.SaveChangesAsync();
 
             // Add the subniche keyword and group to the product
             string subnicheName = await _dbContext.Products
@@ -130,8 +130,7 @@ namespace Manager.Application.Products.AddProduct.EventHandlers
             if (keyword != null)
             {
                 KeywordGroup? keywordGroup = await _dbContext.KeywordGroups
-                    .Where(x => x.KeywordsInKeywordGroup
-                        .Any(z => z.KeywordId == keyword.Id))
+                    .Where(x => x.Name.ToLower() == hierarchyItemName.ToLower())
                     .SingleOrDefaultAsync();
 
                 if (keywordGroup != null)
@@ -139,6 +138,14 @@ namespace Manager.Application.Products.AddProduct.EventHandlers
                     // Add the keyword group to the product
                     await AddKeywordGroupToProduct(productId, keywordGroup);
 
+                    // Get all keywords in this keyword group and add them to the product
+                    var keywordIds = await _dbContext.KeywordsInKeywordGroup
+                        .Where(x => x.KeywordGroupId == keywordGroup.Id && !x.Keyword.ProductKeywords
+                            .Any(z => z.ProductId == productId) && x.KeywordId != keyword.Id)
+                        .Select(x => x.KeywordId)
+                        .ToListAsync();
+
+                    _dbContext.ProductKeywords.AddRange(keywordIds.Select(x => ProductKeyword.Create(productId, x)));
 
                     // Add the keyword to the product
                     await AddKeywordToProduct(productId, keyword);
