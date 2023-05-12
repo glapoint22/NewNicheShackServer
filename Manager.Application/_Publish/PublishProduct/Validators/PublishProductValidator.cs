@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Duende.IdentityServer.Extensions;
+using FluentValidation;
 using Manager.Application._Publish.PublishProduct.Commands;
 using Shared.Common.Enums;
 
@@ -34,7 +35,7 @@ namespace Manager.Application._Publish.PublishProduct.Validators
             RuleFor(x => x.Product.Description!)
                 .Custom((description, context) =>
                 {
-                    if (description == null || !description.Contains("text"))
+                    if (string.IsNullOrEmpty(description))
                     {
                         context.AddFailure("Description cannot be empty");
                     }
@@ -74,7 +75,7 @@ namespace Manager.Application._Publish.PublishProduct.Validators
 
 
                     // Description
-                    count = subproducts.Count(x => x.Description == null || !x.Description!.Contains("text"));
+                    count = subproducts.Count(x => string.IsNullOrEmpty(x.Description));
                     if (count > 0)
                     {
                         context.AddFailure("Description missing on " + count + " subproduct" + (count > 1 ? "s" : ""));

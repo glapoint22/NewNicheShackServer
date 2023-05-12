@@ -5,6 +5,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Shared.Common.Classes;
+using System.Text.RegularExpressions;
 using Website.Application.Common.Interfaces;
 
 namespace Manager.Application._Publish.PublishProduct.Commands
@@ -482,7 +483,7 @@ namespace Manager.Application._Publish.PublishProduct.Commands
                 ImageId = (Guid)product.ImageId!,
                 Name = product.Name,
                 UrlName = product.UrlName,
-                Description = product.Description!,
+                Description = GetDescription(product.Description!),
                 Hoplink = product.Hoplink!,
                 ShippingType = product.ShippingType,
                 RecurringPayment = product.RecurringPayment,
@@ -495,6 +496,21 @@ namespace Manager.Application._Publish.PublishProduct.Commands
 
 
 
+        // ---------------------------------------------------------------------------- Get Description ---------------------------------------------------------------------------
+        private string GetDescription(string description)
+        {
+            Regex regex = new(@"^.+", RegexOptions.Multiline);
+            MatchCollection matches = regex.Matches(description);
+
+            string htmlDescription = string.Empty;
+
+            foreach (Match match in matches)
+            {
+                htmlDescription += "<p>" + match.Value + "</p>";
+            }
+
+            return htmlDescription;
+        }
 
 
 
@@ -512,7 +528,7 @@ namespace Manager.Application._Publish.PublishProduct.Commands
             websiteProduct.ImageId = (Guid)product.ImageId!;
             websiteProduct.Name = product.Name;
             websiteProduct.UrlName = product.UrlName;
-            websiteProduct.Description = product.Description!;
+            websiteProduct.Description = GetDescription(product.Description!);
             websiteProduct.Hoplink = product.Hoplink!;
             websiteProduct.ShippingType = product.ShippingType;
             websiteProduct.RecurringPayment = product.RecurringPayment;
@@ -578,7 +594,7 @@ namespace Manager.Application._Publish.PublishProduct.Commands
                 {
                     Id = x.Id,
                     Name = x.Name!,
-                    Description = x.Description!,
+                    Description = GetDescription(x.Description!),
                     ProductId = x.ProductId,
                     ImageId = (Guid)x.ImageId!,
                     Value = x.Value,
@@ -1045,7 +1061,7 @@ namespace Manager.Application._Publish.PublishProduct.Commands
                     {
                         Id = sp.Id,
                         Name = sp.Name!,
-                        Description = sp.Description!,
+                        Description = GetDescription(sp.Description!),
                         ProductId = product.Id,
                         ImageId = (Guid)sp.ImageId!,
                         Value = sp.Value,
@@ -1082,7 +1098,7 @@ namespace Manager.Application._Publish.PublishProduct.Commands
                 if (websiteSubProds != null)
                 {
                     websiteSubProds.Name = sp.Name!;
-                    websiteSubProds.Description = sp.Description!;
+                    websiteSubProds.Description = GetDescription(sp.Description!);
                     websiteSubProds.ProductId = product.Id;
                     websiteSubProds.ImageId = (Guid)sp.ImageId!;
                     websiteSubProds.Value = sp.Value;
