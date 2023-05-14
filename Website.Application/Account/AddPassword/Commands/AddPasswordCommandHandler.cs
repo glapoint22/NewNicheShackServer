@@ -49,9 +49,19 @@ namespace Website.Application.Account.AddPassword.Commands
                     // Log in the user
                     List<Claim> claims = _authService.GenerateClaims(user.Id, externalLogInProvider, true);
                     string accessToken = _authService.GenerateAccessToken(claims);
-                    RefreshToken refreshToken = RefreshToken.Create(user.Id, _configuration["TokenValidation:RefreshExpiresInDays"]);
+                    
                     string userData = _userService.GetUserData(user, externalLogInProvider, true);
                     DateTimeOffset? expiration = _authService.GetExpirationFromClaims(claims);
+
+                    // Set the device cookie
+                    string? deviceCookie = _cookieService.GetCookie("device");
+                    string deviceId = deviceCookie ?? Guid.NewGuid().ToString();
+
+                    _cookieService.SetCookie("device", deviceId, expiration);
+
+                    // Create the new refresh token
+                    RefreshToken refreshToken = RefreshToken.Create(user.Id, _configuration["TokenValidation:RefreshExpiresInDays"], deviceId);
+
 
                     // Set the cookies
                     _cookieService.SetCookie("access", accessToken, expiration);

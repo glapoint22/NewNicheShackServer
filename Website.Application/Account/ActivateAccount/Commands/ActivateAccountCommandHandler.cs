@@ -40,9 +40,17 @@ namespace Website.Application.Account.ActivateAccount.Commands
                 // Log in the user
                 List<Claim> claims = _authService.GenerateClaims(user.Id, "user", true);
                 string accessToken = _authService.GenerateAccessToken(claims);
-                RefreshToken refreshToken = RefreshToken.Create(user.Id, _configuration["TokenValidation:RefreshExpiresInDays"]);
+                
                 string userData = _userService.GetUserData(user);
                 DateTimeOffset? expiration = _authService.GetExpirationFromClaims(claims);
+
+                // Set the device cookie
+                string deviceId = Guid.NewGuid().ToString();
+                _cookieService.SetCookie("device", deviceId, expiration);
+
+                // Create the new refresh token
+                RefreshToken refreshToken = RefreshToken.Create(user.Id, _configuration["TokenValidation:RefreshExpiresInDays"], deviceId);
+
 
                 // Set the cookies
                 _cookieService.SetCookie("access", accessToken, expiration);

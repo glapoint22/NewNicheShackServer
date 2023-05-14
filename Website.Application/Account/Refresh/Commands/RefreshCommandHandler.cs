@@ -29,81 +29,116 @@ namespace Website.Application.Account.Refresh.Commands
         public async Task<Result> Handle(RefreshCommand request, CancellationToken cancellationToken)
         {
             RefreshToken newRefreshToken = null!;
+
+            // Get the refresh token cookie
             string? refreshTokenCookie = _cookieService.GetCookie("refresh");
 
-            if (refreshTokenCookie != null)
+            if (refreshTokenCookie == null)
             {
-                string? accessToken = _authService.GetAccessTokenFromHeader();
-
-                if (accessToken != null)
-                {
-                    ClaimsPrincipal? principal = _authService.GetPrincipalFromToken(accessToken);
-
-                    if (principal != null)
-                    {
-                        List<Claim> claims = principal.Claims.ToList();
-
-                        string? userId = claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
-
-                        if (userId != null)
-                        {
-                            RefreshToken? refreshToken = await _dbContext.RefreshTokens
-                                .AsNoTracking()
-                                .Where(x => x.Id == refreshTokenCookie && x.UserId == userId)
-                                .SingleOrDefaultAsync();
-
-                            if (refreshToken != null)
-                            {
-                                if (DateTime.Compare(DateTime.UtcNow, refreshToken.Expiration) < 0)
-                                {
-                                    User user = await _userService.GetUserByIdAsync(userId);
-
-                                    if (user != null)
-                                    {
-                                        accessToken = _authService.GenerateAccessToken(claims);
-                                        newRefreshToken = RefreshToken.Create(user.Id, _configuration["TokenValidation:RefreshExpiresInDays"]);
-
-                                        _dbContext.RefreshTokens.Add(newRefreshToken);
-
-                                        string userData;
-
-                                        if (principal.Claims.Any(x => x.Type == "externalLoginProvider"))
-                                        {
-                                            string provider = principal.FindFirstValue("externalLoginProvider");
-                                            bool hasPassword = principal.FindFirstValue("hasPassword") == "True";
-
-                                            userData = _userService.GetUserData(user, provider, hasPassword);
-                                        }
-                                        else
-                                        {
-                                            userData = _userService.GetUserData(user);
-                                        }
-
-                                        Claim? expirationClaim = principal.FindFirst(ClaimTypes.Expiration);
-                                        DateTimeOffset? expiration = expirationClaim != null ? DateTimeOffset.Parse(expirationClaim.Value) : null;
-
-                                        _cookieService.SetCookie("access", accessToken, expiration);
-                                        _cookieService.SetCookie("refresh", newRefreshToken.Id, expiration);
-                                        _cookieService.SetCookie("user", userData, expiration);
-
-                                        await _dbContext.SaveChangesAsync();
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                return Result.Failed("404");
             }
 
-            if (newRefreshToken != null)
+
+
+            // Get the access token
+            string? accessToken = _authService.GetAccessTokenFromHeader();
+
+            if (accessToken == null)
             {
-                return Result.Succeeded(new
-                {
-                    value = newRefreshToken.Id
-                });
+                return Result.Failed("404");
             }
 
-            return Result.Succeeded();
+
+
+            // Get the claims principal from the token
+            ClaimsPrincipal? principal = _authService.GetPrincipalFromToken(accessToken);
+
+            if (principal == null)
+            {
+                return Result.Failed("404");
+            }
+
+
+
+            // Get the userId from the access token
+            List<Claim> claims = principal.Claims.ToList();
+            string? userId = claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            if (userId == null)
+            {
+                return Result.Failed("404");
+            }
+
+
+
+            // Get the device cookie
+            string? deviceCookie = _cookieService.GetCookie("device");
+
+            if (deviceCookie == null)
+            {
+                return Result.Failed("404");
+            }
+
+
+            // Get the refresh token
+            RefreshToken? refreshToken = await _dbContext.RefreshTokens
+                .AsNoTracking()
+                .Where(x => x.Id == refreshTokenCookie && x.UserId == userId && x.DeviceId == deviceCookie)
+                .SingleOrDefaultAsync();
+
+            if (refreshToken == null)
+            {
+                return Result.Failed("404");
+            }
+
+
+
+            // Check to see if the refresh token has expired
+            if (DateTime.Compare(DateTime.UtcNow, refreshToken.Expiration) > 0)
+            {
+                return Result.Failed("404");
+            }
+
+
+
+            // Get the user
+            User user = await _userService.GetUserByIdAsync(userId);
+
+            if (user == null)
+            {
+                return Result.Failed("404");
+            }
+
+
+            // Get new access and refresh tokens
+            accessToken = _authService.GenerateAccessToken(claims);
+            newRefreshToken = RefreshToken.Create(user.Id, _configuration["TokenValidation:RefreshExpiresInDays"], deviceCookie);
+
+            // Add the new refresh token to the database
+            _dbContext.RefreshTokens.Add(newRefreshToken);
+
+            // Create the user data
+            string userData = user.FirstName + "," + user.LastName + "," + user.Email + "," + user.Image;
+
+            // Set the expiration
+            Claim? expirationClaim = principal.FindFirst(ClaimTypes.Expiration);
+            DateTimeOffset? expiration = expirationClaim != null ? DateTimeOffset.Parse(expirationClaim.Value) : null;
+
+            // Set the cookies
+            _cookieService.SetCookie("access", accessToken, expiration);
+            _cookieService.SetCookie("refresh", newRefreshToken.Id, expiration);
+            _cookieService.SetCookie("user", userData, expiration);
+            _cookieService.SetCookie("device", deviceCookie, expiration);
+
+            // Save changes
+            await _dbContext.SaveChangesAsync();
+
+
+            // Return with the new refresh token ID
+            return Result.Succeeded(new
+            {
+                value = newRefreshToken.Id
+            });
         }
     }
 }

@@ -10,6 +10,9 @@ namespace Manager.Infrastructure.Persistence.Configurations
         {
             builder.Property(x => x.Id)
                 .HasMaxLength(256);
+
+            builder.Property(x => x.DeviceId)
+                .HasMaxLength(256);
         }
     }
 }

@@ -39,15 +39,26 @@ namespace Website.Application.Account.LogIn.Commands
             // Generate the claims and the tokens
             List<Claim> claims = _authService.GenerateClaims(user.Id, "user", request.IsPersistent);
             string accessToken = _authService.GenerateAccessToken(claims);
-            RefreshToken refreshToken = RefreshToken.Create(user.Id, _configuration["TokenValidation:RefreshExpiresInDays"]);
+            
             string userData = _userService.GetUserData(user);
             DateTimeOffset? expiration = _authService.GetExpirationFromClaims(claims);
+
+            // Set the device cookie
+            string? deviceCookie = _cookieService.GetCookie("device");
+            string deviceId = deviceCookie ?? Guid.NewGuid().ToString();
+
+            _cookieService.SetCookie("device", deviceId, expiration);
+
+            // Create the new refresh token
+            RefreshToken refreshToken = RefreshToken.Create(user.Id, _configuration["TokenValidation:RefreshExpiresInDays"], deviceId);
+
 
             // Set the cookies
             _cookieService.SetCookie("access", accessToken, expiration);
             _cookieService.SetCookie("refresh", refreshToken.Id, expiration);
             _cookieService.SetCookie("user", userData, expiration);
 
+            // Add the refresh token to the database
             _dbContext.RefreshTokens.Add(refreshToken);
             await _dbContext.SaveChangesAsync();
 

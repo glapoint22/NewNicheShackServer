@@ -35,6 +35,7 @@ namespace Website.Application.Account.LogOut.Commands
             _cookieService.DeleteCookie("access");
             _cookieService.DeleteCookie("refresh");
             _cookieService.DeleteCookie("user");
+            _cookieService.DeleteCookie("device");
 
             return Result.Succeeded();
         }
