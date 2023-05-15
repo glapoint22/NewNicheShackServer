@@ -26,6 +26,7 @@ namespace Manager.Application.Products.SetPrice.Commands
                 .SingleAsync();
 
             product.SetPrice(request.Price);
+            product.SetCurrency(request.Currency);
 
             string userId = _authService.GetUserIdFromClaims();
             product.AddDomainEvent(new ProductModifiedEvent(product.Id, userId));

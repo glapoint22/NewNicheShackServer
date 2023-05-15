@@ -488,6 +488,7 @@ namespace Manager.Application._Publish.PublishProduct.Commands
                 ShippingType = product.ShippingType,
                 RecurringPayment = product.RecurringPayment,
                 Date = product.Date,
+                Currency = product.Currency
             };
 
             _websiteDbContext.Products.Add(websiteProduct);
@@ -532,6 +533,7 @@ namespace Manager.Application._Publish.PublishProduct.Commands
             websiteProduct.Hoplink = product.Hoplink!;
             websiteProduct.ShippingType = product.ShippingType;
             websiteProduct.RecurringPayment = product.RecurringPayment;
+            websiteProduct.Currency = product.Currency;
 
             foreach (var productPrice in product.ProductPrices)
             {

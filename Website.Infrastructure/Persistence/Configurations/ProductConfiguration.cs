@@ -16,6 +16,9 @@ namespace Website.Infrastructure.Persistence.Configurations
                 .HasMaxLength(256)
                 .IsRequired();
 
+            builder.Property(x => x.Currency)
+                .HasMaxLength(3);
+
             builder.Property(x => x.UrlName)
                 .HasMaxLength(256)
                 .IsRequired();

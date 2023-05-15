@@ -25,6 +25,7 @@ namespace Website.Domain.Entities
         public DateTime Date { get; set; }
         public bool Disabled { get; set; }
         public string TrackingCode { get; set; } = string.Empty;
+        public string Currency { get; set; } = string.Empty;
 
 
         public Subniche Subniche { get; set; } = null!;

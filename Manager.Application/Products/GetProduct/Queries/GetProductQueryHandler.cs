@@ -28,6 +28,7 @@ namespace Manager.Application.Products.GetProduct.Queries
                     x.Hoplink,
                     x.ShippingType,
                     x.RecurringPayment,
+                    x.Currency,
                     MinPrice = x.ProductPrices.Count > 0 ? x.ProductPrices.MinPrice() : null,
                     MaxPrice = x.ProductPrices.MaxPrice(),
                     Niche = new
@@ -115,6 +116,7 @@ namespace Manager.Application.Products.GetProduct.Queries
                 product.Hoplink,
                 product.ShippingType,
                 product.RecurringPayment,
+                product.Currency,
                 product.MinPrice,
                 product.MaxPrice,
                 product.Niche,

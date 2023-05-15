@@ -19,6 +19,10 @@ namespace Manager.Infrastructure.Persistence.Configurations
             builder.Property(x => x.Hoplink)
                 .HasMaxLength(256);
 
+            builder.Property(x => x.Currency)
+                .HasDefaultValue("USD")
+                .HasMaxLength(3);
+
             builder.HasOne(x => x.Media)
                 .WithMany(x => x.Products)
                 .HasForeignKey(x => x.ImageId);

@@ -20,6 +20,7 @@ namespace Manager.Domain.Entities
         public int ShippingType { get; set; }
         public RecurringPayment RecurringPayment { get; set; } = new RecurringPayment();
         public DateTime Date { get; set; }
+        public string Currency { get; set; } = string.Empty;
 
         public Vendor Vendor { get; set; } = null!;
         public Subniche Subniche { get; set; } = null!;
@@ -148,6 +149,15 @@ namespace Manager.Domain.Entities
                 }
 
             }
+        }
+
+
+
+
+        // ------------------------------------------------------------------------------ Set Currency ------------------------------------------------------------------------
+        public void SetCurrency(string currency)
+        {
+            Currency = currency;
         }
 
 

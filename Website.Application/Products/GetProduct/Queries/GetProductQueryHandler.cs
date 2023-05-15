@@ -44,6 +44,7 @@ namespace Website.Application.Products.GetProduct.Queries
                     product.FourStars,
                     product.FiveStars,
                     Hoplink = product.GetHoplink(userTrackingCode),
+                    product.Currency,
                     product.ShippingType,
                     product.RecurringPayment,
                     Media = product.ProductMedia
