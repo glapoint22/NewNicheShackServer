@@ -203,7 +203,8 @@ namespace Website.Domain.Entities
             {
                 error.Message,
                 error.InnerException,
-                error.Source
+                error.Source,
+                error.StackTrace
             };
 
             var serializedError = JsonSerializer.Serialize(errorObject);
