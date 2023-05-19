@@ -1,5 +1,7 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Quartz;
+using Shared.Common.Enums;
 using Shared.Common.Interceptors;
 using Website.Application.Common.Interfaces;
 using Website.Domain.Entities;
@@ -34,9 +36,15 @@ namespace Website.Infrastructure.BackgroundJobs
                     {
                         // Create the notification
                         Notification notification = Notification.CreateErrorNotification(error);
-                        _dbContext.Notifications.Add(notification);
 
-                        await _dbContext.SaveChangesAsync();
+
+                        // Check if there is already an error notification with the same text and is not archived
+                        if (!await _dbContext.Notifications.AnyAsync(x => x.Type == (int)NotificationType.Error && x.NotificationGroup.ArchiveDate == null && x.Text == notification.Text))
+                        {
+                            _dbContext.Notifications.Add(notification);
+                            await _dbContext.SaveChangesAsync();
+                        }
+
                         throw;
                     }
 

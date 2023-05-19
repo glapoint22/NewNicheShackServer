@@ -1,4 +1,6 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
+using Shared.Common.Enums;
 using Website.Application.Common.Interfaces;
 using Website.Domain.Entities;
 
@@ -23,9 +25,15 @@ namespace Website.Application.Common.Behaviors
             {
                 // Create the notification
                 Notification notification = Notification.CreateErrorNotification(error);
-                _dbContext.Notifications.Add(notification);
 
-                await _dbContext.SaveChangesAsync();
+
+                // Check if there is already an error notification with the same text and is not archived
+                if (!await _dbContext.Notifications.AnyAsync(x => x.Type == (int)NotificationType.Error && x.NotificationGroup.ArchiveDate == null && x.Text == notification.Text))
+                {
+                    _dbContext.Notifications.Add(notification);
+                    await _dbContext.SaveChangesAsync();
+                }
+                
                 throw;
             }
         }
