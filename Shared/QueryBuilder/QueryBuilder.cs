@@ -477,8 +477,8 @@ namespace Shared.QueryBuilder
             // Search by the name property
             MemberExpression nameProperty = Expression.Property(parameter, "Name");
 
-            // Like method
-            MethodInfo like = typeof(DbFunctionsExtensions).GetMethod("Like",
+            // Like method Info
+            MethodInfo likeMethodInfo = typeof(DbFunctionsExtensions).GetMethod("Like",
                 BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic,
                 null,
                 new[] { typeof(DbFunctions), typeof(string), typeof(string) },
@@ -489,37 +489,39 @@ namespace Shared.QueryBuilder
             // Loop through each word
             foreach (string word in searchWordsArray)
             {
-                ConstantExpression pattern = Expression.Constant("% " + word + " %");
-                MethodCallExpression like1 = Expression.Call(like,
-                    Expression.Property(null, typeof(EF), nameof(EF.Functions)), nameProperty, pattern);
+                // Create a list of patterns to match against the search word
+                List<string> patterns = new()
+                {
+                    $"% {word} %",
+                    $"% {word}",
+                    $"{word} %",
+                    word,
+                    $"{word}%",
+                    $"% {word}%"
+                };
 
-                pattern = Expression.Constant("% " + word);
-                MethodCallExpression like2 = Expression.Call(like,
-                    Expression.Property(null, typeof(EF), nameof(EF.Functions)), nameProperty, pattern);
+                // Initialize the search expression as null
+                Expression searchExpression = null!;
 
 
-                pattern = Expression.Constant(word + " %");
-                MethodCallExpression like3 = Expression.Call(like,
-                    Expression.Property(null, typeof(EF), nameof(EF.Functions)), nameProperty, pattern);
+                // Iterate over each pattern and create a "LIKE" method call expression
+                foreach (string pattern in patterns)
+                {
+                    // Create a method call expression for the "LIKE" method
+                    MethodCallExpression likeMethod = Expression.Call(likeMethodInfo,
+                        Expression.Property(null, typeof(EF), nameof(EF.Functions)), nameProperty, Expression.Constant(pattern));
 
+                    // Combine the search expressions using "OrElse"
+                    searchExpression = searchExpression == null
+                        ? likeMethod
+                        : Expression.OrElse(searchExpression, likeMethod);
+                }
 
-                pattern = Expression.Constant(word);
-                MethodCallExpression like4 = Expression.Call(like,
-                    Expression.Property(null, typeof(EF), nameof(EF.Functions)), nameProperty, pattern);
-
-                pattern = Expression.Constant(word + "%");
-                MethodCallExpression like5 = Expression.Call(like,
-                    Expression.Property(null, typeof(EF), nameof(EF.Functions)), nameProperty, pattern);
-
-                BinaryExpression searchExpression = Expression.OrElse(like1, like2);
-
-                searchExpression = Expression.OrElse(searchExpression, like3);
-                searchExpression = Expression.OrElse(searchExpression, like4);
-                searchExpression = Expression.OrElse(searchExpression, like5);
-
+                // Combine the search expressions for each word using "OrElse"
                 expression = Expression.OrElse(expression, searchExpression);
             }
 
+            // Retrun the completed expression
             return expression;
         }
     }

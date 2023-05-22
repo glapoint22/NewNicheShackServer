@@ -20,5 +20,6 @@ namespace Website.Application.Lists.Common
         public int ThreeStars { get; set; }
         public int FourStars { get; set; }
         public int FiveStars { get; set; }
+        public bool Disabled { get; set; }
     }
 }

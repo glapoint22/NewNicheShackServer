@@ -52,6 +52,7 @@ namespace Website.Infrastructure.Services.PageService.Classes
 
             return await _dbContext.Products
                 .Where(query)
+                .Where(x => !x.Disabled)
                 .SortBy(pageParams.SearchTerm, pageParams.SortBy)
                 .Select(x => new ProductDto
                 {

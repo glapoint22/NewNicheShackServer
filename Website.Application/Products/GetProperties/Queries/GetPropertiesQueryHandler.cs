@@ -61,7 +61,7 @@ namespace Website.Application.Products.GetProperties.Queries
 
             var relatedProducts = await _dbContext.Products
                 .OrderByDescending(x => x.Rating)
-                .Where(x => x.SubnicheId == subnicheId && x.Id != request.ProductId)
+                .Where(x => x.SubnicheId == subnicheId && x.Id != request.ProductId && !x.Disabled)
                 .Select(x => new
                 {
                     x.Id,

@@ -10,5 +10,6 @@ namespace Website.Application.ProductOrders.GetOrders.Classes
         public string Hoplink { get; set; } = string.Empty;
         public string OrderNumber { get; set; } = string.Empty;
         public string UrlName { get; set; } = string.Empty;
+        public bool Disabled { get; set; }
     }
 }

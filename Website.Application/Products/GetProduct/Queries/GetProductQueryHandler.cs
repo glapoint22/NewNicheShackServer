@@ -47,6 +47,7 @@ namespace Website.Application.Products.GetProduct.Queries
                     product.Currency,
                     product.ShippingType,
                     product.RecurringPayment,
+                    product.Disabled,
                     Media = product.ProductMedia
                     .OrderBy(x => x.Index)
                     .Select(x => new

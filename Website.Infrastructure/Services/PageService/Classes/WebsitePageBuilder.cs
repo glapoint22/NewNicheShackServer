@@ -54,6 +54,7 @@ namespace Website.Infrastructure.Services.PageService.Classes
 
                     productSliderWidget.Products = await _dbContext.Products
                         .Where(query)
+                        .Where(x => !x.Disabled)
                         .Take(24)
                         .Select(x => new ProductDto
                         {

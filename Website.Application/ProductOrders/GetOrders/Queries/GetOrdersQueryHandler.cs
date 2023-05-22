@@ -88,7 +88,8 @@ namespace Website.Application.ProductOrders.GetOrders.Queries
                             RebillAmount = z.RebillAmount,
                             PaymentsRemaining = z.PaymentsRemaining,
                             UrlName = z.ProductOrder.Product.UrlName,
-                            ProductId = z.ProductOrder.ProductId
+                            ProductId = z.ProductOrder.ProductId,
+                            Disabled = z.ProductOrder.Product.Disabled
                         })
                         .ToList()
                 })
@@ -120,7 +121,8 @@ namespace Website.Application.ProductOrders.GetOrders.Queries
                     } : null!,
                     Hoplink = x.ProductOrder.Product.GetHoplink(x.ProductOrder.User.TrackingCode),
                     OrderNumber = x.OrderId,
-                    UrlName = x.ProductOrder.Product.UrlName
+                    UrlName = x.ProductOrder.Product.UrlName,
+                    Disabled = x.ProductOrder.Product.Disabled
                 })
                 .ToListAsync();
         }

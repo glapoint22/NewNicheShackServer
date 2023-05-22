@@ -53,6 +53,7 @@ namespace Website.Application.Lists.Common
                 MinPrice = x.Product.ProductPrices.MinPrice(),
                 MaxPrice = x.Product.ProductPrices.MaxPrice(),
                 DateAdded = x.DateAdded.ToString(),
+                Disabled = x.Product.Disabled,
                 Collaborator = new CollaboratorDto
                 {
                     Id = x.UserId,

@@ -21,6 +21,7 @@ namespace Website.Infrastructure.BackgroundJobs
         public async Task Execute(IJobExecutionContext context)
         {
             List<KeywordData> keywords = await _dbContext.ProductKeywords
+                .Where(x => !x.Product.Disabled)
                 .Select(x => new KeywordData
                 {
                     Name = x.Keyword.Name,
@@ -34,6 +35,7 @@ namespace Website.Infrastructure.BackgroundJobs
                         UrlName = x.Product.Subniche.Niche.UrlName,
                     }
                 })
+                .Distinct()
                 .ToListAsync();
 
 

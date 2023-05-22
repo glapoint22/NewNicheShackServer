@@ -13,5 +13,6 @@ namespace Website.Application.ProductOrders.GetOrders.Classes
         public int PaymentsRemaining { get; set; }
         public string UrlName { get; set; } = string.Empty;
         public Guid ProductId { get; set; }
+        public bool Disabled { get; set; }
     }
 }

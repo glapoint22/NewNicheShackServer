@@ -5,6 +5,7 @@ using IAuthService = Manager.Application.Common.Interfaces.IAuthService;
 using IMediaService = Manager.Application.Common.Interfaces.IMediaService;
 using Microsoft.Extensions.Configuration;
 using System.Text.RegularExpressions;
+using Shared.Common.Enums;
 
 namespace Manager.Application._Publish.Common.Classes
 {
@@ -28,7 +29,7 @@ namespace Manager.Application._Publish.Common.Classes
 
 
 
-        public List<Guid> GetMediaIds(string content)
+        protected static List<Guid> GetMediaIds(string content)
         {
             Regex regex = new(@"""image"":{""id"":""([a-zA-Z0-9-]+)""");
             MatchCollection matches = regex.Matches(content);
@@ -43,7 +44,7 @@ namespace Manager.Application._Publish.Common.Classes
 
 
 
-        public async Task PostImages(List<Guid> mediaIds)
+        protected async Task PostImages(List<Guid> mediaIds)
         {
             // Get media from manager and add it to website
             List<Website.Domain.Entities.Media> media = await _managerDbContext.Media
@@ -52,7 +53,7 @@ namespace Manager.Application._Publish.Common.Classes
             {
                 Id = x.Id,
                 Name = x.Name,
-                Thumbnail = x.Thumbnail,
+                Thumbnail = x.MediaType == (int)MediaType.Video || x.ImageMd != null ? x.Thumbnail : null,
                 ImageSm = x.ImageSm,
                 ImageMd = x.ImageMd,
                 ImageLg = x.ImageLg,
