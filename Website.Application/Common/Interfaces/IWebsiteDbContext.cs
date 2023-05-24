@@ -15,6 +15,7 @@ namespace Website.Application.Common.Interfaces
         DbSet<ListProduct> ListProducts { get; }
         DbSet<List> Lists { get; }
         DbSet<Media> Media { get; }
+        DbSet<Message> Messages { get; }
         DbSet<Niche> Niches { get; }
         DbSet<NotificationGroup> NotificationGroups { get; }
         DbSet<Notification> Notifications { get; }

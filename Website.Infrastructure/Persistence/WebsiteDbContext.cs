@@ -19,6 +19,7 @@ namespace Website.Infrastructure.Persistence
         public DbSet<ListProduct> ListProducts => Set<ListProduct>();
         public DbSet<List> Lists => Set<List>();
         public DbSet<Media> Media => Set<Media>();
+        public DbSet<Message> Messages => Set<Message>();
         public DbSet<Niche> Niches => Set<Niche>();
         public DbSet<NotificationGroup> NotificationGroups => Set<NotificationGroup>();
         public DbSet<Notification> Notifications => Set<Notification>();
