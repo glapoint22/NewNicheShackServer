@@ -483,7 +483,7 @@ namespace Manager.Application._Publish.PublishProduct.Commands
                 ImageId = (Guid)product.ImageId!,
                 Name = product.Name,
                 UrlName = product.UrlName,
-                Description = GetDescription(product.Description!),
+                Description = Utility.TextToHTML(product.Description!),
                 Hoplink = product.Hoplink!,
                 ShippingType = product.ShippingType,
                 RecurringPayment = product.RecurringPayment,
@@ -494,24 +494,6 @@ namespace Manager.Application._Publish.PublishProduct.Commands
             _websiteDbContext.Products.Add(websiteProduct);
         }
 
-
-
-
-        // ---------------------------------------------------------------------------- Get Description ---------------------------------------------------------------------------
-        private string GetDescription(string description)
-        {
-            Regex regex = new(@"^.+", RegexOptions.Multiline);
-            MatchCollection matches = regex.Matches(description);
-
-            string htmlDescription = string.Empty;
-
-            foreach (Match match in matches)
-            {
-                htmlDescription += "<p>" + match.Value + "</p>";
-            }
-
-            return htmlDescription;
-        }
 
 
 
@@ -529,7 +511,7 @@ namespace Manager.Application._Publish.PublishProduct.Commands
             websiteProduct.ImageId = (Guid)product.ImageId!;
             websiteProduct.Name = product.Name;
             websiteProduct.UrlName = product.UrlName;
-            websiteProduct.Description = GetDescription(product.Description!);
+            websiteProduct.Description = Utility.TextToHTML(product.Description!);
             websiteProduct.Hoplink = product.Hoplink!;
             websiteProduct.ShippingType = product.ShippingType;
             websiteProduct.RecurringPayment = product.RecurringPayment;
@@ -596,7 +578,7 @@ namespace Manager.Application._Publish.PublishProduct.Commands
                 {
                     Id = x.Id,
                     Name = x.Name!,
-                    Description = GetDescription(x.Description!),
+                    Description = Utility.TextToHTML(x.Description!),
                     ProductId = x.ProductId,
                     ImageId = (Guid)x.ImageId!,
                     Value = x.Value,
@@ -1063,7 +1045,7 @@ namespace Manager.Application._Publish.PublishProduct.Commands
                     {
                         Id = sp.Id,
                         Name = sp.Name!,
-                        Description = GetDescription(sp.Description!),
+                        Description = Utility.TextToHTML(sp.Description!),
                         ProductId = product.Id,
                         ImageId = (Guid)sp.ImageId!,
                         Value = sp.Value,
@@ -1100,7 +1082,7 @@ namespace Manager.Application._Publish.PublishProduct.Commands
                 if (websiteSubProds != null)
                 {
                     websiteSubProds.Name = sp.Name!;
-                    websiteSubProds.Description = GetDescription(sp.Description!);
+                    websiteSubProds.Description = Utility.TextToHTML(sp.Description!);
                     websiteSubProds.ProductId = product.Id;
                     websiteSubProds.ImageId = (Guid)sp.ImageId!;
                     websiteSubProds.Value = sp.Value;

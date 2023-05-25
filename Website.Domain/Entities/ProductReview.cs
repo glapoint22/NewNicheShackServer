@@ -1,4 +1,6 @@
-﻿namespace Website.Domain.Entities
+﻿using Shared.Common.Classes;
+
+namespace Website.Domain.Entities
 {
     public sealed class ProductReview
     {
@@ -28,7 +30,7 @@
                 Title = title,
                 Rating = rating,
                 Date = DateTime.UtcNow,
-                Text = text
+                Text = Utility.TextToHTML(text)
             };
         }
 
