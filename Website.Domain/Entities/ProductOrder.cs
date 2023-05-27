@@ -12,6 +12,7 @@
         public double Discount { get; set; }
         public double Tax { get; set; }
         public double Total { get; set; }
+        public bool IsUpsell { get; set; }
 
         public User User { get; set; } = null!;
         public Product Product { get; set; } = null!;

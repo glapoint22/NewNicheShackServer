@@ -75,7 +75,8 @@ namespace Website.Application.Lists.Common
                 TwoStars = x.Product.TwoStars,
                 ThreeStars = x.Product.ThreeStars,
                 FourStars = x.Product.FourStars,
-                FiveStars = x.Product.FiveStars
+                FiveStars = x.Product.FiveStars,
+                Currency = x.Product.Currency
             });
         }
     }

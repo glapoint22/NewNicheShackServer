@@ -72,6 +72,8 @@ namespace Website.Application.ProductOrders.GetOrders.Queries
                     Total = x.Total,
                     Hoplink = x.Product.GetHoplink(x.User.TrackingCode),
                     ProductId = x.ProductId,
+                    IsUpsell = x.IsUpsell,
+                    Currency = x.Product.Currency,
                     Products = x.OrderProducts
                         .OrderByDescending(z => z.LineItemType == "ORIGINAL")
                         .Select(z => new ProductOrderProduct
@@ -86,7 +88,6 @@ namespace Website.Application.ProductOrders.GetOrders.Queries
                             } : null!,
                             RebillFrequency = z.RebillFrequency,
                             RebillAmount = z.RebillAmount,
-                            PaymentsRemaining = z.PaymentsRemaining,
                             UrlName = z.ProductOrder.Product.UrlName,
                             ProductId = z.ProductOrder.ProductId,
                             Disabled = z.ProductOrder.Product.Disabled

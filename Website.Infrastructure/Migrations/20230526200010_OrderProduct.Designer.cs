@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Website.Infrastructure.Persistence;
 
@@ -11,9 +12,10 @@ using Website.Infrastructure.Persistence;
 namespace Website.Infrastructure.Migrations
 {
     [DbContext(typeof(WebsiteDbContext))]
-    partial class WebsiteDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230526200010_OrderProduct")]
+    partial class OrderProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -550,6 +552,9 @@ namespace Website.Infrastructure.Migrations
                         .HasMaxLength(21)
                         .HasColumnType("nvarchar(21)");
 
+                    b.Property<int>("PaymentsRemaining")
+                        .HasColumnType("int");
+
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
@@ -854,9 +859,6 @@ namespace Website.Infrastructure.Migrations
 
                     b.Property<double>("Discount")
                         .HasColumnType("float");
-
-                    b.Property<bool>("IsUpsell")
-                        .HasColumnType("bit");
 
                     b.Property<int>("PaymentMethod")
                         .HasColumnType("int");

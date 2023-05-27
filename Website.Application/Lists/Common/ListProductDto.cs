@@ -21,5 +21,6 @@ namespace Website.Application.Lists.Common
         public int FourStars { get; set; }
         public int FiveStars { get; set; }
         public bool Disabled { get; set; }
+        public string Currency { get; set; } = string.Empty;
     }
 }

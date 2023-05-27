@@ -15,8 +15,6 @@ namespace Website.Infrastructure.Persistence.Configurations
             builder.Property(x => x.OrderId)
                 .HasMaxLength(21);
 
-            builder.Property(x => x.Name)
-                .HasMaxLength(21);
 
             builder.Property(x => x.LineItemType)
                 .HasMaxLength(8);

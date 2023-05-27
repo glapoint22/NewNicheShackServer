@@ -488,7 +488,8 @@ namespace Manager.Application._Publish.PublishProduct.Commands
                 ShippingType = product.ShippingType,
                 RecurringPayment = product.RecurringPayment,
                 Date = product.Date,
-                Currency = product.Currency
+                Currency = product.Currency,
+                TrackingCode = Guid.NewGuid().ToString("N")[..10].ToUpper()
             };
 
             _websiteDbContext.Products.Add(websiteProduct);

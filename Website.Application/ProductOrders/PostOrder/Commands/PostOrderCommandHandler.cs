@@ -37,19 +37,21 @@ namespace Website.Application.ProductOrders.PostOrder.Commands
                 PropertyNameCaseInsensitive = true
             });
 
-            if (orderNotification == null || orderNotification.TransactionType == null) return Result.Failed();
+            // Retrun failed if orderNotification is null
+            if (orderNotification == null) return Result.Failed();
 
 
+            // If the transaction is a sale
             if (orderNotification.TransactionType == "SALE" || orderNotification.TransactionType == "TEST_SALE")
             {
 
+                // Return if there are no tracking codes
+                if (orderNotification.TrackingCodes == null || !orderNotification.TrackingCodes.Any()) return Result.Succeeded();
+
+
                 // Id
-                if (orderNotification.Receipt == null) return Result.Failed();
                 string id = orderNotification.Receipt;
 
-
-                // Do we have tracking codes?
-                if (orderNotification.TrackingCodes == null || orderNotification.TrackingCodes.Count() == 0) return Result.Failed();
 
                 // Split the tracking codes into product id && user id
                 string[] trackingCodes = orderNotification.TrackingCodes.ToArray()[0].Split('_');
@@ -60,6 +62,7 @@ namespace Website.Application.ProductOrders.PostOrder.Commands
                     .Select(x => x.Id)
                     .SingleOrDefaultAsync();
 
+                // Return failed if we have no product id
                 if (productId == Guid.Empty) return Result.Failed();
 
 
@@ -70,22 +73,20 @@ namespace Website.Application.ProductOrders.PostOrder.Commands
                     .SingleOrDefaultAsync();
 
 
+                // Return failed if we have no user id
                 if (userId == null) return Result.Failed();
 
 
                 // Payment method
-                if (orderNotification.PaymentMethod == null) return Result.Failed();
                 string paymentMethod = orderNotification.PaymentMethod;
 
-
-
-                if (orderNotification.LineItems == null || orderNotification.LineItems.Count() == 0) return Result.Failed();
-
+                // prices
                 double subtotal = 0;
                 double tax = 0;
                 double discount = 0;
                 double shipping = 0;
 
+                // Line items
                 foreach (LineItem lineItem in orderNotification.LineItems)
                 {
                     subtotal += lineItem.ProductPrice;
@@ -93,7 +94,7 @@ namespace Website.Application.ProductOrders.PostOrder.Commands
                     discount += lineItem.ProductDiscount;
                     shipping += lineItem.ShippingAmount;
 
-                    OrderProduct orderProduct = new OrderProduct
+                    OrderProduct orderProduct = new()
                     {
                         OrderId = id,
                         Name = lineItem.ProductTitle,
@@ -101,14 +102,14 @@ namespace Website.Application.ProductOrders.PostOrder.Commands
                         Price = lineItem.ProductPrice,
                         LineItemType = lineItem.LineItemType,
                         RebillFrequency = lineItem.Recurring ? lineItem.PaymentPlan.RebillFrequency : null!,
-                        RebillAmount = lineItem.Recurring ? lineItem.PaymentPlan.RebillAmount : 0,
-                        PaymentsRemaining = lineItem.Recurring ? lineItem.PaymentPlan.PaymentsRemaining : 0
+                        RebillAmount = lineItem.Recurring ? lineItem.PaymentPlan.RebillAmount : 0
                     };
 
                     _dbContext.OrderProducts.Add(orderProduct);
 
                 }
 
+                // Order
                 ProductOrder productOrder = new()
                 {
                     Id = id,
@@ -120,9 +121,9 @@ namespace Website.Application.ProductOrders.PostOrder.Commands
                     ShippingHandling = shipping,
                     Discount = discount,
                     Tax = tax,
-                    Total = orderNotification.TotalOrderAmount
+                    Total = orderNotification.TotalOrderAmount,
+                    IsUpsell = orderNotification.Upsell != null
                 };
-
 
                 _dbContext.ProductOrders.Add(productOrder);
 

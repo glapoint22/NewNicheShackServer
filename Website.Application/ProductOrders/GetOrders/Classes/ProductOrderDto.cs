@@ -13,6 +13,8 @@
         public double Total { get; set; }
         public Guid ProductId { get; set; }
         public string Hoplink { get; set; } = string.Empty;
+        public bool IsUpsell { get; set; }
+        public string Currency { get; set; } = string.Empty;
         public List<ProductOrderProduct> Products { get; set; } = new List<ProductOrderProduct>();
     }
 }

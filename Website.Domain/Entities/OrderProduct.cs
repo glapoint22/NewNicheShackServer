@@ -10,7 +10,7 @@
         public string? LineItemType { get; set; }
         public string? RebillFrequency { get; set; }
         public double RebillAmount { get; set; }
-        public int PaymentsRemaining { get; set; }
+        //public int PaymentsRemaining { get; set; }
 
         public ProductOrder ProductOrder { get; set; } = null!;
     }
