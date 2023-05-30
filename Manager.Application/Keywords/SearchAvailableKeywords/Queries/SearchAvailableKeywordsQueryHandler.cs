@@ -24,6 +24,7 @@ namespace Manager.Application.Keywords.SearchAvailableKeywords.Queries
             // Keyword Groups
             var keywordGroupsQuery = queryBuilder.BuildQuery<KeywordGroup>(request.SearchTerm);
             var keywordGroups = await _dbContext.KeywordGroups
+                .OrderBy(x => x.Name)
                 .Where(keywordGroupsQuery)
                 .Where(x => !x.ForProduct)
                 .Select(x => new KeywordSearchResult
@@ -38,6 +39,7 @@ namespace Manager.Application.Keywords.SearchAvailableKeywords.Queries
             // Keywords
             var keywordsQuery = queryBuilder.BuildQuery<Keyword>(request.SearchTerm);
             var keywords = await _dbContext.Keywords
+                .OrderBy(x => x.Name)
                 .Where(keywordsQuery)
                 .Where(x => x.KeywordsInKeywordGroup
                     .Any(z => !z.KeywordGroup.ForProduct))
