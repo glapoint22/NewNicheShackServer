@@ -179,7 +179,8 @@ namespace Manager.Application._Publish.PublishProduct.Commands
                 {
                     Id = x.Id,
                     FilterId = x.FilterId,
-                    Name = x.Name
+                    Name = x.Name,
+                    ParamValue = x.ParamValue
                 }).ToListAsync();
 
                 _websiteDbContext.FilterOptions.AddRange(filterOptions);

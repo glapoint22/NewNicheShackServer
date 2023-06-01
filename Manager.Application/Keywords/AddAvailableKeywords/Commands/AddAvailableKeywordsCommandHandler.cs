@@ -64,28 +64,28 @@ namespace Manager.Application.Keywords.AddAvailableKeywords.Commands
 
 
                 // See if website has these products
-                List<Guid> websiteProductIds = await _websiteDbContext.Products
-                    .Where(x => products.Select(z => z.ProductId).Contains(x.Id))
-                    .Select(x => x.Id)
-                    .ToListAsync();
+                //List<Guid> websiteProductIds = await _websiteDbContext.Products
+                //    .Where(x => products.Select(z => z.ProductId).Contains(x.Id))
+                //    .Select(x => x.Id)
+                //    .ToListAsync();
 
 
-                // If website has these products
-                if (websiteProductIds.Count > 0)
-                {
-                    foreach (var product in products)
-                    {
-                        // Add the keywords to the products
-                        _websiteDbContext.ProductKeywords.AddRange(keywords.Where(x => websiteProductIds.Contains(product.ProductId) && !product.ProductKeywords.Select(z => z.KeywordId).Contains(x.Id))
-                        .Select(x => new Website.Domain.Entities.ProductKeyword
-                        {
-                            ProductId = product.ProductId,
-                            KeywordId = x.Id
-                        }));
-                    }
+                //// If website has these products
+                //if (websiteProductIds.Count > 0)
+                //{
+                //    foreach (var product in products)
+                //    {
+                //        // Add the keywords to the products
+                //        _websiteDbContext.ProductKeywords.AddRange(keywords.Where(x => websiteProductIds.Contains(product.ProductId) && !product.ProductKeywords.Select(z => z.KeywordId).Contains(x.Id))
+                //        .Select(x => new Website.Domain.Entities.ProductKeyword
+                //        {
+                //            ProductId = product.ProductId,
+                //            KeywordId = x.Id
+                //        }));
+                //    }
 
-                    await _websiteDbContext.SaveChangesAsync();
-                }
+                //    await _websiteDbContext.SaveChangesAsync();
+                //}
             }
 
 

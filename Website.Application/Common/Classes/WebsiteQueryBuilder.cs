@@ -114,7 +114,10 @@ namespace Website.Application.Common.Classes
 
             // ProductFilter param and its properties
             ParameterExpression productFilterParameter = Expression.Parameter(typeof(ProductFilter), "z");
-            MemberExpression filterOptionIdProperty = Expression.Property(productFilterParameter, "FilterOptionId");
+            MemberExpression filterOptionProperty = Expression.Property(productFilterParameter, "FilterOption");
+            MemberExpression paramValueProperty = Expression.Property(filterOptionProperty, "ParamValue");
+
+
             MemberExpression productIdProperty = Expression.Property(productFilterParameter, "ProductId");
 
             Expression filterOptionIdsExpression = null!;
@@ -123,7 +126,7 @@ namespace Website.Application.Common.Classes
             // Create an expression for the filters
             foreach (int filterOptionId in filters)
             {
-                Expression equalExpression = Expression.Equal(filterOptionIdProperty, Expression.Constant(filterOptionId));
+                Expression equalExpression = Expression.Equal(paramValueProperty, Expression.Constant(filterOptionId));
 
                 if (filterOptionIdsExpression == null)
                 {
@@ -149,16 +152,16 @@ namespace Website.Application.Common.Classes
             MethodCallExpression selectExp = Expression.Call(
                 typeof(Enumerable),
                 "Select",
-                new Type[] { typeof(ProductFilter), typeof(string) },
+                new Type[] { typeof(ProductFilter), typeof(Guid) },
                 whereExp,
-                Expression.Lambda<Func<ProductFilter, string>>(productIdProperty, productFilterParameter));
+                Expression.Lambda<Func<ProductFilter, Guid>>(productIdProperty, productFilterParameter));
 
 
             // Contains
             return Expression.Call(
                 typeof(Enumerable),
                 "Contains",
-                new[] { typeof(string) },
+                new[] { typeof(Guid) },
                 selectExp,
                 idProperty);
         }

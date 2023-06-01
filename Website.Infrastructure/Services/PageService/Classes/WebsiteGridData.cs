@@ -263,7 +263,7 @@ namespace Website.Infrastructure.Services.PageService.Classes
                     caption = x.FilterOption.Filter.Name,
                     option = new
                     {
-                        id = x.FilterOption.Id,
+                        id = x.FilterOption.ParamValue,
                         label = x.FilterOption.Name
                     }
                 })
