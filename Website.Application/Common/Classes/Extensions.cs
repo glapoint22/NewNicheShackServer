@@ -28,8 +28,22 @@ namespace Website.Application.Common.Classes
                 default:
                     if (!string.IsNullOrEmpty(searchTerm))
                     {
-                        result = source.OrderBy(x => x.Name.ToLower().StartsWith(searchTerm.ToLower()) ? (x.Name.ToLower() == searchTerm.ToLower() ? 0 : 1) :
-                            EF.Functions.Like(x.Name, "% " + searchTerm + " %") ? 2 : 3);
+                        result = source.OrderByDescending(x =>
+                        // Checking if any product has a keyword that matches the search term
+                        source.Where(x => x.ProductKeywords.Any(z => z.Keyword.Name == searchTerm))
+                        .Select(z => z.Name)
+                        .Contains(x.Name))
+
+                        
+                        .ThenBy(x =>
+                        // Checking if the name starts with the search term
+                        x.Name.ToLower().StartsWith(searchTerm.ToLower()) ?
+
+                        // If the name is an exact match to the search term
+                        (x.Name.ToLower() == searchTerm.ToLower() ? 0 : 1) :
+
+                        // If the name contains the search term
+                        EF.Functions.Like(x.Name, "% " + searchTerm + " %") ? 2 : 3);
                     }
                     else
                     {

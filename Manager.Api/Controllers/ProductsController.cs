@@ -12,6 +12,7 @@ using Manager.Application.Products.RemovePricePoint.Commands;
 using Manager.Application.Products.RemoveProductMedia.Commands;
 using Manager.Application.Products.RemoveSubproduct.Commands;
 using Manager.Application.Products.SearchProducts.Queries;
+using Manager.Application.Products.SetCurrency.Commands;
 using Manager.Application.Products.SetDescription.Commands;
 using Manager.Application.Products.SetHoplink.Commands;
 using Manager.Application.Products.SetName.Commands;
@@ -274,11 +275,24 @@ namespace Manager.Api.Controllers
 
 
         // ---------------------------------------------------------------------------------- Set Price --------------------------------------------------------------------------
-        [HttpPost]
+        [HttpPut]
         [Route("Price")]
         public async Task<ActionResult> SetPrice(SetPriceCommand setPrice)
         {
             return SetResponse(await _mediator.Send(setPrice));
+        }
+
+
+
+
+
+
+        // -------------------------------------------------------------------------------- Set Currency -------------------------------------------------------------------------
+        [HttpPut]
+        [Route("Currency")]
+        public async Task<ActionResult> SetCurrency(SetCurrencyCommand setCurrency)
+        {
+            return SetResponse(await _mediator.Send(setCurrency));
         }
 
 
