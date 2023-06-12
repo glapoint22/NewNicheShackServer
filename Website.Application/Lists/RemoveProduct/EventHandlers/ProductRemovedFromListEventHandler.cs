@@ -99,7 +99,7 @@ namespace Website.Application.Lists.RemoveProduct.EventHandlers
                             LastName = recipient.LastName
                         },
 
-                        // User that removed the item
+                        // Collaborator that removed the item
                         Person = new()
                         {
                             FirstName = user.FirstName,

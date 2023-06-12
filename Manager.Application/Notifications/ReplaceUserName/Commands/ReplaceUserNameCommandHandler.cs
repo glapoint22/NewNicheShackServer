@@ -26,6 +26,8 @@ namespace Manager.Application.Notifications.ReplaceUserName.Commands
 
             if (user != null && user.FirstName + " " + user.LastName == request.UserName)
             {
+                DomainEventsInterceptor.AddDomainEvent(new UserReceivedNoncompliantStrikeUserNameEvent(user.FirstName, user.LastName, user.Email));
+                
                 user.AddStrike();
                 user.ChangeName("NicheShack", "User");
 
@@ -40,7 +42,7 @@ namespace Manager.Application.Notifications.ReplaceUserName.Commands
 
 
                 await _dbContext.SaveChangesAsync();
-                DomainEventsInterceptor.AddDomainEvent(new UserReceivedNoncompliantStrikeUserNameEvent(user.FirstName, user.LastName, user.Email));
+                
 
                 return Result.Succeeded(true);
             }

@@ -38,13 +38,15 @@ namespace Manager.Application.Notifications.ReformList.Commands
 
                 if (notification.Name == notification.List.Name && notification.Text == notification.List.Description && user != null)
                 {
+                    DomainEventsInterceptor.AddDomainEvent(new UserReceivedNoncompliantStrikeListEvent(user.FirstName, user.LastName, user.Email, notification.List.Name, notification.List.Description)); DomainEventsInterceptor.AddDomainEvent(new UserReceivedNoncompliantStrikeListEvent(user.FirstName, user.LastName, user.Email, notification.List.Name, notification.List.Description));
+
                     user.AddStrike();
                     notification.List.ReformList(request.Option);
 
                     notificationGroup.ArchiveNotification();
 
                     await _dbContext.SaveChangesAsync();
-                    DomainEventsInterceptor.AddDomainEvent(new UserReceivedNoncompliantStrikeListEvent(user.FirstName, user.LastName, user.Email, notification.List.Name, notification.List.Description));
+                    
 
                     return Result.Succeeded(true);
                 }

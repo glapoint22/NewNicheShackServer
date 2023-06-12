@@ -117,22 +117,17 @@ namespace Manager.Application._Publish.PublishPage.Commands
         // ------------------------------------------------------------------------------ Publish Media ---------------------------------------------------------------------------
         private async Task PublishMedia(Domain.Entities.Page page)
         {
+            List<Guid> managerMediaIds = GetMediaIds(page.Content);
+
             // Get the media ids from website that this page is using
-            List<Guid> websiteMediaIds = new();
-
-
-            Website.Domain.Entities.Page? websitePage = await _websiteDbContext.Pages
-                .Where(x => x.Id == page.Id)
-                .SingleOrDefaultAsync();
-
-            if (websitePage != null)
-            {
-                websiteMediaIds = GetMediaIds(websitePage.Content);
-            }
+            List<Guid> websiteMediaIds = await _websiteDbContext.Media
+                .Where(x => managerMediaIds.Contains(x.Id))
+                .Select(x => x.Id)
+                .ToListAsync();
 
 
             // Get the media ids from manager that website does not have
-            List<Guid> managerMediaIds = GetMediaIds(page.Content)
+            var missingWebsiteMediaIds = managerMediaIds
                 .Where(x => !websiteMediaIds
                     .Contains(x))
                 .ToList();
@@ -140,7 +135,7 @@ namespace Manager.Application._Publish.PublishPage.Commands
 
 
             // If we have media ids from manager that website does not have
-            if (managerMediaIds.Count > 0)
+            if (missingWebsiteMediaIds.Count > 0)
             {
                 await PostImages(managerMediaIds);
             }

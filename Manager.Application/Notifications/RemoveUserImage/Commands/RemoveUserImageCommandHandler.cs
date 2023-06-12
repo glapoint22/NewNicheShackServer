@@ -25,6 +25,8 @@ namespace Manager.Application.Notifications.RemoveUserImage.Commands
 
             if (user != null && user.Image == request.UserImage)
             {
+                DomainEventsInterceptor.AddDomainEvent(new UserReceivedNoncompliantStrikeUserImageEvent(user.FirstName, user.LastName, user.Email, user.Image));
+
                 user.AddStrike();
                 user.RemoveImage();
 
@@ -37,10 +39,8 @@ namespace Manager.Application.Notifications.RemoveUserImage.Commands
 
                 notificationGroup?.ArchiveNotification();
 
-
-
                 await _dbContext.SaveChangesAsync();
-                DomainEventsInterceptor.AddDomainEvent(new UserReceivedNoncompliantStrikeUserImageEvent(user.FirstName, user.LastName, user.Email, user.Image));
+                
 
                 return Result.Succeeded(true);
             }

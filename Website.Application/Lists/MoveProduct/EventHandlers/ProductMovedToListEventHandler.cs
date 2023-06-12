@@ -127,7 +127,7 @@ namespace Website.Application.Lists.MoveProduct.EventHandlers
                                 LastName = recipient.LastName
                             },
 
-                            // User that removed the item
+                            // Collaborator that moved the item
                             Person = new()
                             {
                                 FirstName = user.FirstName,

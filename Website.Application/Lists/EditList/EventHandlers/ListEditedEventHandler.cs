@@ -80,7 +80,7 @@ namespace Website.Application.Lists.EditList.EventHandlers
                             LastName = recipient.LastName
                         },
 
-                        // User that updated the list
+                        // Collaborator that updated the list
                         Person = new()
                         {
                             FirstName = user.FirstName,

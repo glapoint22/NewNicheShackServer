@@ -78,22 +78,17 @@ namespace Manager.Application._Publish.PublishEmail.Commands
         // ------------------------------------------------------------------------------ Publish Media ---------------------------------------------------------------------------
         private async Task PublishMedia(Domain.Entities.Email email)
         {
-            // Get the media ids from website that this page is using
-            List<Guid> websiteMediaIds = new();
+            List<Guid> managerMediaIds = GetMediaIds(email.Content);
 
-
-            Website.Domain.Entities.Email? websiteEmail = await _websiteDbContext.Emails
-                .Where(x => x.Id == email.Id)
-                .SingleOrDefaultAsync();
-
-            if (websiteEmail != null)
-            {
-                websiteMediaIds = GetMediaIds(websiteEmail.Content);
-            }
+            // Get the media ids from website that this email is using
+            List<Guid> websiteMediaIds = await _websiteDbContext.Media
+                .Where(x => managerMediaIds.Contains(x.Id))
+                .Select(x => x.Id)
+                .ToListAsync();
 
 
             // Get the media ids from manager that website does not have
-            List<Guid> managerMediaIds = GetMediaIds(email.Content)
+            var missingWebsiteMediaIds = managerMediaIds
                 .Where(x => !websiteMediaIds
                     .Contains(x))
                 .ToList();
@@ -101,7 +96,7 @@ namespace Manager.Application._Publish.PublishEmail.Commands
 
 
             // If we have media ids from manager that website does not have
-            if (managerMediaIds.Count > 0)
+            if (missingWebsiteMediaIds.Count > 0)
             {
                 await PostImages(managerMediaIds);
             }

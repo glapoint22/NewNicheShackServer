@@ -28,7 +28,7 @@ namespace Manager.Application.Emails.DuplicateEmail.Commands
             _dbContext.Emails.Add(duplicateEmail);
 
             string userId = _authService.GetUserIdFromClaims();
-            email.AddDomainEvent(new EmailCreatedEvent(email.Id, userId));
+            email.AddDomainEvent(new EmailCreatedEvent(duplicateEmail.Id, userId));
 
             await _dbContext.SaveChangesAsync();
 

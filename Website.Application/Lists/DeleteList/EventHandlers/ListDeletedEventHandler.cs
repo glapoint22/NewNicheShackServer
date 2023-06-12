@@ -77,7 +77,7 @@ namespace Website.Application.Lists.DeleteList.EventHandlers
                             LastName = recipient.LastName
                         },
 
-                        // User that deleted the list
+                        // Collaborator that deleted the list
                         Person = new()
                         {
                             FirstName = user.FirstName,

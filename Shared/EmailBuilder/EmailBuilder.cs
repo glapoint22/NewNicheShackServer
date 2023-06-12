@@ -52,7 +52,7 @@ namespace Shared.EmailBuilder
             // Main Table
             HtmlNode mainTable = Table.GenerateHtml(doc.DocumentNode.FirstChild.LastChild, new TableOptions
             {
-                Background = new Background { Color = "#dddddd" },
+                Background = new Background { Color = "#ffffff" },
                 CreateRow = true
             });
 
