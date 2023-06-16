@@ -41,7 +41,7 @@ namespace Shared.EmailBuilder
             // Style
             HtmlNode style = HtmlNode.CreateNode("<style>");
             HtmlTextNode styleText = doc.CreateTextNode(
-                "a {text-decoration: none}" +
+                "a {text-decoration: none; color: inherit;}" +
                 "body {margin: 0}" +
                 "ol, ul {margin-top: 0;margin-bottom: 0;}"
                 );

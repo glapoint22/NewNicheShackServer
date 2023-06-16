@@ -112,6 +112,9 @@ namespace Website.Application.Lists.RemoveProduct.EventHandlers
                         // List name
                         Var2 = listName,
 
+                        // List Id
+                        Var3 = notification.ListId,
+
                         // Product link
                         Link = product.UrlName + "/" + product.Id,
 
@@ -162,6 +165,9 @@ namespace Website.Application.Lists.RemoveProduct.EventHandlers
 
                     // List name
                     Var2 = listName,
+
+                    // List Id
+                    Var3 = notification.ListId,
 
                     // Product link
                     Link = product.UrlName + "/" + product.Id,

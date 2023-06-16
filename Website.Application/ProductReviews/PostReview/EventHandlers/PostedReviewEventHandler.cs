@@ -83,14 +83,11 @@ namespace Website.Application.ProductReviews.PostReview.EventHandlers
                         LastName = user.LastName
                     },
 
-                    // Product name
-                    Var1 = product.Name,
-
                     // Review title
-                    Var2 = review.Title,
+                    Var1 = review.Title,
 
                     // Review text
-                    Var3 = review.Text,
+                    Var2 = review.Text,
 
                     // Product link
                     Link = product.UrlName + "/" + product.Id,

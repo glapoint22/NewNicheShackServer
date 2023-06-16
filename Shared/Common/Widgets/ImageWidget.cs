@@ -72,7 +72,23 @@ namespace Shared.Common.Widgets
             // Image
             HtmlNode img = HtmlNode.CreateNode("<img>");
 
-            if (Width > 0) img.SetAttributeValue("style", "width: " + Width + "px;");
+
+
+            
+
+            if (Width != null && Height != null)
+            {
+                float max = MathF.Max((float)Width, (float)Height);
+
+                td.SetAttributeValue("style", "width: " + max + "px; height: " + max + "px");
+                td.SetAttributeValue("valign", "middle");
+                img.SetAttributeValue("style", "max-width: " + max + "px; max-height: " + max + "px");
+            }
+            else
+            {
+                if (Width > 0) img.SetAttributeValue("style", "width: " + Width + "px;");
+            }
+            
 
 
             // Set the styles

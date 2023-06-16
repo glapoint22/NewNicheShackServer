@@ -146,7 +146,11 @@ namespace Website.Application.Lists.UpdateCollaborators.EventHandlers
                         },
 
                         // List name
-                        Var1 = listName
+                        Var1 = listName,
+
+
+                        // List Id
+                        Var2 = notification.ListId
                     });
 
 
@@ -195,7 +199,11 @@ namespace Website.Application.Lists.UpdateCollaborators.EventHandlers
                     },
 
                     // List name
-                    Var1 = listName
+                    Var1 = listName,
+
+
+                    // List Id
+                    Var2 = notification.ListId
                 });
 
                 // Send the email

@@ -30,6 +30,7 @@ namespace Shared.Services
         public async Task SendEmail(EmailMessage emailMessage)
         {
             emailMessage.EmailProperties.Host = _configuration["Email:WebHost"];
+            emailMessage.EmailProperties.Recipient.Email = emailMessage.EmailAddress;
             emailMessage.EmailBody = emailMessage.EmailProperties.SetEmailBody(emailMessage.EmailBody);
 
             MimeMessage email = new()

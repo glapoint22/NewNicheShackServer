@@ -97,7 +97,10 @@ namespace Website.Application.Lists.EditList.EventHandlers
                         Var3 = notification.NewName,
 
                         // New description
-                        Var4 = notification.NewDescription ?? ""
+                        Var4 = notification.NewDescription ?? "",
+
+                        // List Id
+                        Var5 = notification.ListId
                     });
 
                     // Send the email
@@ -148,7 +151,10 @@ namespace Website.Application.Lists.EditList.EventHandlers
                     Var3 = notification.NewName,
 
                     // New description
-                    Var4 = notification.NewDescription ?? ""
+                    Var4 = notification.NewDescription ?? "",
+
+                    // List Id
+                    Var5 = notification.ListId
                 });
 
                 // Send the email

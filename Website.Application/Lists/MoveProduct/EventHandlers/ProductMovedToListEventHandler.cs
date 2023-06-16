@@ -143,6 +143,9 @@ namespace Website.Application.Lists.MoveProduct.EventHandlers
                             // destination List name
                             Var3 = destinationListName,
 
+                            // List Id
+                            Var4 = notification.DestinationListId,
+
                             // Product link
                             Link = product.UrlName + "/" + product.Id,
 
@@ -224,6 +227,9 @@ namespace Website.Application.Lists.MoveProduct.EventHandlers
                         // List name
                         Var2 = sourceListName,
 
+                        // List Id
+                        Var3 = notification.SourceListId,
+
                         // Product link
                         Link = product.UrlName + "/" + product.Id,
 
@@ -297,6 +303,9 @@ namespace Website.Application.Lists.MoveProduct.EventHandlers
                         // List name
                         Var2 = destinationListName,
 
+                        // List Id
+                        Var3 = notification.DestinationListId,
+
                         // Product link
                         Link = product.UrlName + "/" + product.Id,
 
@@ -349,6 +358,9 @@ namespace Website.Application.Lists.MoveProduct.EventHandlers
 
                     // destination List name
                     Var3 = destinationListName,
+
+                    // List Id
+                    Var4 = notification.DestinationListId,
 
                     // Product link
                     Link = product.UrlName + "/" + product.Id,

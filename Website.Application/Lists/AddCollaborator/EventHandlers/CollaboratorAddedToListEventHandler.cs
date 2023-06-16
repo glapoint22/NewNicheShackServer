@@ -95,7 +95,11 @@ namespace Website.Application.Lists.AddCollaborator.EventHandlers
                         },
 
                         // List name
-                        Var1 = listName
+                        Var1 = listName,
+
+
+                        // List Id
+                        Var2 = notification.ListId
                     });
 
 
@@ -133,7 +137,11 @@ namespace Website.Application.Lists.AddCollaborator.EventHandlers
                     },
 
                     // List name
-                    Var1 = listName
+                    Var1 = listName,
+
+
+                    // List Id
+                    Var2 = notification.ListId
                 });
 
 

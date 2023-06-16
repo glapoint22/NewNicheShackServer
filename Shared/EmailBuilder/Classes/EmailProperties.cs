@@ -10,6 +10,7 @@
         public string Var2 { get; set; } = string.Empty;
         public string Var3 { get; set; } = string.Empty;
         public string Var4 { get; set; } = string.Empty;
+        public string Var5 { get; set; } = string.Empty;
         public string ImageName { get; set; } = string.Empty;
         public string ImageSrc { get; set; } = string.Empty;
         public string Stars { get; set; } = string.Empty;
@@ -26,6 +27,7 @@
                 .Replace("{var2}", Var2)
                 .Replace("{var3}", Var3)
                 .Replace("{var4}", Var4)
+                .Replace("{var5}", Var5)
                 .Replace("{imageName}", ImageName)
                 .Replace("{imageSrc}", ImageSrc)
                 .Replace("{personFirstName}", Person?.FirstName)
