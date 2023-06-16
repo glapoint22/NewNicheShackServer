@@ -7,5 +7,10 @@ namespace Manager.Domain.Events
         string LastName,
         string Email,
         string Title,
-        string Text) : INotification;
+        string Text,
+        Guid ProductId,
+        string ProductName,
+        string ProductUrlName,
+        string ProductImage,
+        string Stars) : INotification;
 }

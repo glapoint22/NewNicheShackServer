@@ -47,7 +47,10 @@ namespace Manager.Application.Notifications.ReformList.EventHandlers
                 Var1 = notification.ListName,
 
                 // List description
-                Var2 = notification.ListDescription!
+                Var2 = notification.ListDescription!,
+
+                // List ID
+                Var3 = notification.ListId
             });
 
             // Send the email

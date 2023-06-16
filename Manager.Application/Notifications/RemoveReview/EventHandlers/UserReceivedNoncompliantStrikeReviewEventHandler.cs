@@ -47,7 +47,16 @@ namespace Manager.Application.Notifications.RemoveReview.EventHandlers
                 Var1 = notification.Title,
 
                 // Review text
-                Var2 = notification.Text
+                Var2 = notification.Text,
+
+                // Product link
+                Link = notification.ProductUrlName + "/" + notification.ProductId,
+
+                // Product image
+                ImageName = notification.ProductName,
+                ImageSrc = notification.ProductImage!,
+
+                Stars = notification.Stars
             });
 
             // Send the email

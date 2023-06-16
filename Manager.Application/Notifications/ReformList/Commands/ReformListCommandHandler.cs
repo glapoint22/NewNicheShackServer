@@ -38,7 +38,7 @@ namespace Manager.Application.Notifications.ReformList.Commands
 
                 if (notification.Name == notification.List.Name && notification.Text == notification.List.Description && user != null)
                 {
-                    DomainEventsInterceptor.AddDomainEvent(new UserReceivedNoncompliantStrikeListEvent(user.FirstName, user.LastName, user.Email, notification.List.Name, notification.List.Description)); DomainEventsInterceptor.AddDomainEvent(new UserReceivedNoncompliantStrikeListEvent(user.FirstName, user.LastName, user.Email, notification.List.Name, notification.List.Description));
+                    DomainEventsInterceptor.AddDomainEvent(new UserReceivedNoncompliantStrikeListEvent(user.FirstName, user.LastName, user.Email, notification.ListId!, notification.List.Name, notification.List.Description));
 
                     user.AddStrike();
                     notification.List.ReformList(request.Option);
@@ -51,10 +51,6 @@ namespace Manager.Application.Notifications.ReformList.Commands
                     return Result.Succeeded(true);
                 }
             }
-
-
-
-
 
             return Result.Succeeded();
         }

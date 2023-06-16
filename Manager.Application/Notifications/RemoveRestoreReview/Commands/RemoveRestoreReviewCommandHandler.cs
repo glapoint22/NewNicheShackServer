@@ -23,6 +23,8 @@ namespace Manager.Application.Notifications.RemoveRestoreReview.Commands
                 .Where(x => x.Id == request.UserId)
                 .Include(x => x.ProductReviews
                     .Where(z => z.Id == request.ReviewId))
+                .ThenInclude(x => x.Product)
+                .ThenInclude(x => x.Media)
                 .SingleOrDefaultAsync();
 
 
@@ -30,6 +32,8 @@ namespace Manager.Application.Notifications.RemoveRestoreReview.Commands
             if (user != null)
             {
                 ProductReview productReview = user.ProductReviews.First();
+
+                string stars = await GetStarsImage(productReview.Rating);
 
                 if (request.AddStrike)
                 {
@@ -39,7 +43,12 @@ namespace Manager.Application.Notifications.RemoveRestoreReview.Commands
                         user.LastName,
                         user.Email,
                         productReview.Title,
-                        productReview.Text));
+                        productReview.Text,
+                        productReview.ProductId,
+                        productReview.Product.Name,
+                        productReview.Product.UrlName,
+                        productReview.Product.Media.ImageSm!,
+                        stars));
                 }
                 productReview.RemoveRestore();
             }
@@ -59,6 +68,42 @@ namespace Manager.Application.Notifications.RemoveRestoreReview.Commands
 
 
             return Result.Succeeded();
+        }
+
+
+
+        private async Task<string> GetStarsImage(double rating)
+        {
+            string imageName = string.Empty;
+
+            switch (rating)
+            {
+                case 1:
+                    imageName = "One Star";
+                    break;
+
+                case 2:
+                    imageName = "Two Stars";
+                    break;
+
+                case 3:
+                    imageName = "Three Stars";
+                    break;
+
+                case 4:
+                    imageName = "Four Stars";
+                    break;
+
+                case 5:
+                    imageName = "Five Stars";
+                    break;
+            }
+
+
+            return await _dbContext.Media
+                .Where(x => x.Name == imageName)
+                .Select(x => x.ImageAnySize!)
+                .SingleAsync();
         }
     }
 }
