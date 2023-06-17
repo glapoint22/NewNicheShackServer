@@ -104,7 +104,7 @@ namespace Website.Application.Account.Refresh.Commands
             // Get the user
             User user = await _userService.GetUserByIdAsync(userId);
 
-            if (user == null)
+            if (user == null || user.Suspended)
             {
                 return Result.Failed("404");
             }

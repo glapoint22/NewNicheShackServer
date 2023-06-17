@@ -38,15 +38,33 @@ namespace Manager.Application.Notifications.ReformList.Commands
 
                 if (notification.Name == notification.List.Name && notification.Text == notification.List.Description && user != null)
                 {
-                    DomainEventsInterceptor.AddDomainEvent(new UserReceivedNoncompliantStrikeListEvent(user.FirstName, user.LastName, user.Email, notification.ListId!, notification.List.Name, notification.List.Description));
-
                     user.AddStrike();
+
+                    DomainEventsInterceptor.AddDomainEvent(
+                            new UserReceivedNoncompliantStrikeListEvent(
+                                user.FirstName,
+                                user.LastName,
+                                user.Email,
+                                notification.ListId!,
+                                notification.List.Name,
+                                notification.List.Description));
+
+
+                    if (user.NoncompliantStrikes >= 3)
+                    {
+                        // Terminate account
+                        user.Suspended = true;
+                        DomainEventsInterceptor.AddDomainEvent(
+                            new UserAccountTerminatedEvent(
+                                user.FirstName,
+                                user.LastName,
+                                user.Email));
+                    }
+
+
                     notification.List.ReformList(request.Option);
-
                     notificationGroup.ArchiveNotification();
-
                     await _dbContext.SaveChangesAsync();
-                    
 
                     return Result.Succeeded(true);
                 }

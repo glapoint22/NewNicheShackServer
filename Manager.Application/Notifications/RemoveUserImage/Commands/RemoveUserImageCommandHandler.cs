@@ -25,9 +25,23 @@ namespace Manager.Application.Notifications.RemoveUserImage.Commands
 
             if (user != null && user.Image == request.UserImage)
             {
+                user.AddStrike();
+
                 DomainEventsInterceptor.AddDomainEvent(new UserReceivedNoncompliantStrikeUserImageEvent(user.FirstName, user.LastName, user.Email, user.Image));
 
-                user.AddStrike();
+
+                if (user.NoncompliantStrikes >= 3)
+                {
+                    // Terminate account
+                    user.Suspended = true;
+                    DomainEventsInterceptor.AddDomainEvent(
+                        new UserAccountTerminatedEvent(
+                            user.FirstName,
+                            user.LastName,
+                            user.Email));
+                }
+
+
                 user.RemoveImage();
 
 

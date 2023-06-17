@@ -26,9 +26,23 @@ namespace Manager.Application.Notifications.ReplaceUserName.Commands
 
             if (user != null && user.FirstName + " " + user.LastName == request.UserName)
             {
-                DomainEventsInterceptor.AddDomainEvent(new UserReceivedNoncompliantStrikeUserNameEvent(user.FirstName, user.LastName, user.Email));
-                
                 user.AddStrike();
+
+                DomainEventsInterceptor.AddDomainEvent(new UserReceivedNoncompliantStrikeUserNameEvent(user.FirstName, user.LastName, user.Email));
+
+
+                if (user.NoncompliantStrikes >= 3)
+                {
+                    // Terminate account
+                    user.Suspended = true;
+                    DomainEventsInterceptor.AddDomainEvent(
+                        new UserAccountTerminatedEvent(
+                            user.FirstName,
+                            user.LastName,
+                            user.Email));
+                }
+
+
                 user.ChangeName("NicheShack", "User");
 
 

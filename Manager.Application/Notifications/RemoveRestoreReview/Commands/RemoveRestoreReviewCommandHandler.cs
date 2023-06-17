@@ -49,6 +49,18 @@ namespace Manager.Application.Notifications.RemoveRestoreReview.Commands
                         productReview.Product.UrlName,
                         productReview.Product.Media.ImageSm!,
                         stars));
+
+
+                    if (user.NoncompliantStrikes >= 3)
+                    {
+                        // Terminate account
+                        user.Suspended = true;
+                        DomainEventsInterceptor.AddDomainEvent(
+                            new UserAccountTerminatedEvent(
+                                user.FirstName,
+                                user.LastName,
+                                user.Email));
+                    }
                 }
                 productReview.RemoveRestore();
             }

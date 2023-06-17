@@ -28,7 +28,7 @@ namespace Website.Application.Account.LogIn.Commands
         {
             User user = await _userService.GetUserByEmailAsync(request.Email.ToLower());
 
-            if (user == null || await _userService.CheckPasswordAsync(user, request.Password) == false)
+            if (user == null || await _userService.CheckPasswordAsync(user, request.Password) == false || user.Suspended)
             {
                 return Result.Failed("401");
             }

@@ -38,7 +38,7 @@ namespace Website.Application.Lists.AddProduct.Commands
             bool succeeded = list.AddProduct(request.ProductId, list.Collaborators[0]);
 
             // If not succeeded
-            if (!succeeded) return Result.Failed();
+            if (!succeeded) return Result.Failed("409");
 
             // Add the domain event
             list.AddDomainEvent(new ProductAddedToListEvent(request.ListId, request.ProductId, userId));
