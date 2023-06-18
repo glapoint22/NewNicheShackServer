@@ -26,24 +26,28 @@ namespace Manager.Application.Notifications.ReplaceUserName.Commands
 
             if (user != null && user.FirstName + " " + user.LastName == request.UserName)
             {
-                user.AddStrike();
-
-                DomainEventsInterceptor.AddDomainEvent(new UserReceivedNoncompliantStrikeUserNameEvent(user.FirstName, user.LastName, user.Email));
-
-
-                if (user.NoncompliantStrikes >= 3)
+                if (!user.Suspended)
                 {
-                    // Terminate account
-                    user.Suspended = true;
-                    DomainEventsInterceptor.AddDomainEvent(
-                        new UserAccountTerminatedEvent(
-                            user.FirstName,
-                            user.LastName,
-                            user.Email));
+                    user.AddStrike();
+
+                    DomainEventsInterceptor.AddDomainEvent(new UserReceivedNoncompliantStrikeUserNameEvent(user.FirstName, user.LastName, user.Email));
+
+
+                    if (user.NoncompliantStrikes >= 3)
+                    {
+                        // Terminate account
+                        user.Suspended = true;
+                        DomainEventsInterceptor.AddDomainEvent(
+                            new UserAccountTerminatedEvent(
+                                user.FirstName,
+                                user.LastName,
+                                user.Email));
+                    }
                 }
 
 
-                user.ChangeName("NicheShack", "User");
+
+                user.ChangeName("User", "");
 
 
                 NotificationGroup? notificationGroup = await _dbContext.NotificationGroups
@@ -56,7 +60,7 @@ namespace Manager.Application.Notifications.ReplaceUserName.Commands
 
 
                 await _dbContext.SaveChangesAsync();
-                
+
 
                 return Result.Succeeded(true);
             }

@@ -38,28 +38,32 @@ namespace Manager.Application.Notifications.ReformList.Commands
 
                 if (notification.Name == notification.List.Name && notification.Text == notification.List.Description && user != null)
                 {
-                    user.AddStrike();
-
-                    DomainEventsInterceptor.AddDomainEvent(
-                            new UserReceivedNoncompliantStrikeListEvent(
-                                user.FirstName,
-                                user.LastName,
-                                user.Email,
-                                notification.ListId!,
-                                notification.List.Name,
-                                notification.List.Description));
-
-
-                    if (user.NoncompliantStrikes >= 3)
+                    if (!user.Suspended)
                     {
-                        // Terminate account
-                        user.Suspended = true;
+                        user.AddStrike();
+
                         DomainEventsInterceptor.AddDomainEvent(
-                            new UserAccountTerminatedEvent(
-                                user.FirstName,
-                                user.LastName,
-                                user.Email));
+                                new UserReceivedNoncompliantStrikeListEvent(
+                                    user.FirstName,
+                                    user.LastName,
+                                    user.Email,
+                                    notification.ListId!,
+                                    notification.List.Name,
+                                    notification.List.Description));
+
+
+                        if (user.NoncompliantStrikes >= 3)
+                        {
+                            // Terminate account
+                            user.Suspended = true;
+                            DomainEventsInterceptor.AddDomainEvent(
+                                new UserAccountTerminatedEvent(
+                                    user.FirstName,
+                                    user.LastName,
+                                    user.Email));
+                        }
                     }
+
 
 
                     notification.List.ReformList(request.Option);

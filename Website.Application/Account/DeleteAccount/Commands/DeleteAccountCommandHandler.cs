@@ -23,7 +23,7 @@ namespace Website.Application.Account.DeleteAccount.Commands
         {
             User user = await _userService.GetUserFromClaimsAsync();
 
-            if (!await _userService.CheckPasswordAsync(user, request.Password)) return Result.Failed("401");
+            if (!await _userService.CheckPasswordAsync(user, request.Password) || user.Suspended) return Result.Failed("401");
 
             if (!await _userService.VerifyDeleteAccountTokenAsync(user, request.OneTimePassword)) return Result.Failed("409");
 

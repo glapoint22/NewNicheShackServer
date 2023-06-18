@@ -25,21 +25,25 @@ namespace Manager.Application.Notifications.RemoveUserImage.Commands
 
             if (user != null && user.Image == request.UserImage)
             {
-                user.AddStrike();
-
-                DomainEventsInterceptor.AddDomainEvent(new UserReceivedNoncompliantStrikeUserImageEvent(user.FirstName, user.LastName, user.Email, user.Image));
-
-
-                if (user.NoncompliantStrikes >= 3)
+                if (!user.Suspended)
                 {
-                    // Terminate account
-                    user.Suspended = true;
-                    DomainEventsInterceptor.AddDomainEvent(
-                        new UserAccountTerminatedEvent(
-                            user.FirstName,
-                            user.LastName,
-                            user.Email));
+                    user.AddStrike();
+
+                    DomainEventsInterceptor.AddDomainEvent(new UserReceivedNoncompliantStrikeUserImageEvent(user.FirstName, user.LastName, user.Email, user.Image));
+
+
+                    if (user.NoncompliantStrikes >= 3)
+                    {
+                        // Terminate account
+                        user.Suspended = true;
+                        DomainEventsInterceptor.AddDomainEvent(
+                            new UserAccountTerminatedEvent(
+                                user.FirstName,
+                                user.LastName,
+                                user.Email));
+                    }
                 }
+
 
 
                 user.RemoveImage();
@@ -54,7 +58,7 @@ namespace Manager.Application.Notifications.RemoveUserImage.Commands
                 notificationGroup?.ArchiveNotification();
 
                 await _dbContext.SaveChangesAsync();
-                
+
 
                 return Result.Succeeded(true);
             }

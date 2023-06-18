@@ -37,30 +37,34 @@ namespace Manager.Application.Notifications.RemoveRestoreReview.Commands
 
                 if (request.AddStrike)
                 {
-                    user.AddStrike();
-                    DomainEventsInterceptor.AddDomainEvent(new UserReceivedNoncompliantStrikeReviewEvent(
-                        user.FirstName,
-                        user.LastName,
-                        user.Email,
-                        productReview.Title,
-                        productReview.Text,
-                        productReview.ProductId,
-                        productReview.Product.Name,
-                        productReview.Product.UrlName,
-                        productReview.Product.Media.ImageSm!,
-                        stars));
-
-
-                    if (user.NoncompliantStrikes >= 3)
+                    if (!user.Suspended)
                     {
-                        // Terminate account
-                        user.Suspended = true;
-                        DomainEventsInterceptor.AddDomainEvent(
-                            new UserAccountTerminatedEvent(
-                                user.FirstName,
-                                user.LastName,
-                                user.Email));
+                        user.AddStrike();
+                        DomainEventsInterceptor.AddDomainEvent(new UserReceivedNoncompliantStrikeReviewEvent(
+                            user.FirstName,
+                            user.LastName,
+                            user.Email,
+                            productReview.Title,
+                            productReview.Text,
+                            productReview.ProductId,
+                            productReview.Product.Name,
+                            productReview.Product.UrlName,
+                            productReview.Product.Media.ImageSm!,
+                            stars));
+
+
+                        if (user.NoncompliantStrikes >= 3)
+                        {
+                            // Terminate account
+                            user.Suspended = true;
+                            DomainEventsInterceptor.AddDomainEvent(
+                                new UserAccountTerminatedEvent(
+                                    user.FirstName,
+                                    user.LastName,
+                                    user.Email));
+                        }
                     }
+
                 }
                 productReview.RemoveRestore();
             }
