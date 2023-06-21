@@ -19,6 +19,7 @@ namespace Website.Application.Products.GetProperties.Queries
         {
             var pricePoints = await _dbContext.PricePoints
                 .AsNoTracking()
+                .OrderBy(x => x.Id)
                 .Where(x => x.ProductId == request.ProductId)
                 .Select(x => new
                 {
@@ -28,13 +29,13 @@ namespace Website.Application.Products.GetProperties.Queries
                         Src = x.Media.ImageSm!
                     } : null,
                     x.Header,
+                    x.Subheader,
                     x.Quantity,
-                    x.UnitPrice,
-                    x.Unit,
-                    x.StrikethroughPrice,
                     x.ProductPrice.Price,
                     x.ShippingType,
-                    x.RecurringPayment
+                    x.Text,
+                    x.Info,
+                    x.ShippingValue
                 })
                 .ToListAsync();
 

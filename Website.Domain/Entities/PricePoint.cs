@@ -1,6 +1,4 @@
-﻿using Shared.Common.ValueObjects;
-
-namespace Website.Domain.Entities
+﻿namespace Website.Domain.Entities
 {
     public sealed class PricePoint
     {
@@ -9,12 +7,12 @@ namespace Website.Domain.Entities
         public Guid ProductId { get; set; }
         public Guid? ImageId { get; set; }
         public string? Header { get; set; } = string.Empty;
+        public string? Subheader { get; set; }
         public string? Quantity { get; set; } = string.Empty;
-        public string? UnitPrice { get; set; } = string.Empty;
-        public string? Unit { get; set; } = string.Empty;
-        public string? StrikethroughPrice { get; set; } = string.Empty;
         public int ShippingType { get; set; }
-        public RecurringPayment RecurringPayment { get; set; } = null!;
+        public string Text { get; set; } = string.Empty;
+        public int Info { get; set; }
+        public string? ShippingValue { get; set; }
 
         public ProductPrice ProductPrice { get; set; } = null!;
         public Product Product { get; set; } = null!;

@@ -1,5 +1,4 @@
 ﻿using Manager.Domain.Dtos;
-using Shared.Common.ValueObjects;
 
 namespace Manager.Domain.Entities
 {
@@ -10,12 +9,13 @@ namespace Manager.Domain.Entities
         public Guid ProductId { get; set; }
         public Guid? ImageId { get; set; }
         public string? Header { get; set; }
+        public string? Subheader { get; set; }
         public string? Quantity { get; set; }
-        public string? UnitPrice { get; set; }
-        public string? Unit { get; set; }
-        public string? StrikethroughPrice { get; set; }
         public int ShippingType { get; set; }
-        public RecurringPayment RecurringPayment { get; set; } = new RecurringPayment();
+        public string Text { get; set; } = string.Empty;
+        public int Info { get; set; }
+        public string? ShippingValue { get; set; }
+
 
         public ProductPrice ProductPrice { get; set; } = null!;
         public Product Product { get; set; } = null!;
@@ -38,14 +38,14 @@ namespace Manager.Domain.Entities
         public void Set(PricePointDto pricePoint)
         {
             Header = pricePoint.Header;
+            Subheader = pricePoint.Subheader;
             Quantity = pricePoint.Quantity;
             ImageId = pricePoint.ImageId;
-            UnitPrice = pricePoint.UnitPrice;
-            Unit = pricePoint.Unit;
-            StrikethroughPrice = pricePoint.StrikethroughPrice;
             ProductPrice.Price = pricePoint.Price;
             ShippingType = pricePoint.ShippingType;
-            RecurringPayment = pricePoint.RecurringPayment;
+            Text = pricePoint.Text;
+            Info = pricePoint.Info;
+            ShippingValue = pricePoint.ShippingValue;
         }
     }
 }

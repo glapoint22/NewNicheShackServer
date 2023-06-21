@@ -454,12 +454,12 @@ namespace Manager.Application._Publish.PublishProduct.Commands
                     ProductId = x.ProductId,
                     ImageId = x.ImageId,
                     Header = x.Header,
+                    Subheader = x.Subheader,
                     Quantity = x.Quantity,
-                    UnitPrice = x.UnitPrice,
-                    Unit = x.Unit,
-                    StrikethroughPrice = x.StrikethroughPrice,
                     ShippingType = x.ShippingType,
-                    RecurringPayment = x.RecurringPayment
+                    Text = x.Text,
+                    Info = x.Info,
+                    ShippingValue = x.ShippingValue
                 }).ToList();
 
             _websiteDbContext.PricePoints.AddRange(pricePoints);
@@ -938,18 +938,18 @@ namespace Manager.Application._Publish.PublishProduct.Commands
                         ProductId = product.Id,
                         ImageId = pp.ImageId,
                         Header = pp.Header,
+                        Subheader = pp.Subheader,
                         Quantity = pp.Quantity,
-                        UnitPrice = pp.UnitPrice,
-                        Unit = pp.Unit,
-                        StrikethroughPrice = pp.StrikethroughPrice,
                         ShippingType = pp.ShippingType,
-                        RecurringPayment = pp.RecurringPayment,
                         ProductPrice = new Website.Domain.Entities.ProductPrice
                         {
                             Id = pp.ProductPrice.Id,
                             ProductId = pp.ProductPrice.ProductId,
                             Price = pp.ProductPrice.Price
-                        }
+                        },
+                        Text = pp.Text,
+                        Info = pp.Info,
+                        ShippingValue = pp.ShippingValue
                     });
                 }
             }
@@ -996,13 +996,13 @@ namespace Manager.Application._Publish.PublishProduct.Commands
                     websitePP.ProductId = product.Id;
                     websitePP.ImageId = pp.ImageId;
                     websitePP.Header = pp.Header;
+                    websitePP.Subheader = pp.Subheader;
                     websitePP.Quantity = pp.Quantity;
-                    websitePP.UnitPrice = pp.UnitPrice;
-                    websitePP.Unit = pp.Unit;
-                    websitePP.StrikethroughPrice = pp.StrikethroughPrice;
                     websitePP.ShippingType = pp.ShippingType;
-                    websitePP.RecurringPayment = pp.RecurringPayment;
                     websitePP.ProductPrice.Price = pp.ProductPrice.Price;
+                    websitePP.Text = pp.Text;
+                    websitePP.Info = pp.Info;
+                    websitePP.ShippingValue = pp.ShippingValue;
                 }
             }
         }
