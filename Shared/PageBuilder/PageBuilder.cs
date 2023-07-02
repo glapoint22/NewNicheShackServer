@@ -143,6 +143,9 @@ namespace Shared.PageBuilder
                 case WidgetType.Grid:
                     widget = (GridWidget)widgetData;
                     break;
+                case WidgetType.Niches:
+                    widget = (NichesWidget)widgetData;
+                    break;
             }
 
             return widget;

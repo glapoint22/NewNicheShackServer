@@ -137,7 +137,7 @@ namespace Manager.Application._Publish.PublishPage.Commands
             // If we have media ids from manager that website does not have
             if (missingWebsiteMediaIds.Count > 0)
             {
-                await PostImages(managerMediaIds);
+                await PostImages(missingWebsiteMediaIds);
             }
         }
 

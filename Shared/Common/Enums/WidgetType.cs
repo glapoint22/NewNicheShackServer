@@ -9,7 +9,7 @@
         Line,
         Video,
         ProductSlider,
-        Shop,
+        Niches,
         Carousel,
         Grid
     }

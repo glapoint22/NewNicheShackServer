@@ -7,11 +7,12 @@ namespace Shared.PageBuilder.Classes
     {
         public PageImage Image { get; set; } = null!;
         public Link Link { get; set; } = null!;
+        public string Title { get; set; } = string.Empty;
 
 
         public async Task SetData(IRepository repository)
         {
-            if (Image != null)
+            if (Image != null && Image.Id != Guid.Empty)
             {
                 await Image.SetData(repository);
             }

@@ -68,6 +68,9 @@ namespace Shared.Common.Classes
                             case WidgetType.Grid:
                                 widget = new GridWidget();
                                 break;
+                            case WidgetType.Niches:
+                                widget = new NichesWidget();
+                                break;
                         }
                         widget.WidgetType = widgetType;
                     }
@@ -112,6 +115,9 @@ namespace Shared.Common.Classes
                     break;
                 case WidgetType.Grid:
                     JsonSerializer.Serialize(writer, (GridWidget)widget, options);
+                    break;
+                case WidgetType.Niches:
+                    JsonSerializer.Serialize(writer, (NichesWidget)widget, options);
                     break;
             }
 
