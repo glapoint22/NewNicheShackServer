@@ -30,5 +30,11 @@ namespace Website.Infrastructure.Services.Common
             return _dbContext.Products
                 .Where(predicate);
         }
+
+        public IQueryable<ISubniche> Subniches(Expression<Func<ISubniche, bool>> predicate)
+        {
+            return _dbContext.Subniches
+                .Where(predicate);
+        }
     }
 }

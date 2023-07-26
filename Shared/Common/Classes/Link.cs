@@ -16,7 +16,7 @@ namespace Shared.Common.Classes
 
         public async Task SetData(IRepository repository)
         {
-            if (LinkType != LinkType.Page && LinkType != LinkType.Product) return;
+            if (LinkType != LinkType.Page && LinkType != LinkType.Product && LinkType != LinkType.Browse) return;
 
             if (LinkType == LinkType.Page)
             {
@@ -33,7 +33,7 @@ namespace Shared.Common.Classes
                 if (page != null)
                 {
                     Name = page.Name;
-                    Url = GetPageDisplay((PageType)page.PageType) + page.UrlName + "/" + page.Id;
+                    Url = "cp/" + page.UrlName + "/" + page.Id;
                 }
             }
             else if (LinkType == LinkType.Product)
@@ -54,26 +54,27 @@ namespace Shared.Common.Classes
                     Url = product.UrlName + "/" + product.Id;
                 }
             }
-
-        }
-
-
-        private string GetPageDisplay(PageType pageDisplayType)
-        {
-            string value = "";
-
-            switch (pageDisplayType)
+            else if (LinkType == LinkType.Browse)
             {
-                case PageType.Custom:
-                    value = "cp/";
-                    break;
-                case PageType.Browse:
-                    value = "browse/";
-                    break;
+                var subniche = await repository
+                    .Subniches(x => x.Id == Id)
+                    .Select(x => new
+                    {
+                        x.Id,
+                        x.Name,
+                        x.UrlName,
+                    })
+                    .SingleOrDefaultAsync();
+
+                if (subniche != null)
+                {
+                    Name = subniche.Name;
+                    Url = "browse?subnicheName=" + subniche.UrlName + "&subnicheId=" + subniche.Id;
+                }
             }
 
-            return value;
         }
+
 
 
 

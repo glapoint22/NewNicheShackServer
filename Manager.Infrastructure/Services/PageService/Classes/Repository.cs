@@ -30,5 +30,12 @@ namespace Manager.Infrastructure.Services.PageService.Classes
             return _dbContext.Products
                 .Where(predicate);
         }
+
+
+        public IQueryable<ISubniche> Subniches(Expression<Func<ISubniche, bool>> predicate)
+        {
+            return _dbContext.Subniches
+                .Where(predicate);
+        }
     }
 }

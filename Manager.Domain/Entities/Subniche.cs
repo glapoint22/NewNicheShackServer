@@ -1,8 +1,9 @@
 ﻿using Shared.Common.Classes;
+using Shared.Common.Interfaces;
 
 namespace Manager.Domain.Entities
 {
-    public sealed class Subniche : Entity
+    public sealed class Subniche : Entity, ISubniche
     {
         public Guid Id { get; set; }
         public Guid NicheId { get; set; }

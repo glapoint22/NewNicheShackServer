@@ -18,12 +18,12 @@ namespace Manager.Application.Pages.SearchLinkPages.Queries
         public async Task<Result> Handle(SearchLinkPagesQuery request, CancellationToken cancellationToken)
         {
             var pages = await _dbContext.Pages
-                .Where(x => x.PageType == (int)PageType.Custom || x.PageType == (int)PageType.Browse)
+                .Where(x => x.PageType == (int)PageType.Custom)
                 .Select(x => new
                 {
                     x.Id,
                     x.Name,
-                    Link = (x.PageType == (int)PageType.Custom ? "cp/" : "browse/") + x.UrlName + "/" + x.Id
+                    Link = "cp/" + x.UrlName + "/" + x.Id
                 }).ToListAsync();
             return Result.Succeeded(pages);
         }

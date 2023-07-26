@@ -5,6 +5,7 @@
         None,
         Page,
         Product,
-        WebAddress
+        WebAddress,
+        Browse
     }
 }

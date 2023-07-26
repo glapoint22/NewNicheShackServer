@@ -1,6 +1,8 @@
-﻿namespace Website.Domain.Entities
+﻿using Shared.Common.Interfaces;
+
+namespace Website.Domain.Entities
 {
-    public sealed class Subniche
+    public sealed class Subniche: ISubniche
     {
         public Guid Id { get; set; }
         public Guid NicheId { get; set; }

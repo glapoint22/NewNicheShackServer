@@ -5,6 +5,7 @@ using Manager.Application.Subniches.GetAllSubniches.Queries;
 using Manager.Application.Subniches.GetSubnicheParent.Queries;
 using Manager.Application.Subniches.GetSubniches.Queries;
 using Manager.Application.Subniches.MoveSubniche.Commands;
+using Manager.Application.Subniches.SearchLinkSubniches.Queries;
 using Manager.Application.Subniches.SearchSubniches.Queries;
 using Manager.Application.Subniches.UpdateSubnicheName.Commands;
 using MediatR;
@@ -117,6 +118,17 @@ namespace Manager.Api.Controllers
         public async Task<ActionResult> SearchSubniches(string searchTerm)
         {
             return SetResponse(await _mediator.Send(new SearchSubnichesQuery(searchTerm)));
+        }
+
+
+
+
+        // ----------------------------------------------------------------------------- Search Link Subniches -----------------------------------------------------------------------
+        [HttpGet]
+        [Route("LinkSearch")]
+        public async Task<ActionResult> SearchLinkSubniches(string searchTerm)
+        {
+            return SetResponse(await _mediator.Send(new SearchLinkSubnichesQuery(searchTerm)));
         }
 
 
