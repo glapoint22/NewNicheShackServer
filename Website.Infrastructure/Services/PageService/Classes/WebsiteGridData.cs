@@ -213,7 +213,7 @@ namespace Website.Infrastructure.Services.PageService.Classes
         private async Task<NicheFilters> GetNicheFilters(List<Guid> subnicheIds)
         {
             var subniches = await _dbContext.Subniches
-                .Where(x => subnicheIds.Contains(x.Id))
+                .Where(x => subnicheIds.Contains(x.Id) && (!x.Disabled || !x.Niche.Disabled))
                 .Include(x => x.Niche)
                 .ToListAsync();
 

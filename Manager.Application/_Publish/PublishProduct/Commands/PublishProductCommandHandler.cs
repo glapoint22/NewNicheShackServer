@@ -330,6 +330,8 @@ namespace Manager.Application._Publish.PublishProduct.Commands
         // ------------------------------------------------------------------------------ Publish Niche ---------------------------------------------------------------------------
         private async Task PublishNiche(Domain.Entities.Product product)
         {
+            product.Subniche.Niche.Disabled = false;
+
             if (!await _websiteDbContext.Niches
                 .AnyAsync(x => x.Id == product.Subniche.NicheId))
             {
@@ -341,6 +343,11 @@ namespace Manager.Application._Publish.PublishProduct.Commands
                 };
 
                 _websiteDbContext.Niches.Add(niche);
+            }
+            else
+            {
+                var niche = await _websiteDbContext.Niches.SingleAsync(x => x.Id == product.Subniche.NicheId);
+                niche.Disabled = false;
             }
         }
 
@@ -544,6 +551,8 @@ namespace Manager.Application._Publish.PublishProduct.Commands
         // ---------------------------------------------------------------------------- Publish Subniche --------------------------------------------------------------------------
         private async Task PublishSubniche(Domain.Entities.Product product)
         {
+            product.Subniche.Disabled = false;
+
             if (!await _websiteDbContext.Subniches
                 .AnyAsync(x => x.Id == product.SubnicheId))
             {
@@ -556,6 +565,11 @@ namespace Manager.Application._Publish.PublishProduct.Commands
                 };
 
                 _websiteDbContext.Subniches.Add(subniche);
+            }
+            else
+            {
+                var subniche = await _websiteDbContext.Subniches.SingleAsync(x => x.Id == product.SubnicheId);
+                subniche.Disabled = false;
             }
         }
 

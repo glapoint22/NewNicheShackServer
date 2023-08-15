@@ -18,7 +18,7 @@ namespace Website.Application.Niches.GetSubniches.Queries
         public async Task<Result> Handle(GetSubnichesQuery request, CancellationToken cancellationToken)
         {
             var subniches = await _dbContext.Subniches
-                .Where(x => x.NicheId == request.NicheId)
+                .Where(x => x.NicheId == request.NicheId && !x.Disabled)
                 .Select(x => new
                 {
                     x.Id,
