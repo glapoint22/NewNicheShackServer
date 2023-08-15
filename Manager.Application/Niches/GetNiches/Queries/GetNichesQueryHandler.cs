@@ -21,7 +21,8 @@ namespace Manager.Application.Niches.GetNiches.Queries
                 .Select(x => new
                 {
                     x.Id,
-                    x.Name
+                    x.Name,
+                    x.Disabled
                 }).ToListAsync();
 
             return Result.Succeeded(niches);

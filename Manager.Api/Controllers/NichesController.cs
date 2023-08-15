@@ -1,5 +1,6 @@
 ﻿using Manager.Application.Niches.AddNiche.Commands;
 using Manager.Application.Niches.DeleteNiche.Commands;
+using Manager.Application.Niches.DisableEnableNiche.Commands;
 using Manager.Application.Niches.GetNicheChildren.Queries;
 using Manager.Application.Niches.GetNiches.Queries;
 using Manager.Application.Niches.GetSubnichesProducts.Queries;
@@ -96,6 +97,19 @@ namespace Manager.Api.Controllers
         public async Task<ActionResult> UpdateNicheName(UpdateNicheNameCommand updateNicheName)
         {
             return SetResponse(await _mediator.Send(updateNicheName));
+        }
+
+
+
+
+
+
+        // -------------------------------------------------------------------------- Disable Enable Niche ---------------------------------------------------------------------
+        [HttpPut]
+        [Route("DisableEnableNiche")]
+        public async Task<ActionResult> DisableEnableNiche(DisableEnableNicheCommand disableEnableNiche)
+        {
+            return SetResponse(await _mediator.Send(disableEnableNiche));
         }
     }
 }

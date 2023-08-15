@@ -22,7 +22,8 @@ namespace Manager.Application.Subniches.GetSubniches.Queries
                 .Select(x => new
                 {
                     x.Id,
-                    x.Name
+                    x.Name,
+                    x.Disabled
                 }).ToListAsync();
 
             return Result.Succeeded(subniches);

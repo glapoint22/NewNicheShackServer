@@ -1,6 +1,8 @@
-﻿using Manager.Application.Subniches.AddSubniche.Commands;
+﻿using Manager.Application.Niches.DisableEnableNiche.Commands;
+using Manager.Application.Subniches.AddSubniche.Commands;
 using Manager.Application.Subniches.CheckDuplicateSubniche.Queries;
 using Manager.Application.Subniches.DeleteSubniche.Commands;
+using Manager.Application.Subniches.DisableEnableSubniche.Commands;
 using Manager.Application.Subniches.GetAllSubniches.Queries;
 using Manager.Application.Subniches.GetSubnicheParent.Queries;
 using Manager.Application.Subniches.GetSubniches.Queries;
@@ -139,6 +141,17 @@ namespace Manager.Api.Controllers
         public async Task<ActionResult> UpdateSubnicheName(UpdateSubnicheNameCommand updateSubnicheName)
         {
             return SetResponse(await _mediator.Send(updateSubnicheName));
+        }
+
+
+
+
+        // -------------------------------------------------------------------------- Disable Enable Subniche ---------------------------------------------------------------------
+        [HttpPut]
+        [Route("DisableEnableSubniche")]
+        public async Task<ActionResult> DisableEnableSubniche(DisableEnableSubnicheCommand disableEnableSubniche)
+        {
+            return SetResponse(await _mediator.Send(disableEnableSubniche));
         }
     }
 }

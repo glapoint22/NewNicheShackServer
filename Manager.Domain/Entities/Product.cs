@@ -21,6 +21,7 @@ namespace Manager.Domain.Entities
         public RecurringPayment RecurringPayment { get; set; } = new RecurringPayment();
         public DateTime Date { get; set; }
         public string Currency { get; set; } = string.Empty;
+        public bool Disabled { get; set; }
 
         public Vendor Vendor { get; set; } = null!;
         public Subniche Subniche { get; set; } = null!;

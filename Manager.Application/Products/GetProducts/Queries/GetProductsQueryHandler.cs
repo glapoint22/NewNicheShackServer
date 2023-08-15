@@ -22,7 +22,8 @@ namespace Manager.Application.Products.GetProducts.Queries
                 .Select(x => new
                 {
                     x.Id,
-                    x.Name
+                    x.Name,
+                    x.Disabled
                 }).ToListAsync();
 
             return Result.Succeeded(products);
