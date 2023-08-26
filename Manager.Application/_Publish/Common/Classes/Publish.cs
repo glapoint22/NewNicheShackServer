@@ -31,7 +31,7 @@ namespace Manager.Application._Publish.Common.Classes
 
         protected static List<Guid> GetMediaIds(string content)
         {
-            Regex regex = new(@"""image"":{""id"":""([a-zA-Z0-9-]+)""");
+            Regex regex = new(@"""(?:image|image2)"":{""id"":""([a-zA-Z0-9-]+)""");
             MatchCollection matches = regex.Matches(content);
 
             return matches

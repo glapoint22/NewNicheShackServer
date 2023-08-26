@@ -146,6 +146,9 @@ namespace Shared.PageBuilder
                 case WidgetType.Niches:
                     widget = (NichesWidget)widgetData;
                     break;
+                case WidgetType.Poster:
+                    widget = (PosterWidget)widgetData;
+                    break;
             }
 
             return widget;

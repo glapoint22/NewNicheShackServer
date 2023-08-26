@@ -71,6 +71,9 @@ namespace Shared.Common.Classes
                             case WidgetType.Niches:
                                 widget = new NichesWidget();
                                 break;
+                            case WidgetType.Poster:
+                                widget = new PosterWidget();
+                                break;
                         }
                         widget.WidgetType = widgetType;
                     }
@@ -118,6 +121,9 @@ namespace Shared.Common.Classes
                     break;
                 case WidgetType.Niches:
                     JsonSerializer.Serialize(writer, (NichesWidget)widget, options);
+                    break;
+                case WidgetType.Poster:
+                    JsonSerializer.Serialize(writer, (PosterWidget)widget, options);
                     break;
             }
 

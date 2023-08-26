@@ -11,6 +11,7 @@
         ProductSlider,
         Niches,
         Carousel,
-        Grid
+        Grid,
+        Poster
     }
 }
