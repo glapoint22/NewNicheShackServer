@@ -149,6 +149,9 @@ namespace Shared.PageBuilder
                 case WidgetType.Poster:
                     widget = (PosterWidget)widgetData;
                     break;
+                case WidgetType.ImageSet:
+                    widget = (ImageSetWidget)widgetData;
+                    break;
             }
 
             return widget;

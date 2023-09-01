@@ -74,6 +74,9 @@ namespace Shared.Common.Classes
                             case WidgetType.Poster:
                                 widget = new PosterWidget();
                                 break;
+                            case WidgetType.ImageSet:
+                                widget = new ImageSetWidget();
+                                break;
                         }
                         widget.WidgetType = widgetType;
                     }
@@ -124,6 +127,9 @@ namespace Shared.Common.Classes
                     break;
                 case WidgetType.Poster:
                     JsonSerializer.Serialize(writer, (PosterWidget)widget, options);
+                    break;
+                case WidgetType.ImageSet:
+                    JsonSerializer.Serialize(writer, (ImageSetWidget)widget, options);
                     break;
             }
 

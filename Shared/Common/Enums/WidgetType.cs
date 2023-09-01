@@ -12,6 +12,7 @@
         Niches,
         Carousel,
         Grid,
-        Poster
+        Poster,
+        ImageSet
     }
 }
