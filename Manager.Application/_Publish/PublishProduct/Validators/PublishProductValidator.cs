@@ -1,5 +1,4 @@
-﻿using Duende.IdentityServer.Extensions;
-using FluentValidation;
+﻿using FluentValidation;
 using Manager.Application._Publish.PublishProduct.Commands;
 using Shared.Common.Enums;
 

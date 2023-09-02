@@ -19,11 +19,13 @@ namespace Manager.Api.Controllers
     {
         private readonly ISender _mediator;
         private readonly IManagerDbContext _dbContext;
+        private readonly IAuthService _authService;
 
-        public PublishController(ISender mediator, IManagerDbContext dbContext)
+        public PublishController(ISender mediator, IManagerDbContext dbContext, IAuthService authService)
         {
             _mediator = mediator;
             _dbContext = dbContext;
+            _authService = authService;
         }
 
 
@@ -103,6 +105,52 @@ namespace Manager.Api.Controllers
                 .SingleAsync();
 
             return SetResponse(await _mediator.Send(new PublishProductCommand(product)));
+        }
+
+
+
+
+
+        // -------------------------------------------------------------------------------- Publish All -------------------------------------------------------------------------
+        [HttpGet]
+        [Route("PublishAll")]
+        public async Task<ActionResult> PublishAll()
+        {
+            var productIds = await _dbContext.Products.Select(x => x.Id).ToListAsync();
+
+            foreach (var productId in productIds)
+            {
+                _dbContext.PublishItems.Add(PublishItem.AddProduct(productId, _authService.GetUserIdFromClaims(), Domain.Enums.PublishStatus.New));
+
+                await _dbContext.SaveChangesAsync();
+
+                await PublishProduct(productId);
+            }
+
+
+            var pageIds = await _dbContext.Pages.Select(x => x.Id).ToListAsync();
+
+            foreach (var pageId in pageIds)
+            {
+                _dbContext.PublishItems.Add(PublishItem.AddPage(pageId, _authService.GetUserIdFromClaims(), Domain.Enums.PublishStatus.New));
+                await _dbContext.SaveChangesAsync();
+
+                await PublishPage(pageId);
+            }
+
+
+
+            var emailIds = await _dbContext.Emails.Select(x => x.Id).ToListAsync();
+
+            foreach (var emailId in emailIds)
+            {
+                _dbContext.PublishItems.Add(PublishItem.AddEmail(emailId, _authService.GetUserIdFromClaims(), Domain.Enums.PublishStatus.New));
+                await _dbContext.SaveChangesAsync();
+
+                await PublishEmail(emailId);
+            }
+
+            return Ok();
         }
     }
 }
