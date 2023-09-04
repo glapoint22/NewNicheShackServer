@@ -215,6 +215,7 @@ namespace Shared.QueryBuilder
                     // Is the query element a row or group?
                     if (nextQueryElement.QueryElementType == QueryElementType.QueryRow)
                     {
+                        if (nextQueryElement.QueryRow.QueryType == QueryType.None) return expression;
                         rightExpression = GetExpression(nextQueryElement.QueryRow, parameter);
                     }
                     else
