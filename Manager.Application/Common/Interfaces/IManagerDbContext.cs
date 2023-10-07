@@ -20,6 +20,7 @@ namespace Manager.Application.Common.Interfaces
         DbSet<Page> Pages { get; }
         DbSet<PageSubniche> PageSubniches { get; }
         DbSet<PricePoint> PricePoints { get; }
+        DbSet<PriceRange> PriceRanges { get; }
         DbSet<ProductFilter> ProductFilters { get; }
         DbSet<ProductGroup> ProductGroups { get; }
         DbSet<ProductKeyword> ProductKeywords { get; }
