@@ -3,21 +3,24 @@ using Manager.Application.Common.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Shared.Common.Classes;
+using Website.Application.Common.Interfaces;
 
 namespace Manager.Application.Products.GetProduct.Queries
 {
     public sealed class GetProductQueryHandler : IRequestHandler<GetProductQuery, Result>
     {
-        private readonly IManagerDbContext _dbContext;
+        private readonly IManagerDbContext _managerDbContext;
+        private readonly IWebsiteDbContext _websiteDbContext;
 
-        public GetProductQueryHandler(IManagerDbContext dbContext)
+        public GetProductQueryHandler(IManagerDbContext managerDbContext, IWebsiteDbContext websiteDbContext)
         {
-            _dbContext = dbContext;
+            _managerDbContext = managerDbContext;
+            _websiteDbContext = websiteDbContext;
         }
 
         public async Task<Result> Handle(GetProductQuery request, CancellationToken cancellationToken)
         {
-            var product = await _dbContext.Products
+            var product = await _managerDbContext.Products
                 .AsNoTracking()
                 .Where(x => x.Id == request.ProductId)
                 .Select(x => new
@@ -52,7 +55,7 @@ namespace Manager.Application.Products.GetProduct.Queries
                 })
                 .SingleAsync();
 
-            var pricePoints = await _dbContext.PricePoints
+            var pricePoints = await _managerDbContext.PricePoints
                 .AsNoTracking()
                 .OrderBy(x => x.Id)
                 .Where(x => x.ProductId == request.ProductId)
@@ -75,7 +78,7 @@ namespace Manager.Application.Products.GetProduct.Queries
                     x.ShippingValue
                 }).ToListAsync();
 
-            var media = await _dbContext.ProductMedia
+            var media = await _managerDbContext.ProductMedia
                 .Where(x => x.ProductId == request.ProductId)
                 .OrderBy(x => x.Index)
                 .Select(x => new
@@ -91,7 +94,7 @@ namespace Manager.Application.Products.GetProduct.Queries
                     x.Index
                 }).ToListAsync();
 
-            var subproducts = await _dbContext.Subproducts
+            var subproducts = await _managerDbContext.Subproducts
                 .Where(x => x.ProductId == request.ProductId)
                 .Select(x => new
                 {
@@ -107,6 +110,17 @@ namespace Manager.Application.Products.GetProduct.Queries
                     },
                     x.Value
                 }).ToListAsync();
+
+                var notificationItems = await _websiteDbContext.Notifications
+                    .Where(x => x.ProductId == request.ProductId)
+                    .Select(x => new
+                    {
+                        x.NotificationGroupId,
+                        NotificationType = x.Type,
+                        Image = x.Product.Media.Thumbnail,
+                        IsNew = x.NotificationGroup.ArchiveDate == null ? true: false,
+                        Count = x.NotificationGroup.Notifications.Count()
+                    }).ToListAsync();
 
 
             return Result.Succeeded(new
@@ -130,7 +144,8 @@ namespace Manager.Application.Products.GetProduct.Queries
                     .ToList(),
                 Bonuses = subproducts
                     .Where(x => x.Type == 1)
-                    .ToList()
+                    .ToList(),
+                notificationItems
             });
         }
     }
