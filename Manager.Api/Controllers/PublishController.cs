@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Shared.Common.Controllers;
+using Website.Application.Common.Interfaces;
+using IAuthService = Manager.Application.Common.Interfaces.IAuthService;
 
 namespace Manager.Api.Controllers
 {
@@ -21,13 +23,15 @@ namespace Manager.Api.Controllers
     {
         private readonly ISender _mediator;
         private readonly IManagerDbContext _dbContext;
+        private readonly IWebsiteDbContext _websiteContext;
         private readonly IAuthService _authService;
 
-        public PublishController(ISender mediator, IManagerDbContext dbContext, IAuthService authService)
+        public PublishController(ISender mediator, IManagerDbContext dbContext, IAuthService authService, IWebsiteDbContext websiteContext)
         {
             _mediator = mediator;
             _dbContext = dbContext;
             _authService = authService;
+            _websiteContext = websiteContext;
         }
 
 
@@ -118,6 +122,8 @@ namespace Manager.Api.Controllers
         [Route("PublishAll")]
         public async Task<ActionResult> PublishAll()
         {
+            if (await _websiteContext.Products.AnyAsync()) return Ok();
+
             // Products
             var productIds = await _dbContext.Products.Select(x => x.Id).ToListAsync();
 
