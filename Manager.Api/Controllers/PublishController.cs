@@ -1,7 +1,9 @@
 ﻿using Manager.Application._Publish.GetPublishItems.Queries;
 using Manager.Application._Publish.PublishEmail.Commands;
 using Manager.Application._Publish.PublishPage.Commands;
+using Manager.Application._Publish.PublishPriceRanges.Commands;
 using Manager.Application._Publish.PublishProduct.Commands;
+using Manager.Application._Publish.PublishStars.Commands;
 using Manager.Application.Common.Interfaces;
 using Manager.Domain.Entities;
 using MediatR;
@@ -116,6 +118,7 @@ namespace Manager.Api.Controllers
         [Route("PublishAll")]
         public async Task<ActionResult> PublishAll()
         {
+            // Products
             var productIds = await _dbContext.Products.Select(x => x.Id).ToListAsync();
 
             foreach (var productId in productIds)
@@ -128,6 +131,7 @@ namespace Manager.Api.Controllers
             }
 
 
+            // Pages
             var pageIds = await _dbContext.Pages.Select(x => x.Id).ToListAsync();
 
             foreach (var pageId in pageIds)
@@ -139,7 +143,7 @@ namespace Manager.Api.Controllers
             }
 
 
-
+            // Emails
             var emailIds = await _dbContext.Emails.Select(x => x.Id).ToListAsync();
 
             foreach (var emailId in emailIds)
@@ -149,6 +153,12 @@ namespace Manager.Api.Controllers
 
                 await PublishEmail(emailId);
             }
+
+            await _mediator.Send(new PublishStarsCommand());
+
+
+            // Price Ranges
+            await _mediator.Send(new PublishPriceRangesCommand());
 
             return Ok();
         }

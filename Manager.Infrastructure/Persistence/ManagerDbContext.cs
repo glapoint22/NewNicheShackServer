@@ -26,6 +26,7 @@ namespace Manager.Infrastructure.Persistence
         public DbSet<Page> Pages => Set<Page>();
         public DbSet<PageSubniche> PageSubniches => Set<PageSubniche>();
         public DbSet<PricePoint> PricePoints => Set<PricePoint>();
+        public DbSet<PriceRange> PriceRanges => Set<PriceRange>();
         public DbSet<ProductFilter> ProductFilters => Set<ProductFilter>();
         public DbSet<ProductGroup> ProductGroups => Set<ProductGroup>();
         public DbSet<ProductKeyword> ProductKeywords => Set<ProductKeyword>();
