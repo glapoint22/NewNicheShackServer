@@ -36,7 +36,7 @@ namespace Website.Application.Account.ExternalLogIn.Commands
             if (user != null)
             {
                 bool userHasPassword = await _userService.HasPasswordAsync(user);
-                List<Claim> claims = _authService.GenerateClaims(user.Id, request.Provider, userHasPassword);
+                List<Claim> claims = _authService.GenerateClaims(user.Id, "user", userHasPassword);
                 string accessToken = _authService.GenerateAccessToken(claims);
                 
                 string userData = _userService.GetUserData(user, request.Provider, userHasPassword);
