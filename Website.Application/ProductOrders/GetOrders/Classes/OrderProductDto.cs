@@ -4,6 +4,7 @@ namespace Website.Application.ProductOrders.GetOrders.Classes
 {
     public sealed class OrderProductDto
     {
+        public Guid ProductId { get; set; }
         public string Date { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public Image Image { get; set; } = null!;

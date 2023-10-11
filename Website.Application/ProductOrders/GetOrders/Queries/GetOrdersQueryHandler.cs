@@ -113,6 +113,7 @@ namespace Website.Application.ProductOrders.GetOrders.Queries
                 .Where(searchTerm)
                 .Select(x => new OrderProductDto
                 {
+                    ProductId = x.ProductOrder.ProductId,
                     Date = x.ProductOrder.Date.ToString(),
                     Name = x.Name,
                     Image = x.LineItemType == "ORIGINAL" ? new Image
