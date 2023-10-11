@@ -115,8 +115,11 @@ namespace Manager.Application.Products.GetProduct.Queries
                     .Where(x => x.ProductId == request.ProductId)
                     .Select(x => new
                     {
+                        x.Id,
+                        x.ProductId,
                         x.NotificationGroupId,
                         NotificationType = x.Type,
+                        ProductName = x.Product.Name,
                         Image = x.Product.Media.Thumbnail,
                         IsNew = x.NotificationGroup.ArchiveDate == null ? true: false,
                         Count = x.NotificationGroup.Notifications.Count()

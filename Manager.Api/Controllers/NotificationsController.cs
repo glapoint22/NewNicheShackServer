@@ -3,6 +3,7 @@ using Manager.Application.Notifications.ArchiveGroup.Commands;
 using Manager.Application.Notifications.ArchiveNotification.Commands;
 using Manager.Application.Notifications.BlockNonAccountUser.Commands;
 using Manager.Application.Notifications.BlockUnblockUser.Commands;
+using Manager.Application.Notifications.CreateNotification.Commands;
 using Manager.Application.Notifications.DeleteNotifications.Commands;
 using Manager.Application.Notifications.DisableEnableProduct.Commands;
 using Manager.Application.Notifications.GetArchivedNotifications.Queries;
@@ -98,6 +99,16 @@ namespace Manager.Api.Controllers
         public async Task<ActionResult> BlockUnblockUser(BlockUnblockUserCommand BlockUnblockUser)
         {
             return SetResponse(await _mediator.Send(BlockUnblockUser));
+        }
+
+
+
+        // -------------------------------------------------------------------------- Create Notification ------------------------------------------------------------------------
+        [HttpPost]
+        [Route("CreateNotification")]
+        public async Task<ActionResult> CreateNotification(CreateNotificationCommand createNotification)
+        {
+            return SetResponse(await _mediator.Send(createNotification));
         }
 
 
