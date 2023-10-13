@@ -46,6 +46,8 @@ namespace Website.Domain.Entities
         public void RemoveRestore()
         {
             Deleted = !Deleted;
+
+            Product.SetRating((int)Rating, Deleted);
         }
     }
 }

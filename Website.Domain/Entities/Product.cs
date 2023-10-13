@@ -49,35 +49,37 @@ namespace Website.Domain.Entities
 
 
         // ---------------------------------------------------------------------- Set Rating ---------------------------------------------------------------------------
-        public void SetRating(int rating)
+        public void SetRating(int rating, bool removeReview = false)
         {
+            int num = removeReview ? -1 : 1;
+
             // Increment the star based on the rating. So if the rating is 3, the threeStars property will be incremented
             switch (rating)
             {
                 case 1:
-                    OneStar++;
+                    OneStar += num;
                     break;
 
                 case 2:
-                    TwoStars++;
+                    TwoStars += num;
                     break;
 
                 case 3:
-                    ThreeStars++;
+                    ThreeStars += num;
                     break;
 
                 case 4:
-                    FourStars++;
+                    FourStars += num;
                     break;
 
                 case 5:
-                    FiveStars++;
+                    FiveStars += num;
                     break;
             }
 
 
             // Increment total reviews
-            TotalReviews++;
+            TotalReviews += num;
 
             // Calculate the product's rating
             double sum = 5 * FiveStars +
@@ -86,7 +88,7 @@ namespace Website.Domain.Entities
                          2 * TwoStars +
                          1 * OneStar;
 
-            Rating = Math.Round(sum / TotalReviews, 1);
+            Rating = TotalReviews > 0 ? Math.Round(sum / TotalReviews, 1) : 0;
         }
     }
 }
