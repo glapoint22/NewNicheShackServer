@@ -20,7 +20,7 @@ namespace Website.Application.Account.ChangeProfileImage.EventHandlers
         {
             User user = (await _dbContext.Users.FindAsync(notification.UserId))!;
 
-            if (user.BlockNotificationSending) return;
+            //if (user.BlockNotificationSending) return;
 
 
             // First, check to see if a notification group for this type of notification already exists

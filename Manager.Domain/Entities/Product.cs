@@ -81,7 +81,8 @@ namespace Manager.Domain.Entities
                 SubnicheId = subnicheId,
                 Name = name,
                 UrlName = Utility.GenerateUrlName(name),
-                Date = DateTime.UtcNow
+                Date = DateTime.UtcNow,
+                Currency = "USD"
             };
 
             return product;

@@ -19,7 +19,7 @@ namespace Website.Application.ProductReviews.PostReview.EventHandlers
         public async Task Handle(PostedReviewEvent notification, CancellationToken cancellationToken)
         {
             // Check to see if this user is blocked
-            if (await _dbContext.Users.AnyAsync(x => x.Id == notification.UserId && x.BlockNotificationSending)) return;
+            //if (await _dbContext.Users.AnyAsync(x => x.Id == notification.UserId && x.BlockNotificationSending)) return;
 
 
             // First, check to see if a notification group for this type of notification already exists
