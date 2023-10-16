@@ -35,14 +35,16 @@ namespace Website.Application.Lists.Common
                 {
                     x.Name,
                     x.Description
-                }).SingleAsync();
+                }).SingleOrDefaultAsync();
 
+            if (list != null)
+            {
+                // Create the notification
+                Notification ListNotification = Notification.CreateListNotification(notificationGroupId, notification.ListId, notification.UserId, list.Name, list.Description);
+                _dbContext.Notifications.Add(ListNotification);
 
-            // Create the notification
-            Notification ListNotification = Notification.CreateListNotification(notificationGroupId, notification.ListId, notification.UserId, list.Name, list.Description);
-            _dbContext.Notifications.Add(ListNotification);
-
-            await _dbContext.SaveChangesAsync();
+                await _dbContext.SaveChangesAsync();
+            }
         }
     }
 }
