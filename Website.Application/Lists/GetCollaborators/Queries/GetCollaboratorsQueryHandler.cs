@@ -23,7 +23,7 @@ namespace Website.Application.Lists.GetCollaborators.Queries
 
             // Get all collaborators from the list except the owner and the current user
             var collaborators = await _dbContext.Collaborators
-                .Where(x => x.ListId == request.ListId && !x.IsOwner && x.UserId != userId)
+                .Where(x => x.ListId == request.ListId && !x.IsOwner)
                 .Select(x => new
                 {
                     x.Id,

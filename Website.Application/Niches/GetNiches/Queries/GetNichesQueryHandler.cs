@@ -17,6 +17,7 @@ namespace Website.Application.Niches.GetNiches.Queries
         public async Task<Result> Handle(GetNichesQuery request, CancellationToken cancellationToken)
         {
             var niches = await _dbContext.Niches
+                .OrderBy(x => x.Name)
                 .Where(x => !x.Disabled)
                 .Select(x => new
                 {

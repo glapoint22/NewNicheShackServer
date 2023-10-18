@@ -25,7 +25,6 @@ namespace Website.Application.Lists.GetLists.Queries
             User user = await _userService.GetUserFromClaimsAsync();
 
             List<ListDto> lists = await _dbContext.Lists
-                .OrderBy(x => x.CreationDate)
                 .Where(x => x.Collaborators
                     .Where(y => y.UserId == user.Id)
                     .Any())
@@ -34,10 +33,11 @@ namespace Website.Application.Lists.GetLists.Queries
                     x.Id,
                     x.Name,
                     x.Description,
+                    x.CreationDate,
                     TotalProducts = x.Products.Count,
                     x.CollaborateId,
                     CollaboratorCount = x.Collaborators
-                        .Count(z => !z.IsOwner && z.UserId != user.Id),
+                        .Count(z => !z.IsOwner),
                     CollaboratorId = x.Collaborators
                         .Where(z => z.UserId == user.Id && z.ListId == x.Id)
                         .Select(z => z.Id)
@@ -76,8 +76,11 @@ namespace Website.Application.Lists.GetLists.Queries
                     {
                         Name = x.Owner.FirstName,
                         Src = x.Owner.Image!
-                    }
+                    },
+                    CreationDate = x.CreationDate
                 })
+                .OrderByDescending(x => x.IsOwner)
+                .ThenBy(x => x.CreationDate)
                 .ToListAsync(cancellationToken: cancellationToken);
 
             if (lists.Count == 0) return Result.Succeeded();

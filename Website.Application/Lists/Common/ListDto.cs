@@ -16,5 +16,6 @@ namespace Website.Application.Lists.Common
         public string OwnerName { get; set; } = string.Empty;
         public bool IsOwner { get; set; }
         public Image OwnerProfileImage { get; set; } = null!;
+        public DateTime CreationDate { get; set; }
     }
 }

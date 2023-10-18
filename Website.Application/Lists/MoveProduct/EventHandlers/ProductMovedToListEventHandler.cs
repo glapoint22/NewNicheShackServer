@@ -166,158 +166,160 @@ namespace Website.Application.Lists.MoveProduct.EventHandlers
                 .Select(z => z.UserId)
                 .ToList();
 
-            // Return if we have no collaborators
-            if (userIds.Count == 0) return;
-
-
-            // Get the recipients that are collaborating on the source list
-            recipients = await _dbContext.Collaborators
-                .Where(x => userIds
-                    .Contains(x.UserId) &&
-                    x.ListId == notification.SourceListId &&
-                    x.User.EmailOnCollaboratorRemovedListItem == true)
-                .Select(x => new Recipient
-                {
-                    FirstName = x.User.FirstName,
-                    LastName = x.User.LastName,
-                    Email = x.User.Email
-                }).ToListAsync();
-
-
-            // If we have recipients
-            if (recipients.Count > 0)
+            if (userIds.Count > 0)
             {
-                // Get the email content from the database
-                var email = await _dbContext.Emails
-                    .Where(x => x.Type == EmailType.CollaboratorRemovedListItem)
-                    .Select(x => new
+                // Get the recipients that are collaborating on the source list
+                recipients = await _dbContext.Collaborators
+                    .Where(x => userIds
+                        .Contains(x.UserId) &&
+                        x.ListId == notification.SourceListId &&
+                        x.User.EmailOnCollaboratorRemovedListItem == true)
+                    .Select(x => new Recipient
                     {
-                        x.Name,
-                        x.Content
-                    }).SingleAsync();
+                        FirstName = x.User.FirstName,
+                        LastName = x.User.LastName,
+                        Email = x.User.Email
+                    }).ToListAsync();
 
 
-                // Get the email body
-                emailBody = await _emailService.GetEmailBody(email.Content);
-
-
-                // Send the emails
-                foreach (Recipient recipient in recipients)
+                // If we have recipients
+                if (recipients.Count > 0)
                 {
-                    // Create the email message
-                    emailMessage = new(emailBody, recipient.Email, email.Name, new()
+                    // Get the email content from the database
+                    var email = await _dbContext.Emails
+                        .Where(x => x.Type == EmailType.CollaboratorRemovedListItem)
+                        .Select(x => new
+                        {
+                            x.Name,
+                            x.Content
+                        }).SingleAsync();
+
+
+                    // Get the email body
+                    emailBody = await _emailService.GetEmailBody(email.Content);
+
+
+                    // Send the emails
+                    foreach (Recipient recipient in recipients)
                     {
-                        // Recipient
-                        Recipient = new()
+                        // Create the email message
+                        emailMessage = new(emailBody, recipient.Email, email.Name, new()
                         {
-                            FirstName = recipient.FirstName,
-                            LastName = recipient.LastName
-                        },
+                            // Recipient
+                            Recipient = new()
+                            {
+                                FirstName = recipient.FirstName,
+                                LastName = recipient.LastName
+                            },
 
-                        // User that removed the item
-                        Person = new()
+                            // User that removed the item
+                            Person = new()
+                            {
+                                FirstName = user.FirstName,
+                                LastName = user.LastName
+                            },
+
+                            // Product name
+                            Var1 = product.Name,
+
+                            // List name
+                            Var2 = sourceListName,
+
+                            // List Id
+                            Var3 = notification.SourceListId,
+
+                            // Product link
+                            Link = product.UrlName + "/" + product.Id,
+
+                            // Product image
+                            ImageName = product.Name,
+                            ImageSrc = product.Image!
+                        });
+
+                        // Send the email
+                        await _emailService.SendEmail(emailMessage);
+                    }
+                }
+
+
+
+                // Get the recipients that are collaborating on the destination list
+                recipients = await _dbContext.Collaborators
+                    .Where(x => userIds
+                        .Contains(x.UserId) &&
+                        x.ListId == notification.DestinationListId &&
+                        x.User.EmailOnCollaboratorAddedListItem == true)
+                    .Select(x => new Recipient
+                    {
+                        FirstName = x.User.FirstName,
+                        LastName = x.User.LastName,
+                        Email = x.User.Email
+                    }).ToListAsync();
+
+
+
+                // If we have recipients
+                if (recipients.Count > 0)
+                {
+                    // Get the email content from the database
+                    var email = await _dbContext.Emails
+                        .Where(x => x.Type == EmailType.CollaboratorAddedListItem)
+                        .Select(x => new
                         {
-                            FirstName = user.FirstName,
-                            LastName = user.LastName
-                        },
+                            x.Name,
+                            x.Content
+                        }).SingleAsync();
 
-                        // Product name
-                        Var1 = product.Name,
 
-                        // List name
-                        Var2 = sourceListName,
+                    // Get the email body
+                    emailBody = await _emailService.GetEmailBody(email.Content);
 
-                        // List Id
-                        Var3 = notification.SourceListId,
 
-                        // Product link
-                        Link = product.UrlName + "/" + product.Id,
+                    // Send the emails
+                    foreach (Recipient recipient in recipients)
+                    {
+                        // Create the email message
+                        emailMessage = new(emailBody, recipient.Email, email.Name, new()
+                        {
+                            // Recipient
+                            Recipient = new()
+                            {
+                                FirstName = recipient.FirstName,
+                                LastName = recipient.LastName
+                            },
 
-                        // Product image
-                        ImageName = product.Name,
-                        ImageSrc = product.Image!
-                    });
+                            // User that added the item
+                            Person = new()
+                            {
+                                FirstName = user.FirstName,
+                                LastName = user.LastName
+                            },
 
-                    // Send the email
-                    await _emailService.SendEmail(emailMessage);
+                            // Product name
+                            Var1 = product.Name,
+
+                            // List name
+                            Var2 = destinationListName,
+
+                            // List Id
+                            Var3 = notification.DestinationListId,
+
+                            // Product link
+                            Link = product.UrlName + "/" + product.Id,
+
+                            // Product image
+                            ImageName = product.Name,
+                            ImageSrc = product.Image!
+                        });
+
+                        // Send the email
+                        await _emailService.SendEmail(emailMessage);
+                    }
                 }
             }
 
 
 
-            // Get the recipients that are collaborating on the destination list
-            recipients = await _dbContext.Collaborators
-                .Where(x => userIds
-                    .Contains(x.UserId) &&
-                    x.ListId == notification.DestinationListId &&
-                    x.User.EmailOnCollaboratorAddedListItem == true)
-                .Select(x => new Recipient
-                {
-                    FirstName = x.User.FirstName,
-                    LastName = x.User.LastName,
-                    Email = x.User.Email
-                }).ToListAsync();
-
-
-
-            // If we have recipients
-            if (recipients.Count > 0)
-            {
-                // Get the email content from the database
-                var email = await _dbContext.Emails
-                    .Where(x => x.Type == EmailType.CollaboratorAddedListItem)
-                    .Select(x => new
-                    {
-                        x.Name,
-                        x.Content
-                    }).SingleAsync();
-
-
-                // Get the email body
-                emailBody = await _emailService.GetEmailBody(email.Content);
-
-
-                // Send the emails
-                foreach (Recipient recipient in recipients)
-                {
-                    // Create the email message
-                    emailMessage = new(emailBody, recipient.Email, email.Name, new()
-                    {
-                        // Recipient
-                        Recipient = new()
-                        {
-                            FirstName = recipient.FirstName,
-                            LastName = recipient.LastName
-                        },
-
-                        // User that added the item
-                        Person = new()
-                        {
-                            FirstName = user.FirstName,
-                            LastName = user.LastName
-                        },
-
-                        // Product name
-                        Var1 = product.Name,
-
-                        // List name
-                        Var2 = destinationListName,
-
-                        // List Id
-                        Var3 = notification.DestinationListId,
-
-                        // Product link
-                        Link = product.UrlName + "/" + product.Id,
-
-                        // Product image
-                        ImageName = product.Name,
-                        ImageSrc = product.Image!
-                    });
-
-                    // Send the email
-                    await _emailService.SendEmail(emailMessage);
-                }
-            }
 
 
 
