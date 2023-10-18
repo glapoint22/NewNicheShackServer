@@ -42,6 +42,7 @@ namespace Manager.Application.Notifications.GetMessageNotification.Queries
 
             // Get the employee notes
             var employeeNotes = await _managerDbContext.NotificationEmployeeNotes
+                .OrderByDescending(x => x.CreationDate)
                 .Where(x => notifications.Select(z => z.NotificationId).ToList().Contains((Guid)x.NotificationId!))
                 .Select(x => new
                 {

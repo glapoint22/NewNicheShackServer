@@ -30,6 +30,7 @@ namespace Manager.Application.Notifications.GetErrorNotification.Queries
 
 
             var employeeNotes = await _managerDbContext.NotificationEmployeeNotes
+                .OrderByDescending(x => x.CreationDate)
                 .Where(x => x.NotificationGroupId == request.NotificationGroupId)
                 .Select(x => new
                 {
