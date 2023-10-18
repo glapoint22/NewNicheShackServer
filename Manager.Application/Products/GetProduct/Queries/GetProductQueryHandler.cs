@@ -3,6 +3,7 @@ using Manager.Application.Common.Interfaces;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Shared.Common.Classes;
+using Shared.Common.Enums;
 using Website.Application.Common.Interfaces;
 
 namespace Manager.Application.Products.GetProduct.Queries
@@ -112,7 +113,7 @@ namespace Manager.Application.Products.GetProduct.Queries
                 }).ToListAsync();
 
                 var notificationItems = await _websiteDbContext.Notifications
-                    .Where(x => x.ProductId == request.ProductId)
+                    .Where(x => x.ProductId == request.ProductId && x.Type > (int)NotificationType.ReviewComplaint && x.Type < (int)NotificationType.ProductReportedAsIllegal)
                     .Select(x => new
                     {
                         x.Id,

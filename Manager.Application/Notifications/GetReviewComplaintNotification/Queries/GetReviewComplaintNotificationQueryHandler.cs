@@ -60,6 +60,7 @@ namespace Manager.Application.Notifications.GetReviewComplaintNotification.Queri
 
             // Get the employee notes from this notification
             var employeeNotes = await _managerDbContext.NotificationEmployeeNotes
+                .OrderByDescending(x => x.CreationDate)
                 .Where(x => x.NotificationGroupId == request.NotificationGroupId)
                 .Select(x => new
                 {

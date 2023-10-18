@@ -56,6 +56,7 @@ namespace Manager.Application.Notifications.GetProductNotification.Queries
                 }).ToListAsync();
 
             var employeeNotes = await _managerDbContext.NotificationEmployeeNotes
+                .OrderByDescending(x => x.CreationDate)
                 .Where(x => x.NotificationGroupId == request.NotificationGroupId)
                 .Select(x => new
                 {
