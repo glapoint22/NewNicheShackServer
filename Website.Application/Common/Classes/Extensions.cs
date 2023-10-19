@@ -47,7 +47,7 @@ namespace Website.Application.Common.Classes
                     }
                     else
                     {
-                        result = source.OrderByDescending(x => x.Date);
+                        result = source.OrderBy(x => x.ProductPrices.Min(z => z.Price));
                     }
 
 
