@@ -35,14 +35,14 @@ namespace Shared.Services
         // ------------------------------------------------------------------------- Set Cookie ------------------------------------------------------------------------
         public void SetCookie(string cookie, string value, DateTimeOffset? expiration)
         {
-            CookieOptions cookieOptions = new();
+            CookieOptions cookieOptions = new()
+            {
+                SameSite = SameSiteMode.Strict
+            };
 
             if (expiration != null)
             {
-                cookieOptions = new()
-                {
-                    Expires = expiration
-                };
+                cookieOptions.Expires = expiration;
             }
 
             _httpContext.Response.Cookies.Append(cookie, value, cookieOptions);
