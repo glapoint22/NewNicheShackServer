@@ -23,6 +23,7 @@ namespace Manager.Application.Notifications.GetMessageNotification.Queries
         {
             // Get the notifications
             var notifications = await _websiteDbContext.Notifications
+                .OrderByDescending(x => x.CreationDate)
                 .Where(x => x.NotificationGroupId == request.NotificationGroupId && (request.IsNew ? !x.IsArchived : x.IsArchived))
                 .Select(x => new
                 {

@@ -41,6 +41,7 @@ namespace Manager.Application.Notifications.GetProductNotification.Queries
 
 
             var users = await _websiteDbContext.Notifications
+                .OrderByDescending(x => x.CreationDate)
                 .Where(x => x.NotificationGroupId == request.NotificationGroupId)
                 .Select(x => new
                 {

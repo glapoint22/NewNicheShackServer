@@ -44,6 +44,7 @@ namespace Manager.Application.Notifications.GetReviewComplaintNotification.Queri
                 }).FirstAsync();
 
             var users = await _websiteDbContext.Notifications
+                .OrderByDescending(x => x.CreationDate)
                 .Where(x => x.NotificationGroupId == request.NotificationGroupId)
                 .Select(x => new
                 {

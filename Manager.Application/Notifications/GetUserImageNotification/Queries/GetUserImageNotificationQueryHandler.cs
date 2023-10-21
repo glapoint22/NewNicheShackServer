@@ -23,6 +23,7 @@ namespace Manager.Application.Notifications.GetUserImageNotification.Queries
         {
             // Get the user notifications from the website
             var notifications = await _websiteDbContext.Notifications
+                .OrderByDescending(x => x.CreationDate)
                 .Where(x => x.NotificationGroupId == request.NotificationGroupId && (request.IsNew ? !x.IsArchived : x.IsArchived))
                 .Select(x => new
                 {
