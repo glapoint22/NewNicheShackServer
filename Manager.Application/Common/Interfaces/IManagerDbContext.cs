@@ -32,6 +32,7 @@ namespace Manager.Application.Common.Interfaces
         DbSet<RefreshToken> RefreshTokens { get; }
         DbSet<Subniche> Subniches { get; }
         DbSet<Subproduct> Subproducts { get; }
+        DbSet<User> Users { get; }
         DbSet<Vendor> Vendors { get; }
 
         Task<int> SaveChangesAsync();

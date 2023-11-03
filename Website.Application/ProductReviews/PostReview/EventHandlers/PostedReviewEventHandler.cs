@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Shared.Common.Classes;
 using Shared.EmailBuilder.Classes;
 using Website.Application.Common.Interfaces;
 using Website.Domain.Events;
@@ -87,7 +88,7 @@ namespace Website.Application.ProductReviews.PostReview.EventHandlers
                     Var1 = review.Title,
 
                     // Review text
-                    Var2 = review.Text,
+                    Var2 = Utility.TextToHTML(review.Text),
 
                     // Product link
                     Link = product.UrlName + "/" + product.Id,

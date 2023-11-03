@@ -35,7 +35,7 @@ namespace Shared.Services
 
             MimeMessage email = new()
             {
-                Sender = MailboxAddress.Parse(_configuration["Email:Sender"]),
+                Sender = emailMessage.SenderEmailAddress != null ? MailboxAddress.Parse(emailMessage.SenderEmailAddress) : MailboxAddress.Parse(_configuration["Email:Sender"]),
                 Subject = emailMessage.Subject,
                 Body = new TextPart(TextFormat.Html) { Text = emailMessage.EmailBody }
             };

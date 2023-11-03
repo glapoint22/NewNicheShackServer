@@ -34,7 +34,7 @@ namespace Manager.Application.Notifications.GetMessageNotification.Queries
                     x.User.LastName,
                     x.User.Image,
                     Email = x.NonAccountEmail ?? x.User.Email,
-                    x.Text,
+                    Text = Utility.TextToHTML(x.Text),
                     Date = x.CreationDate,
                     NoncompliantStrikes = x.User != null ? x.User.NoncompliantStrikes : 0,
                     BlockNotificationSending = x.User != null ? x.User.BlockNotificationSending : _websiteDbContext.BlockedNonAccountUsers
@@ -52,7 +52,7 @@ namespace Manager.Application.Notifications.GetMessageNotification.Queries
                     x.User.LastName,
                     x.User.Image,
                     x.User.Email,
-                    Text = x.Note,
+                    Text = Utility.TextToHTML(x.Note),
                     Date = x.CreationDate
                 }).ToListAsync();
 

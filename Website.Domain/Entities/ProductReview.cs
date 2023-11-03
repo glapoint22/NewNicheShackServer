@@ -30,7 +30,7 @@ namespace Website.Domain.Entities
                 Title = title,
                 Rating = rating,
                 Date = DateTime.UtcNow,
-                Text = Utility.TextToHTML(text)
+                Text = text
             };
         }
 

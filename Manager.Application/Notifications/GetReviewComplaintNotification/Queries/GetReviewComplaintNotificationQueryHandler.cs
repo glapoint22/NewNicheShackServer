@@ -39,7 +39,7 @@ namespace Manager.Application.Notifications.GetReviewComplaintNotification.Queri
                         x.ProductReview.Date,
                         x.ProductReview.User.NoncompliantStrikes,
                         x.ProductReview.User.BlockNotificationSending,
-                        x.ProductReview.Text
+                        Text = Utility.TextToHTML(x.ProductReview.Text)
                     }
                 }).FirstAsync();
 
@@ -53,7 +53,7 @@ namespace Manager.Application.Notifications.GetReviewComplaintNotification.Queri
                     x.User.LastName,
                     x.User.Image,
                     x.User.Email,
-                    x.Text,
+                    Text = x.Text != null ? Utility.TextToHTML(x.Text): null,
                     Date = x.CreationDate,
                     x.User.NoncompliantStrikes,
                     x.User.BlockNotificationSending
