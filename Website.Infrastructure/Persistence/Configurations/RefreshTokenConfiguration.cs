@@ -13,6 +13,15 @@ namespace Website.Infrastructure.Persistence.Configurations
 
             builder.Property(x => x.DeviceId)
                 .HasMaxLength(256);
+
+
+            builder.HasIndex(x => new
+            {
+                x.Id,
+                x.UserId,
+                x.DeviceId
+            }).IncludeProperties(x => x.Expiration)
+            .IsClustered(false);
         }
     }
 }

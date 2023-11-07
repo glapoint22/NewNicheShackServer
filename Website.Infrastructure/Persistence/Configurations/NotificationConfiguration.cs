@@ -35,6 +35,41 @@ namespace Website.Infrastructure.Persistence.Configurations
                 .WithMany(x => x.Notifications)
                 .OnDelete(DeleteBehavior.NoAction)
                 .IsRequired(false);
+
+            builder.HasIndex(x => new
+            {
+                x.Type,
+                x.UserId
+            }).IncludeProperties(x => x.NotificationGroupId)
+            .IsClustered(false);
+
+
+            builder.HasIndex(x => x.UserId)
+                .IncludeProperties(x => new
+                {
+                    x.Id,
+                    x.ProductId,
+                    x.ListId,
+                    x.ReviewId,
+                    x.Name,
+                    x.UserImage,
+                    x.Text,
+                    x.NonAccountName,
+                    x.NonAccountEmail,
+                    x.IsArchived,
+                    x.CreationDate,
+                    x.NotificationGroupId,
+                    x.Type
+                })
+                .IsClustered(false);
+
+
+            builder.HasIndex(x => x.Type)
+                .IncludeProperties(x => new
+                {   x.NotificationGroupId,
+                    x.Text
+                })
+                .IsClustered(false);
         }
     }
 }

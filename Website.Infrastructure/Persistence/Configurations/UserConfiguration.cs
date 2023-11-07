@@ -83,6 +83,10 @@ namespace Website.Infrastructure.Persistence.Configurations
 
             builder.Property(x => x.TrackingCode)
                 .HasMaxLength(10);
+
+
+            builder.HasIndex(x => x.Email)
+                .IsClustered(false);
         }
     }
 }

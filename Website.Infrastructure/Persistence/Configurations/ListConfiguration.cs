@@ -18,6 +18,16 @@ namespace Website.Infrastructure.Persistence.Configurations
             builder.Property(x => x.CollaborateId)
                 .HasMaxLength(10)
                 .IsRequired();
+
+
+            builder.HasIndex(x => x.Id)
+                .IncludeProperties(x => new
+                {
+                    x.Name,
+                    x.Description,
+                    x.CollaborateId,
+                    x.CreationDate
+                }).IsClustered(false);
         }
     }
 }
