@@ -70,6 +70,26 @@ namespace Website.Infrastructure.Persistence.Configurations
                     x.Text
                 })
                 .IsClustered(false);
+
+
+            builder.HasIndex(x => x.ListId)
+                .IncludeProperties(x => new
+                {
+                    x.Id,
+                    x.ProductId,
+                    x.UserId,
+                    x.ReviewId,
+                    x.Name,
+                    x.UserImage,
+                    x.Text,
+                    x.NonAccountName,
+                    x.NonAccountEmail,
+                    x.IsArchived,
+                    x.CreationDate,
+                    x.NotificationGroupId,
+                    x.Type
+                })
+                .IsClustered(false);
         }
     }
 }

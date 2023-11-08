@@ -34,10 +34,14 @@ namespace Website.Application.Lists.GetLists.Queries
                     x.Name,
                     x.Description,
                     x.CreationDate,
-                    TotalProducts = x.Products.Count,
+                    TotalProducts = x.Products
+                        .Select(q => q.ListId)
+                        .Count(),
                     x.CollaborateId,
                     CollaboratorCount = x.Collaborators
-                        .Count(z => !z.IsOwner),
+                        .Where(z => !z.IsOwner)
+                        .Select(q => q.Id)
+                        .Count(),
                     CollaboratorId = x.Collaborators
                         .Where(z => z.UserId == user.Id && z.ListId == x.Id)
                         .Select(z => z.Id)

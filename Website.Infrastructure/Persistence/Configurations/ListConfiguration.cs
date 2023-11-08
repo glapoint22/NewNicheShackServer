@@ -28,6 +28,16 @@ namespace Website.Infrastructure.Persistence.Configurations
                     x.CollaborateId,
                     x.CreationDate
                 }).IsClustered(false);
+
+
+            builder.HasIndex(x => x.CollaborateId)
+                .IncludeProperties(x => new
+                {
+                    x.Id,
+                    x.Name,
+                    x.Description,
+                    x.CreationDate
+                }).IsClustered(false);
         }
     }
 }

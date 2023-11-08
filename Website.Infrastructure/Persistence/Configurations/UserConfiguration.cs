@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Security;
 using Website.Domain.Entities;
 
 namespace Website.Infrastructure.Persistence.Configurations
@@ -87,6 +89,52 @@ namespace Website.Infrastructure.Persistence.Configurations
 
             builder.HasIndex(x => x.Email)
                 .IsClustered(false);
+
+            builder.HasIndex(x => x.NormalizedEmail)
+            .IncludeProperties(x => new
+            {
+                x.Id,
+                x.AccessFailedCount,
+                x.BlockNotificationSending,
+                x.ConcurrencyStamp,
+                x.Email,
+                x.EmailConfirmed,
+                x.EmailOnCollaboratorAddedListItem,
+                x.EmailOnCollaboratorDeletedList,
+                x.EmailOnCollaboratorJoinedList,
+                x.EmailOnCollaboratorMovedListItem,
+                x.EmailOnCollaboratorRemovedFromList,
+                x.EmailOnCollaboratorRemovedListItem,
+                x.EmailOnCollaboratorUpdatedList,
+                x.EmailOnEmailUpdated,
+                x.EmailOnItemReviewed,
+                x.EmailOnNameUpdated,
+                x.EmailOnPasswordUpdated,
+                x.EmailOnProfileImageUpdated,
+                x.EmailOnUserAddedListItem,
+                x.EmailOnUserDeletedList,
+                x.EmailOnUserJoinedList,
+                x.EmailOnUserMovedListItem,
+                x.EmailOnUserRemovedCollaborator,
+                x.EmailOnUserRemovedFromList,
+                x.EmailOnUserRemovedListItem,
+                x.EmailOnUserUpdatedList,
+                x.FirstName,
+                x.Image,
+                x.LastName,
+                x.LockoutEnabled,
+                x.LockoutEnd,
+                x.NoncompliantStrikes,
+                x.NormalizedUserName,
+                x.PasswordHash,
+                x.PhoneNumber,
+                x.PhoneNumberConfirmed,
+                x.SecurityStamp,
+                x.Suspended,
+                x.TrackingCode,
+                x.TwoFactorEnabled,
+                x.UserName
+            }).IsClustered(false);
         }
     }
 }
