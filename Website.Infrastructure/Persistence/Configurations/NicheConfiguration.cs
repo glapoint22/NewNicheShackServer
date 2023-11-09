@@ -20,11 +20,14 @@ namespace Website.Infrastructure.Persistence.Configurations
                 .HasMaxLength(100)
                 .IsRequired();
 
-            builder.HasIndex(x => x.Disabled)
+            builder.HasIndex(x => new
+            {
+                x.Disabled,
+                x.Name
+            })
                 .IncludeProperties(x => new
                 {
                     x.Id,
-                    x.Name,
                     x.UrlName
                 })
                 .IsClustered(false);

@@ -17,6 +17,19 @@ namespace Website.Infrastructure.Persistence.Configurations
                 .WithMany(x => x.Subproducts)
                 .HasForeignKey(x => x.ImageId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+
+            builder.HasIndex(x => x.ProductId)
+                .IncludeProperties(x => new
+                {
+                    x.Id,
+                    x.Name,
+                    x.Description,
+                    x.ImageId,
+                    x.Value,
+                    x.Type
+
+                }).IsClustered(false);
         }
     }
 }

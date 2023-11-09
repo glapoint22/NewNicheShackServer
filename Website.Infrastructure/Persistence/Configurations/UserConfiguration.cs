@@ -135,6 +135,11 @@ namespace Website.Infrastructure.Persistence.Configurations
                 x.TwoFactorEnabled,
                 x.UserName
             }).IsClustered(false);
+
+
+            builder.HasIndex(x => x.TrackingCode)
+                .IncludeProperties(x => x.Id)
+                .IsClustered(false);
         }
     }
 }

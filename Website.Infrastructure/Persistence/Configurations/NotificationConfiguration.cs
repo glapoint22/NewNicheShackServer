@@ -66,7 +66,8 @@ namespace Website.Infrastructure.Persistence.Configurations
 
             builder.HasIndex(x => x.Type)
                 .IncludeProperties(x => new
-                {   x.NotificationGroupId,
+                {
+                    x.NotificationGroupId,
                     x.Text
                 })
                 .IsClustered(false);
@@ -90,6 +91,34 @@ namespace Website.Infrastructure.Persistence.Configurations
                     x.Type
                 })
                 .IsClustered(false);
+
+
+            builder.HasIndex(x => new
+            {
+                x.Type,
+                x.UserId
+            })
+            .IncludeProperties(x => x.NotificationGroupId)
+            .IsClustered(false);
+
+            
+            
+            builder.HasIndex(x => new
+            {
+                x.Type,
+                x.NonAccountEmail
+            })
+            .IncludeProperties(x => x.NotificationGroupId)
+            .IsClustered(false);
+
+
+            builder.HasIndex(x => new
+            {
+                x.Type,
+                x.ProductId
+            })
+            .IncludeProperties(x => x.NotificationGroupId)
+            .IsClustered(false);
         }
     }
 }

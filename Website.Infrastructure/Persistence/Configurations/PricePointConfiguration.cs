@@ -28,6 +28,22 @@ namespace Website.Infrastructure.Persistence.Configurations
 
             builder.Property(x => x.ShippingValue)
                 .HasMaxLength(10);
+
+
+            builder.HasIndex(x => x.ProductId)
+                .IncludeProperties(x => new
+                {
+                    x.Id,
+                    x.ProductPriceId,
+                    x.ImageId,
+                    x.Header,
+                    x.Quantity,
+                    x.ShippingValue,
+                    x.ShippingType,
+                    x.Info,
+                    x.Subheader,
+                    x.Text
+                }).IsClustered(false);
         }
     }
 }

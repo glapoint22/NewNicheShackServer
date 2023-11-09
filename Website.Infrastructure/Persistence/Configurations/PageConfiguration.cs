@@ -17,6 +17,11 @@ namespace Website.Infrastructure.Persistence.Configurations
 
             builder.Property(x => x.UrlName)
                 .HasMaxLength(256);
+
+            builder.HasIndex(x => x.PageType)
+                .IncludeProperties(x => x.Content)
+                .IsClustered(false);
+
         }
     }
 }

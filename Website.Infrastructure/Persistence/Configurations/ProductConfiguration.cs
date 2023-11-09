@@ -56,6 +56,36 @@ namespace Website.Infrastructure.Persistence.Configurations
                     .Property(p => p.SubscriptionDuration)
                     .HasColumnName("SubscriptionDuration");
             });
+
+            builder.HasIndex(x => x.TrackingCode)
+                .IncludeProperties(x => x.Id)
+                .IsClustered(false);
+
+
+            builder.HasIndex(x => new
+            {
+                x.SubnicheId,
+                x.Disabled
+            }).IncludeProperties(x => new
+            {
+                x.Id,
+                x.ImageId,
+                x.Name,
+                x.UrlName,
+                x.Description,
+                x.Hoplink,
+                x.TotalReviews,
+                x.Rating,
+                x.OneStar,
+                x.TwoStars,
+                x.ThreeStars,
+                x.FourStars,
+                x.FiveStars,
+                x.ShippingType,
+                x.Date,
+                x.TrackingCode,
+                x.Currency
+            }).IsClustered(false);
         }
     }
 }

@@ -13,6 +13,7 @@ namespace Website.Infrastructure.Persistence.Configurations
                 .IsRequired();
 
             builder.HasIndex(x => x.Name)
+                .IncludeProperties(x => x.Id)
                 .IsClustered(false);
         }
     }
