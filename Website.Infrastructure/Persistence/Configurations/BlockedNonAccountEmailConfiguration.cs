@@ -13,6 +13,9 @@ namespace Website.Infrastructure.Persistence.Configurations
 
             builder.Property(x => x.Name)
                 .HasMaxLength(256);
+
+            builder.HasIndex(x => x.Email)
+                .IsClustered(false);
         }
     }
 }

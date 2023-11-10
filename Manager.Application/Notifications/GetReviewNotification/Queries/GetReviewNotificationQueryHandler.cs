@@ -33,7 +33,7 @@ namespace Manager.Application.Notifications.GetReviewNotification.Queries
                     x.User.LastName,
                     x.User.Image,
                     x.User.Email,
-                    x.ProductReview.Text,
+                    Text = Utility.TextToHTML(x.ProductReview.Text),
                     Date = x.CreationDate,
                     x.User.NoncompliantStrikes,
                     x.User.BlockNotificationSending,

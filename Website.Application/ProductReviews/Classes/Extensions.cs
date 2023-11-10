@@ -1,4 +1,5 @@
-﻿using Website.Application.Common.Classes;
+﻿using Shared.Common.Classes;
+using Website.Application.Common.Classes;
 using Website.Domain.Entities;
 
 namespace Website.Application.ProductReviews.Classes
@@ -99,7 +100,7 @@ namespace Website.Application.ProductReviews.Classes
                 },
                 Date = x.Date.ToString(),
                 IsVerified = x.Product.ProductOrders.Any(z => z.UserId == x.UserId && z.ProductId == x.ProductId),
-                Text = x.Text,
+                Text = Utility.TextToHTML(x.Text),
                 Likes = x.Likes,
                 Dislikes = x.Dislikes
             });

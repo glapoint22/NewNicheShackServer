@@ -10,6 +10,36 @@ namespace Website.Infrastructure.Persistence.Configurations
         {
             builder.Property(x => x.Id)
                 .HasMaxLength(21);
+
+            builder.HasIndex(x => x.UserId)
+                .IncludeProperties(x => x.Date)
+                .IsClustered(false);
+
+            builder.HasIndex(x => new
+            {
+                x.UserId,
+                x.Date
+            }).IncludeProperties(x => new
+                {
+                    x.Id,
+                    x.ProductId,
+                    x.PaymentMethod,
+                    x.Subtotal,
+                    x.ShippingHandling,
+                    x.Discount,
+                    x.Tax,
+                    x.Total,
+                    x.IsUpsell
+                })
+                .IsClustered(false);
+
+
+
+            builder.HasIndex(x => new
+            {
+                x.ProductId,
+                x.UserId
+            }).IsClustered(false);
         }
     }
 }

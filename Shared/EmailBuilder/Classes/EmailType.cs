@@ -33,6 +33,7 @@
         NoncompliantStrikeUserImage,
         NoncompliantStrikeUserName,
         NoncompliantStrikeReview,
-        UserAccountTerminated
+        UserAccountTerminated,
+        MessageReply
     }
 }

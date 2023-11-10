@@ -2,6 +2,7 @@
 using Manager.Domain.Events;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Shared.Common.Classes;
 using Shared.EmailBuilder.Classes;
 
 namespace Manager.Application.Notifications.RemoveReview.EventHandlers
@@ -47,7 +48,7 @@ namespace Manager.Application.Notifications.RemoveReview.EventHandlers
                 Var1 = notification.Title,
 
                 // Review text
-                Var2 = notification.Text,
+                Var2 = Utility.TextToHTML(notification.Text),
 
                 // Product link
                 Link = notification.ProductUrlName + "/" + notification.ProductId,

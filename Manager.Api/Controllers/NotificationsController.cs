@@ -28,6 +28,7 @@ using Manager.Application.Notifications.ReplaceUserName.Commands;
 using Manager.Application.Notifications.RestoreAllNotifications.Commands;
 using Manager.Application.Notifications.RestoreGroup.Commands;
 using Manager.Application.Notifications.RestoreNotification.Commands;
+using Manager.Application.Notifications.SendEmail.Commands;
 using Manager.Application.Notifications.UnblockNonAccountUser.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -332,6 +333,17 @@ namespace Manager.Api.Controllers
         public async Task<ActionResult> PostNote(PostNoteCommand postNote)
         {
             return SetResponse(await _mediator.Send(postNote));
+        }
+
+
+
+
+        // ------------------------------------------------------------------------------- Send Email -----------------------------------------------------------------------------
+        [HttpPost]
+        [Route("SendEmail")]
+        public async Task<ActionResult> SendEmail(SendEmailCommand sendEmail)
+        {
+            return SetResponse(await _mediator.Send(sendEmail));
         }
 
 

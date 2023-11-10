@@ -11,6 +11,23 @@ namespace Website.Infrastructure.Persistence.Configurations
             builder.Property(x => x.Title)
                 .HasMaxLength(256)
                 .IsRequired();
+
+            builder.HasIndex(x => new
+            {
+                x.ProductId,
+                x.Likes,
+                x.Rating,
+                x.Deleted
+            }).IncludeProperties(x => new
+            {
+                x.Id,
+                x.UserId,
+                x.Title,
+                x.Date,
+                x.Text,
+                x.Dislikes
+            })
+            .IsClustered(false);
         }
     }
 }

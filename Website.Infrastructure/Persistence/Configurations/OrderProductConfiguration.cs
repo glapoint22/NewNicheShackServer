@@ -15,12 +15,36 @@ namespace Website.Infrastructure.Persistence.Configurations
             builder.Property(x => x.OrderId)
                 .HasMaxLength(21);
 
+            builder.Property(x => x.Name)
+                .HasMaxLength(256)
+                .IsRequired(true);
+
 
             builder.Property(x => x.LineItemType)
                 .HasMaxLength(8);
 
             builder.Property(x => x.RebillFrequency)
                 .HasMaxLength(10);
+
+            builder.HasIndex(x => x.OrderId)
+                .IncludeProperties(x => new
+                {
+                    x.Id,
+                    x.Name,
+                    x.Quantity,
+                    x.Price,
+                    x.LineItemType,
+                    x.RebillFrequency,
+                    x.RebillAmount
+                }).IsClustered(false);
+
+
+            builder.HasIndex(x => x.Name)
+                .IncludeProperties(x => new
+                {
+                    x.OrderId,
+                    x.LineItemType
+                }).IsClustered(false);
         }
     }
 }
