@@ -86,6 +86,13 @@ namespace Website.Infrastructure.Persistence.Configurations
                 x.TrackingCode,
                 x.Currency
             }).IsClustered(false);
+
+
+
+
+            builder.HasIndex(x => x.Disabled)
+                .IncludeProperties(x => x.SubnicheId)
+                .IsClustered(false);
         }
     }
 }
