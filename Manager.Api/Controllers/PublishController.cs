@@ -130,36 +130,50 @@ namespace Manager.Api.Controllers
             foreach (var productId in productIds)
             {
                 _dbContext.PublishItems.Add(PublishItem.AddProduct(productId, _authService.GetUserIdFromClaims(), Domain.Enums.PublishStatus.New));
-
-                await _dbContext.SaveChangesAsync();
-
-                await PublishProduct(productId);
             }
-
-
+            
+            
             // Pages
             var pageIds = await _dbContext.Pages.Select(x => x.Id).ToListAsync();
 
             foreach (var pageId in pageIds)
             {
                 _dbContext.PublishItems.Add(PublishItem.AddPage(pageId, _authService.GetUserIdFromClaims(), Domain.Enums.PublishStatus.New));
-                await _dbContext.SaveChangesAsync();
-
-                await PublishPage(pageId);
             }
-
-
+        
+            
             // Emails
             var emailIds = await _dbContext.Emails.Select(x => x.Id).ToListAsync();
 
             foreach (var emailId in emailIds)
             {
                 _dbContext.PublishItems.Add(PublishItem.AddEmail(emailId, _authService.GetUserIdFromClaims(), Domain.Enums.PublishStatus.New));
-                await _dbContext.SaveChangesAsync();
+            }
 
+
+            await _dbContext.SaveChangesAsync();
+
+
+            foreach (var productId in productIds)
+            {
+                await PublishProduct(productId);
+            }
+
+
+
+            foreach (var pageId in pageIds)
+            {
+                await PublishPage(pageId);
+            }
+
+
+            foreach (var emailId in emailIds)
+            {
                 await PublishEmail(emailId);
             }
 
+
+            // Stars
             await _mediator.Send(new PublishStarsCommand());
 
 
