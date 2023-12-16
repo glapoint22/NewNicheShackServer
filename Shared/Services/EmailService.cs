@@ -33,20 +33,28 @@ namespace Shared.Services
             emailMessage.EmailProperties.Recipient.Email = emailMessage.EmailAddress;
             emailMessage.EmailBody = emailMessage.EmailProperties.SetEmailBody(emailMessage.EmailBody);
 
+            var sender = new
+            {
+                Email = emailMessage.SenderEmailAddress != null ? MailboxAddress.Parse(emailMessage.SenderEmailAddress) : MailboxAddress.Parse(_configuration["Email:Sender"]),
+                UserName = emailMessage.SenderEmailAddress != null ? emailMessage.SenderEmailAddress : _configuration["Email:UserName"],
+                Password = emailMessage.SenderEmailAddress != null ? _configuration["Email:" + emailMessage.SenderEmailAddress] : _configuration["Email:Password"]
+            };
+
             MimeMessage email = new()
             {
-                Sender = emailMessage.SenderEmailAddress != null ? MailboxAddress.Parse(emailMessage.SenderEmailAddress) : MailboxAddress.Parse(_configuration["Email:Sender"]),
+                Sender = sender.Email,
                 Subject = emailMessage.Subject,
                 Body = new TextPart(TextFormat.Html) { Text = emailMessage.EmailBody }
             };
             email.To.Add(MailboxAddress.Parse(emailMessage.EmailAddress));
+            email.From.Add(sender.Email);
 
 
             SmtpClient smtp = new();
             await smtp.ConnectAsync(_configuration["Email:Host"],
                 Convert.ToInt32(_configuration["Email:Port"]),
                 (SecureSocketOptions)Convert.ToInt32(_configuration["Email:SecureSocketOption"]));
-            await smtp.AuthenticateAsync(_configuration["Email:UserName"], _configuration["Email:Password"]);
+            await smtp.AuthenticateAsync(sender.UserName, sender.Password);
             await smtp.SendAsync(email);
             await smtp.DisconnectAsync(true);
         }
